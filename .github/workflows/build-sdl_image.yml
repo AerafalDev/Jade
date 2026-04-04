@@ -161,15 +161,29 @@ jobs:
       - name: Configure & build SDL_image (Emscripten)
         run: |
           source vendor/emsdk/emsdk_env.sh
+
+          SDL3_CMAKE_DIR="$(find "$INSTALL_DIR" -type f -name 'SDL3Config.cmake' -exec dirname {} \; | head -n 1)"
+
+          if [ -z "$SDL3_CMAKE_DIR" ]; then
+            echo "SDL3Config.cmake not found under $INSTALL_DIR"
+            echo "Installed files:"
+            find "$INSTALL_DIR" -maxdepth 4 -type f | sort || true
+            exit 1
+          fi
+
+          echo "Using SDL3_DIR=$SDL3_CMAKE_DIR"
+
           emcmake cmake -S vendor/SDL_image -B "$BUILD_IMG" \
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" \
             -DCMAKE_PREFIX_PATH="$INSTALL_DIR" \
+            -DSDL3_DIR="$SDL3_CMAKE_DIR" \
             -DBUILD_SHARED_LIBS=OFF \
             -DSDL3IMAGE_VENDORED=ON \
             -DSDL3IMAGE_AVIF=OFF \
             -DSDL3IMAGE_BACKEND_STB=ON \
             -DSDL_TESTS=OFF
+
           cmake --build "$BUILD_IMG" --config Release --parallel
           cmake --install "$BUILD_IMG" --config Release
 
