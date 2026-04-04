@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: ${{ matrix.os }}-${{ matrix.arch }}
+    runs-on: ${{ matrix.runner }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows
+            runner: windows-2025
+            arch: x64
+
+          - os: windows
+            runner: windows-11-arm
+            arch: arm64
+
+          - os: macos
+            runner: macos-15-intel
+            arch: x64
+
+          - os: macos
+            runner: macos-latest
+            arch: arm64
+
+          - os: linux
+            runner: ubuntu-22.04
+            arch: x64
+
+          - os: linux
+            runner: ubuntu-22.04-arm
+            arch: arm64
+
+    env:
+      CI: true
+      DOTNET_VERSION: 10.0.x
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+          architecture: ${{ matrix.arch }}
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test --configuration Release --no-build --verbosity normal
