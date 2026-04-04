@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "Jade": {
+      "commandName": "DebugRoslynComponent",
+      "targetProject": "../Jade/Jade.csproj"
+    },
+    "Jade.Playground": {
+      "commandName": "DebugRoslynComponent",
+      "targetProject": "../Jade.Playground/Jade.Playground.csproj"
+    }
+  }
+}
