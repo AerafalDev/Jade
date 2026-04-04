@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Jade.Analyzers/Jade.Analyzers.csproj" />
+    <Project Path="src/Jade.Native/Jade.Native.csproj" />
+    <Project Path="src/Jade.Playground/Jade.Playground.csproj" />
+    <Project Path="src/Jade.SourceGenerators/Jade.SourceGenerators.csproj" />
+    <Project Path="src/Jade/Jade.csproj" />
+  </Folder>
+</Solution>
