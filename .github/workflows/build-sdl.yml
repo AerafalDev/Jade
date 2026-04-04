@@ -38,7 +38,6 @@ jobs:
             os: ubuntu-22.04-arm
 
     env:
-      OUTPUT_DIR: ${{ github.workspace }}/src/Jade.Native/runtimes/${{ matrix.rid }}/native
       BUILD_DIR: ${{ github.workspace }}/_build/SDL
       INSTALL_DIR: ${{ github.workspace }}/_install
 
@@ -89,31 +88,12 @@ jobs:
       - name: Install
         run: cmake --install "${{ env.BUILD_DIR }}" --config Release
 
-      - name: Copy libs to runtimes dir
-        shell: bash
-        run: |
-          mkdir -p "$OUTPUT_DIR"
-
-          find "$INSTALL_DIR" \
-            \( -name "SDL3.dll" -o -name "SDL3.lib" -o -name "SDL3-static.lib" \) \
-            -exec cp {} "$OUTPUT_DIR/" \; 2>/dev/null || true
-
-          find "$INSTALL_DIR" \
-            \( -name "libSDL3.so*" -o -name "libSDL3.dylib" \) \
-            -exec cp -P {} "$OUTPUT_DIR/" \; 2>/dev/null || true
-
-          find "$INSTALL_DIR" \
-            \( -name "libSDL3.a" -o -name "libSDL3-static.a" \) \
-            -exec cp {} "$OUTPUT_DIR/" \; 2>/dev/null || true
-
-          echo "=== Output files ==="
-          ls -la "$OUTPUT_DIR"
-
       - name: Upload artifact
         uses: actions/upload-artifact@v7
         with:
           name: SDL-${{ matrix.rid }}
-          path: src/Jade.Native/runtimes/${{ matrix.rid }}/native/
+          path: ${{ env.INSTALL_DIR }}
+          retention-days: 90
 
   build-wasm:
     name: SDL · browser-wasm
@@ -121,7 +101,6 @@ jobs:
 
     env:
       RID: browser-wasm
-      OUTPUT_DIR: ${{ github.workspace }}/src/Jade.Native/runtimes/browser-wasm/native
       BUILD_DIR: ${{ github.workspace }}/_build/SDL
       INSTALL_DIR: ${{ github.workspace }}/_install
 
@@ -168,48 +147,9 @@ jobs:
           source vendor/emsdk/emsdk_env.sh
           cmake --install "$BUILD_DIR" --config Release
 
-      - name: Copy static libs
-        run: |
-          mkdir -p "$OUTPUT_DIR"
-          find "$INSTALL_DIR" -name "*.a" -exec cp {} "$OUTPUT_DIR/" \;
-          ls -la "$OUTPUT_DIR"
-
       - name: Upload artifact
         uses: actions/upload-artifact@v7
         with:
           name: SDL-browser-wasm
-          path: src/Jade.Native/runtimes/browser-wasm/native/
-
-  collect:
-    name: Collect all SDL artifacts
-    runs-on: ubuntu-latest
-    needs: [build-desktop, build-wasm]
-
-    steps:
-      - uses: actions/checkout@v6
-
-      - name: Download all artifacts
-        uses: actions/download-artifact@v8
-        with:
-          path: src/Jade.Native/runtimes/
-
-      - name: Flatten artifact directories
-        shell: bash
-        run: |
-          cd src/Jade.Native/runtimes
-          for artifact_dir in SDL-*/; do
-            rid="${artifact_dir#SDL-}"
-            rid="${rid%/}"
-            mkdir -p "$rid/native"
-            cp -r "$artifact_dir"* "$rid/native/" 2>/dev/null || true
-            rm -rf "$artifact_dir"
-          done
-          echo "=== Final structure ==="
-          find . -type f | sort
-
-      - name: Upload combined artifact
-        uses: actions/upload-artifact@v7
-        with:
-          name: SDL-all-runtimes
-          path: src/Jade.Native/runtimes/
+          path: ${{ env.INSTALL_DIR }}
           retention-days: 90
