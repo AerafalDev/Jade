@@ -1,0 +1,100 @@
+<Project>
+
+  <PropertyGroup>
+    <JadeRoot>$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), 'Directory.Build.props'))</JadeRoot>
+    <DirectoryBuildPropsImported>true</DirectoryBuildPropsImported>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Product>Jade</Product>
+    <Authors>Aerafal</Authors>
+    <Company>Jade</Company>
+    <Copyright>Copyright © $([System.DateTime]::Now.Year) $(Company)</Copyright>
+    <Description>Jade is a modern, high-performance 2D game engine built with .NET 10. It emphasizes data-oriented design, NativeAOT-friendly architecture, and explicit control over rendering, memory, and systems, targeting production-grade real-time applications.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/AerafalDev/Jade</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/AerafalDev/Jade</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>windows;macos;linux;csharp;cross-platform;game-engine;dotnet;wasm;emscripten;jade;2d;2d-game-engine;2d-rendering;jade-engine</PackageTags>
+    <PackageIcon>Jade.png</PackageIcon>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <MinVerDefaultPreReleaseIdentifiers>dev</MinVerDefaultPreReleaseIdentifiers>
+    <MinVerAutoIncrement>patch</MinVerAutoIncrement>
+    <MinVerTagPrefix>v</MinVerTagPrefix>
+    <Deterministic>true</Deterministic>
+    <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>14</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TreatWarningsAsErrors Condition="'$(Configuration)' == 'Release'">true</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors Condition="'$(Configuration)' == 'Debug'">false</TreatWarningsAsErrors>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <AnalysisMode>Recommended</AnalysisMode>
+    <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <BaseOutputPath>$(JadeRoot)artifacts/bin/$(MSBuildProjectName)/</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(JadeRoot)artifacts/obj/$(MSBuildProjectName)/</BaseIntermediateOutputPath>
+    <PackageOutputPath>$(JadeRoot)artifacts/packages/</PackageOutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <IsWasm Condition="'$(RuntimeIdentifier)' == 'browser-wasm'">true</IsWasm>
+    <IsWindows Condition="$(RuntimeIdentifier.StartsWith('win-'))">true</IsWindows>
+    <IsLinux Condition="$(RuntimeIdentifier.StartsWith('linux-'))">true</IsLinux>
+    <IsMacOs Condition="$(RuntimeIdentifier.StartsWith('osx-'))">true</IsMacOs>
+
+    <IsWindows Condition="'$(IsWindows)' == '' AND $([MSBuild]::IsOSPlatform('Windows'))">true</IsWindows>
+    <IsLinux Condition="'$(IsLinux)' == '' AND $([MSBuild]::IsOSPlatform('Linux'))">true</IsLinux>
+    <IsMacOs Condition="'$(IsMacOs)' == '' AND $([MSBuild]::IsOSPlatform('OSX'))">true</IsMacOs>
+
+    <IsWasm Condition="'$(IsWasm)' == ''">false</IsWasm>
+    <IsWindows Condition="'$(IsWindows)' == ''">false</IsWindows>
+    <IsLinux Condition="'$(IsLinux)' == ''">false</IsLinux>
+    <IsMacOs Condition="'$(IsMacOs)' == ''">false</IsMacOs>
+
+    <IsDesktop Condition="'$(IsWasm)' != 'true' AND ('$(IsWindows)' == 'true' OR '$(IsLinux)' == 'true' OR '$(IsMacOs)' == 'true')">true</IsDesktop>
+    <IsDesktop Condition="'$(IsDesktop)' != 'true'">false</IsDesktop>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants)</DefineConstants>
+    <DefineConstants Condition="'$(IsWasm)' == 'true'">$(DefineConstants);JADE_PLATFORM_WASM</DefineConstants>
+    <DefineConstants Condition="'$(IsWindows)' == 'true'">$(DefineConstants);JADE_PLATFORM_WINDOWS</DefineConstants>
+    <DefineConstants Condition="'$(IsLinux)' == 'true'">$(DefineConstants);JADE_PLATFORM_LINUX</DefineConstants>
+    <DefineConstants Condition="'$(IsMacOs)' == 'true'">$(DefineConstants);JADE_PLATFORM_MACOS</DefineConstants>
+    <DefineConstants Condition="'$(IsDesktop)' == 'true'">$(DefineConstants);JADE_PLATFORM_DESKTOP</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <Optimize>false</Optimize>
+    <DefineConstants>$(DefineConstants);DEBUG;TRACE;JADE_DEBUG;JADE_TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <Optimize>true</Optimize>
+    <DefineConstants>$(DefineConstants);RELEASE;JADE_RELEASE</DefineConstants>
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+</Project>
