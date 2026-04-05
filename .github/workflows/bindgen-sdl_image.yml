@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - 'bindgen/SDL_image_image/**'
+      - 'bindgen/SDL_image/**'
       - '.github/workflows/bindgen-sdl_image.yml'
 
 env:
