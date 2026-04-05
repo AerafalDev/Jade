@@ -4,6 +4,7 @@
 [![Build SDL_mixer](https://github.com/AerafalDev/Jade/actions/workflows/build-sdl_mixer.yml/badge.svg)](https://github.com/AerafalDev/Jade/actions/workflows/build-sdl_mixer.yml)
 [![Build SDL_ttf](https://github.com/AerafalDev/Jade/actions/workflows/build-sdl_ttf.yml/badge.svg)](https://github.com/AerafalDev/Jade/actions/workflows/build-sdl_ttf.yml)
 [![Build SDL_shadercross](https://github.com/AerafalDev/Jade/actions/workflows/build-sdl_shadercross.yml/badge.svg)](https://github.com/AerafalDev/Jade/actions/workflows/build-sdl_shadercross.yml)
+[![Bindgen SDL](https://github.com/AerafalDev/Jade/actions/workflows/bindgen-sdl.yml/badge.svg)](https://github.com/AerafalDev/Jade/actions/workflows/bindgen-sdl.yml)
 
 ## Jade
 
