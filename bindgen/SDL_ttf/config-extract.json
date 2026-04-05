@@ -19,7 +19,7 @@
   ],
   "blockedNames": [
     "^.*_[hH]_$",
-    "^(struct |enum )?SDL_(?!IMAGE_).*$"
+    "^(struct |enum )?SDL_(?!TTF_).*$"
   ],
   "targetPlatforms": {
     "windows": {
