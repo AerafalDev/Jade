@@ -75,6 +75,14 @@ internal static unsafe partial class SDL
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     internal static partial SDL_JoystickID SDL_AttachVirtualJoystick(SDL_VirtualJoystickDesc* desc);
 
+    [LibraryImport(LibraryName, EntryPoint = "SDL_AudioDevicePaused")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial CBool SDL_AudioDevicePaused(SDL_AudioDeviceID devid);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_AudioStreamDevicePaused")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial CBool SDL_AudioStreamDevicePaused(SDL_AudioStream* stream);
+
     [LibraryImport(LibraryName, EntryPoint = "SDL_BeginGPUComputePass")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     internal static partial SDL_GPUComputePass* SDL_BeginGPUComputePass(SDL_GPUCommandBuffer* command_buffer, SDL_GPUStorageTextureReadWriteBinding* storage_texture_bindings, uint num_storage_texture_bindings, SDL_GPUStorageBufferReadWriteBinding* storage_buffer_bindings, uint num_storage_buffer_bindings);
@@ -86,6 +94,14 @@ internal static unsafe partial class SDL
     [LibraryImport(LibraryName, EntryPoint = "SDL_BeginGPURenderPass")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     internal static partial SDL_GPURenderPass* SDL_BeginGPURenderPass(SDL_GPUCommandBuffer* command_buffer, SDL_GPUColorTargetInfo* color_target_infos, uint num_color_targets, SDL_GPUDepthStencilTargetInfo* depth_stencil_target_info);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_BindAudioStream")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial CBool SDL_BindAudioStream(SDL_AudioDeviceID devid, SDL_AudioStream* stream);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_BindAudioStreams")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial CBool SDL_BindAudioStreams(SDL_AudioDeviceID devid, SDL_AudioStream** streams, int num_streams);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_BindGPUComputePipeline")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -191,6 +207,10 @@ internal static unsafe partial class SDL
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     internal static partial CBool SDL_ClaimWindowForGPUDevice(SDL_GPUDevice* device, SDL_Window* window);
 
+    [LibraryImport(LibraryName, EntryPoint = "SDL_ClearAudioStream")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial CBool SDL_ClearAudioStream(SDL_AudioStream* stream);
+
     [LibraryImport(LibraryName, EntryPoint = "SDL_ClearClipboardData")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     internal static partial CBool SDL_ClearClipboardData();
@@ -218,6 +238,10 @@ internal static unsafe partial class SDL
     [LibraryImport(LibraryName, EntryPoint = "SDL_CloseAsyncIO")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     internal static partial CBool SDL_CloseAsyncIO(SDL_AsyncIO* asyncio, CBool flush, SDL_AsyncIOQueue* queue, void* userdata);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_CloseAudioDevice")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial void SDL_CloseAudioDevice(SDL_AudioDeviceID devid);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_CloseCamera")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -250,6 +274,10 @@ internal static unsafe partial class SDL
     [LibraryImport(LibraryName, EntryPoint = "SDL_ComposeCustomBlendMode")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     internal static partial SDL_BlendMode SDL_ComposeCustomBlendMode(SDL_BlendFactor srcColorFactor, SDL_BlendFactor dstColorFactor, SDL_BlendOperation colorOperation, SDL_BlendFactor srcAlphaFactor, SDL_BlendFactor dstAlphaFactor, SDL_BlendOperation alphaOperation);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_ConvertAudioSamples")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial CBool SDL_ConvertAudioSamples(SDL_AudioSpec* src_spec, byte* src_data, int src_len, SDL_AudioSpec* dst_spec, byte** dst_data, int* dst_len);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_ConvertEventToRenderCoordinates")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -298,6 +326,10 @@ internal static unsafe partial class SDL
     [LibraryImport(LibraryName, EntryPoint = "SDL_CreateAsyncIOQueue")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     internal static partial SDL_AsyncIOQueue* SDL_CreateAsyncIOQueue();
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_CreateAudioStream")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial SDL_AudioStream* SDL_CreateAudioStream(SDL_AudioSpec* src_spec, SDL_AudioSpec* dst_spec);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_CreateColorCursor")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -479,6 +511,10 @@ internal static unsafe partial class SDL
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     internal static partial void SDL_DestroyAsyncIOQueue(SDL_AsyncIOQueue* queue);
 
+    [LibraryImport(LibraryName, EntryPoint = "SDL_DestroyAudioStream")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial void SDL_DestroyAudioStream(SDL_AudioStream* stream);
+
     [LibraryImport(LibraryName, EntryPoint = "SDL_DestroyCursor")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     internal static partial void SDL_DestroyCursor(SDL_Cursor* cursor);
@@ -659,6 +695,10 @@ internal static unsafe partial class SDL
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     internal static partial CBool SDL_FlipSurface(SDL_Surface* surface, SDL_FlipMode flip);
 
+    [LibraryImport(LibraryName, EntryPoint = "SDL_FlushAudioStream")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial CBool SDL_FlushAudioStream(SDL_AudioStream* stream);
+
     [LibraryImport(LibraryName, EntryPoint = "SDL_FlushEvent")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     internal static partial void SDL_FlushEvent(uint type);
@@ -731,6 +771,78 @@ internal static unsafe partial class SDL
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     internal static partial long SDL_GetAsyncIOSize(SDL_AsyncIO* asyncio);
 
+    [LibraryImport(LibraryName, EntryPoint = "SDL_GetAudioDeviceChannelMap")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial int* SDL_GetAudioDeviceChannelMap(SDL_AudioDeviceID devid, int* count);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_GetAudioDeviceFormat")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial CBool SDL_GetAudioDeviceFormat(SDL_AudioDeviceID devid, SDL_AudioSpec* spec, int* sample_frames);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_GetAudioDeviceGain")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial float SDL_GetAudioDeviceGain(SDL_AudioDeviceID devid);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_GetAudioDeviceName")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial CString SDL_GetAudioDeviceName(SDL_AudioDeviceID devid);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_GetAudioDriver")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial CString SDL_GetAudioDriver(int index);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_GetAudioFormatName")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial CString SDL_GetAudioFormatName(SDL_AudioFormat format);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_GetAudioPlaybackDevices")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial SDL_AudioDeviceID* SDL_GetAudioPlaybackDevices(int* count);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_GetAudioRecordingDevices")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial SDL_AudioDeviceID* SDL_GetAudioRecordingDevices(int* count);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_GetAudioStreamAvailable")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial int SDL_GetAudioStreamAvailable(SDL_AudioStream* stream);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_GetAudioStreamData")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial int SDL_GetAudioStreamData(SDL_AudioStream* stream, void* buf, int len);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_GetAudioStreamDevice")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial SDL_AudioDeviceID SDL_GetAudioStreamDevice(SDL_AudioStream* stream);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_GetAudioStreamFormat")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial CBool SDL_GetAudioStreamFormat(SDL_AudioStream* stream, SDL_AudioSpec* src_spec, SDL_AudioSpec* dst_spec);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_GetAudioStreamFrequencyRatio")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial float SDL_GetAudioStreamFrequencyRatio(SDL_AudioStream* stream);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_GetAudioStreamGain")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial float SDL_GetAudioStreamGain(SDL_AudioStream* stream);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_GetAudioStreamInputChannelMap")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial int* SDL_GetAudioStreamInputChannelMap(SDL_AudioStream* stream, int* count);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_GetAudioStreamOutputChannelMap")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial int* SDL_GetAudioStreamOutputChannelMap(SDL_AudioStream* stream, int* count);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_GetAudioStreamProperties")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial SDL_PropertiesID SDL_GetAudioStreamProperties(SDL_AudioStream* stream);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_GetAudioStreamQueued")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial int SDL_GetAudioStreamQueued(SDL_AudioStream* stream);
+
     [LibraryImport(LibraryName, EntryPoint = "SDL_GetBasePath")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     internal static partial CString SDL_GetBasePath();
@@ -794,6 +906,10 @@ internal static unsafe partial class SDL
     [LibraryImport(LibraryName, EntryPoint = "SDL_GetCPUCacheLineSize")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     internal static partial int SDL_GetCPUCacheLineSize();
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_GetCurrentAudioDriver")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial CString SDL_GetCurrentAudioDriver();
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_GetCurrentCameraDriver")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -1415,6 +1531,10 @@ internal static unsafe partial class SDL
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     internal static partial int SDL_GetNumAllocations();
 
+    [LibraryImport(LibraryName, EntryPoint = "SDL_GetNumAudioDrivers")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial int SDL_GetNumAudioDrivers();
+
     [LibraryImport(LibraryName, EntryPoint = "SDL_GetNumberProperty")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     internal static partial long SDL_GetNumberProperty(SDL_PropertiesID props, CString name, long default_value);
@@ -1746,6 +1866,10 @@ internal static unsafe partial class SDL
     [LibraryImport(LibraryName, EntryPoint = "SDL_GetSensorTypeForID")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     internal static partial SDL_SensorType SDL_GetSensorTypeForID(SDL_SensorID instance_id);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_GetSilenceValueForFormat")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial int SDL_GetSilenceValueForFormat(SDL_AudioFormat format);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_GetSIMDAlignment")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -2387,6 +2511,14 @@ internal static unsafe partial class SDL
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     internal static partial SDL_IOStream* SDL_IOFromFile(CString file, CString mode);
 
+    [LibraryImport(LibraryName, EntryPoint = "SDL_IsAudioDevicePhysical")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial CBool SDL_IsAudioDevicePhysical(SDL_AudioDeviceID devid);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_IsAudioDevicePlayback")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial CBool SDL_IsAudioDevicePlayback(SDL_AudioDeviceID devid);
+
     [LibraryImport(LibraryName, EntryPoint = "SDL_IsGamepad")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     internal static partial CBool SDL_IsGamepad(SDL_JoystickID instance_id);
@@ -2462,6 +2594,18 @@ internal static unsafe partial class SDL
     [LibraryImport(LibraryName, EntryPoint = "SDL_LoadSurface_IO")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     internal static partial SDL_Surface* SDL_LoadSurface_IO(SDL_IOStream* src, CBool closeio);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_LoadWAV")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial CBool SDL_LoadWAV(CString path, SDL_AudioSpec* spec, byte** audio_buf, uint* audio_len);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_LoadWAV_IO")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial CBool SDL_LoadWAV_IO(SDL_IOStream* src, CBool closeio, SDL_AudioSpec* spec, byte** audio_buf, uint* audio_len);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_LockAudioStream")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial CBool SDL_LockAudioStream(SDL_AudioStream* stream);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_LockJoysticks")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -2571,9 +2715,21 @@ internal static unsafe partial class SDL
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     internal static partial CBool SDL_MinimizeWindow(SDL_Window* window);
 
+    [LibraryImport(LibraryName, EntryPoint = "SDL_MixAudio")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial CBool SDL_MixAudio(byte* dst, byte* src, SDL_AudioFormat format, uint len, float volume);
+
     [LibraryImport(LibraryName, EntryPoint = "SDL_murmur3_32")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     internal static partial uint SDL_murmur3_32(void* data, ulong len, uint seed);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_OpenAudioDevice")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial SDL_AudioDeviceID SDL_OpenAudioDevice(SDL_AudioDeviceID devid, SDL_AudioSpec* spec);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_OpenAudioDeviceStream")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial SDL_AudioStream* SDL_OpenAudioDeviceStream(SDL_AudioDeviceID devid, SDL_AudioSpec* spec, SDL_AudioStreamCallback callback, void* userdata);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_OpenCamera")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -2631,6 +2787,14 @@ internal static unsafe partial class SDL
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     internal static partial CBool SDL_OutOfMemory();
 
+    [LibraryImport(LibraryName, EntryPoint = "SDL_PauseAudioDevice")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial CBool SDL_PauseAudioDevice(SDL_AudioDeviceID devid);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_PauseAudioStreamDevice")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial CBool SDL_PauseAudioStreamDevice(SDL_AudioStream* stream);
+
     [LibraryImport(LibraryName, EntryPoint = "SDL_PauseHaptic")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     internal static partial CBool SDL_PauseHaptic(SDL_Haptic* haptic);
@@ -2682,6 +2846,18 @@ internal static unsafe partial class SDL
     [LibraryImport(LibraryName, EntryPoint = "SDL_PushGPUVertexUniformData")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     internal static partial void SDL_PushGPUVertexUniformData(SDL_GPUCommandBuffer* command_buffer, uint slot_index, void* data, uint length);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_PutAudioStreamData")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial CBool SDL_PutAudioStreamData(SDL_AudioStream* stream, void* buf, int len);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_PutAudioStreamDataNoCopy")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial CBool SDL_PutAudioStreamDataNoCopy(SDL_AudioStream* stream, void* buf, int len, SDL_AudioStreamDataCompleteCallback callback, void* userdata);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_PutAudioStreamPlanarData")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial CBool SDL_PutAudioStreamPlanarData(SDL_AudioStream* stream, void** channel_buffers, int num_channels, int num_samples);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_QueryGPUFence")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -3019,6 +3195,14 @@ internal static unsafe partial class SDL
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     internal static partial CBool SDL_RestoreWindow(SDL_Window* window);
 
+    [LibraryImport(LibraryName, EntryPoint = "SDL_ResumeAudioDevice")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial CBool SDL_ResumeAudioDevice(SDL_AudioDeviceID devid);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_ResumeAudioStreamDevice")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial CBool SDL_ResumeAudioStreamDevice(SDL_AudioStream* stream);
+
     [LibraryImport(LibraryName, EntryPoint = "SDL_ResumeHaptic")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     internal static partial CBool SDL_ResumeHaptic(SDL_Haptic* haptic);
@@ -3118,6 +3302,42 @@ internal static unsafe partial class SDL
     [LibraryImport(LibraryName, EntryPoint = "SDL_SetAssertionHandler")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     internal static partial void SDL_SetAssertionHandler(SDL_AssertionHandler handler, void* userdata);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_SetAudioDeviceGain")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial CBool SDL_SetAudioDeviceGain(SDL_AudioDeviceID devid, float gain);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_SetAudioPostmixCallback")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial CBool SDL_SetAudioPostmixCallback(SDL_AudioDeviceID devid, SDL_AudioPostmixCallback callback, void* userdata);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_SetAudioStreamFormat")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial CBool SDL_SetAudioStreamFormat(SDL_AudioStream* stream, SDL_AudioSpec* src_spec, SDL_AudioSpec* dst_spec);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_SetAudioStreamFrequencyRatio")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial CBool SDL_SetAudioStreamFrequencyRatio(SDL_AudioStream* stream, float ratio);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_SetAudioStreamGain")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial CBool SDL_SetAudioStreamGain(SDL_AudioStream* stream, float gain);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_SetAudioStreamGetCallback")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial CBool SDL_SetAudioStreamGetCallback(SDL_AudioStream* stream, SDL_AudioStreamCallback callback, void* userdata);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_SetAudioStreamInputChannelMap")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial CBool SDL_SetAudioStreamInputChannelMap(SDL_AudioStream* stream, int* chmap, int count);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_SetAudioStreamOutputChannelMap")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial CBool SDL_SetAudioStreamOutputChannelMap(SDL_AudioStream* stream, int* chmap, int count);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_SetAudioStreamPutCallback")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial CBool SDL_SetAudioStreamPutCallback(SDL_AudioStream* stream, SDL_AudioStreamCallback callback, void* userdata);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_SetBooleanProperty")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -3719,9 +3939,21 @@ internal static unsafe partial class SDL
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     internal static partial CString SDL_UCS4ToUTF8(uint codepoint, CString dst);
 
+    [LibraryImport(LibraryName, EntryPoint = "SDL_UnbindAudioStream")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial void SDL_UnbindAudioStream(SDL_AudioStream* stream);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_UnbindAudioStreams")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial void SDL_UnbindAudioStreams(SDL_AudioStream** streams, int num_streams);
+
     [LibraryImport(LibraryName, EntryPoint = "SDL_UnloadObject")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
     internal static partial void SDL_UnloadObject(SDL_SharedObject* handle);
+
+    [LibraryImport(LibraryName, EntryPoint = "SDL_UnlockAudioStream")]
+    [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static partial CBool SDL_UnlockAudioStream(SDL_AudioStream* stream);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_UnlockJoysticks")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -3938,6 +4170,18 @@ internal static unsafe partial class SDL
     internal static readonly int SDL_ALPHA_TRANSPARENT = (int)0;
 
     internal static readonly float SDL_ALPHA_TRANSPARENT_FLOAT = (float)0;
+
+    internal static readonly SDL_AudioDeviceID SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK = (SDL_AudioDeviceID)4294967295;
+
+    internal static readonly SDL_AudioDeviceID SDL_AUDIO_DEVICE_DEFAULT_RECORDING = (SDL_AudioDeviceID)4294967294;
+
+    internal static readonly uint SDL_AUDIO_MASK_BIG_ENDIAN = (uint)4096;
+
+    internal static readonly uint SDL_AUDIO_MASK_BITSIZE = (uint)255;
+
+    internal static readonly uint SDL_AUDIO_MASK_FLOAT = (uint)256;
+
+    internal static readonly uint SDL_AUDIO_MASK_SIGNED = (uint)32768;
 
     internal static readonly uint SDL_BLENDMODE_ADD = (uint)2;
 
@@ -4780,6 +5024,8 @@ internal static unsafe partial class SDL
     internal static readonly CString SDL_PROP_APP_METADATA_URL_STRING = (CString)"SDL.app.metadata.url"u8;
 
     internal static readonly CString SDL_PROP_APP_METADATA_VERSION_STRING = (CString)"SDL.app.metadata.version"u8;
+
+    internal static readonly CString SDL_PROP_AUDIOSTREAM_AUTO_CLEANUP_BOOLEAN = (CString)"SDL.audiostream.auto_cleanup"u8;
 
     internal static readonly CString SDL_PROP_DISPLAY_HDR_ENABLED_BOOLEAN = (CString)"SDL.display.HDR_enabled"u8;
 
@@ -6058,6 +6304,19 @@ internal static unsafe partial class SDL
 
         [FieldOffset(23)]
         internal byte padding3; // size = 1
+    }
+
+    [StructLayout(LayoutKind.Explicit, Size = 12, Pack = 4)]
+    internal partial struct SDL_AudioSpec
+    {
+        [FieldOffset(0)]
+        internal SDL_AudioFormat format; // size = 4
+
+        [FieldOffset(4)]
+        internal int channels; // size = 4
+
+        [FieldOffset(8)]
+        internal int freq; // size = 4
     }
 
     [StructLayout(LayoutKind.Explicit, Size = 24, Pack = 8)]
@@ -8902,6 +9161,22 @@ internal static unsafe partial class SDL
         SDL_ASYNCIO_TASK_CLOSE = 2
     }
 
+    internal enum SDL_AudioFormat : int
+    {
+        SDL_AUDIO_UNKNOWN = 0,
+        SDL_AUDIO_U8 = 8,
+        SDL_AUDIO_S8 = 32776,
+        SDL_AUDIO_S16LE = 32784,
+        SDL_AUDIO_S16BE = 36880,
+        SDL_AUDIO_S32LE = 32800,
+        SDL_AUDIO_S32BE = 36896,
+        SDL_AUDIO_F32LE = 33056,
+        SDL_AUDIO_F32BE = 37152,
+        SDL_AUDIO_S16 = 32784,
+        SDL_AUDIO_S32 = 32800,
+        SDL_AUDIO_F32 = 33056
+    }
+
     internal enum SDL_BlendFactor : int
     {
         SDL_BLENDFACTOR_ZERO = 1,
@@ -9144,7 +9419,7 @@ internal static unsafe partial class SDL
         SDL_FOLDER_DOWNLOADS = 3,
         SDL_FOLDER_MUSIC = 4,
         SDL_FOLDER_PICTURES = 5,
-        SDL_FOLDER_PUBLICSHARE = 6,
+        SDL_FOLDER_internalSHARE = 6,
         SDL_FOLDER_SAVEDGAMES = 7,
         SDL_FOLDER_SCREENSHOTS = 8,
         SDL_FOLDER_TEMPLATES = 9,
@@ -10382,6 +10657,11 @@ internal static unsafe partial class SDL
     }
 
     [StructLayout(LayoutKind.Sequential)]
+    internal partial struct SDL_AudioStream
+    {
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
     internal partial struct SDL_Camera
     {
     }
@@ -10609,6 +10889,39 @@ internal static unsafe partial class SDL
 
         public static implicit operator uint(SDL_AudioDeviceID data) => data.Data;
         public static implicit operator SDL_AudioDeviceID(uint data) => new SDL_AudioDeviceID() { Data = data };
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal partial struct SDL_AudioPostmixCallback
+    {
+        internal delegate* unmanaged[Cdecl]<void*, SDL_AudioSpec*, float*, int, void> Pointer;
+
+        internal SDL_AudioPostmixCallback(delegate* unmanaged[Cdecl]<void*, SDL_AudioSpec*, float*, int, void> pointer)
+        {
+            Pointer = pointer;
+        }
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal partial struct SDL_AudioStreamCallback
+    {
+        internal delegate* unmanaged[Cdecl]<void*, SDL_AudioStream*, int, int, void> Pointer;
+
+        internal SDL_AudioStreamCallback(delegate* unmanaged[Cdecl]<void*, SDL_AudioStream*, int, int, void> pointer)
+        {
+            Pointer = pointer;
+        }
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal partial struct SDL_AudioStreamDataCompleteCallback
+    {
+        internal delegate* unmanaged[Cdecl]<void*, void*, int, void> Pointer;
+
+        internal SDL_AudioStreamDataCompleteCallback(delegate* unmanaged[Cdecl]<void*, void*, int, void> pointer)
+        {
+            Pointer = pointer;
+        }
     }
 
     [StructLayout(LayoutKind.Explicit, Size = 4, Pack = 4)]
@@ -11584,6 +11897,28 @@ internal static unsafe partial class SDL
     }
 
     [StructLayout(LayoutKind.Sequential)]
+    internal partial struct FnPtr_VoidPtr_SDLAudioSpecPtr_FloatPtr_Int_Void
+    {
+        internal delegate* unmanaged[Cdecl]<void*, SDL_AudioSpec*, float*, int, void> Pointer;
+
+        internal FnPtr_VoidPtr_SDLAudioSpecPtr_FloatPtr_Int_Void(delegate* unmanaged[Cdecl]<void*, SDL_AudioSpec*, float*, int, void> pointer)
+        {
+            Pointer = pointer;
+        }
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal partial struct FnPtr_VoidPtr_VoidPtr_Int_Void
+    {
+        internal delegate* unmanaged[Cdecl]<void*, void*, int, void> Pointer;
+
+        internal FnPtr_VoidPtr_VoidPtr_Int_Void(delegate* unmanaged[Cdecl]<void*, void*, int, void> pointer)
+        {
+            Pointer = pointer;
+        }
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
     internal partial struct FnPtr_VoidPtr_Int_SDLLogPriority_CString_Void
     {
         internal delegate* unmanaged[Cdecl]<void*, int, SDL_LogPriority, CString, void> Pointer;
@@ -11611,6 +11946,17 @@ internal static unsafe partial class SDL
         internal delegate* unmanaged[Cdecl]<void*, SDL_AppResult, void> Pointer;
 
         internal FnPtr_VoidPtr_SDLAppResult_Void(delegate* unmanaged[Cdecl]<void*, SDL_AppResult, void> pointer)
+        {
+            Pointer = pointer;
+        }
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal partial struct FnPtr_VoidPtr_SDLAudioStreamPtr_Int_Int_Void
+    {
+        internal delegate* unmanaged[Cdecl]<void*, SDL_AudioStream*, int, int, void> Pointer;
+
+        internal FnPtr_VoidPtr_SDLAudioStreamPtr_Int_Int_Void(delegate* unmanaged[Cdecl]<void*, SDL_AudioStream*, int, int, void> pointer)
         {
             Pointer = pointer;
         }
@@ -11715,5 +12061,3 @@ internal static unsafe partial class SDL
         }
     }
 }
-
-
