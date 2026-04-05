@@ -1,10 +1,4 @@
 [![CI](https://github.com/AerafalDev/Jade/actions/workflows/ci.yml/badge.svg)](https://github.com/AerafalDev/Jade/actions/workflows/ci.yml)
-[![CodeQL](https://github.com/AerafalDev/Jade/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/AerafalDev/Jade/actions/workflows/github-code-scanning/codeql)
-[![Automatic Dependency Submission](https://github.com/AerafalDev/Jade/actions/workflows/dependency-graph/auto-submission/badge.svg)](https://github.com/AerafalDev/Jade/actions/workflows/dependency-graph/auto-submission)
-[![Dependabot Updates](https://github.com/AerafalDev/Jade/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/AerafalDev/Jade/actions/workflows/dependabot/dependabot-updates)
-
----
-
 [![Build SDL](https://github.com/AerafalDev/Jade/actions/workflows/build-sdl.yml/badge.svg)](https://github.com/AerafalDev/Jade/actions/workflows/build-sdl.yml)
 [![Build SDL_image](https://github.com/AerafalDev/Jade/actions/workflows/build-sdl_image.yml/badge.svg)](https://github.com/AerafalDev/Jade/actions/workflows/build-sdl_image.yml)
 [![Build SDL_mixer](https://github.com/AerafalDev/Jade/actions/workflows/build-sdl_mixer.yml/badge.svg)](https://github.com/AerafalDev/Jade/actions/workflows/build-sdl_mixer.yml)
