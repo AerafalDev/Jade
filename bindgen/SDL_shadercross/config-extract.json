@@ -1,0 +1,38 @@
+{
+  "inputFilePath": "../../vendor/SDL_shadercross/include/SDL3_shadercross/SDL_shadercross.h",
+  "userIncludeDirectories": [
+    "../../vendor/SDL/include",
+    "../../vendor/SDL_shadercross/include"
+  ],
+  "defines": {
+    "SDL_DECLSPEC": "__attribute__ ((visibility(\"default\")))"
+  },
+  "ignoredIncludeFiles": [
+    "../../vendor/SDL/include/SDL3/SDL.h",
+    "../../vendor/SDL/include/SDL3/SDL_begin_code.h"
+  ],
+  "allowedNames": [
+    "^SDL_ShaderCross_.*$",
+    "^SDL_SHADERCROSS_.*$",
+    "COMMENT: Function Pointers",
+    ".* (.*)$"
+  ],
+  "blockedNames": [
+    "^.*_[hH]_$",
+    "^(struct |enum )?SDL_(?!ShaderCross_|SHADERCROSS_).*$"
+  ],
+  "targetPlatforms": {
+    "windows": {
+      "x86_64-pc-windows-msvc": {},
+      "aarch64-pc-windows-msvc": {}
+    },
+    "macos": {
+      "x86_64-apple-darwin": {},
+      "aarch64-apple-darwin": {}
+    },
+    "linux": {
+      "x86_64-unknown-linux-gnu": {},
+      "aarch64-unknown-linux-gnu": {}
+    }
+  }
+}
