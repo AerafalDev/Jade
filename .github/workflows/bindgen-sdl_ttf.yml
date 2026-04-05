@@ -1,0 +1,160 @@
+name: Bindgen SDL_ttf
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'bindgen/SDL_ttf/**'
+      - '.github/workflows/bindgen-sdl_ttf.yml'
+
+env:
+  DOTNET_VERSION: 10.0.x
+
+jobs:
+  extract-ffi:
+    name: Extract FFI · ${{ matrix.os }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows
+            rid: win
+            runner: windows-latest
+          - os: macos
+            rid: osx
+            runner: macos-latest
+          - os: linux
+            rid: linux
+            runner: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      - name: Install Linux deps
+        if: runner.os == 'Linux'
+        run: sudo apt-get install -y gcc-aarch64-linux-gnu
+
+      - name: Cache .NET tools
+        uses: actions/cache@v4
+        with:
+          path: ~/.dotnet/tools
+          key: dotnet-tools-${{ runner.os }}-${{ env.DOTNET_VERSION }}
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Install c2ffi
+        shell: bash
+        run: dotnet tool install -g bottlenoselabs.c2ffi.tool
+
+      - name: Extract FFI (${{ matrix.os }})
+        shell: bash
+        run: cd ./bindgen/SDL_ttf && ./bindgen-extract.sh
+
+      - name: Upload FFI (${{ matrix.rid }})
+        uses: actions/upload-artifact@v7
+        with:
+          name: ffi-${{ matrix.rid }}
+          path: ./bindgen/SDL_ttf/ffi
+          if-no-files-found: error
+
+  merge-ffi:
+    name: Merge FFI (cross-platform)
+    needs: extract-ffi
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          submodules: false
+
+      - name: Cache .NET tools
+        uses: actions/cache@v4
+        with:
+          path: ~/.dotnet/tools
+          key: dotnet-tools-${{ runner.os }}-${{ env.DOTNET_VERSION }}
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Install c2ffi
+        shell: bash
+        run: dotnet tool install -g bottlenoselabs.c2ffi.tool
+
+      - name: Download FFI (win)
+        uses: actions/download-artifact@v8
+        with:
+          name: ffi-win
+          path: ./bindgen/SDL_ttf/ffi
+
+      - name: Download FFI (osx)
+        uses: actions/download-artifact@v8
+        with:
+          name: ffi-osx
+          path: ./bindgen/SDL_ttf/ffi
+
+      - name: Download FFI (linux)
+        uses: actions/download-artifact@v8
+        with:
+          name: ffi-linux
+          path: ./bindgen/SDL_ttf/ffi
+
+      - name: Merge FFI
+        shell: bash
+        run: cd ./bindgen/SDL_ttf && ./bindgen-merge.sh
+
+      - name: Upload cross-platform FFI
+        uses: actions/upload-artifact@v7
+        with:
+          name: ffi-x
+          path: ./bindgen/SDL_ttf/ffi-x/cross-platform.json
+          if-no-files-found: error
+
+  generate-cs:
+    name: Generate C#
+    needs: merge-ffi
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          submodules: false
+
+      - name: Cache .NET tools
+        uses: actions/cache@v4
+        with:
+          path: ~/.dotnet/tools
+          key: dotnet-tools-${{ runner.os }}-${{ env.DOTNET_VERSION }}
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Install c2cs
+        shell: bash
+        run: dotnet tool install -g bottlenoselabs.c2cs.Tool
+
+      - name: Download cross-platform FFI
+        uses: actions/download-artifact@v8
+        with:
+          name: ffi-x
+          path: ./bindgen/SDL_ttf/ffi-x
+
+      - name: Generate C#
+        shell: bash
+        run: cd ./bindgen/SDL_ttf && ./bindgen-generate.sh
+
+      - name: Upload generated C#
+        uses: actions/upload-artifact@v7
+        with:
+          name: generated-cs
+          path: ./src/Jade/Interop/SDL/Image
+          if-no-files-found: error
