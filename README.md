@@ -12,6 +12,7 @@
 
 [![Bindgen SDL](https://github.com/AerafalDev/Jade/actions/workflows/bindgen-sdl.yml/badge.svg)](https://github.com/AerafalDev/Jade/actions/workflows/bindgen-sdl.yml)
 [![Bindgen SDL_image](https://github.com/AerafalDev/Jade/actions/workflows/bindgen-sdl_image.yml/badge.svg)](https://github.com/AerafalDev/Jade/actions/workflows/bindgen-sdl_image.yml)
+[![Bindgen SDL_mixer](https://github.com/AerafalDev/Jade/actions/workflows/bindgen-sdl_mixer.yml/badge.svg)](https://github.com/AerafalDev/Jade/actions/workflows/bindgen-sdl_mixer.yml)
 [![Bindgen SDL_ttf](https://github.com/AerafalDev/Jade/actions/workflows/bindgen-sdl_ttf.yml/badge.svg)](https://github.com/AerafalDev/Jade/actions/workflows/bindgen-sdl_ttf.yml)
 
 ## Jade
