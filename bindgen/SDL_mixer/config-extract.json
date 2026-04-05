@@ -12,7 +12,7 @@
     "../../vendor/SDL/include/SDL3/SDL_begin_code.h"
   ],
   "allowedNames": [
-    "^MIXER_.*$",
+    "^Mix_.*$",
     "^SDL_MIXER_.*$",
     "COMMENT: Function Pointers",
     ".* (.*)$"
