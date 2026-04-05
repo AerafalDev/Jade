@@ -6,6 +6,7 @@
 ---
 
 [![Build SDL](https://github.com/AerafalDev/Jade/actions/workflows/build-sdl.yml/badge.svg)](https://github.com/AerafalDev/Jade/actions/workflows/build-sdl.yml)
+[![Build SDL_image](https://github.com/AerafalDev/Jade/actions/workflows/build-sdl_image.yml/badge.svg)](https://github.com/AerafalDev/Jade/actions/workflows/build-sdl_image.yml)
 
 ## Jade
 
