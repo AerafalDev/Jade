@@ -156,5 +156,5 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: generated-cs
-          path: ./src/Jade/Interop/SDL/Image
+          path: ./src/Jade/Interop/SDL/TTF
           if-no-files-found: error
