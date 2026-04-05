@@ -1,0 +1,213 @@
+name: Build SDL_mixer
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'vendor/SDL_mixer/**'
+      - 'vendor/SDL/**'
+      - '.github/workflows/build-sdl_mixer.yml'
+
+jobs:
+  build-desktop:
+    name: SDL_mixer · ${{ matrix.rid }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - rid: win-x64
+            os: windows-2025
+            vs_arch: x64
+
+          - rid: win-arm64
+            os: windows-11-arm
+            vs_arch: ARM64
+
+          - rid: osx-x64
+            os: macos-15-intel
+            cmake_osx: -DCMAKE_OSX_ARCHITECTURES=x86_64 -DCMAKE_OSX_DEPLOYMENT_TARGET=12.0
+
+          - rid: osx-arm64
+            os: macos-latest
+            cmake_osx: -DCMAKE_OSX_ARCHITECTURES=arm64 -DCMAKE_OSX_DEPLOYMENT_TARGET=12.0
+
+          - rid: linux-x64
+            os: ubuntu-22.04
+
+          - rid: linux-arm64
+            os: ubuntu-22.04-arm
+
+    env:
+      BUILD_SDL: ${{ github.workspace }}/_build/SDL
+      BUILD_MIX: ${{ github.workspace }}/_build/SDL_mixer
+      INSTALL_DIR: ${{ github.workspace }}/_install
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      - name: Install Linux deps
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y \
+            build-essential cmake ninja-build pkg-config \
+            libasound2-dev libpulse-dev libjack-dev libsndio-dev \
+            libusb-1.0-0-dev libdbus-1-dev libudev-dev \
+            libx11-dev libxext-dev libxrandr-dev libxcursor-dev \
+            libxfixes-dev libxi-dev libxss-dev libxtst-dev libxrender-dev \
+            libwayland-dev wayland-protocols libxkbcommon-dev libdecor-0-dev \
+            libdrm-dev libgbm-dev \
+            libgl1-mesa-dev libegl1-mesa-dev libgles2-mesa-dev \
+            libpipewire-0.3-dev \
+            libogg-dev libvorbis-dev libmpg123-dev libopusfile-dev libflac-dev
+
+      - name: Configure SDL (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          cmake -S vendor/SDL -B $env:BUILD_SDL `
+            -G "Visual Studio 17 2022" -A "${{ matrix.vs_arch }}" `
+            -DCMAKE_BUILD_TYPE=Release `
+            -DCMAKE_INSTALL_PREFIX="$env:INSTALL_DIR" `
+            -DSDL_INSTALL=ON -DSDL_TESTS=OFF -DSDL_EXAMPLES=OFF
+
+      - name: Configure SDL (Unix)
+        if: runner.os != 'Windows'
+        run: |
+          cmake -S vendor/SDL -B "$BUILD_SDL" \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" \
+            -DSDL_INSTALL=ON -DSDL_TESTS=OFF -DSDL_EXAMPLES=OFF \
+            ${{ matrix.cmake_osx || '' }}
+
+      - name: Build & Install SDL
+        run: |
+          cmake --build "${{ env.BUILD_SDL }}" --config Release --parallel
+          cmake --install "${{ env.BUILD_SDL }}" --config Release
+
+      - name: Configure SDL_mixer (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          cmake -S vendor/SDL_mixer -B $env:BUILD_MIX `
+            -G "Visual Studio 17 2022" -A "${{ matrix.vs_arch }}" `
+            -DCMAKE_BUILD_TYPE=Release `
+            -DCMAKE_INSTALL_PREFIX="$env:INSTALL_DIR" `
+            -DCMAKE_PREFIX_PATH="$env:INSTALL_DIR" `
+            -DSDL3MIXER_VENDORED=ON `
+            -DSDLMIXER_MIDI_NATIVE=OFF `
+            -DSDLMIXER_EXAMPLES=OFF `
+            -DSDLMIXER_TESTS=OFF
+
+      - name: Configure SDL_mixer (Unix)
+        if: runner.os != 'Windows'
+        run: |
+          cmake -S vendor/SDL_mixer -B "$BUILD_MIX" \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" \
+            -DCMAKE_PREFIX_PATH="$INSTALL_DIR" \
+            -DSDL3MIXER_VENDORED=ON \
+            -DSDLMIXER_MIDI_NATIVE=OFF \
+            -DSDLMIXER_EXAMPLES=OFF \
+            -DSDLMIXER_TESTS=OFF \
+            ${{ matrix.cmake_osx || '' }}
+
+      - name: Build & Install SDL_mixer
+        run: |
+          cmake --build "${{ env.BUILD_MIX }}" --config Release --parallel
+          cmake --install "${{ env.BUILD_MIX }}" --config Release
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: SDL_mixer-${{ matrix.rid }}
+          path: ${{ env.INSTALL_DIR }}
+          retention-days: 90
+
+  build-wasm:
+    name: SDL_mixer · browser-wasm
+    runs-on: ubuntu-22.04
+
+    env:
+      BUILD_SDL: ${{ github.workspace }}/_build/SDL
+      BUILD_MIX: ${{ github.workspace }}/_build/SDL_mixer
+      INSTALL_DIR: ${{ github.workspace }}/_install
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      - name: Install deps
+        run: sudo apt-get update -y && sudo apt-get install -y cmake ninja-build python3
+
+      - name: Setup Emscripten
+        run: |
+          cd vendor/emsdk
+          ./emsdk install latest
+          ./emsdk activate latest
+
+      - name: Build SDL (Emscripten)
+        run: |
+          source vendor/emsdk/emsdk_env.sh
+
+          emcmake cmake -S vendor/SDL -B "$BUILD_SDL" \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DSDL_SHARED=OFF \
+            -DSDL_STATIC=ON \
+            -DSDL_INSTALL=ON \
+            -DSDL_TESTS=OFF \
+            -DSDL_EXAMPLES=OFF
+
+          cmake --build "$BUILD_SDL" --config Release --parallel
+          cmake --install "$BUILD_SDL" --config Release
+
+          echo "=== SDL install tree ==="
+          find "$INSTALL_DIR" -maxdepth 4 \
+            \( -name 'SDL3Config.cmake' -o -name 'sdl3-config.cmake' -o -name 'libSDL3*.a' \) \
+            | sort || true
+
+      - name: Build SDL_mixer (Emscripten)
+        run: |
+          source vendor/emsdk/emsdk_env.sh
+
+          SDL3_CMAKE_DIR="$(find "$INSTALL_DIR" -type f -name 'SDL3Config.cmake' -exec dirname {} \; | head -n 1)"
+
+          if [ -z "$SDL3_CMAKE_DIR" ]; then
+            echo "SDL3Config.cmake not found under $INSTALL_DIR"
+            echo "Installed files:"
+            find "$INSTALL_DIR" -maxdepth 4 -type f | sort || true
+            exit 1
+          fi
+
+          echo "Using SDL3_DIR=$SDL3_CMAKE_DIR"
+
+          emcmake cmake -S vendor/SDL_mixer -B "$BUILD_MIX" \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" \
+            -DCMAKE_PREFIX_PATH="$INSTALL_DIR" \
+            -DSDL3_DIR="$SDL3_CMAKE_DIR" \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DSDL3MIXER_VENDORED=ON \
+            -DSDLMIXER_MIDI_NATIVE=OFF \
+            -DSDLMIXER_GME=OFF \
+            -DSDLMIXER_WAVPACK=OFF \
+            -DSDLMIXER_MOD_XMP=OFF \
+            -DSDLMIXER_OPUS=OFF \
+            -DSDLMIXER_EXAMPLES=OFF \
+            -DSDLMIXER_TESTS=OFF
+
+          cmake --build "$BUILD_MIX" --config Release --parallel
+          cmake --install "$BUILD_MIX" --config Release
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: SDL_mixer-browser-wasm
+          path: ${{ env.INSTALL_DIR }}
+          retention-days: 90
