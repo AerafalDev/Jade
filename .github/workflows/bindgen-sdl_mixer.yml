@@ -1,4 +1,4 @@
-name: Bindgen SDL_ttf
+name: Bindgen SDL_mixer
 
 on:
   workflow_dispatch:
