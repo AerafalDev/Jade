@@ -145,31 +145,31 @@ internal static unsafe partial class SDL
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_BlitSurface")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    internal static partial CBool SDL_BlitSurface(SDL_Surface* src, SDL_Rect* srcrect, SDL_Surface* dst, SDL_Rect* dstrect);
+    internal static partial CBool SDL_BlitSurface(SDL_Surface* src, Rectangle* srcrect, SDL_Surface* dst, Rectangle* dstrect);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_BlitSurface9Grid")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    internal static partial CBool SDL_BlitSurface9Grid(SDL_Surface* src, SDL_Rect* srcrect, int left_width, int right_width, int top_height, int bottom_height, float scale, SDL_ScaleMode scaleMode, SDL_Surface* dst, SDL_Rect* dstrect);
+    internal static partial CBool SDL_BlitSurface9Grid(SDL_Surface* src, Rectangle* srcrect, int left_width, int right_width, int top_height, int bottom_height, float scale, SDL_ScaleMode scaleMode, SDL_Surface* dst, Rectangle* dstrect);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_BlitSurfaceScaled")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    internal static partial CBool SDL_BlitSurfaceScaled(SDL_Surface* src, SDL_Rect* srcrect, SDL_Surface* dst, SDL_Rect* dstrect, SDL_ScaleMode scaleMode);
+    internal static partial CBool SDL_BlitSurfaceScaled(SDL_Surface* src, Rectangle* srcrect, SDL_Surface* dst, Rectangle* dstrect, SDL_ScaleMode scaleMode);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_BlitSurfaceTiled")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    internal static partial CBool SDL_BlitSurfaceTiled(SDL_Surface* src, SDL_Rect* srcrect, SDL_Surface* dst, SDL_Rect* dstrect);
+    internal static partial CBool SDL_BlitSurfaceTiled(SDL_Surface* src, Rectangle* srcrect, SDL_Surface* dst, Rectangle* dstrect);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_BlitSurfaceTiledWithScale")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    internal static partial CBool SDL_BlitSurfaceTiledWithScale(SDL_Surface* src, SDL_Rect* srcrect, float scale, SDL_ScaleMode scaleMode, SDL_Surface* dst, SDL_Rect* dstrect);
+    internal static partial CBool SDL_BlitSurfaceTiledWithScale(SDL_Surface* src, Rectangle* srcrect, float scale, SDL_ScaleMode scaleMode, SDL_Surface* dst, Rectangle* dstrect);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_BlitSurfaceUnchecked")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    internal static partial CBool SDL_BlitSurfaceUnchecked(SDL_Surface* src, SDL_Rect* srcrect, SDL_Surface* dst, SDL_Rect* dstrect);
+    internal static partial CBool SDL_BlitSurfaceUnchecked(SDL_Surface* src, Rectangle* srcrect, SDL_Surface* dst, Rectangle* dstrect);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_BlitSurfaceUncheckedScaled")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    internal static partial CBool SDL_BlitSurfaceUncheckedScaled(SDL_Surface* src, SDL_Rect* srcrect, SDL_Surface* dst, SDL_Rect* dstrect, SDL_ScaleMode scaleMode);
+    internal static partial CBool SDL_BlitSurfaceUncheckedScaled(SDL_Surface* src, Rectangle* srcrect, SDL_Surface* dst, Rectangle* dstrect, SDL_ScaleMode scaleMode);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_CalculateGPUTextureFormatSize")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -641,11 +641,11 @@ internal static unsafe partial class SDL
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_FillSurfaceRect")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    internal static partial CBool SDL_FillSurfaceRect(SDL_Surface* dst, SDL_Rect* rect, uint color);
+    internal static partial CBool SDL_FillSurfaceRect(SDL_Surface* dst, Rectangle* rect, uint color);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_FillSurfaceRects")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    internal static partial CBool SDL_FillSurfaceRects(SDL_Surface* dst, SDL_Rect* rects, int count, uint color);
+    internal static partial CBool SDL_FillSurfaceRects(SDL_Surface* dst, Rectangle* rects, int count, uint color);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_FilterEvents")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -865,7 +865,7 @@ internal static unsafe partial class SDL
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_GetDisplayBounds")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    internal static partial CBool SDL_GetDisplayBounds(SDL_DisplayID displayID, SDL_Rect* rect);
+    internal static partial CBool SDL_GetDisplayBounds(SDL_DisplayID displayID, Rectangle* rect);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_GetDisplayContentScale")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -877,7 +877,7 @@ internal static unsafe partial class SDL
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_GetDisplayForRect")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    internal static partial SDL_DisplayID SDL_GetDisplayForRect(SDL_Rect* rect);
+    internal static partial SDL_DisplayID SDL_GetDisplayForRect(Rectangle* rect);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_GetDisplayForWindow")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -897,7 +897,7 @@ internal static unsafe partial class SDL
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_GetDisplayUsableBounds")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    internal static partial CBool SDL_GetDisplayUsableBounds(SDL_DisplayID displayID, SDL_Rect* rect);
+    internal static partial CBool SDL_GetDisplayUsableBounds(SDL_DisplayID displayID, Rectangle* rect);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_getenv")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -1557,7 +1557,7 @@ internal static unsafe partial class SDL
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_GetRectAndLineIntersection")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    internal static partial CBool SDL_GetRectAndLineIntersection(SDL_Rect* rect, int* X1, int* Y1, int* X2, int* Y2);
+    internal static partial CBool SDL_GetRectAndLineIntersection(Rectangle* rect, int* X1, int* Y1, int* X2, int* Y2);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_GetRectAndLineIntersectionFloat")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -1565,7 +1565,7 @@ internal static unsafe partial class SDL
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_GetRectEnclosingPoints")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    internal static partial CBool SDL_GetRectEnclosingPoints(SDL_Point* points, int count, SDL_Rect* clip, SDL_Rect* result);
+    internal static partial CBool SDL_GetRectEnclosingPoints(SDL_Point* points, int count, Rectangle* clip, Rectangle* result);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_GetRectEnclosingPointsFloat")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -1573,7 +1573,7 @@ internal static unsafe partial class SDL
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_GetRectIntersection")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    internal static partial CBool SDL_GetRectIntersection(SDL_Rect* A, SDL_Rect* B, SDL_Rect* result);
+    internal static partial CBool SDL_GetRectIntersection(Rectangle* A, Rectangle* B, Rectangle* result);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_GetRectIntersectionFloat")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -1581,7 +1581,7 @@ internal static unsafe partial class SDL
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_GetRectUnion")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    internal static partial CBool SDL_GetRectUnion(SDL_Rect* A, SDL_Rect* B, SDL_Rect* result);
+    internal static partial CBool SDL_GetRectUnion(Rectangle* A, Rectangle* B, Rectangle* result);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_GetRectUnionFloat")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -1593,7 +1593,7 @@ internal static unsafe partial class SDL
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_GetRenderClipRect")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    internal static partial CBool SDL_GetRenderClipRect(SDL_Renderer* renderer, SDL_Rect* rect);
+    internal static partial CBool SDL_GetRenderClipRect(SDL_Renderer* renderer, Rectangle* rect);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_GetRenderColorScale")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -1653,7 +1653,7 @@ internal static unsafe partial class SDL
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_GetRenderSafeArea")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    internal static partial CBool SDL_GetRenderSafeArea(SDL_Renderer* renderer, SDL_Rect* rect);
+    internal static partial CBool SDL_GetRenderSafeArea(SDL_Renderer* renderer, Rectangle* rect);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_GetRenderScale")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -1669,7 +1669,7 @@ internal static unsafe partial class SDL
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_GetRenderViewport")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    internal static partial CBool SDL_GetRenderViewport(SDL_Renderer* renderer, SDL_Rect* rect);
+    internal static partial CBool SDL_GetRenderViewport(SDL_Renderer* renderer, Rectangle* rect);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_GetRenderVSync")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -1777,7 +1777,7 @@ internal static unsafe partial class SDL
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_GetSurfaceClipRect")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    internal static partial CBool SDL_GetSurfaceClipRect(SDL_Surface* surface, SDL_Rect* rect);
+    internal static partial CBool SDL_GetSurfaceClipRect(SDL_Surface* surface, Rectangle* rect);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_GetSurfaceColorKey")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -1817,7 +1817,7 @@ internal static unsafe partial class SDL
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_GetTextInputArea")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    internal static partial CBool SDL_GetTextInputArea(SDL_Window* window, SDL_Rect* rect, int* cursor);
+    internal static partial CBool SDL_GetTextInputArea(SDL_Window* window, Rectangle* rect, int* cursor);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_GetTextureAlphaMod")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -1981,7 +1981,7 @@ internal static unsafe partial class SDL
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_GetWindowMouseRect")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    internal static partial SDL_Rect* SDL_GetWindowMouseRect(SDL_Window* window);
+    internal static partial Rectangle* SDL_GetWindowMouseRect(SDL_Window* window);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_GetWindowOpacity")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -2025,7 +2025,7 @@ internal static unsafe partial class SDL
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_GetWindowSafeArea")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    internal static partial CBool SDL_GetWindowSafeArea(SDL_Window* window, SDL_Rect* rect);
+    internal static partial CBool SDL_GetWindowSafeArea(SDL_Window* window, Rectangle* rect);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_GetWindowSize")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -2225,7 +2225,7 @@ internal static unsafe partial class SDL
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_HasRectIntersection")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    internal static partial CBool SDL_HasRectIntersection(SDL_Rect* A, SDL_Rect* B);
+    internal static partial CBool SDL_HasRectIntersection(Rectangle* A, Rectangle* B);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_HasRectIntersectionFloat")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -2477,11 +2477,11 @@ internal static unsafe partial class SDL
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_LockTexture")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    internal static partial CBool SDL_LockTexture(SDL_Texture* texture, SDL_Rect* rect, void** pixels, int* pitch);
+    internal static partial CBool SDL_LockTexture(SDL_Texture* texture, Rectangle* rect, void** pixels, int* pitch);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_LockTextureToSurface")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    internal static partial CBool SDL_LockTextureToSurface(SDL_Texture* texture, SDL_Rect* rect, SDL_Surface** surface);
+    internal static partial CBool SDL_LockTextureToSurface(SDL_Texture* texture, Rectangle* rect, SDL_Surface** surface);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_Log")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -2953,7 +2953,7 @@ internal static unsafe partial class SDL
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_RenderReadPixels")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    internal static partial SDL_Surface* SDL_RenderReadPixels(SDL_Renderer* renderer, SDL_Rect* rect);
+    internal static partial SDL_Surface* SDL_RenderReadPixels(SDL_Renderer* renderer, Rectangle* rect);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_RenderRect")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -3217,7 +3217,7 @@ internal static unsafe partial class SDL
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_SetGPUScissor")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    internal static partial void SDL_SetGPUScissor(SDL_GPURenderPass* render_pass, SDL_Rect* scissor);
+    internal static partial void SDL_SetGPUScissor(SDL_GPURenderPass* render_pass, Rectangle* scissor);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_SetGPUStencilReference")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -3337,7 +3337,7 @@ internal static unsafe partial class SDL
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_SetRenderClipRect")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    internal static partial CBool SDL_SetRenderClipRect(SDL_Renderer* renderer, SDL_Rect* rect);
+    internal static partial CBool SDL_SetRenderClipRect(SDL_Renderer* renderer, Rectangle* rect);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_SetRenderColorScale")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -3373,7 +3373,7 @@ internal static unsafe partial class SDL
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_SetRenderViewport")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    internal static partial CBool SDL_SetRenderViewport(SDL_Renderer* renderer, SDL_Rect* rect);
+    internal static partial CBool SDL_SetRenderViewport(SDL_Renderer* renderer, Rectangle* rect);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_SetRenderVSync")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -3397,7 +3397,7 @@ internal static unsafe partial class SDL
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_SetSurfaceClipRect")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    internal static partial CBool SDL_SetSurfaceClipRect(SDL_Surface* surface, SDL_Rect* rect);
+    internal static partial CBool SDL_SetSurfaceClipRect(SDL_Surface* surface, Rectangle* rect);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_SetSurfaceColorKey")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -3421,7 +3421,7 @@ internal static unsafe partial class SDL
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_SetTextInputArea")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    internal static partial CBool SDL_SetTextInputArea(SDL_Window* window, SDL_Rect* rect, int cursor);
+    internal static partial CBool SDL_SetTextInputArea(SDL_Window* window, Rectangle* rect, int cursor);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_SetTextureAlphaMod")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -3533,7 +3533,7 @@ internal static unsafe partial class SDL
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_SetWindowMouseRect")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    internal static partial CBool SDL_SetWindowMouseRect(SDL_Window* window, SDL_Rect* rect);
+    internal static partial CBool SDL_SetWindowMouseRect(SDL_Window* window, Rectangle* rect);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_SetWindowOpacity")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -3661,7 +3661,7 @@ internal static unsafe partial class SDL
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_StretchSurface")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    internal static partial CBool SDL_StretchSurface(SDL_Surface* src, SDL_Rect* srcrect, SDL_Surface* dst, SDL_Rect* dstrect, SDL_ScaleMode scaleMode);
+    internal static partial CBool SDL_StretchSurface(SDL_Surface* src, Rectangle* srcrect, SDL_Surface* dst, Rectangle* dstrect, SDL_ScaleMode scaleMode);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_StringToGUID")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -3765,7 +3765,7 @@ internal static unsafe partial class SDL
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_UpdateNVTexture")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    internal static partial CBool SDL_UpdateNVTexture(SDL_Texture* texture, SDL_Rect* rect, byte* Yplane, int Ypitch, byte* UVplane, int UVpitch);
+    internal static partial CBool SDL_UpdateNVTexture(SDL_Texture* texture, Rectangle* rect, byte* Yplane, int Ypitch, byte* UVplane, int UVpitch);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_UpdateSensors")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -3773,7 +3773,7 @@ internal static unsafe partial class SDL
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_UpdateTexture")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    internal static partial CBool SDL_UpdateTexture(SDL_Texture* texture, SDL_Rect* rect, void* pixels, int pitch);
+    internal static partial CBool SDL_UpdateTexture(SDL_Texture* texture, Rectangle* rect, void* pixels, int pitch);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_UpdateTrays")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -3785,11 +3785,11 @@ internal static unsafe partial class SDL
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_UpdateWindowSurfaceRects")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    internal static partial CBool SDL_UpdateWindowSurfaceRects(SDL_Window* window, SDL_Rect* rects, int numrects);
+    internal static partial CBool SDL_UpdateWindowSurfaceRects(SDL_Window* window, Rectangle* rects, int numrects);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_UpdateYUVTexture")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
-    internal static partial CBool SDL_UpdateYUVTexture(SDL_Texture* texture, SDL_Rect* rect, byte* Yplane, int Ypitch, byte* Uplane, int Upitch, byte* Vplane, int Vpitch);
+    internal static partial CBool SDL_UpdateYUVTexture(SDL_Texture* texture, Rectangle* rect, byte* Yplane, int Ypitch, byte* Uplane, int Upitch, byte* Vplane, int Vpitch);
 
     [LibraryImport(LibraryName, EntryPoint = "SDL_UploadToGPUBuffer")]
     [UnmanagedCallConv(CallConvs = new[] { typeof(CallConvCdecl) })]
@@ -8319,22 +8319,6 @@ internal static unsafe partial class SDL
 
         [FieldOffset(8)]
         internal ulong timestamp; // size = 8
-    }
-
-    [StructLayout(LayoutKind.Explicit, Size = 16, Pack = 4)]
-    internal partial struct SDL_Rect
-    {
-        [FieldOffset(0)]
-        internal int x; // size = 4
-
-        [FieldOffset(4)]
-        internal int y; // size = 4
-
-        [FieldOffset(8)]
-        internal int w; // size = 4
-
-        [FieldOffset(12)]
-        internal int h; // size = 4
     }
 
     [StructLayout(LayoutKind.Explicit, Size = 24, Pack = 8)]
