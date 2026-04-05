@@ -10,7 +10,6 @@
   },
   "ignoredIncludeFiles": [
     "../../vendor/SDL/include/SDL3/SDL_atomic.h",
-    "../../vendor/SDL/include/SDL3/SDL_audio.h",
     "../../vendor/SDL/include/SDL3/SDL_begin_code.h",
     "../../vendor/SDL/include/SDL3/SDL_bits.h",
     "../../vendor/SDL/include/SDL3/SDL_endian.h",
