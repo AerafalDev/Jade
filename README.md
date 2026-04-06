@@ -1,5 +1,6 @@
 [![CI](https://github.com/AerafalDev/Jade/actions/workflows/ci.yml/badge.svg)](https://github.com/AerafalDev/Jade/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/AerafalDev/Jade/actions/workflows/codeql.yml/badge.svg)](https://github.com/AerafalDev/Jade/actions/workflows/codeql.yml)
+[![Gh Pages](https://github.com/AerafalDev/Jade/actions/workflows/gh-pages.yml/badge.svg)](https://github.com/AerafalDev/Jade/actions/workflows/gh-pages.yml)
 
 ---
 
