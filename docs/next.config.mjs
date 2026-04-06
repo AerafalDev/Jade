@@ -13,4 +13,4 @@ const nextConfig = {
   },
 };
 
-export default withMDX(config);
+export default withMDX(nextConfig);
