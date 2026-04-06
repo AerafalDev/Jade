@@ -1,11 +1,16 @@
+const isProd = process.env.NODE_ENV === 'production';
 import { createMDX } from 'fumadocs-mdx/next';
 
 const withMDX = createMDX();
 
 /** @type {import('next').NextConfig} */
-const config = {
+const nextConfig = {
   output: 'export',
-  reactStrictMode: true,
+  basePath: isProd ? '/Jade' : '',
+  assetPrefix: isProd ? '/Jade/' : '',
+  images: {
+    unoptimized: true,
+  },
 };
 
 export default withMDX(config);
