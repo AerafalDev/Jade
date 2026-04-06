@@ -2,12 +2,6 @@ name: Build SDL_shadercross
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'vendor/SDL_shadercross/**'
-      - 'vendor/SDL/**'
-      - 'vendor/SPIRV-Cross/**'
-      - '.github/workflows/build-sdl_shadercross.yml'
 
 jobs:
   build:

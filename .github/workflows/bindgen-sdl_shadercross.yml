@@ -2,10 +2,6 @@ name: Bindgen SDL_shadercross
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'bindgen/SDL_shadercross/**'
-      - '.github/workflows/bindgen-sdl_shadercross.yml'
 
 env:
   DOTNET_VERSION: 10.0.x

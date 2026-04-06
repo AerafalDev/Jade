@@ -2,10 +2,6 @@ name: Bindgen SDL
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'bindgen/SDL/**'
-      - '.github/workflows/bindgen-sdl.yml'
 
 env:
   DOTNET_VERSION: 10.0.x

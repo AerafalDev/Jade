@@ -2,11 +2,6 @@ name: Build SDL_image
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'vendor/SDL_image/**'
-      - 'vendor/SDL/**'
-      - '.github/workflows/build-sdl_image.yml'
 
 jobs:
   build-desktop:

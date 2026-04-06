@@ -2,10 +2,6 @@ name: Bindgen SDL_mixer
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'bindgen/SDL_mixer/**'
-      - '.github/workflows/bindgen-sdl_mixer.yml'
 
 env:
   DOTNET_VERSION: 10.0.x

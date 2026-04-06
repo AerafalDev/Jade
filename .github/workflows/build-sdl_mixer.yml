@@ -2,11 +2,6 @@ name: Build SDL_mixer
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'vendor/SDL_mixer/**'
-      - 'vendor/SDL/**'
-      - '.github/workflows/build-sdl_mixer.yml'
 
 jobs:
   build-desktop:

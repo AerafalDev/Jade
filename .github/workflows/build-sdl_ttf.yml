@@ -2,11 +2,6 @@ name: Build SDL_ttf
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'vendor/SDL_ttf/**'
-      - 'vendor/SDL/**'
-      - '.github/workflows/build-sdl_ttf.yml'
 
 jobs:
   build-desktop:

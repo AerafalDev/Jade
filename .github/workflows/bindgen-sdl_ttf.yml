@@ -2,10 +2,6 @@ name: Bindgen SDL_ttf
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'bindgen/SDL_ttf/**'
-      - '.github/workflows/bindgen-sdl_ttf.yml'
 
 env:
   DOTNET_VERSION: 10.0.x
