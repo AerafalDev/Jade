@@ -34,7 +34,7 @@ jobs:
         run: sudo apt-get install -y gcc-aarch64-linux-gnu
 
       - name: Cache .NET tools
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.dotnet/tools
           key: dotnet-tools-${{ runner.os }}-${{ env.DOTNET_VERSION }}
@@ -70,7 +70,7 @@ jobs:
           submodules: false
 
       - name: Cache .NET tools
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.dotnet/tools
           key: dotnet-tools-${{ runner.os }}-${{ env.DOTNET_VERSION }}
@@ -124,7 +124,7 @@ jobs:
           submodules: false
 
       - name: Cache .NET tools
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.dotnet/tools
           key: dotnet-tools-${{ runner.os }}-${{ env.DOTNET_VERSION }}
