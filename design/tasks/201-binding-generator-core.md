@@ -16,6 +16,13 @@ slice of SDL3. CI fails when regeneration produces a diff.
   runtimes; find which packages provide them for the dev RIDs (Linux, Windows, macOS).
 - `dawn.json` support comes in 202. Design the model so a second reader plugs in without changing
   the emitter.
+- From 001: Jade.Interop generates XML docs and CS1591 is an error, so every generated public member
+  needs `///` docs. Rule: use the upstream doc when there is one. Otherwise emit a short summary
+  naming the native symbol (for example `<c>SDL_CreateWindow</c>`), which also maps .NET names back
+  to the C docs. Do not suppress CS1591 for generated files.
+- From 001: the generator needs ClangSharp through `#:package`, which makes it the first script to
+  settle how `#:package` combines with Central Package Management (ADR-0008), unless 101 already did.
+  Record the outcome. Scripts also run AOT and trim analyzers by default (see CLAUDE.md).
 
 ## Scope
 

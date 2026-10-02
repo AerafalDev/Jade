@@ -14,6 +14,10 @@ Dependabot are configured as in the other AerafalDev repositories.
   and their conventions for SDK setup from `global.json`, caching and concurrency).
 - Native workflows come in 103, the release pipeline in 107. This task only covers the managed
   solution.
+- From 001: `global.json` pins SDK `10.0.401` with `rollForward: latestMinor`. Check, in the
+  `actions/setup-dotnet` docs or sources, which SDK it installs from that file; do not assume.
+- From 001: SourceLink warns when the repository has no remote. CI checkouts have one; a warning in
+  CI is a real problem, not this one.
 
 ## Scope
 

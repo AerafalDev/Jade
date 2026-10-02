@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Jade.Interop/Jade.Interop.csproj" />
+    <Project Path="src/Jade/Jade.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Jade.Interop.Tests/Jade.Interop.Tests.csproj" />
+  </Folder>
+</Solution>
