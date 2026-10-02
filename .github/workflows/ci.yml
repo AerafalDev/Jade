@@ -52,3 +52,43 @@ jobs:
           name: test-results-${{ matrix.os }}
           path: TestResults/**/*.trx
           if-no-files-found: ignore
+
+  bindings:
+    name: Bindings are up to date
+    runs-on: ubuntu-latest
+
+    env:
+      MSBuildTreatWarningsAsErrors: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: global.json
+
+      - name: Setup xmake
+        uses: xmake-io/github-action-setup-xmake@v1
+        with:
+          xmake-version: '3.1.1'
+
+      # The generator reads the headers the native build stages. SDL3 and miniaudio build here in minutes;
+      # once Dawn makes this too slow (102), take the staged inputs from the native workflow (103) instead.
+      - name: Build jade_native
+        run: dotnet scripts/build-native.cs
+
+      - name: Regenerate bindings
+        run: dotnet scripts/generate-bindings.cs
+
+      # Intent-to-add makes newly generated files show up in the diff too.
+      - name: Fail if the committed bindings differ
+        run: git add --intent-to-add src/Jade.Interop/Generated tests/Jade.Interop.Tests/Generated && git diff --exit-code
+
+      # Runs the tests that need jade_native, which the build job skips. The dummy video driver lets the
+      # window test run without a display.
+      - name: Test against jade_native
+        run: dotnet test -c Release
+        env:
+          SDL_VIDEO_DRIVER: dummy
