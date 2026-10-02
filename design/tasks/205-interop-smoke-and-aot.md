@@ -13,6 +13,9 @@ desktop RID it can.
 
 - 106 created a package consumer test with a hand-written import. This task replaces it with real
   generated bindings and widens it.
+- From 201: the bindings use `[LibraryImport]`. Their NativeAOT publish has not been tried yet.
+- From 102: on headless CI, Dawn's Null backend answers adapter requests. Use it for the WebGPU
+  part of the smoke run, and report whether device creation works on it.
 
 ## Scope
 

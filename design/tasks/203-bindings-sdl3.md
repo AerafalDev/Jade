@@ -17,6 +17,23 @@ every exclusion.
   export list is upstream's `SDL_dynapi.sym`) and fail at runtime with "not built with ... support".
   Exclude those headers (`SDL_audio.h`, `SDL_gpu.h`, `SDL_render.h` and whatever depends only on
   them) from the bindings. The export cross-check lists them as exported but intentionally unbound.
+- ADR-0012: C `bool` maps to C# `bool`. 201 emitted `byte`. Change the mapping in the generator and
+  regenerate. Then update CLAUDE.md's interop bullet if it still says otherwise.
+- From 201, gaps to close in the generator or `Sdl3Config.cs`:
+  - constants (`SDL_PROP_*` strings, `SDL_WINDOWPOS_*`, version macros);
+  - `[InlineArray]` for arrays of structs, anonymous members and bit-fields;
+  - callback typedef docs, which are dropped today;
+  - `const char*` returns, still `byte*` (a span or UTF-8 helper?);
+  - ID typedefs (`SDL_WindowID`, ...), which are plain `uint` (typed IDs?);
+  - enum member casing that needs word splitting for `SDL_PixelFormat` (`Index1lsb`,
+    `Rgba8888`, ...);
+  - `SDL_Event`, bound so far with only `type`, `common`, `display`, `window`, `quit` and padding,
+    which needs every member;
+  - Emscripten-only functions such as `SDL_SetWindowFillDocument`, which are not marked.
+- From 201: on macOS, SDL requires window calls on the main thread, and xunit runs tests on other
+  threads, so window tests are skipped there. Keep that explicit.
+- From 201: headers that include more system headers may need more stubs in
+  `scripts/generate-bindings/sysroot/`. The parse fails with the missing header's name.
 
 ## Scope
 

@@ -87,6 +87,7 @@ artifacts/native/<host-rid>/include/**  +  metadata/dawn.json   (staged by the n
         │  scripts/generate-bindings.cs  (libclang per target triple + dawn.json reader → model → emitter)
         ▼
 src/Jade.Interop/Generated/<Lib>/*.g.cs   (committed; CI regenerates and fails on diff)
+tests/Jade.Interop.Tests/Generated/<Lib>/  (generated layout tests: C# size and offsets vs C, per RID)
 ```
 
 Reading inputs from the native build's staging area guarantees that bindings and binaries come

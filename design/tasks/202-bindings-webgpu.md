@@ -17,6 +17,18 @@ from the metadata.
   extensions, callbacks (callback info structs with modes), string views, and features or tags that
   distinguish Dawn-only (native) from emdawnwebgpu (web) availability. Read its schema in the Dawn
   sources rather than assuming.
+- From 201: build the `dawn.json` reader into the existing `LibraryModel`. `VarianceCheck` and
+  `LayoutTestEmitter` already accept any list of `TargetModel`. Per-library config follows
+  `Sdl3Config.cs`. `WGPUBool` is a `uint32_t` typedef: decide between `uint` and a 4-byte wrapper
+  (ADR-0012), and justify the choice.
+- From 102: the staged `include/webgpu/webgpu.h` only includes `dawn/webgpu.h`, and
+  `metadata/dawn.json` is byte-identical to the tag's `src/dawn/dawn.json`. Exclude
+  `emscripten_webgpu_get_device`, which is declared but defined only in Emscripten builds. This
+  build is WGSL-only: `WGPUShaderSourceSPIRV` exists in the header and is reported by
+  `wgpuHasInstanceFeature`, but a SPIR-V module fails validation ("SPIR-V is disallowed."). Bind
+  it, and document that it is rejected at runtime.
+- From 102: the Null backend answers adapter requests without a GPU (adapter type `Unknown`), so
+  the device test can run on headless CI with it. Device creation on Null has not been tried.
 
 ## Scope
 

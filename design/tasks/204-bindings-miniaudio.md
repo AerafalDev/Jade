@@ -44,6 +44,9 @@ Generator run, build, variance report, test run.
 
 ## Pitfalls
 
+- From 201: miniaudio's headers include more system headers than SDL3's slice. Add the missing
+  stubs to `scripts/generate-bindings/sysroot/`; the parse names the missing header.
+- ADR-0012: `ma_bool8` and `ma_bool32` are integer typedefs, not C `bool`. Keep their width.
 - Callbacks from miniaudio's audio thread run outside managed context unless entered through
   `UnmanagedCallersOnly`. Document the constraints in the generated XML docs.
 

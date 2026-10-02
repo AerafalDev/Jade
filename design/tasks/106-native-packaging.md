@@ -57,6 +57,9 @@ Pack commands, the nupkg listing, consumer run output, NativeAOT publish and run
   `src/Jade.Native/build/`. `buildTransitive/` is not affected. Check new folders with
   `git check-ignore -v`.
 - The package test project must set `<IsTestProject>true</IsTestProject>` (see CLAUDE.md).
+- From 201: `tests/Jade.Interop.Tests` copies the staged library from `artifacts/native/<rid>/` to
+  run its native tests. Once `Jade.Native` exists, decide whether that test project consumes it
+  instead, and record the choice.
 
 ## Outcome
 
