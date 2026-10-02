@@ -1,0 +1,53 @@
+# Build output
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Bb]uild/
+bld/
+[Oo]ut/
+artifacts/
+nupkg/
+project.lock.json
+msbuild.log
+msbuild.err
+msbuild.wrn
+*.binlog
+
+# Test results
+TestResults/
+*.trx
+
+# IDEs and editors
+.vs/
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.swp
+*.*~
+
+# OS and tooling
+.DS_Store
+*.pyc
+
+# Documentation site
+node_modules/
+docs/.next/
+docs/out/
+
+#### Repository-specific ####
+
+# xmake: project cache, default build directory, generated IDE projects and compile databases
+.xmake/
+native/build/
+native/vs20*/
+native/vsxmake20*/
+compile_commands.json
+.cache/

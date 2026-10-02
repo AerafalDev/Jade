@@ -104,11 +104,14 @@ artifacts/                build outputs (gitignored): native/<rid>/, packages/
 
 ## Commands
 
-None exist yet. Each task adds its commands here, with their exact syntax, when it lands.
+Run from the repository root. Each task adds its commands here, with their exact syntax, when it
+lands.
 
 | Purpose | Command | Introduced by |
 | --- | --- | --- |
-| Build and test the managed solution | to be fixed by 001 | 001 |
+| Build the managed solution | `dotnet build -c Release` | 001 |
+| Run the tests (Microsoft.Testing.Platform) | `dotnet test -c Release` | 001 |
+| Pack the `Jade` package | `dotnet pack -c Release -o artifacts/packages` | 001 |
 | Build jade_native for one RID | `dotnet scripts/build-native.cs --rid <rid>` (planned) | 101 |
 | Regenerate bindings | `dotnet scripts/generate-bindings/generate-bindings.cs` (planned) | 201 |
 

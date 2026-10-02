@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageId>Jade</PackageId>
+    <Description>Cross-platform game engine for .NET. Early development: work currently targets the interop layer over Dawn (WebGPU), SDL3 and miniaudio.</Description>
+    <PackageTags>gamedev;game-engine;webgpu;dawn;sdl3;miniaudio;interop;native-aot</PackageTags>
+    <IsAotCompatible>true</IsAotCompatible>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);AddInteropToPackage</TargetsForTfmSpecificBuildOutput>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Private: Jade.Interop is not a package of its own, so it must not show up as a nuspec dependency.
+         AddInteropToPackage ships its assembly inside this package instead (ADR-0002). -->
+    <ProjectReference Include="..\Jade.Interop\Jade.Interop.csproj" PrivateAssets="all" />
+  </ItemGroup>
+
+  <!-- Pack runs this target outside of a build, where reference resolution skips related files;
+       BuildOnlySettings turns that back on so Jade.Interop's .xml and .pdb come along with its .dll. -->
+  <Target Name="AddInteropToPackage" DependsOnTargets="BuildOnlySettings;ResolveReferences">
+    <ItemGroup>
+      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths->WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))" />
+    </ItemGroup>
+  </Target>
+
+</Project>

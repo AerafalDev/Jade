@@ -8,7 +8,7 @@ back before the orchestrator writes their brief.
 
 | Task | Title | Depends on | Status |
 | --- | --- | --- | --- |
-| [001](tasks/001-repository-scaffold.md) | Repository scaffold and managed solution | - | todo |
+| [001](tasks/001-repository-scaffold.md) | Repository scaffold and managed solution | - | done |
 | [002](tasks/002-ci-baseline.md) | CI baseline: build, test, CodeQL, Dependabot | 001 | todo |
 
 ## Phase 1: Native library
