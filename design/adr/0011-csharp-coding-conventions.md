@@ -61,3 +61,19 @@ errors. Rules without an analyzer, such as field placement, are checked in revie
   `.editorconfig` and CLAUDE.md.
 - The other AerafalDev repositories may adopt the same `.editorconfig` later. That is the user's
   call, outside this repository.
+
+## Notes from task 003 (2026-10-03)
+
+These notes record how the rules are enforced. They do not change the decision.
+
+- Roslyn never runs `IDE0003` (`this.`) or `IDE0049` (BCL type names) on build, and no build
+  analyzer checks `using` order. CI's style job catches them with `dotnet format
+  --verify-no-changes`, generated bindings and scripts included.
+- "Accessibility always explicit" excludes interface members, as in dotnet/runtime. They stay
+  implicitly public.
+- Naming rules cannot see `[ThreadStatic]`, so a `t_` field is rejected by the `s_` rule. It needs
+  a justified `IDE1006` suppression. The repository has none today.
+- The blank-line rules (`IDE2000`, `IDE2001`) are experimental in Roslyn. If one is removed, it
+  stops being enforced without notice. Check them when bumping the SDK.
+- In `src/Jade.Interop/Generated/`, CA1401, CA1069, CA1711 and CA1716 are off because they
+  contradict ADR-0006 (public P/Invokes, C enum aliases, C names). CS1591 is off in tests.

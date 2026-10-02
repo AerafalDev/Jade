@@ -63,6 +63,9 @@ run on an old glibc baseline. `scripts/fetch-native.cs` lets managed-only work u
   CMake packages with it. Dawn needs `X11/Xlib-xcb.h`, from `libx11-xcb-dev` on Ubuntu. Reuse the
   job's step that prints and uploads `installdir.failed/logs/*.txt` on failure: xmake prints only
   the first 17 lines of a failed package install.
+- From 003: scripts are compiled and style-checked only on `ubuntu-latest` (the `style` job), but
+  they must run on Windows and macOS too (ADR-0008). The native jobs of this task run
+  `build-native.cs` on every desktop OS. Also compile every script there.
 - Docs-only PRs (only `design/**` or `*.md`) currently run the whole CI, Dawn included. Skip the
   native and bindings jobs for them (`paths` filters, or a changes check if required checks must
   still report), so orchestrator PRs do not cost 18 minutes.

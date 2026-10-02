@@ -79,7 +79,8 @@ artifacts/                build outputs (gitignored): native/<rid>/, packages/
   always explicit and first; `using` outside the namespace, `System` first. `.editorconfig` makes
   them build errors, except `this.` (IDE0003), BCL type names (IDE0049) and `using` order, which
   only `dotnet format` reports; CI's style job runs it (see **Commands**). Naming rules cannot see
-  `[ThreadStatic]`, so a `t_` field needs a justified `IDE1006` suppression.
+  `[ThreadStatic]`, so a `t_` field needs a justified `IDE1006` suppression. Before committing
+  C#, run the style check commands from **Commands**: the build alone misses those three rules.
 
 ### Interop
 

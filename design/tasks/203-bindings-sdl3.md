@@ -41,6 +41,9 @@ every exclusion.
   events union, callbacks, `SDL_IOStream`, error handling, and out parameters across the API.
 - The events union: an exact-layout C# representation, checked by the layout-variance report on
   every triple.
+- From 003: enum members whose C name, once the prefix is stripped, starts with a digit
+  (`SDL_SCANCODE_1` → `_1`) fail CA1707. Give them a config-driven name (for example `Digit1`),
+  applied the same way to every such enum, and list the mapping in the Outcome.
 - Inline functions and macros that users need (for example `SDL_BUTTON_MASK`): hand-written helpers
   in `src/Jade.Interop/Sdl3/`, kept to a minimum and listed in the Outcome.
 - Export cross-check like 202: every exported `SDL_*` is bound or excluded with a reason.
