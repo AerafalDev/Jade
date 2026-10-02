@@ -147,6 +147,30 @@ cache directories, and stripped and unstripped size of the library.
   - Scripts: `dotnet build scripts/build-native.cs` and `dotnet build scripts/smoke-native.cs`:
     0 warnings, 0 errors. `dotnet build -c Release`: 0 warnings, 0 errors. `dotnet test -c Release`:
     total 1, failed 0.
+  - CI failure after `main` (with the bindings job of 201) was merged into the PR: in run
+    37067903605, `Bindings are up to date` failed on `install dawn 20260930.214659 .. failed` after
+    about 11 minutes. xmake prints only the first 17 lines of a failed package build, here the
+    first Ninja steps, and keeps the rest in `installdir.failed/logs/install.txt` in the package
+    cache. Reproduced in Docker: `ubuntu:24.04` with the job's apt list plus what the runner image
+    already has (clang 18.1.3, curl, CA certificates), xmake 3.1.1 built from its tag as
+    `setup-xmake` does, `--cpuset-cpus 0-3 --memory 16g --memory-swap 16g`, and the `xmake f`
+    command of `build-native.cs`. Error: `src/dawn/common/xlib_with_undefs.h:44:10: fatal error:
+    'X11/Xlib-xcb.h' file not found`, compiling `src/dawn/native/Instance.cpp`. Dawn includes
+    `X11/Xlib.h` and `X11/Xlib-xcb.h`; on Ubuntu the second comes from `libx11-xcb-dev` (`dpkg -S`),
+    which `libx11-dev` does not pull in, while Arch's `libx11` ships both. Neither the compiler
+    (clang 18 builds all of Dawn once the header is there, below), memory (highest 5 s sample
+    825 MiB) nor the generator was the cause.
+  - Fix: `libx11-xcb-dev` in the bindings job's apt list, and the Dawn recipe names both headers
+    next to `DAWN_USE_X11`. With it, the same container installs SDL3, miniaudio and Dawn and links
+    jade_native from an empty package cache in 297 s, with the same exports (1270 `SDL_*`, 1179
+    `ma_*`, 276 `wgpu*`, 1 `jade_*`) and NEEDED entries as above (11,613,968 bytes with clang 18
+    and libstdc++ 13). xmake sized the job count from the host's 16 CPUs (`-j 18`), not the cpuset;
+    the 4-vCPU runner gets 6.
+  - The bindings job now prints the last 200 lines of every `installdir.failed/logs/*.txt` and
+    uploads them as the `xmake-install-logs` artifact when a step fails. Checked by running the
+    step's script on the cache of a failed, non-verbose container build: the `fatal error` line is
+    in the printed tail (688-line log). `actionlint` passes; shellcheck is not installed here, so
+    the step's shell was not linted.
 - Decisions taken (and ADRs added):
   - Version: `v20260930.214659`, still the latest release on 2026-10-02 (`gh release list -R
     google/dawn`). The tag is commit `6fa6adb71bdcbf7bb17fe21fb1702bf43e89078f`; the release notes
@@ -214,8 +238,11 @@ cache directories, and stripped and unstripped size of the library.
     Ninja's header dependencies of an equivalent manual build, plus the copyright lines of the Dawn
     files it lists: no SPIRV-Tools, jinja2 or markupsafe code, and none of Dawn's other in-tree
     third-party code is used.
-  - CMake generator: xmake's default, which on Linux without `CMAKE_GENERATOR` is Unix Makefiles
-    run with `-j` (`modules/package/tools/cmake.lua`). Ninja is not a prerequisite.
+  - CMake generator: Ninja. xmake 3.1.1 defaults the `compatibility.version` policy to 3.0, which
+    turns `package.cmake_generator.ninja` on (`core/project/project.lua`), so every CMake package
+    builds with Ninja: the CI log and a verbose build in Docker show it (`CMake generator......:
+    Ninja`). Ninja is therefore a native build prerequisite. This corrects an earlier version of
+    this Outcome, which said Unix Makefiles from reading `modules/package/tools/cmake.lua` alone.
   - `JADE_NATIVE_ABI_VERSION` stays 1: adding exports breaks nothing generated against it.
   - No ADR added.
 - Deviations from the brief:
@@ -227,8 +254,9 @@ cache directories, and stripped and unstripped size of the library.
     the miniaudio block, which sat on the last text line, is now on its own line.
   - `Stage.cs` now refuses a fragment that would stage `metadata/versions.json`.
 - Follow-ups:
-  - 103: CI needs Python 3 and git for Dawn (its code generator and the dependency fetch), and the
-    X11 headers. The package cache (`XMAKE_PKG_CACHEDIR`) holds `dawn-deps/` (123 MB); old Dawn
+  - 103: CI needs Python 3 and git for Dawn (its code generator and the dependency fetch), Ninja
+    (see the generator decision), and `X11/Xlib.h` plus `X11/Xlib-xcb.h` (`libx11-dev` and
+    `libx11-xcb-dev` on Ubuntu; the bindings job installs them). The package cache (`XMAKE_PKG_CACHEDIR`) holds `dawn-deps/` (123 MB); old Dawn
     commits accumulate there, as old installs do. The peak (746 MB release, 3.4 GB debug) is mostly
     Dawn's 491 MB source tree; xmake's `download.lua` passes `url_excludes` to the extractor, not
     investigated as a way to skip Dawn's tests and CTS. `GLIBC_2.44` here comes from this host's
