@@ -142,9 +142,20 @@ one function, one enum, one struct and one handle method.
     `extern partial` carrying `[DllImport("jade_native", EntryPoint = ..., ExactSpelling = true)]`: with
     blittable signatures there is nothing to marshal.
   - `actionlint .github/workflows/ci.yml`: no findings.
-  - Not verified: the `bindings` CI job has not run (it needs a push); that ubuntu-latest has `clang` and
-    `cmake` on PATH for `--toolchain=clang` is assumed from the runner image, not checked. The generator ran
-    only on linux-x64; Windows and macOS hosts are untested. NativeAOT publish of the bindings is task 205.
+  - CI, PR #5. The first run (37065550341, commit `7a24d3a`, image ubuntu-24.04 20260927.320.1) failed in
+    `Build jade_native`: SDL's CMake configure stopped with `SDL could not find X11 or Wayland development
+    libraries on your system` (`cmake/macros.cmake:415`). In an `ubuntu:24.04` container with SDL 3.4.16
+    (SHA-256 matching the recipe) and the recipe's CMake options, a configure with only cmake, clang, make
+    and pkg-config failed with the same message; after installing the README-linux list (below), every
+    package installed and the configure passed with `Video drivers: dummy kmsdrm(dynamic) offscreen
+    wayland(dynamic) x11(dynamic)`, `X11 libraries: xcursor xdbe xfixes xinput2 xrandr xscrnsaver xshape
+    xsync xtest`, and libdecor, IBus, D-Bus and udev on. With the install step (commit `2bc3488`),
+    run 37066475460 passed every check. Its `bindings` job: apt install 17 s, `build-native.cs` 42 s,
+    regeneration `0 file(s) changed`, the diff check clean, and `dotnet test -c Release`
+    `total: 19, failed: 0, succeeded: 19, skipped: 0` (the window test ran on the dummy video driver).
+    `actionlint` passed on the new step.
+  - Not verified: the generator ran only on linux-x64 hosts; Windows and macOS hosts are untested. NativeAOT
+    publish of the bindings is task 205.
   - Excerpts:
 
     ```csharp
@@ -274,6 +285,12 @@ one function, one enum, one struct and one handle method.
     `git add --intent-to-add` on both `Generated` folders then `git diff --exit-code` (so new files count),
     and `dotnet test -c Release` with `SDL_VIDEO_DRIVER=dummy`. Building SDL3 and miniaudio in the job is
     cheap enough until Dawn arrives.
+  - The `bindings` job first installs SDL3's Linux build dependencies exactly as `docs/README-linux.md`
+    (section "Build Dependencies") of the pinned `release-3.4.16` lists them for Ubuntu: the 18.04 command
+    plus the 22.04+ additions, 36 packages (the workflow list was diffed against the README). The whole list
+    rather than a subset for the enabled features, so CI builds the same backends as a complete developer
+    setup (IBus included, which is missing on this machine). It adds `python3`, not on SDL's list, because
+    PR #6 (Dawn, task 102) needs Python 3 along with git, X11 and Wayland, which the list already covers. The step is one `apt-get update && apt-get install -y --no-install-recommends ...` command.
   - At the user's request, separate commit: `src/Jade.Interop/AssemblyInfo.cs` moved to
     `src/Jade.Interop/Properties/AssemblyInfo.cs` (the only `AssemblyInfo.cs` in the repository).
   - No ADR added.
@@ -294,6 +311,8 @@ one function, one enum, one struct and one handle method.
     everywhere, so it is not marked.
   - 202: build the `dawn.json` reader into `LibraryModel`; `VarianceCheck` and `LayoutTestEmitter` take any
     list of `TargetModel`. `WGPUBool` is a `uint32_t` typedef, so it maps to `uint` without the `Bool` setting.
+  - 103: the old-glibc container needs the same README-linux list (its distribution's variant) for SDL to
+    keep every video backend; the `bindings` job's step is the Ubuntu reference.
   - 102/103: once Dawn makes `build-native.cs` too slow for the `bindings` job, download the staged inputs
     from `native.yml` (`scripts/fetch-native.cs`). Run the generator on Windows and macOS hosts.
   - 204 and later libraries: system headers they include may need more stubs in `sysroot/`; the parse fails
