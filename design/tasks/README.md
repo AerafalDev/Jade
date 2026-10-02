@@ -2,7 +2,10 @@
 
 Each brief is the complete assignment for one Claude Code session. Start a session with:
 
-> Implement `design/tasks/NNN-....md`. Follow CLAUDE.md.
+> Implémente `design/tasks/NNN-....md` en suivant CLAUDE.md.
+
+The kickoff is in French on purpose: the session answers in the language it is addressed in, and
+the user works in French. Repository content stays in English.
 
 Rules (see [ADR-0009](../adr/0009-task-workflow.md) and [CLAUDE.md](../../CLAUDE.md)):
 

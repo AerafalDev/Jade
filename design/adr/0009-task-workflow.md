@@ -27,6 +27,7 @@ beyond the repository.
 
 ## Consequences
 
-- A task session can start from a clean context with: "Implement design/tasks/NNN-....md".
+- A task session can start from a clean context with: « Implémente design/tasks/NNN-....md en
+  suivant CLAUDE.md. »
 - The Outcome sections are the orchestrator's input for writing the next briefs. They must state
   facts with commands and results, not impressions.

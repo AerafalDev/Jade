@@ -10,6 +10,8 @@ Status (2026-10-02): design only. Nothing builds yet. Task 001 creates the solut
 
 ## How work is organized
 
+- Talk to the user in French. Everything committed (code, comments, docs, commit messages) stays
+  in English.
 - **Orchestrator sessions** make decisions, write ADRs, task briefs and the roadmap. They do not
   implement.
 - **Task sessions** implement exactly one brief from `design/tasks/`. Before writing code:
