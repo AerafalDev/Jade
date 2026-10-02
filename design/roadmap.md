@@ -38,6 +38,9 @@ Notes for the 107 brief, collected from earlier Outcomes:
   generates from `wayland-protocols/*.xml` (MIT-style). Add them before the first release (101).
 - Publishing uses nuget.org trusted publishing (OIDC); the `nuget-trusted-publishing` skill covers
   the setup.
+- `THIRD-PARTY-NOTICES.md` claims every license is reproduced in full, but the entry for the
+  statically linked GCC runtime (GPLv3 with the GCC Runtime Library Exception 3.1) is not. Fix the
+  wording or the entry (102).
 
 ## Phase 2: Bindings
 

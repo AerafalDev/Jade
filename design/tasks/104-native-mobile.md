@@ -63,6 +63,9 @@ the export list. For iOS: whatever CI provides once pushed.
   export lists may need per-platform filtering. `JNI_OnLoad` must be exported for `SDLActivity`.
 - From 101: a static `jade_native` (iOS, if chosen) needs the upstream archives merged into it.
   `native/rules/bundle.lua` raises for non-shared targets today.
+- From 102: `-static-libstdc++ -static-libgcc` and `--gc-sections` are added on Linux only.
+  Android's static libc++ comes from the NDK toolchain: check it with `llvm-readelf -d`. Dawn on
+  Android needs its own options (Vulkan, maybe OpenGL ES) and dependency list.
 
 ## Outcome
 

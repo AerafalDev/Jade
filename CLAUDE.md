@@ -84,9 +84,10 @@ artifacts/                build outputs (gitignored): native/<rid>/, packages/
 - Never hand-edit generated files (`*.g.cs` under `src/Jade.Interop/Generated/` and
   `tests/Jade.Interop.Tests/Generated/`). Change the generator or its per-library config
   (`scripts/generate-bindings/<Lib>Config.cs`), then regenerate. CI fails when regeneration yields a diff.
-- `DisableRuntimeMarshalling`: every native signature is blittable. No `string`, `bool`, delegates
-  or `SetLastError`. UTF-8 goes through `byte*` and `ReadOnlySpan<byte>`, C booleans through
-  explicitly sized types, callbacks through `delegate* unmanaged[Cdecl]`.
+- `DisableRuntimeMarshalling`: every native signature is blittable. No `string`, delegates or
+  `SetLastError`. UTF-8 goes through `byte*` and `ReadOnlySpan<byte>`, callbacks through
+  `delegate* unmanaged[Cdecl]`. C `bool` (1 byte) maps to C# `bool`; boolean typedefs over wider
+  integers (`WGPUBool`, `ma_bool32`) keep their width (ADR-0012).
 - Every import names the single library `jade_native`.
 - Friendly overloads (`Span`, `ReadOnlySpan`, `in`, `ref`, `out`) never allocate on the GC heap.
   Anything that allocates or owns resources belongs to the engine layer, not the interop layer.
@@ -104,6 +105,10 @@ artifacts/                build outputs (gitignored): native/<rid>/, packages/
   exports (exact names or `*` patterns), staged headers, licenses and upstream metadata; then one
   line in the `bundled` list of `native/xmake.lua`. The `jade.bundle` rule
   (`native/rules/bundle.lua`) does whole-archive linking and export control.
+- Native build prerequisites: xmake 3.1.1, CMake, Ninja (xmake 3.1.1 builds every CMake package
+  with it), clang, Python 3 and git. On Ubuntu, the system packages are the apt list of the
+  `bindings` job in `.github/workflows/ci.yml`. It includes `libx11-xcb-dev`, which `libx11-dev`
+  does not pull in.
 - Only `scripts/build-native.cs` runs xmake. It passes `--require=y` because xmake does not notice
   edits to recipes under `native/packages/` on its own.
 - A C++-only library gets a thin C shim in `native/shims/`, with functions named `jade_<lib>_*`.

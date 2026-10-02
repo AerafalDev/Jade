@@ -55,6 +55,8 @@ scripts and generated bindings. All existing C# in the repository conforms, and 
   entry point in `ci.yml` (check how `dotnet build <file>.cs` behaves on SDK 10.0.401), and adding
   `dotnet format --verify-no-changes` if it catches something the build does not. Justify either
   way.
+- Remove `src/Jade.Interop/Generated/.gitkeep`, which is redundant now that 201 generates files
+  there.
 - CLAUDE.md: replace nothing. Add one bullet under **Conventions → .NET** pointing to ADR-0011,
   with the five rules sessions break most often (`this.`, `_`, `s_`, explicit accessibility,
   file-scoped namespaces).

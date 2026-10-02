@@ -37,6 +37,39 @@ run on an old glibc baseline. `scripts/fetch-native.cs` lets managed-only work u
     `scripts/smoke-native.cs`.
 - From 002: the CI job sets `MSBuildTreatWarningsAsErrors`; reuse it. setup-dotnet's NuGet cache
   needs lock files (`RestorePackagesWithLockFile`) or a `cache-dependency-path`.
+- From 102:
+  - Dawn's build needs Python 3 and git (its code generator and dependency fetch) and the X11 and
+    Wayland headers (`DAWN_USE_X11`, `DAWN_USE_WAYLAND`).
+  - `XMAKE_PKG_CACHEDIR` holds `dawn-deps/<commit>/` (123 MB). Old Dawn commits pile up there, as
+    old installs do.
+  - Disk peak: 746 MB in release and 3.4 GB in debug, mostly Dawn's 491 MB source tree.
+    xmake's `url_excludes` might skip Dawn's tests and CTS on extraction; not investigated.
+  - The host build reaches `GLIBC_2.44` (`cosh`/`sinh` from libm) and
+    `_dl_find_object@GLIBC_2.35` (host static libgcc). The baseline container fixes both.
+  - macOS has no `--gc-sections` equivalent wired yet (`-dead_strip`, unverified).
+  - Windows needs its own Dawn options (D3D12, maybe D3D11, DXC?) and dependency list.
+  - The library embeds 250 absolute build paths (`__FILE__` in Dawn and Abseil, under the builder's
+    home directory), which also makes its size depend on the cache location. Fix with
+    `-ffile-prefix-map` (or `-fmacro-prefix-map`) on the packages, and check with `strings`.
+  - Changing `XMAKE_PKG_INSTALLDIR` between runs breaks `--require=y` until `native/.xmake` is
+    deleted. CI sets it on every run, so only local switching is affected; document it.
+- From 201: the `bindings` job in `ci.yml` builds jade_native itself, which now includes Dawn.
+  Switch it to the staged inputs from `native.yml` (through `scripts/fetch-native.cs` or the
+  artifact action). Also run the generator on Windows and macOS hosts once. It cannot run on Intel
+  macOS: libclang's native package has no osx-x64 build since 18.1.3.
+- From 102 (CI fix): the `bindings` job now builds Dawn on every run, about 18 minutes, cold, on
+  `ubuntu-latest`. Cutting that is the first deliverable of this task: an xmake package cache, or
+  the `bindings` job consuming `native.yml` artifacts. Ninja is a prerequisite: xmake 3.1.1 builds
+  CMake packages with it. Dawn needs `X11/Xlib-xcb.h`, from `libx11-xcb-dev` on Ubuntu. Reuse the
+  job's step that prints and uploads `installdir.failed/logs/*.txt` on failure: xmake prints only
+  the first 17 lines of a failed package install.
+- Docs-only PRs (only `design/**` or `*.md`) currently run the whole CI, Dawn included. Skip the
+  native and bindings jobs for them (`paths` filters, or a changes check if required checks must
+  still report), so orchestrator PRs do not cost 18 minutes.
+- From 201: the `bindings` job installs SDL3's Linux build dependencies (the list in SDL's
+  `docs/README-linux.md` at the pinned tag) plus `python3`. The old-glibc container needs the
+  equivalent packages for its distribution, or SDL loses video backends. Keep one source for that
+  list instead of two copies drifting apart.
 
 ## Scope
 

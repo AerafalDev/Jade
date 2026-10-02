@@ -1,6 +1,6 @@
 # ADR-0006: Shape of the public bindings
 
-- Status: Accepted
+- Status: Accepted; the C `bool` mapping is amended by ADR-0012
 - Date: 2026-10-02
 
 ## Context
