@@ -1,6 +1,6 @@
 # ADR-0010: A script's entry point sits next to its helper folder
 
-- Status: Proposed
+- Status: Accepted (2026-10-02, matches the user's original instruction for `scripts/`)
 - Date: 2026-10-02
 - Supersedes: the multi-file layout in ADR-0008 (the rest of ADR-0008 stands)
 

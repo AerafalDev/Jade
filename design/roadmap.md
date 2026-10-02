@@ -26,6 +26,15 @@ back before the orchestrator writes their brief.
 104 and 105 can run in parallel. 106 starts with desktop RIDs; 104 and 105 each extend its
 `buildTransitive` targets for their platforms.
 
+Notes for the 107 brief, collected from earlier Outcomes:
+
+- `actions/checkout` is shallow by default, so MinVer computes `0.0.0-alpha.0`. Use
+  `fetch-depth: 0`, as HostFxrSharp's `publish.yml` does (002).
+- `THIRD-PARTY-NOTICES.md` lacks the notices of the 24 Wayland protocol glue files that SDL
+  generates from `wayland-protocols/*.xml` (MIT-style). Add them before the first release (101).
+- Publishing uses nuget.org trusted publishing (OIDC); the `nuget-trusted-publishing` skill covers
+  the setup.
+
 ## Phase 2: Bindings
 
 | Task | Title | Depends on | Status |

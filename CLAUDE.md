@@ -106,7 +106,7 @@ artifacts/                build outputs (gitignored): native/<rid>/, packages/
 
 - Automation is C# file-based apps. The entry point is always `scripts/<name>.cs` (kebab-case).
   A multi-file script keeps its helper files in a kebab-case folder next to it, `scripts/<name>/`,
-  pulled in with `#:include <name>/<Type>.cs` (ADR-0010, Proposed; supersedes the layout in
+  pulled in with `#:include <name>/<Type>.cs` (ADR-0010, which supersedes the layout in
   ADR-0008).
 - One class, struct, record or enum per file, named after the type. The entry point holds only
   top-level statements.
@@ -138,8 +138,10 @@ lands.
 ## Environment facts (verified 2026-10-02)
 
 - Local machine: CachyOS, .NET SDK 10.0.401, xmake 3.1.1, CMake 4.4.3, clang, gcc, zig 0.16. No
-  emsdk, no Android NDK, no `wasm-tools`/`android`/`ios` workloads. Do not install system packages;
-  give the user the command instead.
+  emsdk, no Android NDK or SDK, no `wasm-tools`/`android`/`ios` workloads. Docker 29.8.2 works
+  without sudo. OpenJDK 25 is installed. actionlint 1.7.12 is installed, shellcheck is not. Do not install system packages; give the user the command instead.
+- CI sets `MSBuildTreatWarningsAsErrors=true`, so MSBuild task warnings (SourceLink, MinVer, SDK)
+  that a local build only reports fail the job.
 - GitHub arm64 runners (`windows-11-arm`, `ubuntu-24.04-arm`) are free only on public repositories
   and have about 14 GB of disk.
 - nuget.org rejects packages over 250 MB.

@@ -13,8 +13,10 @@ every exclusion.
 
 - 201 delivered the generator core and a vertical slice of SDL3. This task extends the config to
   every public header staged by 101.
-- Subsystems disabled at build time (101 Outcome) have no exports. Exclude them from bindings, or
-  report them, but never bind missing symbols.
+- 101 disabled SDL's audio, GPU and render subsystems, but their functions are still exported (the
+  export list is upstream's `SDL_dynapi.sym`) and fail at runtime with "not built with ... support".
+  Exclude those headers (`SDL_audio.h`, `SDL_gpu.h`, `SDL_render.h` and whatever depends only on
+  them) from the bindings. The export cross-check lists them as exported but intentionally unbound.
 
 ## Scope
 

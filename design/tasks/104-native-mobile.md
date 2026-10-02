@@ -58,6 +58,11 @@ the export list. For iOS: whatever CI provides once pushed.
 - xmake's simulator selection for `iphoneos` could not be checked from Linux; check it on macOS.
 - Dawn on Android requires a minimum API level for Vulkan. Align it with what .NET for Android
   supports.
+- From 101: the NDK links with lld, which rejects a version script naming an undefined symbol
+  (checked with LLD 23.1.1; GNU ld accepts it). Every exported name must exist on Android, so the
+  export lists may need per-platform filtering. `JNI_OnLoad` must be exported for `SDLActivity`.
+- From 101: a static `jade_native` (iOS, if chosen) needs the upstream archives merged into it.
+  `native/rules/bundle.lua` raises for non-shared targets today.
 
 ## Outcome
 

@@ -115,6 +115,7 @@ library size, stripped and unstripped.
     `error: unmatched checksum, current hash(7322236c) != original hash(7322236c)` and the script
     exited 1. The recipe was restored.
   - Smoke check, `dotnet scripts/smoke-native.cs`, exit code 0:
+
     ```text
     Loaded artifacts/native/linux-x64/lib/libjade_native.so
     SDL_GetVersion: 3.4.16 (SDL-release-3.4.16-0-gfa2c02bb6) ok
@@ -122,6 +123,7 @@ library size, stripped and unstripped.
     jade_native_abi_version: 1 ok
     SDL video drivers: wayland, x11, kmsdrm, offscreen, dummy, evdev
     ```
+
     It compares the versions with `metadata/versions.json` and the ABI with
     `include/jade/jade_native.h`. Exit code 2 for a non-host RID (checked with `--rid win-x64`).
   - Sizes: the staged release library is stripped (xmake's `build.release.strip` default): 3,466,784

@@ -13,9 +13,9 @@ ADRs with status `Proposed`; the orchestrator, together with the user, accepts o
 | [0005](0005-in-house-binding-generator.md) | In-house binding generator in `scripts/generate-bindings/` | Accepted |
 | [0006](0006-binding-api-shape.md) | .NET-style public bindings, methods on handles, span overloads | Accepted |
 | [0007](0007-target-platforms.md) | Desktop, mobile and browser RIDs | Accepted |
-| [0008](0008-scripts-as-file-based-apps.md) | Scripts are C# file-based apps | Accepted |
+| [0008](0008-scripts-as-file-based-apps.md) | Scripts are C# file-based apps | Accepted, multi-file layout superseded by 0010 |
 | [0009](0009-task-workflow.md) | Orchestrator, one session per task, briefs in `design/tasks/` | Accepted |
-| [0010](0010-script-entry-point-next-to-its-folder.md) | Script entry point `scripts/<name>.cs`, helpers in `scripts/<name>/`, one type per file | Proposed |
+| [0010](0010-script-entry-point-next-to-its-folder.md) | Script entry point `scripts/<name>.cs`, helpers in `scripts/<name>/`, one type per file | Accepted |
 
 ## Template
 

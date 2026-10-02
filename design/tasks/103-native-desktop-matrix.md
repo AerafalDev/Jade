@@ -15,14 +15,34 @@ run on an old glibc baseline. `scripts/fetch-native.cs` lets managed-only work u
   public repositories, with about 14 GB of disk. 102 reports Dawn's disk footprint.
 - Check the current macOS runner labels. If no Intel macOS runner is available, cross-compile
   osx-x64 from an arm64 runner, or build a universal library and split it. Choose and document.
-- The repository is not on GitHub yet. Pushing is the user's call: write the workflow and verify
-  everything locally that can be verified.
+- The repository is public at github.com/AerafalDev/Jade. Pushing is still the user's call: write
+  the workflow and verify everything locally that can be verified.
+- From 101:
+  - The `jade.bundle` rule (`native/rules/bundle.lua`) raises on Windows: its export control still
+    has to be written. A `.def` file has no wildcards, so generate it before linking from the
+    archives' external symbols matched against the export list.
+  - The macOS path (`-force_load`, `-exported_symbols_list`) is written but untested.
+  - The package recipes' `on_install` accepts `linux` only. Other platforms need their own system
+    libraries and frameworks.
+  - `--runtimes` is not passed yet; ADR-0003 asks for `/MT` on Windows.
+  - Release builds are stripped. Keeping debug symbols needs a non-stripping release
+    (`build.release.strip`) plus a separate strip step.
+  - xmake caches packages under `~/.xmake` (or `XMAKE_PKG_INSTALLDIR`/`XMAKE_PKG_CACHEDIR`). Old
+    installs pile up there, one per recipe hash.
+  - The host build needs `GLIBC_2.43` and pulls `__isoc23_*` symbols from the host headers: the
+    old-glibc container is what fixes this.
+  - SDL silently drops a video backend whose development headers are missing. The container needs
+    X11 (with Xext, Xcursor, Xi, Xfixes, Xrandr, Xss), Wayland, xkbcommon, libdecor, EGL, D-Bus and
+    udev headers (ibus optional). Assert the backends with the video driver line printed by
+    `scripts/smoke-native.cs`.
+- From 002: the CI job sets `MSBuildTreatWarningsAsErrors`; reuse it. setup-dotnet's NuGet cache
+  needs lock files (`RestorePackagesWithLockFile`) or a `cache-dependency-path`.
 
 ## Scope
 
 - `.github/workflows/native.yml`: matrix over the six desktop RIDs, each running
   `dotnet scripts/build-native.cs --rid <rid>`. The cache key hashes `native/**`,
-  `scripts/build-native.cs` and toolchain identifiers. The workflow uploads
+  `scripts/build-native.cs`, `scripts/build-native/**` and toolchain identifiers. The workflow uploads
   `artifacts/native/<rid>/` and keeps debug symbols as a separate artifact.
 - Linux glibc baseline: choose the oldest glibc on which Dawn builds with a reasonable toolchain,
   inside a container. Write a new ADR (Proposed) with the choice and the reason. Verify it with the
@@ -50,7 +70,7 @@ run on an old glibc baseline. `scripts/fetch-native.cs` lets managed-only work u
 ## Verification
 
 Run the local container build for linux-x64, then `objdump -T ... | grep -o 'GLIBC_[0-9.]*' | sort -V
-| tail -1`, then the smoke check from 101/102. Run `actionlint` if the user installs it.
+| tail -1`, then `dotnet scripts/smoke-native.cs`. Run `actionlint` (installed) on the workflow.
 
 ## Pitfalls
 

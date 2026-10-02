@@ -18,6 +18,13 @@ through an xmake package that drives Dawn's CMake. It exports the `wgpu*` C API.
   hence the source build.
 - Linux backend: Vulkan. Later RIDs: D3D12 (and possibly D3D11) on Windows, Metal on Apple, Vulkan
   on Android.
+- From 101: bundling goes through the package's `on_install` calling `native/modules/stage.lua`
+  (exports such as `wgpu*`, headers, licenses), plus one line in the `bundled` list of
+  `native/xmake.lua`. `scripts/build-native/Stage.cs` does not merge a `jade/metadata/` folder yet;
+  add that so `metadata/dawn.json` reaches `artifacts/native/<rid>/metadata/`. Static libstdc++
+  needs its own link flags: the current `--as-needed` only drops unused runtimes.
+- From 101: SDL's exports come from upstream's exact list (`SDL_dynapi.sym`) because an `SDL_*`
+  pattern leaked internals. Check whether Dawn has an equivalent list before relying on `wgpu*`.
 
 ## Scope
 

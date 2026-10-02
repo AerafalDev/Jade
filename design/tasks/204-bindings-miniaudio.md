@@ -13,7 +13,8 @@ miniaudio's public API, as compiled into jade_native, generated into
 - miniaudio is a single header with implementation behind `MINIAUDIO_IMPLEMENTATION`. Its public
   structs (`ma_device`, `ma_context`, ...) embed backend-specific members under `#ifdef`, so their
   size differs between platforms. This is the main test of 201's layout-variance handling.
-- The defines used in 101 change which APIs and members exist. Parse with exactly those defines.
+- The defines used in 101 change which APIs and members exist. Parse with exactly those defines;
+  they are recorded in `artifacts/native/<rid>/metadata/versions.json`.
 
 ## Scope
 

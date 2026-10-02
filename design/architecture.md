@@ -45,12 +45,15 @@ See [ADR-0002](adr/0002-package-layout.md). Every package ships the same MinVer 
 .github/workflows/      ci.yml, codeql.yml (002), native.yml (103), release pipeline (107)
 design/                 this folder
 native/
-  xmake.lua             jade_native target
+  xmake.lua             jade_native target and the `bundled` list
   packages/<l>/<name>/  local xmake package repository, our pinned definitions
+  modules/stage.lua     called by each package's on_install: exports, headers, licenses, metadata
+  rules/bundle.lua      whole-archive linking and export control per platform
   shims/                C shims for C++-only libraries and jade_* helpers
-scripts/
+scripts/                entry point scripts/<name>.cs, helpers in scripts/<name>/ (ADR-0010)
   build-native.cs       RID → xmake mapping, stages outputs into artifacts/native/<rid>/
-  generate-bindings/    the binding generator (entry: generate-bindings.cs)
+  smoke-native.cs       loads the staged library and checks versions and exports
+  generate-bindings.cs  the binding generator (201)
   fetch-native.cs       downloads CI-built natives for managed-only work (103)
 src/Jade/  src/Jade.Interop/  src/Jade.Native/
 tests/                  Jade.Interop.Tests, package and AOT smoke tests
@@ -69,7 +72,7 @@ native/packages (pinned sources + sha256)
         │  xmake, per RID, on that RID's native OS (CI matrix, 103/104/105)
         ▼
 artifacts/native/<rid>/lib/(lib)jade_native.*      + include/ + metadata/
-        │  CI artifact, cached by hash of native/** and scripts/build-native.cs
+        │  CI artifact, cached by hash of native/**, scripts/build-native.cs and scripts/build-native/**
         ▼
 src/Jade.Native (pack) → Jade.Native.nupkg
 ```
@@ -81,7 +84,7 @@ CI artifacts for the other RIDs (`scripts/fetch-native.cs`).
 
 ```text
 artifacts/native/<host-rid>/include/**  +  metadata/dawn.json   (staged by the native build)
-        │  scripts/generate-bindings  (libclang per target triple + dawn.json reader → model → emitter)
+        │  scripts/generate-bindings.cs  (libclang per target triple + dawn.json reader → model → emitter)
         ▼
 src/Jade.Interop/Generated/<Lib>/*.g.cs   (committed; CI regenerates and fails on diff)
 ```
