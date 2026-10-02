@@ -12,8 +12,8 @@ internal unsafe ref struct NulTerminatedUtf8
     /// <summary>The stack buffer size generated overloads allocate: strings shorter than this are not copied to the heap.</summary>
     internal const int StackLength = 256;
 
-    private readonly ReadOnlySpan<byte> terminated;
-    private byte* native;
+    private readonly ReadOnlySpan<byte> _terminated;
+    private byte* _native;
 
     /// <summary>Initializes the view.</summary>
     /// <param name="value">The UTF-8 string, with or without its terminator.</param>
@@ -22,7 +22,7 @@ internal unsafe ref struct NulTerminatedUtf8
     {
         if (!value.IsEmpty && value[^1] == 0)
         {
-            terminated = value;
+            _terminated = value;
             return;
         }
 
@@ -33,26 +33,26 @@ internal unsafe ref struct NulTerminatedUtf8
         }
         else
         {
-            native = (byte*)NativeMemory.Alloc((nuint)value.Length + 1);
-            copy = new Span<byte>(native, value.Length + 1);
+            _native = (byte*)NativeMemory.Alloc((nuint)value.Length + 1);
+            copy = new Span<byte>(_native, value.Length + 1);
         }
 
         value.CopyTo(copy);
         copy[^1] = 0;
-        terminated = copy;
+        _terminated = copy;
     }
 
     /// <summary>Returns a reference to the first byte, for <c>fixed</c>.</summary>
     /// <returns>The first byte of the terminated string.</returns>
-    public readonly ref readonly byte GetPinnableReference() => ref MemoryMarshal.GetReference(terminated);
+    public readonly ref readonly byte GetPinnableReference() => ref MemoryMarshal.GetReference(_terminated);
 
     /// <summary>Releases the native copy, if one was made.</summary>
     public void Dispose()
     {
-        if (native is not null)
+        if (_native is not null)
         {
-            NativeMemory.Free(native);
-            native = null;
+            NativeMemory.Free(_native);
+            _native = null;
         }
     }
 }

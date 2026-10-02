@@ -76,8 +76,10 @@ artifacts/                build outputs (gitignored): native/<rid>/, packages/
 - Coding conventions: ADR-0011, the dotnet/runtime style with `var` everywhere and file-scoped
   namespaces. They apply to src, tests, scripts and generated code. The rules broken most often:
   no `this.`; private and internal fields `_camelCase`, static ones `s_camelCase`; accessibility
-  always explicit and first; `using` outside the namespace, `System` first. Until task 003 lands,
-  `.editorconfig` does not enforce them yet: follow them anyway.
+  always explicit and first; `using` outside the namespace, `System` first. `.editorconfig` makes
+  them build errors, except `this.` (IDE0003), BCL type names (IDE0049) and `using` order, which
+  only `dotnet format` reports; CI's style job runs it (see **Commands**). Naming rules cannot see
+  `[ThreadStatic]`, so a `t_` field needs a justified `IDE1006` suppression.
 
 ### Interop
 
@@ -151,6 +153,9 @@ lands.
 | Build jade_native and stage it into `artifacts/native/<rid>/` (RID defaults to the host) | `dotnet scripts/build-native.cs [--rid <rid>] [--config release\|debug]` | 101 |
 | Smoke-check the staged jade_native of the host RID | `dotnet scripts/smoke-native.cs [--rid <rid>]` | 101 |
 | Regenerate bindings from the staged headers (RID defaults to the host) | `dotnet scripts/generate-bindings.cs [--rid <rid>]` | 201 |
+| Build a script without running it | `dotnet build scripts/<name>.cs` | 003 |
+| Check the code style of the solution, generated bindings included, as CI does | `dotnet format --verify-no-changes --include-generated --exclude '**/obj/**'` | 003 |
+| Check the code style of a script as CI does (delete `artifacts/format/<name>` first: convert refuses an existing folder) | `dotnet project convert scripts/<name>.cs --output artifacts/format/<name>`, then `dotnet format artifacts/format/<name>/<name>.csproj --verify-no-changes` | 003 |
 
 ## Environment facts (verified 2026-10-02)
 

@@ -4,7 +4,6 @@
     <!-- Packed into the Jade package instead of being published on its own (ADR-0002). -->
     <IsPackable>false</IsPackable>
     <IsAotCompatible>true</IsAotCompatible>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
 </Project>

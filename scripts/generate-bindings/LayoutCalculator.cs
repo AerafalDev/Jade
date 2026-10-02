@@ -6,12 +6,12 @@
 /// </summary>
 internal sealed class LayoutCalculator
 {
-    private readonly Dictionary<string, EnumModel> enums;
-    private readonly Dictionary<string, StructModel> structs;
-    private readonly HashSet<string> handles;
-    private readonly Dictionary<string, RecordLayout> cache = new(StringComparer.Ordinal);
-    private readonly int pointerSize;
-    private readonly int longSize;
+    private readonly Dictionary<string, EnumModel> _enums;
+    private readonly Dictionary<string, StructModel> _structs;
+    private readonly HashSet<string> _handles;
+    private readonly Dictionary<string, RecordLayout> _cache = new(StringComparer.Ordinal);
+    private readonly int _pointerSize;
+    private readonly int _longSize;
 
     /// <summary>Creates a calculator for one target.</summary>
     /// <param name="model">The model whose named types fields refer to.</param>
@@ -19,11 +19,11 @@ internal sealed class LayoutCalculator
     /// <param name="longSize">The target's C <c>long</c> size.</param>
     public LayoutCalculator(LibraryModel model, int pointerSize, int longSize)
     {
-        enums = model.Enums.ToDictionary(e => e.NativeName, StringComparer.Ordinal);
-        structs = model.Structs.ToDictionary(s => s.NativeName, StringComparer.Ordinal);
-        handles = model.Handles.Select(h => h.NativeName).ToHashSet(StringComparer.Ordinal);
-        this.pointerSize = pointerSize;
-        this.longSize = longSize;
+        _enums = model.Enums.ToDictionary(e => e.NativeName, StringComparer.Ordinal);
+        _structs = model.Structs.ToDictionary(s => s.NativeName, StringComparer.Ordinal);
+        _handles = model.Handles.Select(h => h.NativeName).ToHashSet(StringComparer.Ordinal);
+        _pointerSize = pointerSize;
+        _longSize = longSize;
     }
 
     /// <summary>Returns the size of a scalar on a target; it is also its alignment.</summary>
@@ -47,7 +47,7 @@ internal sealed class LayoutCalculator
     /// <returns>Its layout on this calculator's target.</returns>
     public RecordLayout Layout(StructModel model)
     {
-        if (cache.TryGetValue(model.NativeName, out var cached))
+        if (_cache.TryGetValue(model.NativeName, out var cached))
         {
             return cached;
         }
@@ -75,7 +75,7 @@ internal sealed class LayoutCalculator
         }
 
         var layout = new RecordLayout(Align(size, alignment), alignment, offsets);
-        cache[model.NativeName] = layout;
+        _cache[model.NativeName] = layout;
         return layout;
     }
 
@@ -84,24 +84,24 @@ internal sealed class LayoutCalculator
         switch (type.Kind)
         {
             case TypeKind.Primitive:
-                var size = SizeOf(type.Primitive, pointerSize, longSize);
+                var size = SizeOf(type.Primitive, _pointerSize, _longSize);
                 return (size, size);
 
             case TypeKind.Pointer or TypeKind.FunctionPointer:
-                return (pointerSize, pointerSize);
+                return (_pointerSize, _pointerSize);
 
             case TypeKind.FixedArray:
                 var (elementSize, elementAlignment) = SizeAndAlignment(type.Element!);
                 return (elementSize * type.Length, elementAlignment);
 
-            case TypeKind.Named when handles.Contains(type.Name!):
-                return (pointerSize, pointerSize);
+            case TypeKind.Named when _handles.Contains(type.Name!):
+                return (_pointerSize, _pointerSize);
 
-            case TypeKind.Named when enums.TryGetValue(type.Name!, out var enumModel):
-                var enumSize = SizeOf(enumModel.Underlying, pointerSize, longSize);
+            case TypeKind.Named when _enums.TryGetValue(type.Name!, out var enumModel):
+                var enumSize = SizeOf(enumModel.Underlying, _pointerSize, _longSize);
                 return (enumSize, enumSize);
 
-            case TypeKind.Named when structs.TryGetValue(type.Name!, out var structModel) && !structModel.IsOpaque:
+            case TypeKind.Named when _structs.TryGetValue(type.Name!, out var structModel) && !structModel.IsOpaque:
                 var layout = Layout(structModel);
                 return (layout.Size, layout.Alignment);
 

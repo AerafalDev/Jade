@@ -9,7 +9,7 @@ using Type = ClangSharp.Type;
 /// </summary>
 internal sealed class TypeMapper
 {
-    private static readonly Dictionary<string, PrimitiveType> FixedWidthTypedefs = new(StringComparer.Ordinal)
+    private static readonly Dictionary<string, PrimitiveType> s_fixedWidthTypedefs = new(StringComparer.Ordinal)
     {
         ["int8_t"] = PrimitiveType.SByte,
         ["uint8_t"] = PrimitiveType.Byte,
@@ -25,12 +25,12 @@ internal sealed class TypeMapper
         ["size_t"] = PrimitiveType.NUInt,
     };
 
-    private readonly LibraryConfig config;
-    private readonly Func<Decl, bool> isLibraryDeclaration;
-    private readonly int pointerSize;
-    private readonly int longSize;
-    private readonly List<TypeReference> references = [];
-    private readonly HashSet<string> referenced = new(StringComparer.Ordinal);
+    private readonly LibraryConfig _config;
+    private readonly Func<Decl, bool> _isLibraryDeclaration;
+    private readonly int _pointerSize;
+    private readonly int _longSize;
+    private readonly List<TypeReference> _references = [];
+    private readonly HashSet<string> _referenced = new(StringComparer.Ordinal);
 
     /// <summary>Creates a mapper for one target.</summary>
     /// <param name="config">The library config: handles, opaque structs, flag typedefs, bool type.</param>
@@ -39,14 +39,14 @@ internal sealed class TypeMapper
     /// <param name="longSize">The target's <c>sizeof(long)</c>.</param>
     public TypeMapper(LibraryConfig config, Func<Decl, bool> isLibraryDeclaration, int pointerSize, int longSize)
     {
-        this.config = config;
-        this.isLibraryDeclaration = isLibraryDeclaration;
-        this.pointerSize = pointerSize;
-        this.longSize = longSize;
+        _config = config;
+        _isLibraryDeclaration = isLibraryDeclaration;
+        _pointerSize = pointerSize;
+        _longSize = longSize;
     }
 
     /// <summary>Gets the declarations used so far, in first-use order. Mapping can append while a caller iterates by index.</summary>
-    public IReadOnlyList<TypeReference> References => references;
+    public IReadOnlyList<TypeReference> References => _references;
 
     /// <summary>Returns the name a record or enum is known by: its tag, or the typedef naming an anonymous one.</summary>
     /// <param name="declaration">The record or enum.</param>
@@ -83,7 +83,7 @@ internal sealed class TypeMapper
 
                 case TypedefType typedef:
                     var name = typedef.Decl.Name;
-                    if (FixedWidthTypedefs.TryGetValue(name, out var fixedWidth))
+                    if (s_fixedWidthTypedefs.TryGetValue(name, out var fixedWidth))
                     {
                         return TypeRef.Of(fixedWidth);
                     }
@@ -93,7 +93,7 @@ internal sealed class TypeMapper
                         throw new MappingException("va_list differs on every ABI and cannot be built from C#");
                     }
 
-                    if (config.FlagMacros.ContainsKey(name))
+                    if (_config.FlagMacros.ContainsKey(name))
                     {
                         Reference(name, ReferenceKind.FlagMacros);
                         return TypeRef.Named(name);
@@ -157,7 +157,7 @@ internal sealed class TypeMapper
                     current = paren.InnerType;
                     break;
 
-                case TypedefType typedef when !FixedWidthTypedefs.ContainsKey(typedef.Decl.Name):
+                case TypedefType typedef when !s_fixedWidthTypedefs.ContainsKey(typedef.Decl.Name):
                     current = typedef.Decl.UnderlyingType;
                     break;
 
@@ -184,7 +184,7 @@ internal sealed class TypeMapper
         if (bare is RecordType record)
         {
             var name = NameOf(record.Decl);
-            if (config.Handles.Contains(name))
+            if (_config.Handles.Contains(name))
             {
                 RequireLibrary(record.Decl, name);
                 Reference(name, ReferenceKind.Handle);
@@ -222,7 +222,7 @@ internal sealed class TypeMapper
     private TypeRef MapRecord(RecordDecl declaration)
     {
         var name = NameOf(declaration);
-        if (config.Handles.Contains(name))
+        if (_config.Handles.Contains(name))
         {
             throw new MappingException($"{name} is a handle, only valid behind a pointer");
         }
@@ -242,7 +242,7 @@ internal sealed class TypeMapper
         var primitive = builtin.Kind switch
         {
             CXTypeKind.CXType_Void => (PrimitiveType?)null,
-            CXTypeKind.CXType_Bool => config.Bool,
+            CXTypeKind.CXType_Bool => _config.Bool,
             CXTypeKind.CXType_Char_S or CXTypeKind.CXType_Char_U => PrimitiveType.Char,
             CXTypeKind.CXType_SChar => PrimitiveType.SByte,
             CXTypeKind.CXType_UChar => PrimitiveType.Byte,
@@ -267,7 +267,7 @@ internal sealed class TypeMapper
 
         // The managed type must have the C type's size on this target; this catches e.g. a 4-byte C bool.
         var nativeSize = builtin.Handle.SizeOf;
-        var managedSize = LayoutCalculator.SizeOf(value, pointerSize, longSize);
+        var managedSize = LayoutCalculator.SizeOf(value, _pointerSize, _longSize);
         if (nativeSize != managedSize)
         {
             throw new MappingException($"`{builtin.AsString}` is {nativeSize} bytes but maps to {value} ({managedSize} bytes)");
@@ -280,7 +280,7 @@ internal sealed class TypeMapper
     {
         if (declaration.Definition is null)
         {
-            if (!config.OpaqueStructs.Contains(name))
+            if (!_config.OpaqueStructs.Contains(name))
             {
                 throw new MappingException($"{name} has no definition: list it in Handles or OpaqueStructs");
             }
@@ -288,12 +288,12 @@ internal sealed class TypeMapper
             return true;
         }
 
-        return config.LayoutDecisions.TryGetValue(name, out var decision) && decision.Kind == LayoutDecisionKind.Opaque;
+        return _config.LayoutDecisions.TryGetValue(name, out var decision) && decision.Kind == LayoutDecisionKind.Opaque;
     }
 
     private void RequireLibrary(Decl declaration, string name)
     {
-        if (!isLibraryDeclaration(declaration))
+        if (!_isLibraryDeclaration(declaration))
         {
             throw new MappingException($"{name} is not declared in the library's headers");
         }
@@ -301,9 +301,9 @@ internal sealed class TypeMapper
 
     private void Reference(string name, ReferenceKind kind)
     {
-        if (referenced.Add(name))
+        if (_referenced.Add(name))
         {
-            references.Add(new TypeReference(name, kind));
+            _references.Add(new TypeReference(name, kind));
         }
     }
 }
