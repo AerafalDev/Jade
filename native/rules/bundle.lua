@@ -11,6 +11,9 @@
 -- would mostly be dropped: each archive is linked whole. The export list then hides everything
 -- else, including whatever an upstream build left with default visibility:
 --   Linux, Android  --whole-archive, and a version script (the list global, the rest local).
+--                   --gc-sections then drops what no export reaches. Measured on Dawn alone
+--                   (stripped): whole archive 10.0 MB, only the members the exports need
+--                   (--undefined per name) 9.4 MB, either one with --gc-sections 8.7 MB.
 --   macOS, iOS      -force_load, and -exported_symbols_list (ld64 accepts wildcards; Mach-O names
 --                   carry a leading underscore). Written but not verified yet (103, 104).
 --   Windows         /WHOLEARCHIVE, and a .def file. A .def file has no wildcards, so it has to be
@@ -76,8 +79,15 @@ rule("jade.bundle")
             end
             -- --no-undefined: an unresolved symbol fails the link instead of the first dlopen.
             -- --as-needed: xmake links shared libraries with the C++ driver, whose implicit
-            -- libstdc++ and libgcc_s must not become dependencies when nothing uses them.
-            target:add("shflags", "-Wl,--version-script=" .. script, "-Wl,--no-undefined", "-Wl,--as-needed", {force = true})
+            -- runtime libraries must not become dependencies when nothing uses them.
+            target:add("shflags", "-Wl,--version-script=" .. script, "-Wl,--no-undefined", "-Wl,--as-needed", "-Wl,--gc-sections", {force = true})
+            if target:is_plat("linux") then
+                -- The C++ runtime of the C++ upstreams goes inside (ADR-0003), hidden by the version
+                -- script like the rest. Explicit flags, because xmake's stdc++_static runtime adds
+                -- -static-libstdc++ only to targets with C++ sources, and never -static-libgcc.
+                -- Android's libc++ is set up by the NDK toolchain instead (task 104).
+                target:add("shflags", "-static-libstdc++", "-static-libgcc", {force = true})
+            end
         elseif target:is_plat("macosx", "iphoneos") then
             local lines = {}
             for _, symbol in ipairs(exports) do
