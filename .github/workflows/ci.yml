@@ -94,6 +94,26 @@ jobs:
       - name: Build jade_native
         run: dotnet scripts/build-native.cs
 
+      # A failed package install prints only the first 17 lines of its output; xmake keeps the rest in the
+      # package cache, which the runner discards.
+      - name: Show xmake package install logs
+        if: failure()
+        run: |
+          shopt -s globstar nullglob
+          for log in ~/.xmake/cache/packages/**/installdir.failed/logs/*.txt; do
+            echo "::group::$log"
+            tail -n 200 "$log"
+            echo "::endgroup::"
+          done
+
+      - name: Upload xmake package install logs
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: xmake-install-logs
+          path: ~/.xmake/cache/packages/**/installdir.failed/logs/
+          if-no-files-found: ignore
+
       - name: Regenerate bindings
         run: dotnet scripts/generate-bindings.cs
 
