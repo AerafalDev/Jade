@@ -76,7 +76,8 @@ jobs:
 
       # SDL3's list in docs/README-linux.md ("Build Dependencies") of the pinned release-3.4.16: the Ubuntu
       # 18.04 packages plus the 22.04+ additions. Without X11 or Wayland headers, SDL's CMake configure stops.
-      # python3 is not on SDL's list; Dawn's build (102) needs it along with git, X11 and Wayland.
+      # The last line is Dawn's (102): python3 for its build (git is already on SDL's list) and libx11-xcb-dev
+      # for X11/Xlib-xcb.h, which Dawn includes and libx11-dev does not ship.
       - name: Install native build dependencies
         run: >-
           sudo apt-get update &&
@@ -87,7 +88,7 @@ jobs:
           libxkbcommon-dev libdrm-dev libgbm-dev libgl1-mesa-dev libgles2-mesa-dev
           libegl1-mesa-dev libdbus-1-dev libibus-1.0-dev libudev-dev libthai-dev libusb-1.0-0-dev
           libpipewire-0.3-dev libwayland-dev libdecor-0-dev liburing-dev
-          python3
+          python3 libx11-xcb-dev
 
       # The generator reads the headers the native build stages. SDL3 and miniaudio build here in minutes;
       # once Dawn makes this too slow (102), take the staged inputs from the native workflow (103) instead.

@@ -110,8 +110,9 @@ package("dawn")
             "-DDAWN_ENABLE_NULL=ON",
             "-DDAWN_ENABLE_DESKTOP_GL=OFF",
             "-DDAWN_ENABLE_OPENGLES=OFF",
-            -- Surfaces from X11 and Wayland windows (what SDL hands over). Dawn needs the X11 headers
-            -- at build time and loads the libraries at runtime.
+            -- Surfaces from X11 and Wayland windows (what SDL hands over). Dawn needs X11/Xlib.h and
+            -- X11/Xlib-xcb.h at build time (libx11-dev and libx11-xcb-dev on Debian and Ubuntu) and
+            -- loads the libraries at runtime.
             "-DDAWN_USE_X11=ON",
             "-DDAWN_USE_WAYLAND=ON",
             -- Shader input is WGSL only: no SPIR-V shader modules, so no SPIR-V reader and no
