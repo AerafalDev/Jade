@@ -5,8 +5,8 @@ native library, `jade_native`, that bundles Dawn (WebGPU), SDL3, miniaudio and, 
 libraries, plus public C# bindings generated over it. The engine itself is planned once the
 interop layer is green on every target.
 
-Status (2026-10-02): design only. Nothing builds yet. Task 001 creates the solution. Keep the
-**Commands** section in sync with what actually exists.
+Progress lives in [design/roadmap.md](design/roadmap.md). Keep the **Commands** section in sync
+with what actually exists.
 
 ## How work is organized
 
@@ -65,7 +65,12 @@ artifacts/                build outputs (gitignored): native/<rid>/, packages/
 - Central Package Management with transitive pinning. Add packages with `dotnet add package` or the
   `nuget` MCP, never with a version from memory.
 - MinVer with `v` tag prefix. Every package ships the same version.
-- Tests: xunit.v3 on Microsoft.Testing.Platform, Shouldly, CsCheck.
+- Tests: xunit.v3 on Microsoft.Testing.Platform (no VSTest packages), Shouldly, CsCheck. Every test
+  project sets `<IsTestProject>true</IsTestProject>`. Without it, `Directory.Build.targets` adds
+  MinVer and SourceLink to it as if it shipped.
+- Libraries generate XML docs, and CS1591 is an error: every public member needs `///` docs.
+- A local clone without an `origin` remote gets SourceLink warnings. Add the remote rather than
+  suppressing them.
 - Libraries are AOT- and trim-compatible (`IsAotCompatible`). An AOT or trim warning is a bug.
 
 ### Interop
@@ -100,6 +105,10 @@ artifacts/                build outputs (gitignored): native/<rid>/, packages/
   triggers CA2266, which is an error here.
 - Run with `dotnet scripts/<name>.cs [args]`; arguments pass through as-is. Scripts inherit the
   repo's `Directory.Build.props` (verified), so analyzers apply to them too.
+- File-based apps default to `PublishAot=true`, so AOT and trim analyzers run on scripts. A script
+  that needs reflection (for example reflection-based `System.Text.Json`) adds
+  `#:property PublishAot=false`. Once several scripts need it, move it to a
+  `scripts/Directory.Build.props`.
 - Scripts must run unchanged on Windows, macOS and Linux: no shelling out to bash-only tools.
 
 ## Commands

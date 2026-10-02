@@ -53,6 +53,10 @@ Pack commands, the nupkg listing, consumer run output, NativeAOT publish and run
   iterations, or the consumer silently uses stale natives.
 - NativeAOT with a shared native library still needs it next to the binary; check the publish
   output.
+- From 001: the house `.gitignore` rule `[Bb]uild/` ignores any folder named `build`, for example
+  `src/Jade.Native/build/`. `buildTransitive/` is not affected. Check new folders with
+  `git check-ignore -v`.
+- The package test project must set `<IsTestProject>true</IsTestProject>` (see CLAUDE.md).
 
 ## Outcome
 

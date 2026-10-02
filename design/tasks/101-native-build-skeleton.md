@@ -18,6 +18,13 @@ statically linked into it, from our own pinned xmake packages. It exports only `
   2026-10-02: SDL `release-3.4.16`, miniaudio `0.11.25`. Re-check.
 - Layout target (architecture.md): `native/xmake.lua`, `native/packages/<letter>/<name>/xmake.lua`
   (local repository), `native/shims/`. Outputs go to `artifacts/native/<rid>/{lib,include,metadata}`.
+- From 001: scripts run with the repo analyzers plus AOT and trim analyzers. Writing
+  `versions.json` with reflection-based `System.Text.Json` therefore fails: use a source-generated
+  `JsonSerializerContext`, or `#:property PublishAot=false` if justified. If the script needs a NuGet
+  package, `#:package` together with Central Package Management is still unsettled (ADR-0008):
+  settle it and record how in the Outcome.
+- From 001: `.gitignore` already covers `.xmake/`, `native/build/`, the xmake project generators'
+  outputs and `compile_commands.json`.
 
 ## Scope
 
