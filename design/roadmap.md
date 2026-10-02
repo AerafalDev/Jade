@@ -1,0 +1,57 @@
+# Roadmap
+
+Status is tracked here and only here: `todo`, `in-progress`, `done` or `blocked`. Each linked
+task has a self-contained brief. Entries without a link wait for their prerequisites to report
+back before the orchestrator writes their brief.
+
+## Phase 0: Foundation
+
+| Task | Title | Depends on | Status |
+| --- | --- | --- | --- |
+| [001](tasks/001-repository-scaffold.md) | Repository scaffold and managed solution | - | todo |
+| [002](tasks/002-ci-baseline.md) | CI baseline: build, test, CodeQL, Dependabot | 001 | todo |
+
+## Phase 1: Native library
+
+| Task | Title | Depends on | Status |
+| --- | --- | --- | --- |
+| [101](tasks/101-native-build-skeleton.md) | xmake skeleton: jade_native with SDL3 and miniaudio, host RID | 001 | todo |
+| [102](tasks/102-native-dawn.md) | Dawn from source, linked into jade_native, host RID | 101 | todo |
+| [103](tasks/103-native-desktop-matrix.md) | Desktop RID matrix in CI, Linux glibc baseline, artifact cache | 102, 002 | todo |
+| [104](tasks/104-native-mobile.md) | Android and iOS RIDs, mobile platform glue proposal | 103 | todo |
+| [105](tasks/105-native-browser.md) | browser-wasm: Emscripten alignment with .NET, emdawnwebgpu | 103 | todo |
+| [106](tasks/106-native-packaging.md) | Jade.Native package, Jade dependency, size guard, local feed test | 103 | todo |
+| 107 | Release pipeline: tag → natives → pack → publish (trusted publishing) | 106 | todo |
+
+104 and 105 can run in parallel. 106 starts with desktop RIDs; 104 and 105 each extend its
+`buildTransitive` targets for their platforms.
+
+## Phase 2: Bindings
+
+| Task | Title | Depends on | Status |
+| --- | --- | --- | --- |
+| [201](tasks/201-binding-generator-core.md) | Generator core: model, libclang reader, emitter, drift check | 101 | todo |
+| [202](tasks/202-bindings-webgpu.md) | WebGPU bindings from dawn.json | 201, 102 | todo |
+| [203](tasks/203-bindings-sdl3.md) | SDL3 bindings | 201 | todo |
+| [204](tasks/204-bindings-miniaudio.md) | miniaudio bindings | 201 | todo |
+| [205](tasks/205-interop-smoke-and-aot.md) | Interop smoke tests and NativeAOT publish check | 202, 203, 204 | todo |
+| [206](tasks/206-sample-hello-triangle.md) | Sample: SDL3 window + Dawn triangle on desktop | 205 | todo |
+
+202, 203 and 204 can run in parallel once 201 is done (202 also needs 102).
+
+## Phase 3: Extra libraries
+
+| Task | Title | Depends on | Status |
+| --- | --- | --- | --- |
+| [301](tasks/301-imgui-survey.md) | Survey: Dear ImGui, its extensions and backends | 201 | todo |
+| [302](tasks/302-physics-box2d-box3d.md) | Box2D v3 and Box3D: native and bindings | 201, 103 | todo |
+| [303](tasks/303-text-stack.md) | FreeType + HarfBuzz + msdfgen: native, C shim, bindings | 201, 103 | todo |
+| [304](tasks/304-assets-survey.md) | Survey: asset libraries for runtime and import pipeline | 201 | todo |
+
+Surveys (301, 304) produce a Proposed ADR and draft briefs. The orchestrator turns them into
+implementation tasks.
+
+## Phase 4 and later: Engine
+
+To be planned with the orchestrator once Phase 2 is `done` on desktop and at least one of 104 or
+105 is `done`.
