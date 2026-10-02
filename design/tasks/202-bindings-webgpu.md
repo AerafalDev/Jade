@@ -1,6 +1,6 @@
 # 202: WebGPU bindings from dawn.json
 
-- Depends on: 201, 102
+- Depends on: 201, 102, 003
 - ADRs: 0001, 0005, 0006
 
 ## Goal

@@ -1,6 +1,6 @@
 # 204: miniaudio bindings
 
-- Depends on: 201
+- Depends on: 201, 003
 - ADRs: 0005, 0006
 
 ## Goal

@@ -1,6 +1,6 @@
 # 103: Desktop RID matrix in CI
 
-- Depends on: 102, 002
+- Depends on: 102, 002, 003
 - ADRs: 0003, 0004, 0007
 
 ## Goal
