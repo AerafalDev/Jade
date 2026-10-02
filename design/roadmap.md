@@ -10,6 +10,10 @@ back before the orchestrator writes their brief.
 | --- | --- | --- | --- |
 | [001](tasks/001-repository-scaffold.md) | Repository scaffold and managed solution | - | done |
 | [002](tasks/002-ci-baseline.md) | CI baseline: build, test, CodeQL, Dependabot | 001 | done |
+| [003](tasks/003-coding-conventions.md) | Enforce the C# coding conventions, clean up existing code | 102, 201 | todo |
+
+003 runs once 102 and 201 are merged, before any other task starts: 103, 202, 203, 204, 301 and
+304 list it as a dependency in their briefs.
 
 ## Phase 1: Native library
 
@@ -39,7 +43,7 @@ Notes for the 107 brief, collected from earlier Outcomes:
 
 | Task | Title | Depends on | Status |
 | --- | --- | --- | --- |
-| [201](tasks/201-binding-generator-core.md) | Generator core: model, libclang reader, emitter, drift check | 101 | todo |
+| [201](tasks/201-binding-generator-core.md) | Generator core: model, libclang reader, emitter, drift check | 101 | done |
 | [202](tasks/202-bindings-webgpu.md) | WebGPU bindings from dawn.json | 201, 102 | todo |
 | [203](tasks/203-bindings-sdl3.md) | SDL3 bindings | 201 | todo |
 | [204](tasks/204-bindings-miniaudio.md) | miniaudio bindings | 201 | todo |

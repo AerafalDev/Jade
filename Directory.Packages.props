@@ -16,4 +16,8 @@
     <PackageVersion Include="xunit.v3" Version="4.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageVersion Include="ClangSharp" Version="21.1.8.4" />
+  </ItemGroup>
+
 </Project>

@@ -1,6 +1,6 @@
 # 304: Survey: asset libraries
 
-- Depends on: 201
+- Depends on: 201, 003
 - ADRs: 0003
 
 ## Goal

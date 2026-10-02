@@ -48,8 +48,9 @@ artifacts/                build outputs (gitignored): native/<rid>/, packages/
   SDL3, miniaudio, ...) and exports only their public C APIs plus our `jade_*` shims. It is a shared
   library on desktop and Android and a static archive on browser-wasm (iOS form decided by
   task 104). Built by xmake on each target's native OS.
-- **Bindings**: `scripts/generate-bindings/` reads Dawn's `dawn.json` and C headers (via libclang)
-  into one model. It emits `src/Jade.Interop/Generated/<Lib>/*.g.cs`, which is committed.
+- **Bindings**: `scripts/generate-bindings.cs` reads C headers (via libclang, once per target triple)
+  and, from 202, Dawn's `dawn.json` into one model. It emits `src/Jade.Interop/Generated/<Lib>/*.g.cs`
+  plus layout tests in `tests/Jade.Interop.Tests/Generated/<Lib>/`, both committed.
 - **Packages** (one shared version): `Jade` (managed: Jade.dll, Jade.Interop.dll, later analyzers
   and source generators) depends on `Jade.Native` (natives and `buildTransitive` targets). Users
   only reference `Jade`.
@@ -72,11 +73,17 @@ artifacts/                build outputs (gitignored): native/<rid>/, packages/
 - A local clone without an `origin` remote gets SourceLink warnings. Add the remote rather than
   suppressing them.
 - Libraries are AOT- and trim-compatible (`IsAotCompatible`). An AOT or trim warning is a bug.
+- Coding conventions: ADR-0011, the dotnet/runtime style with `var` everywhere and file-scoped
+  namespaces. They apply to src, tests, scripts and generated code. The rules broken most often:
+  no `this.`; private and internal fields `_camelCase`, static ones `s_camelCase`; accessibility
+  always explicit and first; `using` outside the namespace, `System` first. Until task 003 lands,
+  `.editorconfig` does not enforce them yet: follow them anyway.
 
 ### Interop
 
-- Never hand-edit generated files (`*.g.cs` under `src/Jade.Interop/Generated/`). Change the
-  generator or its per-library config, then regenerate. CI fails when regeneration yields a diff.
+- Never hand-edit generated files (`*.g.cs` under `src/Jade.Interop/Generated/` and
+  `tests/Jade.Interop.Tests/Generated/`). Change the generator or its per-library config
+  (`scripts/generate-bindings/<Lib>Config.cs`), then regenerate. CI fails when regeneration yields a diff.
 - `DisableRuntimeMarshalling`: every native signature is blittable. No `string`, `bool`, delegates
   or `SetLastError`. UTF-8 goes through `byte*` and `ReadOnlySpan<byte>`, C booleans through
   explicitly sized types, callbacks through `delegate* unmanaged[Cdecl]`.
@@ -119,6 +126,11 @@ artifacts/                build outputs (gitignored): native/<rid>/, packages/
   that needs reflection (for example reflection-based `System.Text.Json`) adds
   `#:property PublishAot=false`. Once several scripts need it, move it to a
   `scripts/Directory.Build.props`.
+- NuGet packages: `#:package <Id>` without a version, plus a `PackageVersion` in
+  `Directory.Packages.props` (Central Package Management applies to scripts; a version on the
+  directive fails with NU1008). A package whose native assets come through `runtime.json` (ClangSharp's
+  libclang) also needs `#:property RuntimeIdentifier=$(NETCoreSdkRuntimeIdentifier)`, or restore skips
+  them and a system copy may load instead.
 - Scripts must run unchanged on Windows, macOS and Linux: no shelling out to bash-only tools.
 
 ## Commands
@@ -133,7 +145,7 @@ lands.
 | Pack the `Jade` package | `dotnet pack -c Release -o artifacts/packages` | 001 |
 | Build jade_native and stage it into `artifacts/native/<rid>/` (RID defaults to the host) | `dotnet scripts/build-native.cs [--rid <rid>] [--config release\|debug]` | 101 |
 | Smoke-check the staged jade_native of the host RID | `dotnet scripts/smoke-native.cs [--rid <rid>]` | 101 |
-| Regenerate bindings | `dotnet scripts/generate-bindings.cs` (planned) | 201 |
+| Regenerate bindings from the staged headers (RID defaults to the host) | `dotnet scripts/generate-bindings.cs [--rid <rid>]` | 201 |
 
 ## Environment facts (verified 2026-10-02)
 
