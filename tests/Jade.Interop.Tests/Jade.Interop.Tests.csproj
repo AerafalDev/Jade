@@ -16,4 +16,15 @@
     <ProjectReference Include="..\..\src\Jade.Interop\Jade.Interop.csproj" />
   </ItemGroup>
 
+  <!-- jade_native as staged for this machine by scripts/build-native.cs, until Jade.Native packages it (106).
+       Without a staged library, the tests that call it skip. -->
+  <PropertyGroup>
+    <JadeNativeStage>$(MSBuildThisFileDirectory)..\..\artifacts\native\$(NETCoreSdkRuntimeIdentifier)\</JadeNativeStage>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(JadeNativeStage)lib\*jade_native*" CopyToOutputDirectory="PreserveNewest" Visible="false" />
+    <None Include="$(JadeNativeStage)metadata\versions.json" Link="jade_native.versions.json" CopyToOutputDirectory="PreserveNewest" Visible="false" Condition="Exists('$(JadeNativeStage)metadata\versions.json')" />
+  </ItemGroup>
+
 </Project>

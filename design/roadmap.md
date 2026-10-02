@@ -43,7 +43,7 @@ Notes for the 107 brief, collected from earlier Outcomes:
 
 | Task | Title | Depends on | Status |
 | --- | --- | --- | --- |
-| [201](tasks/201-binding-generator-core.md) | Generator core: model, libclang reader, emitter, drift check | 101 | todo |
+| [201](tasks/201-binding-generator-core.md) | Generator core: model, libclang reader, emitter, drift check | 101 | done |
 | [202](tasks/202-bindings-webgpu.md) | WebGPU bindings from dawn.json | 201, 102 | todo |
 | [203](tasks/203-bindings-sdl3.md) | SDL3 bindings | 201 | todo |
 | [204](tasks/204-bindings-miniaudio.md) | miniaudio bindings | 201 | todo |
