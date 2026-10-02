@@ -37,19 +37,31 @@ internal static class Stage
             var fragment = Path.Combine(package.InstallDirectory, "jade");
             CopyTree(Path.Combine(fragment, "include"), includeDirectory);
             CopyTree(Path.Combine(fragment, "licenses"), licensesDirectory);
+            CopyTree(Path.Combine(fragment, "metadata"), metadataDirectory, optional: true);
             upstreams.Add(Json.Read(Path.Combine(fragment, "upstream.json"), JsonContext.Default.Upstream));
         }
 
         upstreams.Sort((left, right) => string.CompareOrdinal(left.Name, right.Name));
         var versions = new Versions { Rid = rid, Config = config, Upstreams = upstreams };
-        File.WriteAllText(Path.Combine(metadataDirectory, "versions.json"), JsonSerializer.Serialize(versions, JsonContext.Default.Versions) + "\n");
+        var versionsPath = Path.Combine(metadataDirectory, "versions.json");
+        if (File.Exists(versionsPath))
+        {
+            throw new InvalidOperationException($"{versionsPath} is staged twice.");
+        }
+
+        File.WriteAllText(versionsPath, JsonSerializer.Serialize(versions, JsonContext.Default.Versions) + "\n");
         return library;
     }
 
-    private static void CopyTree(string source, string destination)
+    private static void CopyTree(string source, string destination, bool optional = false)
     {
         if (!Directory.Exists(source))
         {
+            if (optional)
+            {
+                return;
+            }
+
             throw new InvalidOperationException($"missing stage directory {source}.");
         }
 

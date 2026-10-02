@@ -17,7 +17,8 @@ includes("rules/bundle.lua")
 -- definition, whose stage fragment lists the symbols to export (modules/stage.lua).
 local bundled = {
     "sdl3",
-    "miniaudio"
+    "miniaudio",
+    "dawn"
 }
 
 for _, name in ipairs(bundled) do

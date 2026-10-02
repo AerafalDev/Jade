@@ -33,4 +33,45 @@ internal static unsafe class NativeMethods
     /// <returns>JADE_NATIVE_ABI_VERSION from jade_native.h.</returns>
     [DllImport("jade_native")]
     public static extern uint jade_native_abi_version();
+
+    /// <summary><c>wgpuCreateInstance</c>: creates a WebGPU instance.</summary>
+    /// <param name="descriptor">A <c>WGPUInstanceDescriptor</c>, or null for the defaults.</param>
+    /// <returns>The <c>WGPUInstance</c>, or null.</returns>
+    [DllImport("jade_native")]
+    public static extern nint wgpuCreateInstance(void* descriptor);
+
+    /// <summary><c>wgpuInstanceRequestAdapter</c>: requests an adapter, answered through the callback.</summary>
+    /// <param name="instance">The <c>WGPUInstance</c>.</param>
+    /// <param name="options">The adapter options.</param>
+    /// <param name="callbackInfo">The callback and how it is delivered.</param>
+    /// <returns>The <c>WGPUFuture</c>, a struct holding a single <c>uint64_t</c>, which every ABI returns like the integer itself.</returns>
+    [DllImport("jade_native")]
+    public static extern ulong wgpuInstanceRequestAdapter(nint instance, WGPURequestAdapterOptions* options, WGPURequestAdapterCallbackInfo callbackInfo);
+
+    /// <summary><c>wgpuInstanceProcessEvents</c>: runs the callbacks that are ready, for the <c>AllowProcessEvents</c> mode.</summary>
+    /// <param name="instance">The <c>WGPUInstance</c>.</param>
+    [DllImport("jade_native")]
+    public static extern void wgpuInstanceProcessEvents(nint instance);
+
+    /// <summary><c>wgpuInstanceRelease</c>: releases a reference to an instance.</summary>
+    /// <param name="instance">The <c>WGPUInstance</c>.</param>
+    [DllImport("jade_native")]
+    public static extern void wgpuInstanceRelease(nint instance);
+
+    /// <summary><c>wgpuAdapterGetInfo</c>: describes an adapter.</summary>
+    /// <param name="adapter">The <c>WGPUAdapter</c>.</param>
+    /// <param name="info">Filled on success; free it with <see cref="wgpuAdapterInfoFreeMembers"/>.</param>
+    /// <returns><c>WGPUStatus_Success</c> (1) or <c>WGPUStatus_Error</c> (2).</returns>
+    [DllImport("jade_native")]
+    public static extern uint wgpuAdapterGetInfo(nint adapter, WGPUAdapterInfo* info);
+
+    /// <summary><c>wgpuAdapterInfoFreeMembers</c>: frees the strings of an adapter description.</summary>
+    /// <param name="adapterInfo">A description filled by <see cref="wgpuAdapterGetInfo"/>.</param>
+    [DllImport("jade_native")]
+    public static extern void wgpuAdapterInfoFreeMembers(WGPUAdapterInfo adapterInfo);
+
+    /// <summary><c>wgpuAdapterRelease</c>: releases a reference to an adapter.</summary>
+    /// <param name="adapter">The <c>WGPUAdapter</c>.</param>
+    [DllImport("jade_native")]
+    public static extern void wgpuAdapterRelease(nint adapter);
 }

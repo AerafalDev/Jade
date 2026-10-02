@@ -4,6 +4,7 @@
 --   jade/upstream.json   one entry of metadata/versions.json
 --   jade/include/        headers the binding generator reads, copied to include/
 --   jade/licenses/       license texts, copied to metadata/licenses/
+--   jade/metadata/       other generator inputs (optional), copied to metadata/
 --   jade/exports.txt     the public C API, read by the jade.bundle rule (rules/bundle.lua)
 --
 -- Called from a package's on_install, with the source tree as the current directory.
@@ -12,6 +13,7 @@
 -- opt.exports   symbol names or `*` patterns to export, without the Mach-O underscore
 -- opt.headers   patterns relative to <installdir>/include; `|` excludes, as in add_files
 -- opt.licenses  {path in the source tree = staged file name}
+-- opt.metadata  {path in the source tree = staged file name}, optional
 -- opt.defines   defines that shape the public API; whoever parses the headers must use the same
 function main(package, opt)
     import("core.base.json")
@@ -34,6 +36,10 @@ function main(package, opt)
 
     for source, name in pairs(opt.licenses) do
         os.cp(source, path.join(stagedir, "licenses", package:name(), name))
+    end
+
+    for source, name in pairs(opt.metadata or {}) do
+        os.cp(source, path.join(stagedir, "metadata", name))
     end
 
     -- Only $(version) is used in our URLs, so a plain substitution resolves them.

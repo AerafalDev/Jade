@@ -1,11 +1,17 @@
 #!/usr/bin/env dotnet
-// Smoke check of a staged jade_native: loads artifacts/native/<rid>/lib/, calls one function per
-// bundled library and compares what it reports with the staged metadata and headers. Runs on the
-// host RID only, since it has to load the library.
+// Smoke check of a staged jade_native: loads artifacts/native/<rid>/lib/, calls into each bundled
+// library and compares what it reports with the staged metadata and headers where it can; Dawn has
+// no version function, so it creates an instance and requests adapters instead. Runs on the host
+// RID only, since it has to load the library.
 //
 // Usage: dotnet scripts/smoke-native.cs [--rid <rid>]
 
 #:include smoke-native/NativeMethods.cs
+#:include smoke-native/AdapterRequest.cs
+#:include smoke-native/WGPUAdapterInfo.cs
+#:include smoke-native/WGPURequestAdapterCallbackInfo.cs
+#:include smoke-native/WGPURequestAdapterOptions.cs
+#:include smoke-native/WGPUStringView.cs
 
 using System.Globalization;
 using System.Runtime.CompilerServices;
@@ -68,6 +74,58 @@ unsafe
 
     var drivers = Enumerable.Range(0, NativeMethods.SDL_GetNumVideoDrivers()).Select(i => Marshal.PtrToStringUTF8((nint)NativeMethods.SDL_GetVideoDriver(i)));
     Console.WriteLine($"SDL video drivers: {string.Join(", ", drivers)}");
+
+    // Dawn has no version function. The Null backend answers without a GPU, so that request also
+    // passes on headless CI. The default request finds a real adapter only where a GPU and its
+    // driver exist: elsewhere it completes with Unavailable, which is not a failure here.
+    var instance = NativeMethods.wgpuCreateInstance(null);
+    Check("wgpuCreateInstance", instance == 0 ? "null" : "non-null", "non-null");
+    if (instance != 0)
+    {
+        const uint BackendUndefined = 0;
+        const uint BackendNull = 1;
+        var timeout = TimeSpan.FromSeconds(30);
+
+        var nullRequest = AdapterRequest.Run(instance, BackendNull, timeout);
+        Check("wgpuInstanceRequestAdapter (Null backend)", nullRequest.Completed ? StatusName(nullRequest.Status) : "no callback", "Success", Describe(nullRequest));
+
+        var defaultRequest = AdapterRequest.Run(instance, BackendUndefined, timeout);
+        Check("wgpuInstanceRequestAdapter (default backend)", defaultRequest.Completed ? "completed" : "no callback", "completed",
+            $"{StatusName(defaultRequest.Status)}: {Describe(defaultRequest)}");
+
+        NativeMethods.wgpuInstanceRelease(instance);
+    }
 }
 
 return failures == 0 ? 0 : 1;
+
+// Describes and releases the adapter of a successful request, or returns the request's message.
+static unsafe string Describe(AdapterRequest request)
+{
+    if (!request.Succeeded)
+    {
+        return request.Message;
+    }
+
+    string[] backends = ["Undefined", "Null", "WebGPU", "D3D11", "D3D12", "Metal", "Vulkan", "OpenGL", "OpenGLES"];
+    string[] adapterTypes = ["?", "DiscreteGPU", "IntegratedGPU", "CPU", "Unknown"];
+    WGPUAdapterInfo info = default;
+    var description = "no adapter info";
+    if (NativeMethods.wgpuAdapterGetInfo(request.Adapter, &info) == 1)
+    {
+        description = $"{info.Device} ({backends.ElementAtOrDefault((int)info.BackendType) ?? "?"}, {adapterTypes.ElementAtOrDefault((int)info.AdapterType) ?? "?"})";
+        NativeMethods.wgpuAdapterInfoFreeMembers(info);
+    }
+
+    NativeMethods.wgpuAdapterRelease(request.Adapter);
+    return description;
+}
+
+static string StatusName(uint status) => status switch
+{
+    1 => "Success",
+    2 => "CallbackCancelled",
+    3 => "Unavailable",
+    4 => "Error",
+    _ => $"status {status}",
+};
