@@ -1,6 +1,6 @@
 # ADR-0008: Scripts are C# file-based apps
 
-- Status: Accepted
+- Status: Accepted; the multi-file layout is superseded by ADR-0010
 - Date: 2026-10-02
 
 ## Context

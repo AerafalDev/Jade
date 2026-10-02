@@ -1,17 +1,21 @@
 # 201: Binding generator core
 
 - Depends on: 101
-- ADRs: 0005, 0006, 0008
+- ADRs: 0005, 0006, 0008, 0010
 
 ## Goal
 
-`dotnet scripts/generate-bindings/generate-bindings.cs` reads staged C headers through libclang into
+`dotnet scripts/generate-bindings.cs` reads staged C headers through libclang into
 the intermediate model and emits deterministic C# following ADR-0006. It is proven on a vertical
 slice of SDL3. CI fails when regeneration produces a diff.
 
 ## Context
 
 - Inputs are staged by the native build in `artifacts/native/<host-rid>/include/<lib>/` (101).
+  `metadata/versions.json` records each upstream's version and build defines (miniaudio's among
+  them). The headers in `include/<lib>/` are exactly the public ones to bind.
+- `scripts/build-native.cs` and `scripts/smoke-native.cs` (101) are the reference for script layout
+  under ADR-0010 and for source-generated JSON.
 - ClangSharp `21.1.8.4` on nuget.org (2026-10-02). It needs the libclang and libClangSharp native
   runtimes; find which packages provide them for the dev RIDs (Linux, Windows, macOS).
 - `dawn.json` support comes in 202. Design the model so a second reader plugs in without changing
@@ -26,8 +30,8 @@ slice of SDL3. CI fails when regeneration produces a diff.
 
 ## Scope
 
-- Folder `scripts/generate-bindings/` with entry point `generate-bindings.cs` and PascalCase helper
-  files (`#:include`). Suggested split: model, clang reader, emitter, naming, per-library config.
+- Entry point `scripts/generate-bindings.cs`, helpers in `scripts/generate-bindings/`, one type per
+  file (ADR-0010). Suggested split: model, clang reader, emitter, naming, per-library config.
 - Per-library config format (C# or JSON; choose and justify) covering:
   - prefix stripping and naming overrides;
   - handle types;

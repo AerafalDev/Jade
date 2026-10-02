@@ -93,14 +93,24 @@ artifacts/                build outputs (gitignored): native/<rid>/, packages/
   definitions under `native/`. Nothing floats, nothing comes from the system.
 - `jade_native` exports only the bundled public C APIs and `jade_*` shims. Everything else stays
   hidden.
+- Bundling a library: its package's `on_install` calls `native/modules/stage.lua`, which records the
+  exports (exact names or `*` patterns), staged headers, licenses and upstream metadata; then one
+  line in the `bundled` list of `native/xmake.lua`. The `jade.bundle` rule
+  (`native/rules/bundle.lua`) does whole-archive linking and export control.
+- Only `scripts/build-native.cs` runs xmake. It passes `--require=y` because xmake does not notice
+  edits to recipes under `native/packages/` on its own.
 - A C++-only library gets a thin C shim in `native/shims/`, with functions named `jade_<lib>_*`.
 - Adding an upstream library includes adding its license to `THIRD-PARTY-NOTICES.md`.
 
 ### Scripts
 
-- Automation is C# file-based apps: `scripts/<name>.cs`, or a kebab-case folder
-  `scripts/<name>/` whose entry point is `scripts/<name>/<name>.cs`, with helper files (PascalCase)
-  pulled in with `#:include`.
+- Automation is C# file-based apps. The entry point is always `scripts/<name>.cs` (kebab-case).
+  A multi-file script keeps its helper files in a kebab-case folder next to it, `scripts/<name>/`,
+  pulled in with `#:include <name>/<Type>.cs` (ADR-0010, which supersedes the layout in
+  ADR-0008).
+- One class, struct, record or enum per file, named after the type. The entry point holds only
+  top-level statements.
+- Every `internal` or `public` type and member of a script has `///` docs, as in the libraries.
 - The entry point starts with `#!/usr/bin/env dotnet`. Without it, a multi-file entry point
   triggers CA2266, which is an error here.
 - Run with `dotnet scripts/<name>.cs [args]`; arguments pass through as-is. Scripts inherit the
@@ -121,14 +131,17 @@ lands.
 | Build the managed solution | `dotnet build -c Release` | 001 |
 | Run the tests (Microsoft.Testing.Platform) | `dotnet test -c Release` | 001 |
 | Pack the `Jade` package | `dotnet pack -c Release -o artifacts/packages` | 001 |
-| Build jade_native for one RID | `dotnet scripts/build-native.cs --rid <rid>` (planned) | 101 |
-| Regenerate bindings | `dotnet scripts/generate-bindings/generate-bindings.cs` (planned) | 201 |
+| Build jade_native and stage it into `artifacts/native/<rid>/` (RID defaults to the host) | `dotnet scripts/build-native.cs [--rid <rid>] [--config release\|debug]` | 101 |
+| Smoke-check the staged jade_native of the host RID | `dotnet scripts/smoke-native.cs [--rid <rid>]` | 101 |
+| Regenerate bindings | `dotnet scripts/generate-bindings.cs` (planned) | 201 |
 
 ## Environment facts (verified 2026-10-02)
 
 - Local machine: CachyOS, .NET SDK 10.0.401, xmake 3.1.1, CMake 4.4.3, clang, gcc, zig 0.16. No
-  emsdk, no Android NDK, no `wasm-tools`/`android`/`ios` workloads. Do not install system packages;
-  give the user the command instead.
+  emsdk, no Android NDK or SDK, no `wasm-tools`/`android`/`ios` workloads. Docker 29.8.2 works
+  without sudo. OpenJDK 25 is installed. actionlint 1.7.12 is installed, shellcheck is not. Do not install system packages; give the user the command instead.
+- CI sets `MSBuildTreatWarningsAsErrors=true`, so MSBuild task warnings (SourceLink, MinVer, SDK)
+  that a local build only reports fail the job.
 - GitHub arm64 runners (`windows-11-arm`, `ubuntu-24.04-arm`) are free only on public repositories
   and have about 14 GB of disk.
 - nuget.org rejects packages over 250 MB.

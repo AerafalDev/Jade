@@ -58,6 +58,9 @@ expected symbols.
   in `DllImport` matches the `NativeFileReference` naming rules.
 - emdawnwebgpu's async APIs depend on Emscripten options (Asyncify or JSPI?). Check what it
   requires and whether .NET's wasm build allows it.
+- From 101: the static `jade_native.a` needs the upstream archives merged into it.
+  `native/rules/bundle.lua` raises for non-shared targets today. Export control has no meaning in a
+  static archive, but symbol clashes between upstreams do.
 
 ## Outcome
 
