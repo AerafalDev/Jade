@@ -126,9 +126,9 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     public static byte SetWindowFullscreenMode(Window window, in DisplayMode mode)
     {
-        fixed (DisplayMode* __mode = &mode)
+        fixed (DisplayMode* modePtr = &mode)
         {
-            return SetWindowFullscreenMode(window, __mode);
+            return SetWindowFullscreenMode(window, modePtr);
         }
     }
 
@@ -178,9 +178,9 @@ public static unsafe partial class Sdl
     public static void* GetWindowICCProfile(Window window, out nuint size)
     {
         size = default;
-        fixed (nuint* __size = &size)
+        fixed (nuint* sizePtr = &size)
         {
-            return GetWindowICCProfile(window, __size);
+            return GetWindowICCProfile(window, sizePtr);
         }
     }
 
@@ -228,9 +228,9 @@ public static unsafe partial class Sdl
     public static Window* GetWindows(out int count)
     {
         count = default;
-        fixed (int* __count = &count)
+        fixed (int* countPtr = &count)
         {
-            return GetWindows(__count);
+            return GetWindows(countPtr);
         }
     }
 
@@ -430,10 +430,10 @@ public static unsafe partial class Sdl
     /// <returns>the window that was created or NULL on failure; call SDL_GetError() for more information.</returns>
     public static Window CreateWindow(ReadOnlySpan<byte> title, int w, int h, WindowFlags flags)
     {
-        using var __titleUtf8 = new NulTerminatedUtf8(title, stackalloc byte[NulTerminatedUtf8.StackLength]);
-        fixed (byte* __title = __titleUtf8)
+        using var titleUtf8 = new NulTerminatedUtf8(title, stackalloc byte[NulTerminatedUtf8.StackLength]);
+        fixed (byte* titlePtr = titleUtf8)
         {
-            return CreateWindow(__title, w, h, flags);
+            return CreateWindow(titlePtr, w, h, flags);
         }
     }
 
@@ -1004,10 +1004,10 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     public static byte SetWindowTitle(Window window, ReadOnlySpan<byte> title)
     {
-        using var __titleUtf8 = new NulTerminatedUtf8(title, stackalloc byte[NulTerminatedUtf8.StackLength]);
-        fixed (byte* __title = __titleUtf8)
+        using var titleUtf8 = new NulTerminatedUtf8(title, stackalloc byte[NulTerminatedUtf8.StackLength]);
+        fixed (byte* titlePtr = titleUtf8)
         {
-            return SetWindowTitle(window, __title);
+            return SetWindowTitle(window, titlePtr);
         }
     }
 
@@ -1124,10 +1124,10 @@ public static unsafe partial class Sdl
     {
         x = default;
         y = default;
-        fixed (int* __x = &x)
-        fixed (int* __y = &y)
+        fixed (int* xPtr = &x)
+        fixed (int* yPtr = &y)
         {
-            return GetWindowPosition(window, __x, __y);
+            return GetWindowPosition(window, xPtr, yPtr);
         }
     }
 
@@ -1205,10 +1205,10 @@ public static unsafe partial class Sdl
     {
         w = default;
         h = default;
-        fixed (int* __w = &w)
-        fixed (int* __h = &h)
+        fixed (int* wPtr = &w)
+        fixed (int* hPtr = &h)
         {
-            return GetWindowSize(window, __w, __h);
+            return GetWindowSize(window, wPtr, hPtr);
         }
     }
 
@@ -1249,9 +1249,9 @@ public static unsafe partial class Sdl
     public static byte GetWindowSafeArea(Window window, out Rect rect)
     {
         rect = default;
-        fixed (Rect* __rect = &rect)
+        fixed (Rect* rectPtr = &rect)
         {
-            return GetWindowSafeArea(window, __rect);
+            return GetWindowSafeArea(window, rectPtr);
         }
     }
 
@@ -1319,10 +1319,10 @@ public static unsafe partial class Sdl
     {
         minAspect = default;
         maxAspect = default;
-        fixed (float* __minAspect = &minAspect)
-        fixed (float* __maxAspect = &maxAspect)
+        fixed (float* minAspectPtr = &minAspect)
+        fixed (float* maxAspectPtr = &maxAspect)
         {
-            return GetWindowAspectRatio(window, __minAspect, __maxAspect);
+            return GetWindowAspectRatio(window, minAspectPtr, maxAspectPtr);
         }
     }
 
@@ -1384,12 +1384,12 @@ public static unsafe partial class Sdl
         left = default;
         bottom = default;
         right = default;
-        fixed (int* __top = &top)
-        fixed (int* __left = &left)
-        fixed (int* __bottom = &bottom)
-        fixed (int* __right = &right)
+        fixed (int* topPtr = &top)
+        fixed (int* leftPtr = &left)
+        fixed (int* bottomPtr = &bottom)
+        fixed (int* rightPtr = &right)
         {
-            return GetWindowBordersSize(window, __top, __left, __bottom, __right);
+            return GetWindowBordersSize(window, topPtr, leftPtr, bottomPtr, rightPtr);
         }
     }
 
@@ -1423,10 +1423,10 @@ public static unsafe partial class Sdl
     {
         w = default;
         h = default;
-        fixed (int* __w = &w)
-        fixed (int* __h = &h)
+        fixed (int* wPtr = &w)
+        fixed (int* hPtr = &h)
         {
-            return GetWindowSizeInPixels(window, __w, __h);
+            return GetWindowSizeInPixels(window, wPtr, hPtr);
         }
     }
 
@@ -1475,10 +1475,10 @@ public static unsafe partial class Sdl
     {
         w = default;
         h = default;
-        fixed (int* __w = &w)
-        fixed (int* __h = &h)
+        fixed (int* wPtr = &w)
+        fixed (int* hPtr = &h)
         {
-            return GetWindowMinimumSize(window, __w, __h);
+            return GetWindowMinimumSize(window, wPtr, hPtr);
         }
     }
 
@@ -1527,10 +1527,10 @@ public static unsafe partial class Sdl
     {
         w = default;
         h = default;
-        fixed (int* __w = &w)
-        fixed (int* __h = &h)
+        fixed (int* wPtr = &w)
+        fixed (int* hPtr = &h)
         {
-            return GetWindowMaximumSize(window, __w, __h);
+            return GetWindowMaximumSize(window, wPtr, hPtr);
         }
     }
 
@@ -1894,9 +1894,9 @@ public static unsafe partial class Sdl
     public static byte GetWindowSurfaceVSync(Window window, out int vsync)
     {
         vsync = default;
-        fixed (int* __vsync = &vsync)
+        fixed (int* vsyncPtr = &vsync)
         {
-            return GetWindowSurfaceVSync(window, __vsync);
+            return GetWindowSurfaceVSync(window, vsyncPtr);
         }
     }
 
@@ -1960,9 +1960,9 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     public static byte UpdateWindowSurfaceRects(Window window, ReadOnlySpan<Rect> rects)
     {
-        fixed (Rect* __rects = rects)
+        fixed (Rect* rectsPtr = rects)
         {
-            return UpdateWindowSurfaceRects(window, __rects, rects.Length);
+            return UpdateWindowSurfaceRects(window, rectsPtr, rects.Length);
         }
     }
 
@@ -2110,9 +2110,9 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     public static byte SetWindowMouseRect(Window window, in Rect rect)
     {
-        fixed (Rect* __rect = &rect)
+        fixed (Rect* rectPtr = &rect)
         {
-            return SetWindowMouseRect(window, __rect);
+            return SetWindowMouseRect(window, rectPtr);
         }
     }
 

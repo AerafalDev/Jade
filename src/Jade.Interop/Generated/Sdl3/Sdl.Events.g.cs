@@ -125,9 +125,9 @@ public static unsafe partial class Sdl
     public static byte PollEvent(out Event @event)
     {
         @event = default;
-        fixed (Event* __event = &@event)
+        fixed (Event* eventPtr = &@event)
         {
-            return PollEvent(__event);
+            return PollEvent(eventPtr);
         }
     }
 
@@ -178,9 +178,9 @@ public static unsafe partial class Sdl
     public static byte WaitEvent(out Event @event)
     {
         @event = default;
-        fixed (Event* __event = &@event)
+        fixed (Event* eventPtr = &@event)
         {
-            return WaitEvent(__event);
+            return WaitEvent(eventPtr);
         }
     }
 
@@ -229,9 +229,9 @@ public static unsafe partial class Sdl
     public static byte WaitEventTimeout(out Event @event, int timeoutMS)
     {
         @event = default;
-        fixed (Event* __event = &@event)
+        fixed (Event* eventPtr = &@event)
         {
-            return WaitEventTimeout(__event, timeoutMS);
+            return WaitEventTimeout(eventPtr, timeoutMS);
         }
     }
 
@@ -295,9 +295,9 @@ public static unsafe partial class Sdl
     /// </returns>
     public static byte PushEvent(ref Event @event)
     {
-        fixed (Event* __event = &@event)
+        fixed (Event* eventPtr = &@event)
         {
-            return PushEvent(__event);
+            return PushEvent(eventPtr);
         }
     }
 
@@ -325,9 +325,9 @@ public static unsafe partial class Sdl
     /// <returns>the associated window on success or NULL if there is none.</returns>
     public static Window GetWindowFromEvent(in Event @event)
     {
-        fixed (Event* __event = &@event)
+        fixed (Event* eventPtr = &@event)
         {
-            return GetWindowFromEvent(__event);
+            return GetWindowFromEvent(eventPtr);
         }
     }
 }

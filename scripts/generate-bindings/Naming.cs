@@ -3,7 +3,7 @@ using System.Text;
 /// <summary>Turns C names into C# names (ADR-0006: prefixes stripped, PascalCase).</summary>
 internal static class Naming
 {
-    private static readonly HashSet<string> Keywords =
+    private static readonly HashSet<string> s_keywords =
     [
         "abstract", "as", "base", "bool", "break", "byte", "case", "catch", "char", "checked", "class", "const", "continue",
         "decimal", "default", "delegate", "do", "double", "else", "enum", "event", "explicit", "extern", "false", "finally",
@@ -69,7 +69,7 @@ internal static class Naming
     {
         var pascal = Pascal(name, words);
         var camel = pascal[0] == '_' ? pascal : char.ToLowerInvariant(pascal[0]) + pascal[1..];
-        return Keywords.Contains(camel) ? "@" + camel : camel;
+        return s_keywords.Contains(camel) ? "@" + camel : camel;
     }
 
     /// <summary>Finds the longest run of leading <c>_</c>-separated words shared by every name, never a whole name.</summary>

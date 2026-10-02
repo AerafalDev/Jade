@@ -248,14 +248,14 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     public static byte SetAppMetadata(ReadOnlySpan<byte> appname, ReadOnlySpan<byte> appversion, ReadOnlySpan<byte> appidentifier)
     {
-        using var __appnameUtf8 = new NulTerminatedUtf8(appname, stackalloc byte[NulTerminatedUtf8.StackLength]);
-        using var __appversionUtf8 = new NulTerminatedUtf8(appversion, stackalloc byte[NulTerminatedUtf8.StackLength]);
-        using var __appidentifierUtf8 = new NulTerminatedUtf8(appidentifier, stackalloc byte[NulTerminatedUtf8.StackLength]);
-        fixed (byte* __appname = __appnameUtf8)
-        fixed (byte* __appversion = __appversionUtf8)
-        fixed (byte* __appidentifier = __appidentifierUtf8)
+        using var appnameUtf8 = new NulTerminatedUtf8(appname, stackalloc byte[NulTerminatedUtf8.StackLength]);
+        using var appversionUtf8 = new NulTerminatedUtf8(appversion, stackalloc byte[NulTerminatedUtf8.StackLength]);
+        using var appidentifierUtf8 = new NulTerminatedUtf8(appidentifier, stackalloc byte[NulTerminatedUtf8.StackLength]);
+        fixed (byte* appnamePtr = appnameUtf8)
+        fixed (byte* appversionPtr = appversionUtf8)
+        fixed (byte* appidentifierPtr = appidentifierUtf8)
         {
-            return SetAppMetadata(__appname, __appversion, __appidentifier);
+            return SetAppMetadata(appnamePtr, appversionPtr, appidentifierPtr);
         }
     }
 
@@ -387,12 +387,12 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     public static byte SetAppMetadataProperty(ReadOnlySpan<byte> name, ReadOnlySpan<byte> value)
     {
-        using var __nameUtf8 = new NulTerminatedUtf8(name, stackalloc byte[NulTerminatedUtf8.StackLength]);
-        using var __valueUtf8 = new NulTerminatedUtf8(value, stackalloc byte[NulTerminatedUtf8.StackLength]);
-        fixed (byte* __name = __nameUtf8)
-        fixed (byte* __value = __valueUtf8)
+        using var nameUtf8 = new NulTerminatedUtf8(name, stackalloc byte[NulTerminatedUtf8.StackLength]);
+        using var valueUtf8 = new NulTerminatedUtf8(value, stackalloc byte[NulTerminatedUtf8.StackLength]);
+        fixed (byte* namePtr = nameUtf8)
+        fixed (byte* valuePtr = valueUtf8)
         {
-            return SetAppMetadataProperty(__name, __value);
+            return SetAppMetadataProperty(namePtr, valuePtr);
         }
     }
 
@@ -442,10 +442,10 @@ public static unsafe partial class Sdl
     /// </returns>
     public static byte* GetAppMetadataProperty(ReadOnlySpan<byte> name)
     {
-        using var __nameUtf8 = new NulTerminatedUtf8(name, stackalloc byte[NulTerminatedUtf8.StackLength]);
-        fixed (byte* __name = __nameUtf8)
+        using var nameUtf8 = new NulTerminatedUtf8(name, stackalloc byte[NulTerminatedUtf8.StackLength]);
+        fixed (byte* namePtr = nameUtf8)
         {
-            return GetAppMetadataProperty(__name);
+            return GetAppMetadataProperty(namePtr);
         }
     }
 }

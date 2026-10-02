@@ -14,12 +14,12 @@ public sealed unsafe class Sdl3Tests
 {
     private const string NotStaged = "jade_native is not staged for this RID; run `dotnet scripts/build-native.cs` and rebuild the tests.";
 
-    private static readonly bool Staged = NativeLibrary.TryLoad("jade_native", typeof(Sdl).Assembly, null, out _);
+    private static readonly bool s_staged = NativeLibrary.TryLoad("jade_native", typeof(Sdl).Assembly, null, out _);
 
     [Fact]
     public void GetVersion_returns_the_staged_SDL_version()
     {
-        Assert.SkipUnless(Staged, NotStaged);
+        Assert.SkipUnless(s_staged, NotStaged);
         var expected = StagedVersion("sdl3").Split('.').Select(p => int.Parse(p, CultureInfo.InvariantCulture)).ToArray();
 
         var version = Sdl.GetVersion();
@@ -31,7 +31,7 @@ public sealed unsafe class Sdl3Tests
     [Fact]
     public void Init_without_subsystems_succeeds_and_Quit_releases_everything()
     {
-        Assert.SkipUnless(Staged, NotStaged);
+        Assert.SkipUnless(s_staged, NotStaged);
 
         Sdl.Init(0).ShouldBe((byte)1, Utf8(Sdl.GetError()));
         Sdl.Quit();
@@ -42,7 +42,7 @@ public sealed unsafe class Sdl3Tests
     [Fact]
     public void A_pushed_quit_event_is_polled_back()
     {
-        Assert.SkipUnless(Staged, NotStaged);
+        Assert.SkipUnless(s_staged, NotStaged);
         Sdl.Init(InitFlags.Events).ShouldBe((byte)1, Utf8(Sdl.GetError()));
         try
         {
@@ -68,7 +68,7 @@ public sealed unsafe class Sdl3Tests
     [Fact]
     public void ClearError_leaves_an_empty_message()
     {
-        Assert.SkipUnless(Staged, NotStaged);
+        Assert.SkipUnless(s_staged, NotStaged);
 
         Sdl.OutOfMemory().ShouldBe((byte)0);
         Utf8(Sdl.GetError()).ShouldNotBeEmpty();
@@ -84,7 +84,7 @@ public sealed unsafe class Sdl3Tests
     [InlineData(4000)]
     public void Utf8_overloads_terminate_strings_of_any_length(int length)
     {
-        Assert.SkipUnless(Staged, NotStaged);
+        Assert.SkipUnless(s_staged, NotStaged);
         var name = "SDL.app.metadata.name"u8;
         var value = Encoding.UTF8.GetBytes("é" + new string('j', length - 2));
 
@@ -96,7 +96,7 @@ public sealed unsafe class Sdl3Tests
     [Fact]
     public void A_hidden_window_round_trips_its_title_and_size()
     {
-        Assert.SkipUnless(Staged, NotStaged);
+        Assert.SkipUnless(s_staged, NotStaged);
         Assert.SkipWhen(OperatingSystem.IsMacOS(), "SDL video must run on the main thread on macOS, and xunit runs tests on worker threads.");
         if (Sdl.Init(InitFlags.Video) == 0)
         {

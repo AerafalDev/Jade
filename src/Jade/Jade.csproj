@@ -5,7 +5,6 @@
     <Description>Cross-platform game engine for .NET. Early development: work currently targets the interop layer over Dawn (WebGPU), SDL3 and miniaudio.</Description>
     <PackageTags>gamedev;game-engine;webgpu;dawn;sdl3;miniaudio;interop;native-aot</PackageTags>
     <IsAotCompatible>true</IsAotCompatible>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);AddInteropToPackage</TargetsForTfmSpecificBuildOutput>
   </PropertyGroup>
 

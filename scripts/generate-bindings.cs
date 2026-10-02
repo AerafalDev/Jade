@@ -67,7 +67,7 @@ const ImportStyle Import = ImportStyle.LibraryImport;
 const string Usage = "Usage: dotnet scripts/generate-bindings.cs [--rid <rid>]";
 
 var hostRid = $"{(OperatingSystem.IsWindows() ? "win" : OperatingSystem.IsMacOS() ? "osx" : "linux")}-{RuntimeInformation.OSArchitecture.ToString().ToLowerInvariant()}";
-string? rid = hostRid;
+var rid = hostRid;
 if (args is ["--rid", var value])
 {
     rid = value;

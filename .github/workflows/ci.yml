@@ -53,6 +53,43 @@ jobs:
           path: TestResults/**/*.trx
           if-no-files-found: ignore
 
+  style:
+    name: Code style
+    runs-on: ubuntu-latest
+
+    env:
+      MSBuildTreatWarningsAsErrors: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: global.json
+
+      # The build job never compiles scripts and the bindings job only compiles the two it runs. A build fails on every
+      # ADR-0011 rule that Roslyn runs on build.
+      - name: Build scripts
+        run: for script in scripts/*.cs; do dotnet build "$script"; done
+
+      # Roslyn never runs IDE0003 (this.) and IDE0049 (keywords over BCL type names) on build, and no build analyzer
+      # checks using order: dotnet format reports all three. It skips generated files unless told otherwise, which
+      # would leave out the bindings; obj/ only holds SDK-generated sources.
+      - name: Check style of the solution
+        run: dotnet format --verify-no-changes --include-generated --exclude '**/obj/**'
+
+      # dotnet format cannot load a file-based app, so each script is checked as a converted throwaway project. The
+      # copies stay inside the repository so that its .editorconfig and Directory.*.props still apply to them.
+      - name: Check style of the scripts
+        run: |
+          for script in scripts/*.cs; do
+            name=$(basename "$script" .cs)
+            dotnet project convert "$script" --output "artifacts/format/$name"
+            dotnet format "artifacts/format/$name/$name.csproj" --verify-no-changes
+          done
+
   bindings:
     name: Bindings are up to date
     runs-on: ubuntu-latest
