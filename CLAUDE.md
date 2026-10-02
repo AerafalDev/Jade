@@ -72,6 +72,11 @@ artifacts/                build outputs (gitignored): native/<rid>/, packages/
 - A local clone without an `origin` remote gets SourceLink warnings. Add the remote rather than
   suppressing them.
 - Libraries are AOT- and trim-compatible (`IsAotCompatible`). An AOT or trim warning is a bug.
+- Coding conventions: ADR-0011, the dotnet/runtime style with `var` everywhere and file-scoped
+  namespaces. They apply to src, tests, scripts and generated code. The rules broken most often:
+  no `this.`; private and internal fields `_camelCase`, static ones `s_camelCase`; accessibility
+  always explicit and first; `using` outside the namespace, `System` first. Until task 003 lands,
+  `.editorconfig` does not enforce them yet: follow them anyway.
 
 ### Interop
 
