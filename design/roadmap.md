@@ -21,7 +21,7 @@ back before the orchestrator writes their brief.
 | --- | --- | --- | --- |
 | [101](tasks/101-native-build-skeleton.md) | xmake skeleton: jade_native with SDL3 and miniaudio, host RID | 001 | done |
 | [102](tasks/102-native-dawn.md) | Dawn from source, linked into jade_native, host RID | 101 | done |
-| [103](tasks/103-native-desktop-matrix.md) | Desktop RID matrix in CI, Linux glibc baseline, artifact cache | 102, 002 | in-progress |
+| [103](tasks/103-native-desktop-matrix.md) | Desktop RID matrix in CI, Linux glibc baseline, artifact cache | 102, 002 | done |
 | [104](tasks/104-native-mobile.md) | Android and iOS RIDs, mobile platform glue proposal | 103 | todo |
 | [105](tasks/105-native-browser.md) | browser-wasm: Emscripten alignment with .NET, emdawnwebgpu | 103 | todo |
 | [106](tasks/106-native-packaging.md) | Jade.Native package, Jade dependency, size guard, local feed test | 103 | todo |
