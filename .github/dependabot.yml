@@ -34,3 +34,5 @@ updates:
       # Track the floating major tag (@v4) instead of pinning every minor/patch release.
       - dependency-name: "github/codeql-action"
         update-types: ["version-update:semver-minor", "version-update:semver-patch"]
+
+# Ruleset check.
