@@ -61,7 +61,9 @@ reference.
 - Repository settings through `gh repo edit` and `gh api`:
   - merge commits only, and delete branches on merge;
   - wiki off unless the user wants it;
-  - topics (for example `dotnet`, `game-engine`, `webgpu`, `sdl3`, `dawn`, `nativeaot`).
+  - the description and topics say what Jade is now, a 2D engine (ADR-0018): for example the
+    description "Cross-platform 2D game engine for .NET 10, built on Dawn (WebGPU), SDL3 and
+    miniaudio." and the topics `dotnet`, `game-engine`, `2d`, `webgpu`, `sdl3`, `dawn`, `nativeaot`.
 - The ruleset on `main` as decided above, through `gh api`.
 - Update `CONTRIBUTING.md` where it describes issues, pull requests or labels, and point it to
   `design/` for how work is organized.
