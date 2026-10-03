@@ -37,8 +37,8 @@ jobs:
             os: ubuntu-24.04-arm
             container: true
             packages: native/build/container/linux-arm64/home/.xmake/packages
-          # Both Windows images carry Visual Studio 2022 17.14 (Dawn is tested with 17.13 and needs 17.11)
-          # and the Windows SDK 10.0.26100 Dawn asks for.
+          # Both Windows images carry an MSVC newer than the 19.41 Dawn needs and the Windows SDK 10.0.26100
+          # it asks for. versions.json records which ones a build used.
           - rid: win-x64
             os: windows-2025
             packages: native/build/xmake/.xmake/packages
@@ -98,7 +98,7 @@ jobs:
             Windows)
               vs=$(cygpath -u "$("/c/Program Files (x86)/Microsoft Visual Studio/Installer/vswhere.exe" -latest -property installationPath | tr -d '\r')")
               msvc=$(tr -d '\r' < "$vs/VC/Auxiliary/Build/Microsoft.VCToolsVersion.default.txt")
-              sdk=$(ls "/c/Program Files (x86)/Windows Kits/10/Include" | sort -V | tail -n 1)
+              sdk=$(ls "/c/Program Files (x86)/Windows Kits/10/Include" | grep '^10\.' | sort -V | tail -n 1)
               id="msvc-$msvc-sdk-$sdk"
               ;;
           esac
