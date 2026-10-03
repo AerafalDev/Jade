@@ -1,6 +1,7 @@
 # ADR-0014: Dear ImGui, its extensions and backends
 
-- Status: Proposed
+- Status: Accepted (2026-10-03). The user chose not to ask the cimgui-family authors for
+  licenses: ImPlot3D stays deferred, and imnodes goes through a `jade_imgui_imnodes` shim.
 - Date: 2026-10-03
 
 ## Context

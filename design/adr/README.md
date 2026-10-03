@@ -19,7 +19,7 @@ ADRs with status `Proposed`; the orchestrator, together with the user, accepts o
 | [0011](0011-csharp-coding-conventions.md) | C# conventions: dotnet/runtime style, `var` everywhere, file-scoped namespaces, enforced at build | Accepted |
 | [0012](0012-c-bool-maps-to-system-boolean.md) | C `bool` maps to `System.Boolean`; wider boolean typedefs keep their width | Accepted |
 | [0013](0013-linux-glibc-baseline.md) | Linux RIDs build in an AlmaLinux 8 container: glibc 2.28 baseline, clang 21 with gcc-toolset-15 | Accepted |
-| [0014](0014-imgui.md) | Dear ImGui docking, dear_bindings C API, native SDL3/WebGPU backends, selected extensions | Proposed |
+| [0014](0014-imgui.md) | Dear ImGui docking, dear_bindings C API, native SDL3/WebGPU backends, selected extensions | Accepted |
 
 ## Template
 

@@ -132,7 +132,8 @@ These are snapshots for orientation. Tasks re-check them before pinning.
 | Dawn | `v20260930.214659` (daily tags) | github.com/google/dawn |
 | SDL3 | `release-3.4.16` | github.com/libsdl-org/SDL |
 | miniaudio | `0.11.25` | github.com/mackron/miniaudio |
-| Dear ImGui | `v1.92.9b` | github.com/ocornut/imgui |
+| Dear ImGui | `v1.92.9b-docking` (ADR-0014) | github.com/ocornut/imgui |
+| dear_bindings | `v0.24` release for that tag | github.com/dearimgui/dear_bindings |
 | Box2D | `v3.1.1` | github.com/erincatto/box2d |
 | Box3D | `v0.1.0` (first release, 2026-06-30, MIT) | github.com/erincatto/box3d |
 | HarfBuzz | `14.5.1` | github.com/harfbuzz/harfbuzz |
