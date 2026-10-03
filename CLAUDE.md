@@ -42,7 +42,7 @@ src/Jade/                 engine (later); the only package users reference      
 src/Jade.Interop/         public bindings, Generated/ is generator output, <Lib>/ hand-written
                           helpers; packed into Jade                                        (001)
 src/Jade.Native/          packaging-only project for runtimes/<rid>/native                 (106)
-tests/                    xunit.v3 test projects                                           (001)
+tests/                    xunit.v3 test projects; Jade.PackageTests, a package consumer    (001, 106)
 samples/                  runnable samples                                                 (206)
 artifacts/                build outputs (gitignored): native/<rid>/, packages/
 ```
@@ -128,6 +128,10 @@ artifacts/                build outputs (gitignored): native/<rid>/, packages/
   edits to recipes under `native/packages/` on its own.
 - A C++-only library gets a thin C shim in `native/shims/`, with functions named `jade_<lib>_*`.
 - Adding an upstream library includes adding its license to `THIRD-PARTY-NOTICES.md`.
+- `src/Jade.Native` packs `lib/` of every RID staged under `artifacts/native/` into
+  `runtimes/<rid>/native/`. `JadeNativeRequiredRids` lists the RIDs a release ships: packing without
+  one warns (JADENATIVE001, an error in CI). Packing fails over `JadeNativeMaxPackageSize`, 240 MB
+  (JADENATIVE002, ADR-0002). Platform link wiring goes in `buildTransitive/Jade.Native.targets`.
 
 ### Scripts
 
@@ -162,7 +166,8 @@ lands.
 | --- | --- | --- |
 | Build the managed solution | `dotnet build -c Release` | 001 |
 | Run the tests (Microsoft.Testing.Platform) | `dotnet test -c Release` | 001 |
-| Pack the `Jade` package | `dotnet pack -c Release -o artifacts/packages` | 001 |
+| Pack `Jade` and `Jade.Native`, the latter with every RID staged under `artifacts/native/`, and report the size per RID | `dotnet pack -c Release -o artifacts/packages` | 001, 106 |
+| Pack, then restore `tests/Jade.PackageTests` from `artifacts/packages`, run it, and run it again as a NativeAOT binary of the host RID | `dotnet scripts/test-package.cs [--no-pack]` | 106 |
 | Build jade_native and stage it into `artifacts/native/<rid>/`, symbols into `artifacts/native-symbols/<rid>/` (RID defaults to the host); `--print-config` only prints the RID's xmake configuration | `dotnet scripts/build-native.cs [--rid <rid>] [--config release\|debug] [--container] [--prune-packages] [--print-config]` | 101, 103, 004 |
 | Build a Linux RID in the glibc baseline container, as CI does | `dotnet scripts/build-native.cs --rid linux-x64 --container` | 103 |
 | Download CI's jade_native (latest successful `native.yml` run on main) into `artifacts/native/<rid>/` | `dotnet scripts/fetch-native.cs [--rid <rid>]... [--branch <branch>] [--run <run-id>]` | 103 |
@@ -170,6 +175,7 @@ lands.
 | Regenerate bindings from the staged headers (RID defaults to the host) | `dotnet scripts/generate-bindings.cs [--rid <rid>]` | 201 |
 | Build a script without running it | `dotnet build scripts/<name>.cs` | 003 |
 | Check the code style of the solution, generated bindings included, as CI does | `dotnet format --verify-no-changes --include-generated --exclude '**/obj/**'` | 003 |
+| Check the code style of `tests/Jade.PackageTests`, which is not in the solution (packages from `test-package.cs` first; MSBuild reads the version from the environment) | `JadePackageVersion=<version> dotnet format tests/Jade.PackageTests/Jade.PackageTests.csproj --verify-no-changes` | 106 |
 | Check the code style of a script as CI does (delete `artifacts/format/<name>` first: convert refuses an existing folder) | `dotnet project convert scripts/<name>.cs --output artifacts/format/<name>`, then `dotnet format artifacts/format/<name>/<name>.csproj --verify-no-changes` | 003 |
 
 ## Environment facts (verified 2026-10-02)

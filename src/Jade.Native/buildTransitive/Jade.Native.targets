@@ -1,0 +1,17 @@
+<Project>
+
+  <!-- Imported into every project that references Jade, directly or through another package.
+
+       Desktop RIDs need nothing here: NuGet resolves runtimes/<rid>/native/ like any native asset. A build without a
+       RID copies every RID's library under runtimes/ and lists them in the .deps.json, and a build or publish for one
+       RID, NativeAOT included, copies its library next to the application. -->
+
+  <!-- browser-wasm (task 105): jade_native.a has to be linked statically into the application. -->
+  <ItemGroup Condition="'$(RuntimeIdentifier)' == 'browser-wasm'">
+  </ItemGroup>
+
+  <!-- iOS and the iOS simulator (task 104): the form of jade_native, and how it gets linked, are still open. -->
+  <ItemGroup Condition="$(RuntimeIdentifier.StartsWith('ios'))">
+  </ItemGroup>
+
+</Project>
