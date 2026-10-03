@@ -28,14 +28,13 @@ end
 target("jade_native")
     set_kind("shared")
     set_languages("c11")
-    -- Shims export through JADE_API only.
-    if is_mode("debug") then
-        set_symbols("debug", "hidden")
-    else
-        set_symbols("hidden")
-    end
+    -- Shims export through JADE_API only. Release builds keep their symbols too: the library is
+    -- linked unstripped, then utils.symbols.extract moves the symbol table (and the shims' debug
+    -- information; the packages are built without any) to a separate file and strips the library.
+    -- On Windows the linker writes the PDB itself.
+    set_symbols("debug", "hidden")
     set_warnings("allextra", "error")
-    add_rules("jade.bundle", "jade.manifest")
+    add_rules("jade.bundle", "jade.manifest", "utils.symbols.extract")
 
     add_files("shims/*.c")
     add_headerfiles("shims/jade_native.h", {prefixdir = "jade"})

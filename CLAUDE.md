@@ -32,7 +32,8 @@ with what actually exists.
 CLAUDE.md                 this file
 design/                   architecture, roadmap, ADRs, task briefs (docs/ is reserved for the
                           future public documentation site, as in the other AerafalDev repos)
-native/                   xmake project for jade_native, local package repo, C shims      (101)
+native/                   xmake project for jade_native, local package repo, C shims,     (101)
+                          Linux build container (native/linux/)                           (103)
 scripts/                  C# file-based apps: build-native, generate-bindings, ...         (101, 201)
 src/Jade/                 engine (later); the only package users reference                 (001)
 src/Jade.Interop/         public bindings, Generated/ is generator output; packed into Jade (001)
@@ -109,9 +110,14 @@ artifacts/                build outputs (gitignored): native/<rid>/, packages/
   line in the `bundled` list of `native/xmake.lua`. The `jade.bundle` rule
   (`native/rules/bundle.lua`) does whole-archive linking and export control.
 - Native build prerequisites: xmake 3.1.1, CMake, Ninja (xmake 3.1.1 builds every CMake package
-  with it), clang, Python 3 and git. On Ubuntu, the system packages are the apt list of the
-  `bindings` job in `.github/workflows/ci.yml`. It includes `libx11-xcb-dev`, which `libx11-dev`
-  does not pull in.
+  with it), clang (MSVC on Windows, Xcode on macOS), Python 3 and git.
+- Linux libraries that CI builds or anyone ships come from the glibc 2.28 container of
+  `native/linux/Dockerfile` (`--container`, ADR-0013), which needs Docker with a rootful daemon.
+  The Dockerfile holds the toolchain and the only list of system headers. A host build needs the
+  equivalent development packages (SDL's `docs/README-linux.md` list, plus `libx11-xcb-dev` on
+  Ubuntu) and gives a library tied to the host's glibc.
+- Managed-only work can download CI's jade_native with `scripts/fetch-native.cs` instead of
+  building it.
 - Only `scripts/build-native.cs` runs xmake. It passes `--require=y` because xmake does not notice
   edits to recipes under `native/packages/` on its own.
 - A C++-only library gets a thin C shim in `native/shims/`, with functions named `jade_<lib>_*`.
@@ -151,7 +157,9 @@ lands.
 | Build the managed solution | `dotnet build -c Release` | 001 |
 | Run the tests (Microsoft.Testing.Platform) | `dotnet test -c Release` | 001 |
 | Pack the `Jade` package | `dotnet pack -c Release -o artifacts/packages` | 001 |
-| Build jade_native and stage it into `artifacts/native/<rid>/` (RID defaults to the host) | `dotnet scripts/build-native.cs [--rid <rid>] [--config release\|debug]` | 101 |
+| Build jade_native and stage it into `artifacts/native/<rid>/`, symbols into `artifacts/native-symbols/<rid>/` (RID defaults to the host) | `dotnet scripts/build-native.cs [--rid <rid>] [--config release\|debug] [--container] [--prune-packages]` | 101, 103 |
+| Build a Linux RID in the glibc baseline container, as CI does | `dotnet scripts/build-native.cs --rid linux-x64 --container` | 103 |
+| Download CI's jade_native (latest successful `native.yml` run on main) into `artifacts/native/<rid>/` | `dotnet scripts/fetch-native.cs [--rid <rid>]... [--branch <branch>] [--run <run-id>]` | 103 |
 | Smoke-check the staged jade_native of the host RID | `dotnet scripts/smoke-native.cs [--rid <rid>]` | 101 |
 | Regenerate bindings from the staged headers (RID defaults to the host) | `dotnet scripts/generate-bindings.cs [--rid <rid>]` | 201 |
 | Build a script without running it | `dotnet build scripts/<name>.cs` | 003 |

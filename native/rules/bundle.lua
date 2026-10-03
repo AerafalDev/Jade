@@ -15,10 +15,13 @@
 --                   (stripped): whole archive 10.0 MB, only the members the exports need
 --                   (--undefined per name) 9.4 MB, either one with --gc-sections 8.7 MB.
 --   macOS, iOS      -force_load, and -exported_symbols_list (ld64 accepts wildcards; Mach-O names
---                   carry a leading underscore). Written but not verified yet (103, 104).
---   Windows         /WHOLEARCHIVE, and a .def file. A .def file has no wildcards, so it has to be
---                   generated before linking from the archives' external symbols matched against
---                   the list (dumpbin /symbols or llvm-nm). Not implemented yet (103).
+--                   carry a leading underscore). -dead_strip plays the part of --gc-sections.
+--   Windows         /WHOLEARCHIVE, and a .def file. A .def file has no wildcards, so each `*`
+--                   pattern is expanded against the defined globals of its own package's archives
+--                   (xmake's binutils.readsyms reads MSVC archives), with DATA for variables. The
+--                   jade_* shims export themselves through JADE_API (__declspec(dllexport)).
+--                   /OPT:REF and /OPT:ICF are spelled out: /DEBUG, which writes the PDB, turns them
+--                   off by default.
 -- A static jade_native (browser-wasm, maybe iOS) exports nothing by itself; it needs the upstream
 -- archives merged into it instead (104, 105).
 rule("jade.bundle")
@@ -27,6 +30,8 @@ rule("jade.bundle")
             raise("jade.bundle: only a shared jade_native is implemented yet (static: tasks 104 and 105)")
         end
 
+        -- One entry per bundled package: the names it exports and its archives.
+        local bundles = {}
         local exports = {"jade_*"}
         local archives = {}
         for _, name in ipairs(table.wrap(target:values("jade.bundle"))) do
@@ -38,8 +43,10 @@ rule("jade.bundle")
             if not os.isfile(exportsfile) then
                 raise("jade.bundle: package %s has no %s", name, exportsfile)
             end
+            local bundle = {name = name, exports = {}, archives = {}}
             for line in io.lines(exportsfile) do
                 if #line > 0 then
+                    table.insert(bundle.exports, line)
                     table.insert(exports, line)
                 end
             end
@@ -51,8 +58,10 @@ rule("jade.bundle")
                 if not libfile:endswith(".a") and not libfile:endswith(".lib") then
                     raise("jade.bundle: %s is not a static archive", libfile)
                 end
+                table.insert(bundle.archives, libfile)
                 table.insert(archives, libfile)
             end
+            table.insert(bundles, bundle)
         end
 
         -- The content goes into the file name: when the list changes, the flags change and xmake
@@ -97,18 +106,68 @@ rule("jade.bundle")
             for _, archive in ipairs(archives) do
                 target:add("shflags", "-Wl,-force_load," .. archive, {force = true})
             end
-            target:add("shflags", "-Wl,-exported_symbols_list," .. list, {force = true})
+            target:add("shflags", "-Wl,-exported_symbols_list," .. list, "-Wl,-dead_strip", {force = true})
+        elseif target:is_plat("windows") then
+            import("core.base.binutils")
+
+            local lines = {"EXPORTS"}
+            for _, bundle in ipairs(bundles) do
+                local patterns = {}
+                for _, entry in ipairs(bundle.exports) do
+                    if entry:find("*", 1, true) then
+                        table.insert(patterns, {entry = entry, pattern = "^" .. entry:gsub("%*", ".*") .. "$", matched = false})
+                    else
+                        table.insert(lines, "    " .. entry)
+                    end
+                end
+                if #patterns > 0 then
+                    -- nm-style types: upper case is a defined global, U an undefined one.
+                    local seen = {}
+                    for _, archive in ipairs(bundle.archives) do
+                        for _, object in ipairs(binutils.readsyms(archive)) do
+                            for _, symbol in ipairs(object.symbols or {}) do
+                                local kind = symbol.type
+                                if kind and kind:match("^[A-TV-Z]$") and not seen[symbol.name] then
+                                    for _, item in ipairs(patterns) do
+                                        if symbol.name:match(item.pattern) then
+                                            seen[symbol.name] = true
+                                            item.matched = true
+                                            table.insert(lines, "    " .. symbol.name .. ((kind == "T") and "" or " DATA"))
+                                            break
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                    end
+                    for _, item in ipairs(patterns) do
+                        if not item.matched then
+                            raise("jade.bundle: no global symbol of package %s matches the export %s", bundle.name, item.entry)
+                        end
+                    end
+                end
+            end
+            local deffile = write_list(".def", lines)
+            for _, archive in ipairs(archives) do
+                target:add("shflags", "/WHOLEARCHIVE:" .. archive, {force = true})
+            end
+            target:add("shflags", "/DEF:" .. deffile, {force = true})
+            if is_mode("release") then
+                target:add("shflags", "/OPT:REF", "/OPT:ICF", {force = true})
+            end
         else
-            raise("jade.bundle: export control is not implemented for %s yet (task 103)", target:plat())
+            raise("jade.bundle: export control is not implemented for %s", target:plat())
         end
     end)
 
--- Writes <targetdir>/<target>.manifest.json after each build: the library, the target's own
--- public headers and the install directory of each bundled package. scripts/build-native.cs reads
--- it to stage artifacts/native/<rid>/.
+-- Writes <targetdir>/<target>.manifest.json after each build: the library, its separate debug
+-- symbols when the build has some, the target's own public headers, the install directory of each
+-- bundled package and the toolchain that built it. scripts/build-native.cs reads it to stage
+-- artifacts/native/<rid>/ and records the toolchain in versions.json.
 rule("jade.manifest")
     after_build(function (target)
         import("core.base.json")
+        import("lib.detect.find_tool")
 
         local headers = {}
         local rootdir = path.join(os.tmpdir(), "jade-headers")
@@ -125,9 +184,48 @@ rule("jade.manifest")
             table.insert(packages, {name = name, installdir = target:pkg(name):installdir()})
         end
 
+        -- A release build has a symbol file next to the library: the PDB on Windows, the dSYM bundle
+        -- on Apple, the debug file the utils.symbols.extract rule splits off elsewhere.
+        local symbols = target:symbolfile()
+        symbols = os.exists(symbols) and path.absolute(symbols) or nil
+
+        -- Every value is a display string; the packages are built by the same toolchain.
+        local envs = {}
+        for _, toolchain_inst in ipairs(target:toolchains()) do
+            envs = os.joinenvs(envs, toolchain_inst:runenvs() or {})
+        end
+        local toolchain = {xmake = xmake.version():shortstr()}
+        local function describe(name, program)
+            local tool = try { function () return find_tool(name, {program = program, version = true, envs = envs}) end }
+            return tool and tool.version and (name .. " " .. tool.version) or name
+        end
+        for _, kind in ipairs({"cc", "cxx", "sh"}) do
+            local program, toolname = target:tool(kind)
+            if program then
+                toolchain[kind] = describe(toolname or path.basename(program), program)
+            end
+        end
+        toolchain.cmake = describe("cmake")
+        toolchain.ninja = describe("ninja")
+        for _, toolchain_inst in ipairs(target:toolchains()) do
+            if toolchain_inst:name() == "msvc" then
+                toolchain.vs = toolchain_inst:config("vs")
+                toolchain.vs_toolset = toolchain_inst:config("vs_toolset")
+                toolchain.vs_sdkver = toolchain_inst:config("vs_sdkver")
+            elseif toolchain_inst:name() == "xcode" then
+                toolchain.xcode_sdkver = toolchain_inst:config("xcode_sdkver")
+                toolchain.target_minver = toolchain_inst:config("target_minver")
+            end
+        end
+        if target:is_plat("linux") then
+            toolchain.libc = try { function () return os.iorunv("getconf", {"GNU_LIBC_VERSION"}):trim() end }
+        end
+
         json.savefile(path.join(target:targetdir(), target:name() .. ".manifest.json"), {
             library = path.absolute(target:targetfile()),
+            symbols = symbols,
             headers = json.mark_as_array(headers),
-            packages = json.mark_as_array(packages)
+            packages = json.mark_as_array(packages),
+            toolchain = toolchain
         }, {pretty = true})
     end)

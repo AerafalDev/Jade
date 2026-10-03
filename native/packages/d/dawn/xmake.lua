@@ -1,6 +1,6 @@
 -- Dawn, the WebGPU implementation (ADR-0001), as one static archive for jade_native, built from
--- source with Dawn's own CMake. Only Linux with the Vulkan backend is supported so far; tasks 103
--- and 104 add the other platforms and their backends.
+-- source with Dawn's own CMake. Backends: Vulkan on Linux, D3D12 on Windows, Metal on macOS, and
+-- Null everywhere. Task 104 adds the mobile platforms.
 local commits = {
     -- The release notes cite the parent commit 9af2744f; the tagged commit only rolls V8, unused here.
     ["20260930.214659"] = "6fa6adb71bdcbf7bb17fe21fb1702bf43e89078f"
@@ -9,16 +9,20 @@ local commits = {
 -- Dawn's DEPS entries this configuration needs, with the CMake variable that points Dawn at each.
 -- DEPS pins every entry to a commit. The rest of DEPS serves options turned off below (tests,
 -- samples, GLFW, protobuf, OpenGL, DXC, ...).
+--   vulkan  only needed with the Vulkan backend (third_party/CMakeLists.txt)
+--   linked  code from it ends up in the archive (Ninja's header dependencies, 102), so its license
+--           is staged: always, or only with the Vulkan backend
 local dependencies = {
-    ["third_party/abseil-cpp"] = "DAWN_ABSEIL_DIR",
+    ["third_party/abseil-cpp"] = {var = "DAWN_ABSEIL_DIR", linked = "always"},
     -- jinja2 and markupsafe run Dawn's code generator; nothing from them is linked.
-    ["third_party/jinja2"] = "DAWN_JINJA2_DIR",
-    ["third_party/markupsafe"] = "DAWN_MARKUPSAFE_DIR",
-    ["third_party/spirv-headers/src"] = "DAWN_SPIRV_HEADERS_DIR",
+    ["third_party/jinja2"] = {var = "DAWN_JINJA2_DIR"},
+    ["third_party/markupsafe"] = {var = "DAWN_MARKUPSAFE_DIR"},
+    -- Configured on every platform, but only Tint's SPIR-V reader and writer include it.
+    ["third_party/spirv-headers/src"] = {var = "DAWN_SPIRV_HEADERS_DIR", linked = "vulkan"},
     -- Configured but never built: only the SPIR-V reader and SPIR-V validation link it, both off.
-    ["third_party/spirv-tools/src"] = "DAWN_SPIRV_TOOLS_DIR",
-    ["third_party/vulkan-headers/src"] = "DAWN_VULKAN_HEADERS_DIR",
-    ["third_party/vulkan-utility-libraries/src"] = "DAWN_VULKAN_UTILITY_LIBRARIES_DIR"
+    ["third_party/spirv-tools/src"] = {var = "DAWN_SPIRV_TOOLS_DIR", vulkan = true},
+    ["third_party/vulkan-headers/src"] = {var = "DAWN_VULKAN_HEADERS_DIR", vulkan = true, linked = "vulkan"},
+    ["third_party/vulkan-utility-libraries/src"] = {var = "DAWN_VULKAN_UTILITY_LIBRARIES_DIR", vulkan = true, linked = "vulkan"}
 }
 
 -- Clones the DEPS entries named on the command line with Dawn's tools/fetch_dawn_dependencies.py,
@@ -59,13 +63,21 @@ package("dawn")
     add_configs("recipe", {description = "Hash of this recipe and of the staging module.", type = "string", readonly = true,
         default = hash.sha256(path.join(os.scriptdir(), "xmake.lua")) .. hash.sha256(path.join(os.scriptdir(), "../../../modules/stage.lua"))})
 
+    -- What the monolithic archive needs from the system (conditional_private_platform_depends in
+    -- src/dawn/native/CMakeLists.txt; Abseil adds CoreFoundation on Apple and pulls its Windows
+    -- libraries in with #pragma comment). Direct3D, DXGI and the shader compilers are loaded at
+    -- runtime.
     on_load(function (package)
         if package:is_plat("linux") then
             package:add("syslinks", "dl", "pthread", "m")
+        elseif package:is_plat("windows") then
+            package:add("syslinks", "user32", "onecore_apiset", "dxguid")
+        elseif package:is_plat("macosx") then
+            package:add("frameworks", "Cocoa", "IOKit", "Foundation", "IOSurface", "QuartzCore", "Metal", "CoreFoundation")
         end
     end)
 
-    on_install("linux", function (package)
+    on_install("linux", "windows", "macosx", function (package)
         import("core.base.json")
         import("core.package.package", {alias = "core_package"})
         import("lib.detect.find_tool")
@@ -79,7 +91,13 @@ package("dawn")
         local depsdir = path.join(core_package.cachedir({rootonly = true}), "dawn-deps", commit)
         os.mkdir(depsdir)
         os.cp("DEPS", depsdir)
-        local names = table.orderkeys(dependencies)
+        local vulkan = package:is_plat("linux")
+        local names = {}
+        for _, name in ipairs(table.orderkeys(dependencies)) do
+            if vulkan or not dependencies[name].vulkan then
+                table.insert(names, name)
+            end
+        end
         local result = path.join(depsdir, "fetch.json")
         os.vrunv(python.program, table.join({"-c", fetch_script, path.absolute("tools"), depsdir, result}, names))
         for _, entry in ipairs(json.loadfile(result)) do
@@ -105,29 +123,45 @@ package("dawn")
             "-DDAWN_BUILD_PROTOBUF=OFF",
             "-DDAWN_USE_GLFW=OFF",
             "-DDAWN_ENABLE_SWIFTSHADER=OFF",
-            -- Backends. Null needs no GPU, so adapter and device tests also run on headless CI.
-            "-DDAWN_ENABLE_VULKAN=ON",
+            -- Backends: one native API per platform. Null needs no GPU, so adapter and device tests
+            -- also run on headless CI. D3D11 is not needed as a fallback: D3D12 runs on every
+            -- Windows 10 and 11 that .NET 10 supports.
+            "-DDAWN_ENABLE_VULKAN=" .. (vulkan and "ON" or "OFF"),
+            "-DDAWN_ENABLE_D3D12=" .. (package:is_plat("windows") and "ON" or "OFF"),
+            "-DDAWN_ENABLE_D3D11=OFF",
+            "-DDAWN_ENABLE_METAL=" .. (package:is_plat("macosx") and "ON" or "OFF"),
             "-DDAWN_ENABLE_NULL=ON",
             "-DDAWN_ENABLE_DESKTOP_GL=OFF",
             "-DDAWN_ENABLE_OPENGLES=OFF",
             -- Surfaces from X11 and Wayland windows (what SDL hands over). Dawn needs X11/Xlib.h and
             -- X11/Xlib-xcb.h at build time (libx11-dev and libx11-xcb-dev on Debian and Ubuntu) and
             -- loads the libraries at runtime.
-            "-DDAWN_USE_X11=ON",
-            "-DDAWN_USE_WAYLAND=ON",
+            "-DDAWN_USE_X11=" .. (package:is_plat("linux") and "ON" or "OFF"),
+            "-DDAWN_USE_WAYLAND=" .. (package:is_plat("linux") and "ON" or "OFF"),
+            -- Windows: surfaces come from HWNDs, which need nothing extra; Windows UI only adds the
+            -- UWP CoreWindow and SwapChainPanel sources. D3D12 compiles shaders with FXC
+            -- (d3dcompiler_47.dll, loaded at runtime from the library's directory, then from the
+            -- system's), so neither DXC nor the Agility SDK is built.
+            "-DDAWN_USE_WINDOWS_UI=OFF",
+            "-DDAWN_USE_BUILT_DXC=OFF",
+            "-DDAWN_USE_AGILITY_SDK=OFF",
+            "-DDAWN_FORCE_SYSTEM_COMPONENT_LOAD=OFF",
+            -- macOS: Dawn links the AppKit and IOKit frameworks for Metal surfaces only when told so.
+            "-DDAWN_TARGET_MACOS=" .. (package:is_plat("macosx") and "ON" or "OFF"),
             -- Shader input is WGSL only: no SPIR-V shader modules, so no SPIR-V reader and no
             -- validation of SPIR-V input (the only users of SPIRV-Tools).
             "-DDAWN_ENABLE_SPIRV_VALIDATION=OFF",
             "-DTINT_BUILD_SPV_READER=OFF",
             "-DTINT_BUILD_WGSL_READER=ON",
-            -- Tint writers: SPIR-V for Vulkan, NULL for the Null backend.
-            "-DTINT_BUILD_SPV_WRITER=ON",
+            -- Tint writers: the backend's shading language (SPIR-V for Vulkan, HLSL for D3D12, MSL
+            -- for Metal) and NULL for the Null backend.
+            "-DTINT_BUILD_SPV_WRITER=" .. (vulkan and "ON" or "OFF"),
+            "-DTINT_BUILD_HLSL_WRITER=" .. (package:is_plat("windows") and "ON" or "OFF"),
+            "-DTINT_BUILD_MSL_WRITER=" .. (package:is_plat("macosx") and "ON" or "OFF"),
             "-DTINT_BUILD_NULL_WRITER=ON",
             "-DTINT_BUILD_WGSL_WRITER=OFF",
             "-DTINT_BUILD_GLSL_WRITER=OFF",
             "-DTINT_BUILD_GLSL_VALIDATOR=OFF",
-            "-DTINT_BUILD_HLSL_WRITER=OFF",
-            "-DTINT_BUILD_MSL_WRITER=OFF",
             "-DTINT_BUILD_IR_BINARY=OFF",
             "-DTINT_BUILD_CMD_TOOLS=OFF",
             "-DTINT_BUILD_TESTS=OFF",
@@ -135,15 +169,31 @@ package("dawn")
             "-DTINT_BUILD_FUZZERS=OFF"
         }
         for _, name in ipairs(names) do
-            table.insert(configs, "-D" .. dependencies[name] .. "=" .. path.join(depsdir, name))
+            table.insert(configs, "-D" .. dependencies[name].var .. "=" .. path.join(depsdir, name))
+        end
+        if package:is_plat("macosx") and get_config("target_minver") then
+            table.insert(configs, "-DCMAKE_OSX_DEPLOYMENT_TARGET=" .. get_config("target_minver"))
+        end
+        -- Abseil picks the MSVC runtime itself and defaults to the DLL one (its CMakeLists.txt),
+        -- which would clash with the static CRT of everything else (ADR-0003).
+        if package:is_plat("windows") then
+            table.insert(configs, "-DABSL_MSVC_STATIC_RUNTIME=" .. (package:has_runtime("MT", "MTd") and "ON" or "OFF"))
+        end
+
+        -- __FILE__ in Dawn's and Abseil's assertions and logs would embed the builder's cache paths
+        -- (102): they become relative to the source trees. MSVC has no documented equivalent.
+        local cxflags = {}
+        if not package:is_plat("windows") then
+            cxflags = {"-ffile-prefix-map=" .. os.curdir() .. "=dawn", "-ffile-prefix-map=" .. depsdir .. "=dawn"}
         end
 
         -- Only the monolithic archive: the default target also builds the non-bundled libraries,
         -- and Dawn's install step needs it. The two files used here are copied by hand instead.
-        import("package.tools.cmake").build(package, configs, {target = "webgpu_dawn"})
+        import("package.tools.cmake").build(package, configs, {target = "webgpu_dawn", cxflags = cxflags})
 
         local builddir = package:builddir()
-        os.cp(path.join(builddir, "src", "dawn", "native", "libwebgpu_dawn.a"), package:installdir("lib"))
+        local archive = package:is_plat("windows") and "webgpu_dawn.lib" or "libwebgpu_dawn.a"
+        os.cp(path.join(builddir, "src", "dawn", "native", archive), package:installdir("lib"))
         -- webgpu/webgpu.h only includes dawn/webgpu.h, which is generated from dawn.json.
         os.cp("include/webgpu/webgpu.h", path.join(package:installdir("include"), "webgpu", "webgpu.h"))
         os.cp(path.join(builddir, "gen", "include", "dawn", "webgpu.h"), path.join(package:installdir("include"), "dawn", "webgpu.h"))
@@ -165,12 +215,14 @@ package("dawn")
             ["tools/nocompile/LICENSE"] = "chromium-LICENSE.txt",
             ["third_party/renderdoc/LICENSE.md"] = "renderdoc-LICENSE.md"
         }
-        for _, name in ipairs({"third_party/abseil-cpp", "third_party/spirv-headers/src", "third_party/vulkan-headers/src",
-                               "third_party/vulkan-utility-libraries/src"}) do
-            local project = name:match("third_party/([^/]+)")
-            -- The Khronos repositories keep the full license texts in LICENSES/.
-            for _, file in ipairs(table.join(os.files(path.join(depsdir, name, "LICENSE*")), os.files(path.join(depsdir, name, "LICENSES", "*")))) do
-                licenses[file] = project .. "-" .. path.filename(file)
+        for _, name in ipairs(names) do
+            local linked = dependencies[name].linked
+            if linked == "always" or (linked == "vulkan" and vulkan) then
+                local project = name:match("third_party/([^/]+)")
+                -- The Khronos repositories keep the full license texts in LICENSES/.
+                for _, file in ipairs(table.join(os.files(path.join(depsdir, name, "LICENSE*")), os.files(path.join(depsdir, name, "LICENSES", "*")))) do
+                    licenses[file] = project .. "-" .. path.filename(file)
+                end
             end
         end
 

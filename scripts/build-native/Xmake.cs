@@ -1,6 +1,3 @@
-using System.ComponentModel;
-using System.Diagnostics;
-
 /// <summary>Runs the xmake CLI.</summary>
 internal static class Xmake
 {
@@ -12,34 +9,6 @@ internal static class Xmake
     {
         // Not `-P`: with it, xmake keeps its configuration under the current directory and resolves the
         // build directory against it, so outputs land outside native/ when run from the repository root.
-        var startInfo = new ProcessStartInfo("xmake") { UseShellExecute = false, WorkingDirectory = projectDirectory };
-        foreach (var argument in arguments)
-        {
-            startInfo.ArgumentList.Add(argument);
-        }
-
-        Process? process;
-        try
-        {
-            process = Process.Start(startInfo);
-        }
-        catch (Win32Exception e)
-        {
-            throw new InvalidOperationException($"cannot start xmake ({e.Message}). Install xmake and put it on PATH.", e);
-        }
-
-        using (process)
-        {
-            if (process is null)
-            {
-                throw new InvalidOperationException("cannot start xmake.");
-            }
-
-            process.WaitForExit();
-            if (process.ExitCode != 0)
-            {
-                throw new InvalidOperationException($"`xmake {string.Join(' ', arguments)}` failed with exit code {process.ExitCode}.");
-            }
-        }
+        Command.Run("xmake", projectDirectory, arguments, "Install xmake and put it on PATH.");
     }
 }
