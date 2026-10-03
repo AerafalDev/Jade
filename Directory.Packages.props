@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <PackageVersion Include="ClangSharp" Version="21.1.8.4" />
+    <PackageVersion Include="YamlDotNet" Version="18.1.0" />
   </ItemGroup>
 
 </Project>

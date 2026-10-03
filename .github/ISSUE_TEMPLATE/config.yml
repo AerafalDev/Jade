@@ -1,0 +1,6 @@
+# Blank issues stay available: with Discussions off, they are where a question or anything outside the two forms goes.
+blank_issues_enabled: true
+contact_links:
+  - name: Report a security vulnerability
+    url: https://github.com/AerafalDev/Jade/security/policy
+    about: Report it privately, as SECURITY.md explains, rather than in a public issue.

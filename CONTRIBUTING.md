@@ -19,8 +19,18 @@ dotnet test -c Release                            # run the tests (Microsoft.Tes
 dotnet pack -c Release -o artifacts/packages      # produce the Jade and Jade.Native packages
 ```
 
-Architecture, decisions and planned work live in [`design/`](design/): start with
-[`design/architecture.md`](design/architecture.md) and [`design/roadmap.md`](design/roadmap.md).
+## How work is organized
+
+Architecture, decisions and planned work live in [`design/`](design/), next to the code:
+
+- [`design/architecture.md`](design/architecture.md) gives the overall picture.
+- [`design/roadmap.md`](design/roadmap.md) lists every task with its status, phase by phase.
+- Each task has a brief under [`design/tasks/`](design/tasks/): goal, scope, acceptance criteria, and an
+  Outcome filled in when it lands.
+- Decisions that are hard to reverse are recorded as ADRs under [`design/adr/`](design/adr/).
+
+Before starting on something larger than a fix, open an issue or check the roadmap: the work may already be
+planned, or an ADR may rule it out.
 
 ## Coding conventions
 
@@ -51,15 +61,35 @@ New behaviour ships with a test. Tests live under `tests/` (xUnit v3 on Microsof
 
 Run `dotnet test -c Release` before opening a pull request.
 
+## Issues
+
+Open an issue from one of the forms:
+
+- **Bug report** asks for the Jade version, the RID, the OS, the .NET SDK and the native (graphics) backend,
+  plus a minimal repro if you can share one.
+- **Feature request** asks what you are trying to do before what would help.
+
+A blank issue works for anything else, such as a question. For security-sensitive reports, follow the
+[Security Policy](SECURITY.md) instead of opening a public issue.
+
 ## Pull requests
 
 - Branch off `main`; keep each change small and self-contained.
-- Write clear, present-tense commit messages, one logical change per commit.
+- Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/):
+  `<type>: <summary>`, imperative and lowercase, where the type is `feat`, `fix`, `refactor`, `perf`, `test`,
+  `docs`, `build`, `ci`, `chore` or `style`. One logical change per commit.
 - Make sure `dotnet build -c Release` and `dotnet test -c Release` are green.
-- Describe *what* changed and *why*. When you touch interop, cite the native header or API being bound.
+- Describe *what* changed and *why* in a sentence or two, and end with a `Tested: ...` line that says what you
+  ran; the pull request template shows how. When you touch interop, cite the native header or API being bound.
 
-## Reporting bugs
+`main` is protected: every change reaches it through a pull request, which can merge once the `CI result`,
+`CodeQL result` and `Native result` checks pass. Pull requests merge with a merge commit, and their branch is
+deleted afterwards.
 
-Open an issue with the OS and architecture, the .NET version, what you expected and what happened, and a
-minimal repro if you can share one. For security-sensitive reports, follow the [Security Policy](SECURITY.md)
-instead of opening a public issue.
+## Labels
+
+Labels come in groups: `type:` (bug, feature, docs, performance, ci, build, chore), `area:`, `platform:` and
+`status:`, plus `good first issue`, `help wanted`, and `dependencies` and `github_actions` on Dependabot's pull
+requests. A workflow adds `area:` and `platform:` labels to pull requests from the paths they change;
+maintainers set the others. The set is declared in [`.github/labels.yml`](.github/labels.yml) and applied with
+`dotnet scripts/sync-labels.cs`, so a change to the labels goes through that file.

@@ -1,0 +1,94 @@
+# The repository's labels. `dotnet scripts/sync-labels.cs` applies this file to GitHub: it creates missing labels,
+# updates colors and descriptions, and renames a label listed under `aliases`, which keeps it on its issues and pull
+# requests. Labels missing from this file are deleted only with --delete. Every label that .github/labeler.yml,
+# .github/dependabot.yml or an issue form applies must be declared here; the script checks that first.
+#
+# Colors are quoted: an unquoted 000000 would read as a number in YAML.
+
+# Type: what kind of change or report, one per issue or pull request. Same words as the commit types.
+- name: "type: bug"
+  color: "d73a4a"
+  description: Something does not work as intended
+  aliases: [bug]
+- name: "type: feature"
+  color: "a2eeef"
+  description: New capability or public API
+  aliases: [enhancement]
+- name: "type: docs"
+  color: "0075ca"
+  description: Documentation, design documents and XML docs
+  aliases: [documentation]
+- name: "type: performance"
+  color: "fbca04"
+  description: Speed, memory use or size
+- name: "type: ci"
+  color: "5319e7"
+  description: GitHub Actions workflows and Dependabot
+- name: "type: build"
+  color: "c2e0c6"
+  description: MSBuild, project files, NuGet packages and the SDK
+- name: "type: chore"
+  color: "ededed"
+  description: Repository housekeeping and tooling
+
+# Area: the part of the project. The labeler adds these from the changed paths.
+- name: "area: native"
+  color: "bfd4f2"
+  description: jade_native, its xmake packages and shims, and the native scripts
+- name: "area: bindings"
+  color: "bfd4f2"
+  description: Jade.Interop, generated and hand-written bindings
+- name: "area: generator"
+  color: "bfd4f2"
+  description: The binding generator, scripts/generate-bindings
+- name: "area: packaging"
+  color: "bfd4f2"
+  description: The Jade and Jade.Native NuGet packages
+- name: "area: engine"
+  color: "bfd4f2"
+  description: The engine, src/Jade
+- name: "area: docs site"
+  color: "bfd4f2"
+  description: The public documentation site, docs/
+
+# Platform: set by hand on issues; the labeler adds them for platform-specific paths.
+- name: "platform: windows"
+  color: "d4c5f9"
+  description: Windows, win-x64 and win-arm64
+- name: "platform: linux"
+  color: "d4c5f9"
+  description: Linux, linux-x64 and linux-arm64
+- name: "platform: macos"
+  color: "d4c5f9"
+  description: macOS, osx-x64 and osx-arm64
+- name: "platform: android"
+  color: "d4c5f9"
+  description: Android, android-arm64 and android-x64
+- name: "platform: ios"
+  color: "d4c5f9"
+  description: iOS and the iOS simulator
+- name: "platform: browser"
+  color: "d4c5f9"
+  description: The browser, browser-wasm
+
+# Status: why an open issue or pull request is not moving.
+- name: "status: blocked"
+  color: "b60205"
+  description: Waits on another issue, task or upstream change
+- name: "status: needs-decision"
+  color: "d93f0b"
+  description: Waits on a maintainer decision, often an ADR
+
+# Names that GitHub and Dependabot recognize.
+- name: good first issue
+  color: "7057ff"
+  description: Good for newcomers
+- name: help wanted
+  color: "008672"
+  description: Extra attention is needed
+- name: dependencies
+  color: "0366d6"
+  description: Updates a dependency
+- name: github_actions
+  color: "000000"
+  description: Updates a GitHub Action
