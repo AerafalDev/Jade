@@ -27,6 +27,17 @@ internal static class LayoutTestEmitter
         {
             writer.Line("[Fact]");
             writer.Open($"public void {structModel.Name}_has_the_layout_of_{structModel.NativeName.Replace('.', '_')}()");
+            if (structModel.SupportedPlatforms.Count > 0)
+            {
+                // A type that only exists on some platforms is only touched behind a guard (CA1416). The generator has
+                // already compared its layout with clang's on every target.
+                writer.Open($"if (!({string.Join(" || ", structModel.SupportedPlatforms.Select(p => $"OperatingSystem.IsOSPlatform(\"{p}\")"))}))");
+                writer.Line($"Assert.Skip(\"{structModel.NativeName} only exists on {string.Join(", ", structModel.SupportedPlatforms)}.\");");
+                writer.Line("return;");
+                writer.Close();
+                writer.Line();
+            }
+
             writer.Line($"{structModel.Name} value = default;");
 
             // A fixed buffer is already a pointer; anything else, inline arrays included, needs its address taken.

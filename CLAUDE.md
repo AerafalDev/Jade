@@ -1,6 +1,6 @@
 # Jade
 
-Jade is a cross-platform game engine for .NET 10. Work currently targets the **interop layer**: one
+Jade is a cross-platform 2D game engine for .NET 10 (ADR-0018). Work currently targets the **interop layer**: one
 native library, `jade_native`, that bundles Dawn (WebGPU), SDL3, miniaudio and, later, more C/C++
 libraries, plus public C# bindings generated over it. The engine itself is planned once the
 interop layer is green on every target.
@@ -174,6 +174,7 @@ lands.
 | Download CI's jade_native (latest successful `native.yml` run on main) into `artifacts/native/<rid>/` | `dotnet scripts/fetch-native.cs [--rid <rid>]... [--branch <branch>] [--run <run-id>]` | 103 |
 | Smoke-check the staged jade_native of the host RID | `dotnet scripts/smoke-native.cs [--rid <rid>]` | 101 |
 | Regenerate bindings from the staged headers (RID defaults to the host) | `dotnet scripts/generate-bindings.cs [--rid <rid>]` | 201 |
+| Apply `.github/labels.yml` to the repository's labels through `gh`, after checking that the labeler, Dependabot and the issue forms only use declared labels; undeclared labels are deleted only with `--delete` | `dotnet scripts/sync-labels.cs [--repo <owner/name>] [--delete] [--dry-run]` | 005 |
 | Build a script without running it | `dotnet build scripts/<name>.cs` | 003 |
 | Check the code style of the solution, generated bindings included, as CI does | `dotnet format --verify-no-changes --include-generated --exclude '**/obj/**'` | 003 |
 | Check the code style of `tests/Jade.PackageTests`, which is not in the solution (packages from `test-package.cs` first; MSBuild reads the version from the environment) | `JadePackageVersion=<version> dotnet format tests/Jade.PackageTests/Jade.PackageTests.csproj --verify-no-changes` | 106 |

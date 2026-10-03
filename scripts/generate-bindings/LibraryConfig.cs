@@ -24,9 +24,21 @@ internal sealed class LibraryConfig
 
     /// <summary>
     /// Gets the headers whose functions, enums and object-like macros are bound. Structs and other types are bound
-    /// when a bound declaration uses them, wherever they are declared in the library.
+    /// when a bound declaration uses them, wherever they are declared in the library. Unused with <see cref="ApiDescription"/>.
     /// </summary>
-    public required IReadOnlyList<HeaderConfig> Headers { get; init; }
+    public IReadOnlyList<HeaderConfig> Headers { get; init; } = [];
+
+    /// <summary>
+    /// Gets the file under the staged <c>metadata/</c> folder that describes the API, read by <see cref="DawnJsonReader"/>
+    /// instead of parsing the headers (ADR-0005), or <see langword="null"/> for a library read from its headers.
+    /// </summary>
+    public string? ApiDescription { get; init; }
+
+    /// <summary>
+    /// Gets the header, relative to the staged <c>include/</c> folder, that declares what <see cref="ApiDescription"/>
+    /// describes. It is only parsed to cross-check the model and to measure struct layouts per target (<see cref="DawnHeaderCheck"/>).
+    /// </summary>
+    public string? CrossCheckHeader { get; init; }
 
     /// <summary>
     /// Gets the headers that are parsed but not bound, with the reason. Every header of <see cref="IncludeDirectory"/>
@@ -106,4 +118,10 @@ internal sealed class LibraryConfig
 
     /// <summary>Gets functions unavailable on some platforms, by C name, as <c>OperatingSystem.IsOSPlatform</c> names.</summary>
     public IReadOnlyDictionary<string, IReadOnlyList<string>> UnsupportedPlatforms { get; init; } = new Dictionary<string, IReadOnlyList<string>>();
+
+    /// <summary>
+    /// Gets remarks added to the documentation of declarations, by C name, for facts about jade_native's build that
+    /// upstream cannot document. Only <see cref="DawnJsonReader"/> applies them so far.
+    /// </summary>
+    public IReadOnlyDictionary<string, string> Notes { get; init; } = new Dictionary<string, string>();
 }

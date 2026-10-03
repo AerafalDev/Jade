@@ -436,10 +436,12 @@ public static unsafe partial class Sdl
     /// <param name="callback">a function that is called for each entry in the directory.</param>
     /// <param name="userdata">a pointer that is passed to <c>callback</c>.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    public static bool EnumerateStorageDirectory(Storage storage, byte* path, delegate* unmanaged[Cdecl]<void*, byte*, byte*, EnumerationResult> callback, void* userdata) => EnumerateStorageDirectoryImport(storage, path, (nint)callback, userdata);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_EnumerateStorageDirectory")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.U1)]
-    public static partial bool EnumerateStorageDirectory(Storage storage, byte* path, delegate* unmanaged[Cdecl]<void*, byte*, byte*, EnumerationResult> callback, void* userdata);
+    private static partial bool EnumerateStorageDirectoryImport(Storage storage, byte* path, nint callback, void* userdata);
 
     /// <summary>Enumerate a directory in a storage container through a callback function.</summary>
     /// <remarks>

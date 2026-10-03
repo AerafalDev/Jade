@@ -1,0 +1,103 @@
+name: Bug report
+description: Something in Jade crashes, fails to build or does not behave as documented.
+labels: ["type: bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this. Security issues go through the
+        [security policy](https://github.com/AerafalDev/Jade/security/policy), not a public issue.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what happened instead.
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Minimal repro
+      description: The smallest code or steps that show the problem. A link to a repository works too.
+      render: csharp
+
+  - type: input
+    id: jade-version
+    attributes:
+      label: Jade version
+      description: The version of the `Jade` package, or the commit when you build from source.
+      placeholder: 0.1.0, or a commit such as 75ea980
+    validations:
+      required: true
+
+  - type: dropdown
+    id: rid
+    attributes:
+      label: Runtime identifier (RID)
+      description: The RID your application runs as.
+      options:
+        - win-x64
+        - win-arm64
+        - linux-x64
+        - linux-arm64
+        - osx-x64
+        - osx-arm64
+        - android-arm64
+        - android-x64
+        - ios-arm64
+        - iossimulator-arm64
+        - iossimulator-x64
+        - browser-wasm
+        - Other (say which in "What happened")
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: Operating system
+      description: Name and version. On Linux, add the session (X11 or Wayland); on mobile, the device.
+      placeholder: Windows 11 24H2, Ubuntu 24.04 on Wayland, macOS 26.0, Android 15 on a Pixel 8
+    validations:
+      required: true
+
+  - type: input
+    id: dotnet-sdk
+    attributes:
+      label: .NET SDK
+      description: The output of `dotnet --version`.
+      placeholder: 10.0.401
+    validations:
+      required: true
+
+  - type: dropdown
+    id: native-backend
+    attributes:
+      label: Native backend
+      description: The graphics backend Dawn runs on, when the problem involves rendering or the GPU.
+      options:
+        - Not related to rendering
+        - D3D12
+        - Vulkan
+        - Metal
+        - WebGPU (browser)
+        - "Null"
+        - I don't know
+    validations:
+      required: true
+
+  - type: input
+    id: gpu
+    attributes:
+      label: GPU and driver
+      description: For rendering problems.
+      placeholder: NVIDIA RTX 4070, driver 580.82
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs and stack traces
+      description: Paste them as text; they are formatted as code.
+      render: text

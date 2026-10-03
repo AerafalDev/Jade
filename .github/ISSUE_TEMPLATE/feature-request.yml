@@ -1,0 +1,31 @@
+name: Feature request
+description: Suggest a capability, an API, a library or a platform for Jade.
+labels: ["type: feature"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Jade is in early development: the interop layer comes first, the engine follows. The
+        [roadmap](https://github.com/AerafalDev/Jade/blob/main/design/roadmap.md) shows what is planned.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What are you trying to do
+      description: The use case or the problem, before any solution.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What would help
+      description: The API, behavior or library you have in mind. A code sketch is welcome.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives
+      description: Workarounds you use today, or other designs you considered.

@@ -3597,10 +3597,12 @@ public static unsafe partial class Sdl
     /// <param name="callback">the function to call when doing a hit-test.</param>
     /// <param name="callbackData">an app-defined void pointer passed to <b>callback</b>.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    public static bool SetWindowHitTest(Window window, delegate* unmanaged[Cdecl]<Window, Point*, void*, HitTestResult> callback, void* callbackData) => SetWindowHitTestImport(window, (nint)callback, callbackData);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_SetWindowHitTest")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.U1)]
-    public static partial bool SetWindowHitTest(Window window, delegate* unmanaged[Cdecl]<Window, Point*, void*, HitTestResult> callback, void* callbackData);
+    private static partial bool SetWindowHitTestImport(Window window, nint callback, void* callbackData);
 
     /// <summary>Set the shape of a transparent window.</summary>
     /// <remarks>
@@ -3872,9 +3874,11 @@ public static unsafe partial class Sdl
     /// a pointer to the named OpenGL function. The returned pointer should be cast to the appropriate function
     /// signature.
     /// </returns>
+    public static delegate* unmanaged[Cdecl]<void> GlGetProcAddress(byte* proc) => (delegate* unmanaged[Cdecl]<void>)GlGetProcAddressImport(proc);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_GL_GetProcAddress")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial delegate* unmanaged[Cdecl]<void> GlGetProcAddress(byte* proc);
+    private static partial nint GlGetProcAddressImport(byte* proc);
 
     /// <summary>Get an OpenGL function by name.</summary>
     /// <remarks>
@@ -3953,9 +3957,11 @@ public static unsafe partial class Sdl
     /// <returns>
     /// a pointer to the named EGL function. The returned pointer should be cast to the appropriate function signature.
     /// </returns>
+    public static delegate* unmanaged[Cdecl]<void> EglGetProcAddress(byte* proc) => (delegate* unmanaged[Cdecl]<void>)EglGetProcAddressImport(proc);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_EGL_GetProcAddress")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial delegate* unmanaged[Cdecl]<void> EglGetProcAddress(byte* proc);
+    private static partial nint EglGetProcAddressImport(byte* proc);
 
     /// <summary>Get an EGL library function by name.</summary>
     /// <remarks>
@@ -4265,9 +4271,11 @@ public static unsafe partial class Sdl
     /// <param name="surfaceAttribCallback">callback for attributes to pass to eglCreateSurface. May be NULL.</param>
     /// <param name="contextAttribCallback">callback for attributes to pass to eglCreateContext. May be NULL.</param>
     /// <param name="userdata">a pointer that is passed to the callbacks.</param>
+    public static void EglSetAttributeCallbacks(delegate* unmanaged[Cdecl]<void*, nint*> platformAttribCallback, delegate* unmanaged[Cdecl]<void*, void*, void*, int*> surfaceAttribCallback, delegate* unmanaged[Cdecl]<void*, void*, void*, int*> contextAttribCallback, void* userdata) => EglSetAttributeCallbacksImport((nint)platformAttribCallback, (nint)surfaceAttribCallback, (nint)contextAttribCallback, userdata);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_EGL_SetAttributeCallbacks")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void EglSetAttributeCallbacks(delegate* unmanaged[Cdecl]<void*, nint*> platformAttribCallback, delegate* unmanaged[Cdecl]<void*, void*, void*, int*> surfaceAttribCallback, delegate* unmanaged[Cdecl]<void*, void*, void*, int*> contextAttribCallback, void* userdata);
+    private static partial void EglSetAttributeCallbacksImport(nint platformAttribCallback, nint surfaceAttribCallback, nint contextAttribCallback, void* userdata);
 
     /// <summary>Set the swap interval for the current OpenGL context.</summary>
     /// <remarks>

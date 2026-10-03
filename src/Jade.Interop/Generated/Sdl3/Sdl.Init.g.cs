@@ -258,10 +258,12 @@ public static unsafe partial class Sdl
     /// <param name="userdata">a pointer that is passed to <c>callback</c>.</param>
     /// <param name="waitComplete">true to wait for the callback to complete, false to return immediately.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    public static bool RunOnMainThread(delegate* unmanaged[Cdecl]<void*, void> callback, void* userdata, bool waitComplete) => RunOnMainThreadImport((nint)callback, userdata, waitComplete);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_RunOnMainThread")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.U1)]
-    public static partial bool RunOnMainThread(delegate* unmanaged[Cdecl]<void*, void> callback, void* userdata, [MarshalAs(UnmanagedType.U1)] bool waitComplete);
+    private static partial bool RunOnMainThreadImport(nint callback, void* userdata, [MarshalAs(UnmanagedType.U1)] bool waitComplete);
 
     /// <summary>Specify basic metadata about your app.</summary>
     /// <remarks>

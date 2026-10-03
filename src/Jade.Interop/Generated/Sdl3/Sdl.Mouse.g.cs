@@ -429,10 +429,12 @@ public static unsafe partial class Sdl
     /// <param name="callback">a callback used to transform relative mouse motion, or NULL for default behavior.</param>
     /// <param name="userdata">a pointer that will be passed to <c>callback</c>.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    public static bool SetRelativeMouseTransform(delegate* unmanaged[Cdecl]<void*, ulong, Window, MouseID, float*, float*, void> callback, void* userdata) => SetRelativeMouseTransformImport((nint)callback, userdata);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_SetRelativeMouseTransform")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.U1)]
-    public static partial bool SetRelativeMouseTransform(delegate* unmanaged[Cdecl]<void*, ulong, Window, MouseID, float*, float*, void> callback, void* userdata);
+    private static partial bool SetRelativeMouseTransformImport(nint callback, void* userdata);
 
     /// <summary>Set relative mouse mode for a window.</summary>
     /// <remarks>

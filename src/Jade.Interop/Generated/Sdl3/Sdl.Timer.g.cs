@@ -198,9 +198,11 @@ public static unsafe partial class Sdl
     /// </param>
     /// <param name="userdata">a pointer that is passed to <c>callback</c>.</param>
     /// <returns>a timer ID or 0 on failure; call SDL_GetError() for more information.</returns>
+    public static TimerID AddTimer(uint interval, delegate* unmanaged[Cdecl]<void*, TimerID, uint, uint> callback, void* userdata) => AddTimerImport(interval, (nint)callback, userdata);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_AddTimer")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial TimerID AddTimer(uint interval, delegate* unmanaged[Cdecl]<void*, TimerID, uint, uint> callback, void* userdata);
+    private static partial TimerID AddTimerImport(uint interval, nint callback, void* userdata);
 
     /// <summary>Call a callback function at a future time.</summary>
     /// <remarks>
@@ -246,9 +248,11 @@ public static unsafe partial class Sdl
     /// </param>
     /// <param name="userdata">a pointer that is passed to <c>callback</c>.</param>
     /// <returns>a timer ID or 0 on failure; call SDL_GetError() for more information.</returns>
+    public static TimerID AddTimerNS(ulong interval, delegate* unmanaged[Cdecl]<void*, TimerID, ulong, ulong> callback, void* userdata) => AddTimerNSImport(interval, (nint)callback, userdata);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_AddTimerNS")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial TimerID AddTimerNS(ulong interval, delegate* unmanaged[Cdecl]<void*, TimerID, ulong, ulong> callback, void* userdata);
+    private static partial TimerID AddTimerNSImport(ulong interval, nint callback, void* userdata);
 
     /// <summary>Remove a timer created with SDL_AddTimer().</summary>
     /// <remarks>

@@ -139,13 +139,16 @@ package("dawn")
             "-DDAWN_USE_X11=" .. (package:is_plat("linux") and "ON" or "OFF"),
             "-DDAWN_USE_WAYLAND=" .. (package:is_plat("linux") and "ON" or "OFF"),
             -- Windows: surfaces come from HWNDs, which need nothing extra; Windows UI only adds the
-            -- UWP CoreWindow and SwapChainPanel sources. D3D12 compiles shaders with FXC
-            -- (d3dcompiler_47.dll, loaded at runtime from the library's directory, then from the
-            -- system's), so neither DXC nor the Agility SDK is built.
+            -- UWP CoreWindow and SwapChainPanel sources. D3D12 compiles shaders with FXC, so neither
+            -- DXC nor the Agility SDK is built. FXC is d3dcompiler_47.dll, which Windows 10 and later
+            -- carry in System32 and jade_native does not ship (106). Without the system component
+            -- load, Dawn tries the library's and the executable's directories, then the bare name
+            -- with LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR, which requires a full path and fails with
+            -- ERROR_INVALID_PARAMETER: System32 is never searched (DynamicLib.cpp, Instance.cpp).
             "-DDAWN_USE_WINDOWS_UI=OFF",
             "-DDAWN_USE_BUILT_DXC=OFF",
             "-DDAWN_USE_AGILITY_SDK=OFF",
-            "-DDAWN_FORCE_SYSTEM_COMPONENT_LOAD=OFF",
+            "-DDAWN_FORCE_SYSTEM_COMPONENT_LOAD=" .. (package:is_plat("windows") and "ON" or "OFF"),
             -- macOS: Dawn links the AppKit and IOKit frameworks for Metal surfaces only when told so.
             "-DDAWN_TARGET_MACOS=" .. (package:is_plat("macosx") and "ON" or "OFF"),
             -- Shader input is WGSL only: no SPIR-V shader modules, so no SPIR-V reader and no

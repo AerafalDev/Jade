@@ -76,8 +76,13 @@ internal static class Naming
     {
         var pascal = Pascal(name, words, "_");
         var camel = pascal[0] == '_' ? pascal : char.ToLowerInvariant(pascal[0]) + pascal[1..];
-        return s_keywords.Contains(camel) ? "@" + camel : camel;
+        return Escape(camel);
     }
+
+    /// <summary>Prefixes a C# keyword with <c>@</c> so it can be an identifier.</summary>
+    /// <param name="name">A name.</param>
+    /// <returns>The name, escaped if it is a keyword.</returns>
+    public static string Escape(string name) => s_keywords.Contains(name) ? "@" + name : name;
 
     /// <summary>Finds the longest run of leading <c>_</c>-separated words shared by every name, never a whole name.</summary>
     /// <param name="names">C names, for example the constants of one enum.</param>

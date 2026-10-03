@@ -1,0 +1,3 @@
+# One maintainer owns the whole repository, so a finer split would name the same owner everywhere. GitHub requests
+# their review on every pull request opened by someone else, Dependabot included.
+* @AerafalDev

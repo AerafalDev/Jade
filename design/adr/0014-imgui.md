@@ -180,6 +180,9 @@ Also decided with the user on 2026-10-03: ImGui is built with `IMGUI_USE_WCHAR32
 32-bit and covers the whole of Unicode (emoji, extended CJK). It changes `ImWchar` and struct
 layouts, so it lands in the recipe before the bindings (task 311).
 
+Amended again on 2026-10-03 by ADR-0018: Jade is a 2D engine, so ImGuizmo and ImPlot3D are out of
+the plan (task 317 is dropped, task 313 binds ImPlot only).
+
 ## Consequences
 
 - `jade_native` grows by about 1.5 MB (core and demo; the two backends add about 32 KB of code) plus

@@ -16,6 +16,15 @@ internal sealed class StructModel
     /// <summary>Gets the fields in C order. A union may keep only a subset (see <see cref="LibraryConfig.UnionMembers"/>).</summary>
     public required IReadOnlyList<FieldModel> Fields { get; init; }
 
+    /// <summary>Gets the fields a parameterless constructor sets; when empty, the struct has no explicit constructor.</summary>
+    public IReadOnlyList<FieldInitializer> Initializers { get; init; } = [];
+
     /// <summary>Gets the upstream documentation.</summary>
     public required Documentation Documentation { get; init; }
+
+    /// <summary>Gets the only platforms (<c>OperatingSystem.IsOSPlatform</c> names) where the struct exists, or none when it exists everywhere.</summary>
+    public IReadOnlyList<string> SupportedPlatforms { get; init; } = [];
+
+    /// <summary>Gets the platforms (<c>OperatingSystem.IsOSPlatform</c> names) where the struct does not exist.</summary>
+    public IReadOnlyList<string> UnsupportedPlatforms { get; init; } = [];
 }

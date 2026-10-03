@@ -127,9 +127,11 @@ public static unsafe partial class Sdl
     /// the function pointer for <c>vkGetInstanceProcAddr</c> or NULL on failure; call SDL_GetError() for more
     /// information.
     /// </returns>
+    public static delegate* unmanaged[Cdecl]<void> VulkanGetVkGetInstanceProcAddr() => (delegate* unmanaged[Cdecl]<void>)VulkanGetVkGetInstanceProcAddrImport();
+
     [LibraryImport("jade_native", EntryPoint = "SDL_Vulkan_GetVkGetInstanceProcAddr")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial delegate* unmanaged[Cdecl]<void> VulkanGetVkGetInstanceProcAddr();
+    private static partial nint VulkanGetVkGetInstanceProcAddrImport();
 
     /// <summary>Unload the Vulkan library previously loaded by SDL_Vulkan_LoadLibrary().</summary>
     /// <remarks>

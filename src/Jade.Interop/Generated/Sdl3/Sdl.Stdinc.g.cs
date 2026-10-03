@@ -278,10 +278,12 @@ public static unsafe partial class Sdl
     /// <param name="reallocFunc">custom realloc function.</param>
     /// <param name="freeFunc">custom free function.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    public static bool SetMemoryFunctions(delegate* unmanaged[Cdecl]<nuint, void*> mallocFunc, delegate* unmanaged[Cdecl]<nuint, nuint, void*> callocFunc, delegate* unmanaged[Cdecl]<void*, nuint, void*> reallocFunc, delegate* unmanaged[Cdecl]<void*, void> freeFunc) => SetMemoryFunctionsImport((nint)mallocFunc, (nint)callocFunc, (nint)reallocFunc, (nint)freeFunc);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_SetMemoryFunctions")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.U1)]
-    public static partial bool SetMemoryFunctions(delegate* unmanaged[Cdecl]<nuint, void*> mallocFunc, delegate* unmanaged[Cdecl]<nuint, nuint, void*> callocFunc, delegate* unmanaged[Cdecl]<void*, nuint, void*> reallocFunc, delegate* unmanaged[Cdecl]<void*, void> freeFunc);
+    private static partial bool SetMemoryFunctionsImport(nint mallocFunc, nint callocFunc, nint reallocFunc, nint freeFunc);
 
     /// <summary>Allocate memory aligned to a specific alignment.</summary>
     /// <remarks>
@@ -745,9 +747,11 @@ public static unsafe partial class Sdl
     /// <param name="nmemb">the number of elements in the array.</param>
     /// <param name="size">the size of the elements in the array.</param>
     /// <param name="compare">a function used to compare elements in the array.</param>
+    public static void Qsort(void* @base, nuint nmemb, nuint size, delegate* unmanaged[Cdecl]<void*, void*, int> compare) => QsortImport(@base, nmemb, size, (nint)compare);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_qsort")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void Qsort(void* @base, nuint nmemb, nuint size, delegate* unmanaged[Cdecl]<void*, void*, int> compare);
+    private static partial void QsortImport(void* @base, nuint nmemb, nuint size, nint compare);
 
     /// <summary>Perform a binary search on a previously sorted array.</summary>
     /// <remarks>
@@ -802,9 +806,11 @@ public static unsafe partial class Sdl
     /// <param name="size">the size of the elements in the array.</param>
     /// <param name="compare">a function used to compare elements in the array.</param>
     /// <returns>a pointer to the matching element in the array, or NULL if not found.</returns>
+    public static void* Bsearch(void* key, void* @base, nuint nmemb, nuint size, delegate* unmanaged[Cdecl]<void*, void*, int> compare) => BsearchImport(key, @base, nmemb, size, (nint)compare);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_bsearch")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void* Bsearch(void* key, void* @base, nuint nmemb, nuint size, delegate* unmanaged[Cdecl]<void*, void*, int> compare);
+    private static partial void* BsearchImport(void* key, void* @base, nuint nmemb, nuint size, nint compare);
 
     /// <summary>Sort an array, passing a userdata pointer to the compare function.</summary>
     /// <remarks>
@@ -866,9 +872,11 @@ public static unsafe partial class Sdl
     /// <param name="size">the size of the elements in the array.</param>
     /// <param name="compare">a function used to compare elements in the array.</param>
     /// <param name="userdata">a pointer to pass to the compare function.</param>
+    public static void QsortR(void* @base, nuint nmemb, nuint size, delegate* unmanaged[Cdecl]<void*, void*, void*, int> compare, void* userdata) => QsortRImport(@base, nmemb, size, (nint)compare, userdata);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_qsort_r")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void QsortR(void* @base, nuint nmemb, nuint size, delegate* unmanaged[Cdecl]<void*, void*, void*, int> compare, void* userdata);
+    private static partial void QsortRImport(void* @base, nuint nmemb, nuint size, nint compare, void* userdata);
 
     /// <summary>
     /// Perform a binary search on a previously sorted array, passing a userdata pointer to the compare function.
@@ -935,9 +943,11 @@ public static unsafe partial class Sdl
     /// <param name="compare">a function used to compare elements in the array.</param>
     /// <param name="userdata">a pointer to pass to the compare function.</param>
     /// <returns>a pointer to the matching element in the array, or NULL if not found.</returns>
+    public static void* BsearchR(void* key, void* @base, nuint nmemb, nuint size, delegate* unmanaged[Cdecl]<void*, void*, void*, int> compare, void* userdata) => BsearchRImport(key, @base, nmemb, size, (nint)compare, userdata);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_bsearch_r")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void* BsearchR(void* key, void* @base, nuint nmemb, nuint size, delegate* unmanaged[Cdecl]<void*, void*, void*, int> compare, void* userdata);
+    private static partial void* BsearchRImport(void* key, void* @base, nuint nmemb, nuint size, nint compare, void* userdata);
 
     /// <summary>Compute the absolute value of <c>x</c>.</summary>
     /// <remarks>

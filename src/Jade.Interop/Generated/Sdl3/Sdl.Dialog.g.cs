@@ -129,9 +129,11 @@ public static unsafe partial class Sdl
     /// <param name="allowMany">
     /// if non-zero, the user will be allowed to select multiple entries. Not all platforms support this option.
     /// </param>
+    public static void ShowOpenFileDialog(delegate* unmanaged[Cdecl]<void*, byte**, int, void> callback, void* userdata, Window window, DialogFileFilter* filters, int nfilters, byte* defaultLocation, bool allowMany) => ShowOpenFileDialogImport((nint)callback, userdata, window, filters, nfilters, defaultLocation, allowMany);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_ShowOpenFileDialog")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void ShowOpenFileDialog(delegate* unmanaged[Cdecl]<void*, byte**, int, void> callback, void* userdata, Window window, DialogFileFilter* filters, int nfilters, byte* defaultLocation, [MarshalAs(UnmanagedType.U1)] bool allowMany);
+    private static partial void ShowOpenFileDialogImport(nint callback, void* userdata, Window window, DialogFileFilter* filters, int nfilters, byte* defaultLocation, [MarshalAs(UnmanagedType.U1)] bool allowMany);
 
     /// <summary>Displays a dialog that lets the user select a file on their filesystem.</summary>
     /// <remarks>
@@ -246,9 +248,11 @@ public static unsafe partial class Sdl
     /// <param name="defaultLocation">
     /// the default folder or file to start the dialog at, may be NULL. Not all platforms support this option.
     /// </param>
+    public static void ShowSaveFileDialog(delegate* unmanaged[Cdecl]<void*, byte**, int, void> callback, void* userdata, Window window, DialogFileFilter* filters, int nfilters, byte* defaultLocation) => ShowSaveFileDialogImport((nint)callback, userdata, window, filters, nfilters, defaultLocation);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_ShowSaveFileDialog")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void ShowSaveFileDialog(delegate* unmanaged[Cdecl]<void*, byte**, int, void> callback, void* userdata, Window window, DialogFileFilter* filters, int nfilters, byte* defaultLocation);
+    private static partial void ShowSaveFileDialogImport(nint callback, void* userdata, Window window, DialogFileFilter* filters, int nfilters, byte* defaultLocation);
 
     /// <summary>Displays a dialog that lets the user choose a new or existing file on their filesystem.</summary>
     /// <remarks>
@@ -357,9 +361,11 @@ public static unsafe partial class Sdl
     /// <param name="allowMany">
     /// if non-zero, the user will be allowed to select multiple entries. Not all platforms support this option.
     /// </param>
+    public static void ShowOpenFolderDialog(delegate* unmanaged[Cdecl]<void*, byte**, int, void> callback, void* userdata, Window window, byte* defaultLocation, bool allowMany) => ShowOpenFolderDialogImport((nint)callback, userdata, window, defaultLocation, allowMany);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_ShowOpenFolderDialog")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void ShowOpenFolderDialog(delegate* unmanaged[Cdecl]<void*, byte**, int, void> callback, void* userdata, Window window, byte* defaultLocation, [MarshalAs(UnmanagedType.U1)] bool allowMany);
+    private static partial void ShowOpenFolderDialogImport(nint callback, void* userdata, Window window, byte* defaultLocation, [MarshalAs(UnmanagedType.U1)] bool allowMany);
 
     /// <summary>Displays a dialog that lets the user select a folder on their filesystem.</summary>
     /// <remarks>
@@ -478,7 +484,9 @@ public static unsafe partial class Sdl
     /// </param>
     /// <param name="userdata">an optional pointer to pass extra data to the callback when it will be invoked.</param>
     /// <param name="props">the properties to use.</param>
+    public static void ShowFileDialogWithProperties(FileDialogType type, delegate* unmanaged[Cdecl]<void*, byte**, int, void> callback, void* userdata, PropertiesID props) => ShowFileDialogWithPropertiesImport(type, (nint)callback, userdata, props);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_ShowFileDialogWithProperties")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void ShowFileDialogWithProperties(FileDialogType type, delegate* unmanaged[Cdecl]<void*, byte**, int, void> callback, void* userdata, PropertiesID props);
+    private static partial void ShowFileDialogWithPropertiesImport(FileDialogType type, nint callback, void* userdata, PropertiesID props);
 }

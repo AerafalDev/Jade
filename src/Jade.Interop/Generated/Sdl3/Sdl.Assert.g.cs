@@ -81,9 +81,11 @@ public static unsafe partial class Sdl
     /// the SDL_AssertionHandler function to call when an assertion fails or NULL for the default handler.
     /// </param>
     /// <param name="userdata">a pointer that is passed to <c>handler</c>.</param>
+    public static void SetAssertionHandler(delegate* unmanaged[Cdecl]<AssertData*, void*, AssertState> handler, void* userdata) => SetAssertionHandlerImport((nint)handler, userdata);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_SetAssertionHandler")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void SetAssertionHandler(delegate* unmanaged[Cdecl]<AssertData*, void*, AssertState> handler, void* userdata);
+    private static partial void SetAssertionHandlerImport(nint handler, void* userdata);
 
     /// <summary>Get the default assertion handler.</summary>
     /// <remarks>
@@ -98,9 +100,11 @@ public static unsafe partial class Sdl
     /// <para>See also: <c>SDL_GetAssertionHandler</c>.</para>
     /// </remarks>
     /// <returns>the default SDL_AssertionHandler that is called when an assert triggers.</returns>
+    public static delegate* unmanaged[Cdecl]<AssertData*, void*, AssertState> GetDefaultAssertionHandler() => (delegate* unmanaged[Cdecl]<AssertData*, void*, AssertState>)GetDefaultAssertionHandlerImport();
+
     [LibraryImport("jade_native", EntryPoint = "SDL_GetDefaultAssertionHandler")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial delegate* unmanaged[Cdecl]<AssertData*, void*, AssertState> GetDefaultAssertionHandler();
+    private static partial nint GetDefaultAssertionHandlerImport();
 
     /// <summary>Get the current assertion handler.</summary>
     /// <remarks>
@@ -123,9 +127,11 @@ public static unsafe partial class Sdl
     /// pointer which is filled with the "userdata" pointer that was passed to SDL_SetAssertionHandler().
     /// </param>
     /// <returns>the SDL_AssertionHandler that is called when an assert triggers.</returns>
+    public static delegate* unmanaged[Cdecl]<AssertData*, void*, AssertState> GetAssertionHandler(void** puserdata) => (delegate* unmanaged[Cdecl]<AssertData*, void*, AssertState>)GetAssertionHandlerImport(puserdata);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_GetAssertionHandler")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial delegate* unmanaged[Cdecl]<AssertData*, void*, AssertState> GetAssertionHandler(void** puserdata);
+    private static partial nint GetAssertionHandlerImport(void** puserdata);
 
     /// <summary>Get the current assertion handler.</summary>
     /// <remarks>
