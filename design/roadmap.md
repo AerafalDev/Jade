@@ -11,6 +11,7 @@ back before the orchestrator writes their brief.
 | [001](tasks/001-repository-scaffold.md) | Repository scaffold and managed solution | - | done |
 | [002](tasks/002-ci-baseline.md) | CI baseline: build, test, CodeQL, Dependabot | 001 | done |
 | [003](tasks/003-coding-conventions.md) | Enforce the C# coding conventions, clean up existing code | 102, 201 | done |
+| [004](tasks/004-ci-turnaround.md) | Faster CI turnaround: skip docs-only, reuse native artifacts, cache the container | 103 | todo |
 
 003 runs once 102 and 201 are merged, before any other task starts: 103, 202, 203, 204, 301 and
 304 list it as a dependency in their briefs.
@@ -32,6 +33,10 @@ back before the orchestrator writes their brief.
 
 Notes for the 107 brief, collected from earlier Outcomes:
 
+- Release notes come from `CHANGELOG.md`: the release moves `## [Unreleased]` to
+  `## [x.y.z] - date`, adds the compare links, and uses that section as the GitHub release body
+  (and possibly `PackageReleaseNotes`). Add the NuGet badge to the README with the first published
+  version.
 - `actions/checkout` is shallow by default, so MinVer computes `0.0.0-alpha.0`. Use
   `fetch-depth: 0`, as HostFxrSharp's `publish.yml` does (002).
 - `THIRD-PARTY-NOTICES.md` lacks the notices of the 24 Wayland protocol glue files that SDL

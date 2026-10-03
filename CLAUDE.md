@@ -22,8 +22,11 @@ with what actually exists.
   into the code.
 - A hard-to-reverse decision that the brief does not cover becomes a new ADR with
   `Status: Proposed`, flagged in the Outcome. Never rewrite an `Accepted` ADR; supersede it.
-- Finishing a task: fill the brief's **Outcome**, set the task to `done` in `design/roadmap.md`, and
-  update **Commands** below if you added any. Put all of this in the same commit as the work,
+- Finishing a task: fill the brief's **Outcome**, set the task to `done` in `design/roadmap.md`,
+  update **Commands** below if you added any, and add an entry under `## [Unreleased]` in
+  `CHANGELOG.md` for anything a user of the packages would notice (public API, bundled libraries
+  and their versions, supported RIDs, package layout). Internal changes (CI, scripts, design docs)
+  get no entry. If the README's **Status** or **Platforms** tables change, update them too. Put all of this in the same commit as the work,
   following the `git-workflow` skill. No push, PR, tag or release unless asked.
 
 ## Repository layout
