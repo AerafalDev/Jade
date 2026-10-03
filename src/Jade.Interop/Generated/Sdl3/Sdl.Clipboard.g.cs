@@ -179,10 +179,12 @@ public static unsafe partial class Sdl
     /// <param name="mimeTypes">a list of mime-types that are being offered. SDL copies the given list.</param>
     /// <param name="numMimeTypes">the number of mime-types in the mime_types list.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    public static bool SetClipboardData(delegate* unmanaged[Cdecl]<void*, byte*, nuint*, void*> callback, delegate* unmanaged[Cdecl]<void*, void> cleanup, void* userdata, byte** mimeTypes, nuint numMimeTypes) => SetClipboardDataImport((nint)callback, (nint)cleanup, userdata, mimeTypes, numMimeTypes);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_SetClipboardData")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.U1)]
-    public static partial bool SetClipboardData(delegate* unmanaged[Cdecl]<void*, byte*, nuint*, void*> callback, delegate* unmanaged[Cdecl]<void*, void> cleanup, void* userdata, byte** mimeTypes, nuint numMimeTypes);
+    private static partial bool SetClipboardDataImport(nint callback, nint cleanup, void* userdata, byte** mimeTypes, nuint numMimeTypes);
 
     /// <summary>Clear the clipboard data.</summary>
     /// <remarks>

@@ -12,4 +12,10 @@ internal sealed class EnumMemberModel
 
     /// <summary>Gets the upstream documentation.</summary>
     public required Documentation Documentation { get; init; }
+
+    /// <summary>Gets the only platforms (<c>OperatingSystem.IsOSPlatform</c> names) where the member exists, or none when it exists everywhere.</summary>
+    public IReadOnlyList<string> SupportedPlatforms { get; init; } = [];
+
+    /// <summary>Gets the platforms (<c>OperatingSystem.IsOSPlatform</c> names) where the member does not exist.</summary>
+    public IReadOnlyList<string> UnsupportedPlatforms { get; init; } = [];
 }

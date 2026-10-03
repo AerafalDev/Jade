@@ -30,4 +30,7 @@ internal sealed class LibraryModel
 
     /// <summary>Gets the documentation of the callback typedefs that <see cref="TypeRef.Alias"/> names, by C name.</summary>
     public required IReadOnlyDictionary<string, Documentation> Callbacks { get; init; }
+
+    /// <summary>Gets the struct that passes UTF-8 text by pointer and length, for <see cref="ParameterKind.StringView"/> parameters, or <see langword="null"/>.</summary>
+    public StringViewModel? StringView { get; init; }
 }

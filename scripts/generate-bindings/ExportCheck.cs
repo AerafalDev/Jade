@@ -1,6 +1,7 @@
 /// <summary>
 /// Checks a library's bindings against what jade_native exports: every exported symbol of the library is bound or
-/// excluded with a reason (by name, or through its excluded header), and every binding has an export.
+/// excluded with a reason (by name, or through its excluded header), and every binding has an export, except bindings
+/// whose <see cref="FunctionModel.SupportedPlatforms"/> leave out the platform of the library being checked.
 /// </summary>
 internal static class ExportCheck
 {
@@ -8,10 +9,11 @@ internal static class ExportCheck
     /// <param name="config">The library config.</param>
     /// <param name="targets">The merged per-target results; their function lists are identical.</param>
     /// <param name="exports">Every name jade_native exports.</param>
+    /// <param name="platform">The <c>OperatingSystem.IsOSPlatform</c> name of the platform the library was built for.</param>
     /// <param name="report">Receives the report lines.</param>
     /// <param name="usedConfigKeys">Receives the exclusions that matched an export.</param>
     /// <returns>The errors, empty when every export is accounted for.</returns>
-    public static IReadOnlyList<string> Run(LibraryConfig config, IReadOnlyList<TargetModel> targets, IReadOnlySet<string> exports, List<string> report, HashSet<string> usedConfigKeys)
+    public static IReadOnlyList<string> Run(LibraryConfig config, IReadOnlyList<TargetModel> targets, IReadOnlySet<string> exports, string platform, List<string> report, HashSet<string> usedConfigKeys)
     {
         var errors = new List<string>();
         var symbols = exports.Where(e => config.ExportPrefixes.Any(p => e.StartsWith(p, StringComparison.Ordinal))).Order(StringComparer.Ordinal).ToList();
@@ -52,9 +54,17 @@ internal static class ExportCheck
             }
         }
 
-        foreach (var function in bound.Where(b => !exports.Contains(b)).Order(StringComparer.Ordinal))
+        var elsewhere = new List<string>();
+        foreach (var function in targets[0].Model.Functions.Where(f => !exports.Contains(f.NativeName)).OrderBy(f => f.NativeName, StringComparer.Ordinal))
         {
-            errors.Add($"{function} is bound but jade_native does not export it.");
+            if (function.SupportedPlatforms.Count > 0 && !function.SupportedPlatforms.Contains(platform))
+            {
+                elsewhere.Add($"{function.NativeName} ({string.Join(", ", function.SupportedPlatforms)})");
+            }
+            else
+            {
+                errors.Add($"{function.NativeName} is bound but jade_native does not export it.");
+            }
         }
 
         var excluded = symbols.Count - boundCount;
@@ -68,6 +78,10 @@ internal static class ExportCheck
         {
             report.Add($"  {names.Count} {reason}: {string.Join(", ", names)}");
         }
+
+        report.Add(elsewhere.Count == 0
+            ? $"{config.Name}: every binding is exported."
+            : $"{config.Name}: {elsewhere.Count} bindings are not exported, and only exist on other platforms than {platform}: {string.Join(", ", elsewhere)}");
 
         return errors;
     }

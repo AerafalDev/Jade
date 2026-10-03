@@ -87,6 +87,12 @@ internal sealed class TypeMapper
         }
     }
 
+    /// <summary>Maps a fixed-width C typedef such as <c>uint64_t</c> or <c>size_t</c>, which keeps its width on every target.</summary>
+    /// <param name="name">The typedef name.</param>
+    /// <param name="primitive">The scalar, when the name is one of them.</param>
+    /// <returns><see langword="true"/> if <paramref name="name"/> is a fixed-width typedef.</returns>
+    public static bool TryMapFixedWidth(string name, out PrimitiveType primitive) => s_fixedWidthTypedefs.TryGetValue(name, out primitive);
+
     /// <summary>Records a declaration that is bound even if nothing uses it, such as an enum of a bound header.</summary>
     /// <param name="name">The C name.</param>
     /// <param name="kind">What it turns into.</param>

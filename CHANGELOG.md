@@ -17,6 +17,12 @@ Until 1.0.0, any release may break the public API.
 - `Jade.Interop.Sdl3`: generated bindings for the public SDL3 API (982 functions, 101 enums,
   89 structs and 27 handles), with instance methods on handles and span, `in`, `ref` and `out`
   overloads. SDL's audio, GPU and 2D renderer APIs are left out: miniaudio and Dawn cover them.
+- `Jade.Interop.WebGpu`: generated bindings for the WebGPU API and Dawn's extensions, read from
+  Dawn's `dawn.json` (276 functions, 65 enums, 6 bitmasks, 195 structs and 28 handles). Handles have
+  instance methods, including `AddRef` and `Release`; overloads take spans, `in`, `ref` and `out`,
+  and `ReadOnlySpan<byte>` for string views. `new` on a chained struct sets its `SType`. APIs that
+  emdawnwebgpu lacks are marked `[UnsupportedOSPlatform("browser")]`. SPIR-V shader modules are
+  bound but rejected at runtime: `jade_native` takes WGSL only.
 - The `Jade` and `Jade.Native` packages. `Jade` carries `Jade.Interop` and depends on `Jade.Native`
   at exactly its own version. `Jade.Native` carries `jade_native` under `runtimes/<rid>/native/` for
   the six desktop RIDs, and `THIRD-PARTY-NOTICES.md`. Applications run with `dotnet run` and publish

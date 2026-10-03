@@ -15,6 +15,7 @@ internal sealed class CSharpEmitter
     private readonly ImportStyle _importStyle;
     private readonly Dictionary<string, string> _managedNames = new(StringComparer.Ordinal);
     private readonly Dictionary<string, EnumModel> _enums = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, StructModel> _structs = new(StringComparer.Ordinal);
     private readonly SortedSet<string> _usings = new(StringComparer.Ordinal);
 
     /// <summary>Creates an emitter.</summary>
@@ -34,6 +35,11 @@ internal sealed class CSharpEmitter
         foreach (var enumModel in model.Enums)
         {
             _enums.Add(enumModel.NativeName, enumModel);
+        }
+
+        foreach (var structModel in model.Structs)
+        {
+            _structs.Add(structModel.NativeName, structModel);
         }
     }
 
@@ -114,10 +120,12 @@ internal sealed class CSharpEmitter
             : function;
     }
 
-    // Functions and constants share the static class: a C# name may only come from one C declaration.
+    // Functions, their private imports and constants share the static class: a C# name may only come from one C declaration.
     private void CheckClassMembers()
     {
-        var owners = _model.Functions.Select(f => (f.Name, f.NativeName)).Concat(_model.Constants.Select(c => (c.Name, c.NativeName)));
+        var owners = _model.Functions.Select(f => (f.Name, f.NativeName))
+            .Concat(_model.Functions.Where(HasFunctionPointer).Select(f => (Name: ImportName(f), f.NativeName)))
+            .Concat(_model.Constants.Select(c => (c.Name, c.NativeName)));
         foreach (var clash in owners.GroupBy(o => o.Name, StringComparer.Ordinal).Where(g => g.Count() > 1))
         {
             throw new InvalidOperationException($"{_model.Name}: {string.Join(", ", clash.Select(c => c.NativeName))} all map to {_model.FunctionsClass}.{clash.Key}; add Renames.");
@@ -127,7 +135,10 @@ internal sealed class CSharpEmitter
     private string EmitGroup(string source, IReadOnlyList<FunctionModel> functions, IReadOnlyList<ConstantModel> constants, bool documentClass)
     {
         var writer = new CodeWriter();
-        var shadowed = _model.Functions.Select(f => f.Name).Concat(_model.Constants.Select(c => c.Name)).ToHashSet(StringComparer.Ordinal);
+        var shadowed = _model.Functions.Select(f => f.Name)
+            .Concat(_model.Functions.Where(HasFunctionPointer).Select(ImportName))
+            .Concat(_model.Constants.Select(c => c.Name))
+            .ToHashSet(StringComparer.Ordinal);
         if (documentClass)
         {
             DocWriter.Single(writer, "summary", $"Functions and constants of {_model.Name}, imported from `jade_native`.");
@@ -160,7 +171,7 @@ internal sealed class CSharpEmitter
     {
         var value = constant.IsString && !constant.Text!.Contains('`', StringComparison.Ordinal) ? $"The value is `{constant.Text}`." : null;
         WriteTypeDocs(writer, constant.NativeName, constant.Documentation, value);
-        WritePlatformAttributes(writer, constant.SupportedPlatforms, []);
+        WritePlatformAttributes(writer, constant.SupportedPlatforms, constant.UnsupportedPlatforms);
         if (constant.IsString)
         {
             writer.Line($"public static ReadOnlySpan<byte> {constant.Name} => {StringLiteral(constant.Text!)}u8;");
@@ -168,6 +179,13 @@ internal sealed class CSharpEmitter
         }
 
         var type = constant.Type;
+        if (type.Is(PrimitiveType.NUInt) && constant.Integer == ulong.MaxValue)
+        {
+            // SIZE_MAX depends on the pointer size, and C# has no constant for nuint.MaxValue.
+            writer.Line($"public static nuint {constant.Name} => nuint.MaxValue;");
+            return;
+        }
+
         if (type.Kind == TypeKind.Named)
         {
             var enumModel = _enums[type.Name!];
@@ -189,15 +207,34 @@ internal sealed class CSharpEmitter
 
     private void EmitRawFunction(CodeWriter writer, FunctionModel function, HashSet<string> shadowed)
     {
-        WriteFunctionDocs(writer, function, function.Parameters);
+        WriteFunctionDocs(writer, function, function.Parameters, generic: false);
         var returnType = TypeName(function.Return, shadowed);
-        var parameters = string.Join(", ", function.Parameters.Select(p => $"{TypeName(p.Type, shadowed)} {p.Name}"));
+        var visibility = "public";
+        if (HasFunctionPointer(function))
+        {
+            // ADR-0016: browser-wasm rejects function pointer types in P/Invoke signatures, so the import passes them as
+            // nint and this public 1:1 method keeps the typed signature. The casts cost nothing.
+            var typed = string.Join(", ", function.Parameters.Select(p => $"{TypeName(p.Type, shadowed)} {p.Name}"));
+            var arguments = string.Join(", ", function.Parameters.Select(p => p.Type.Kind == TypeKind.FunctionPointer ? "(nint)" + p.Name : p.Name));
+            var call = $"{ImportName(function)}({arguments})";
+            WritePlatformAttributes(writer, function);
+            writer.Line($"public static {returnType} {function.Name}({typed}) => {(function.Return.Kind == TypeKind.FunctionPointer ? $"({returnType}){call}" : call)};");
+            writer.Line();
+            visibility = "private";
+        }
+
+        var importReturn = ImportTypeName(function.Return, shadowed);
         _usings.Add("System.Runtime.InteropServices");
         if (_importStyle == ImportStyle.DllImport)
         {
+            var parameters = string.Join(", ", function.Parameters.Select(p => $"{ImportTypeName(p.Type, shadowed)} {p.Name}"));
             writer.Line($"[DllImport(\"jade_native\", EntryPoint = \"{function.NativeName}\", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]");
-            WritePlatformAttributes(writer, function);
-            writer.Line($"public static extern {returnType} {function.Name}({parameters});");
+            if (visibility == "public")
+            {
+                WritePlatformAttributes(writer, function);
+            }
+
+            writer.Line($"{visibility} static extern {importReturn} {ImportName(function)}({parameters});");
         }
         else
         {
@@ -206,25 +243,29 @@ internal sealed class CSharpEmitter
             _usings.Add("System.Runtime.CompilerServices");
             writer.Line($"[LibraryImport(\"jade_native\", EntryPoint = \"{function.NativeName}\")]");
             writer.Line("[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]");
-            WritePlatformAttributes(writer, function);
+            if (visibility == "public")
+            {
+                WritePlatformAttributes(writer, function);
+            }
+
             if (function.Return.Is(PrimitiveType.Bool))
             {
                 writer.Line("[return: MarshalAs(UnmanagedType.U1)]");
             }
 
-            parameters = string.Join(", ", function.Parameters.Select(p => $"{(p.Type.Is(PrimitiveType.Bool) ? "[MarshalAs(UnmanagedType.U1)] " : string.Empty)}{TypeName(p.Type, shadowed)} {p.Name}"));
-            writer.Line($"public static partial {returnType} {function.Name}({parameters});");
+            var parameters = string.Join(", ", function.Parameters.Select(p => $"{(p.Type.Is(PrimitiveType.Bool) ? "[MarshalAs(UnmanagedType.U1)] " : string.Empty)}{ImportTypeName(p.Type, shadowed)} {p.Name}"));
+            writer.Line($"{visibility} static partial {importReturn} {ImportName(function)}({parameters});");
         }
     }
 
     private void EmitFriendlyFunction(CodeWriter writer, FunctionModel function, HashSet<string> shadowed)
     {
         var exposed = function.Parameters.Where(p => p.Kind != ParameterKind.Count).ToList();
-        WriteFunctionDocs(writer, function, exposed);
+        WriteFunctionDocs(writer, function, exposed, generic: true);
         WritePlatformAttributes(writer, function);
-        var signature = string.Join(", ", exposed.Select(p => $"{FriendlyType(p, shadowed)} {p.Name}"));
+        var signature = string.Join(", ", exposed.Select(p => $"{FriendlyType(function, p, shadowed)} {p.Name}"));
         CheckLocals(function);
-        writer.Open($"public static {TypeName(function.Return, shadowed)} {function.Name}({signature})");
+        writer.Open($"public static {TypeName(function.Return, shadowed)} {function.Name}{TypeParameters(function)}({signature}){Constraints(function)}");
 
         foreach (var parameter in function.Parameters.Where(p => p.Kind == ParameterKind.Out))
         {
@@ -240,12 +281,18 @@ internal sealed class CSharpEmitter
         var fixedCount = 0;
         foreach (var parameter in function.Parameters)
         {
-            var pointer = parameter.Kind is ParameterKind.None or ParameterKind.Count ? null : TypeName(parameter.Type, shadowed);
+            var pointer = parameter.Kind switch
+            {
+                ParameterKind.None or ParameterKind.Count => null,
+                ParameterKind.StringView => "byte*",
+                ParameterKind.Span when IsByteSpan(parameter) => TypeParameter(function, parameter) + "*",
+                _ => TypeName(parameter.Type, shadowed),
+            };
             var initializer = parameter.Kind switch
             {
                 ParameterKind.Utf8String => Utf8Local(parameter),
                 ParameterKind.In or ParameterKind.Out or ParameterKind.Ref => $"&{parameter.Name}",
-                ParameterKind.Span => parameter.Name,
+                ParameterKind.Span or ParameterKind.StringView => parameter.Name,
                 _ => null,
             };
             if (pointer is not null && initializer is not null)
@@ -264,7 +311,8 @@ internal sealed class CSharpEmitter
         var arguments = function.Parameters.Select(p => p.Kind switch
         {
             ParameterKind.None => p.Name,
-            ParameterKind.Count => p.Type.Is(PrimitiveType.Int32) ? $"{p.Pair}.Length" : $"({TypeName(p.Type, shadowed)}){p.Pair}.Length",
+            ParameterKind.Count => CountArgument(function, p, shadowed),
+            ParameterKind.StringView => StringViewArgument(p, shadowed),
             _ => PinnedLocal(p),
         });
         var call = $"{function.Name}({string.Join(", ", arguments)});";
@@ -284,6 +332,7 @@ internal sealed class CSharpEmitter
         var writer = new CodeWriter();
         var note = enumModel.Members.Count == 0 ? "An identifier: values come from native calls and only compare for equality." : null;
         WriteTypeDocs(writer, enumModel.NativeName, enumModel.Documentation, note);
+        WritePlatformAttributes(writer, enumModel.SupportedPlatforms, enumModel.UnsupportedPlatforms);
         if (enumModel.IsFlags)
         {
             writer.Line("[Flags]");
@@ -300,6 +349,7 @@ internal sealed class CSharpEmitter
 
             first = false;
             DocWriter.Single(writer, "summary", member.Documentation.Summary ?? $"Binds `{member.NativeName}`.");
+            WritePlatformAttributes(writer, member.SupportedPlatforms, member.UnsupportedPlatforms);
             writer.Line($"{member.Name} = {EnumValue(enumModel, member.Value)},");
         }
 
@@ -313,6 +363,7 @@ internal sealed class CSharpEmitter
         if (structModel.IsOpaque)
         {
             WriteTypeDocs(writer, structModel.NativeName, structModel.Documentation, "An opaque native type, only used through pointers.");
+            WritePlatformAttributes(writer, structModel.SupportedPlatforms, structModel.UnsupportedPlatforms);
             writer.Open($"public partial struct {structModel.Name}");
             writer.Close();
             return Finish(writer);
@@ -320,6 +371,7 @@ internal sealed class CSharpEmitter
 
         _usings.Add("System.Runtime.InteropServices");
         WriteTypeDocs(writer, structModel.NativeName, structModel.Documentation, structModel.NativeName.Contains('.', StringComparison.Ordinal) ? "The anonymous type of that field." : null);
+        WritePlatformAttributes(writer, structModel.SupportedPlatforms, structModel.UnsupportedPlatforms);
         writer.Line(structModel.IsUnion ? "[StructLayout(LayoutKind.Explicit)]" : "[StructLayout(LayoutKind.Sequential)]");
         writer.Open($"public unsafe partial struct {structModel.Name}");
         var arrays = structModel.Fields.Where(f => f.Type.Kind == TypeKind.FixedArray && !IsFixedBufferElement(f.Type.Element!)).ToList();
@@ -358,6 +410,11 @@ internal sealed class CSharpEmitter
             }
         }
 
+        if (structModel.Initializers.Count > 0)
+        {
+            EmitConstructor(writer, structModel, shadowed);
+        }
+
         // C# fixed buffers only hold primitives; other element types get an [InlineArray] of the native length.
         foreach (var field in arrays)
         {
@@ -372,6 +429,47 @@ internal sealed class CSharpEmitter
 
         writer.Close();
         return Finish(writer);
+    }
+
+    // `new T()` then sets the fields a valid value needs; `default(T)` still zeroes everything.
+    private void EmitConstructor(CodeWriter writer, StructModel structModel, HashSet<string> shadowed)
+    {
+        var assignments = new List<(string Field, string Value)>();
+        foreach (var initializer in structModel.Initializers)
+        {
+            var owner = structModel;
+            var path = new List<string>();
+            FieldModel? field = null;
+            foreach (var name in initializer.Path)
+            {
+                if (field is not null)
+                {
+                    owner = field.Type.Kind == TypeKind.Named && _structs.TryGetValue(field.Type.Name!, out var inner) ? inner
+                        : throw new InvalidOperationException($"{structModel.NativeName}: initializer path {string.Join('.', initializer.Path)} goes through a field that is not a struct.");
+                }
+
+                field = owner.Fields.FirstOrDefault(f => f.NativeName == name)
+                    ?? throw new InvalidOperationException($"{structModel.NativeName}: initializer path {string.Join('.', initializer.Path)} names no field {name}.");
+                path.Add(field.Name);
+            }
+
+            var enumModel = field!.Type.Kind == TypeKind.Named && _enums.TryGetValue(field.Type.Name!, out var found) ? found
+                : throw new InvalidOperationException($"{structModel.NativeName}: initializer path {string.Join('.', initializer.Path)} does not end on an enum field.");
+            var member = enumModel.Members.FirstOrDefault(m => m.NativeName == initializer.Member)
+                ?? throw new InvalidOperationException($"{structModel.NativeName}: {enumModel.NativeName} has no member {initializer.Member}.");
+            assignments.Add((string.Join('.', path), $"{TypeName(field.Type, shadowed)}.{member.Name}"));
+        }
+
+        writer.Line();
+        var list = string.Join(", ", assignments.Select(a => $"`{a.Field}` to `{a.Value.Replace("global::" + _model.Namespace + ".", string.Empty, StringComparison.Ordinal)}`"));
+        DocWriter.Single(writer, "summary", $"Initializes the struct with every field zeroed, except {list}.");
+        writer.Open($"public {structModel.Name}()");
+        foreach (var (field, value) in assignments)
+        {
+            writer.Line($"{field} = {value};");
+        }
+
+        writer.Close();
     }
 
     private string EmitHandle(HandleModel handle)
@@ -390,16 +488,18 @@ internal sealed class CSharpEmitter
 
         var shadowed = names.Values.Concat(["Handle", "IsNull"]).ToHashSet(StringComparer.Ordinal);
 
+        var pointer = handle.IsPointerTypedef ? handle.NativeName : handle.NativeName + "*";
         WriteTypeDocs(writer, handle.NativeName, handle.Documentation,
-            $"A handle wrapping a native `{handle.NativeName}*`. It owns nothing: copies share the native object, and nothing releases it implicitly.");
+            $"A handle wrapping a native `{pointer}`. It owns nothing: copies share the native object, and nothing releases it implicitly.");
+        WritePlatformAttributes(writer, handle.SupportedPlatforms, handle.UnsupportedPlatforms);
         writer.Open($"public readonly unsafe partial struct {handle.Name} : IEquatable<{handle.Name}>");
         DocWriter.Single(writer, "summary", "Initializes a handle from a native pointer.");
-        writer.Line($"/// <param name=\"handle\">The native <c>{handle.NativeName}*</c>.</param>");
+        writer.Line($"/// <param name=\"handle\">The native <c>{pointer}</c>.</param>");
         writer.Open($"public {handle.Name}(nint handle)");
         writer.Line("Handle = handle;");
         writer.Close();
         writer.Line();
-        DocWriter.Single(writer, "summary", $"Gets the native `{handle.NativeName}*`.");
+        DocWriter.Single(writer, "summary", $"Gets the native `{pointer}`.");
         writer.Line("public nint Handle { get; }");
         writer.Line();
         DocWriter.Single(writer, "summary", "Gets a value indicating whether the native pointer is null.");
@@ -429,7 +529,7 @@ internal sealed class CSharpEmitter
             var name = names[function];
             var rest = function.Parameters.Skip(1).ToList();
             writer.Line();
-            WriteFunctionDocs(writer, function, rest);
+            WriteFunctionDocs(writer, function, rest, generic: false);
             WritePlatformAttributes(writer, function);
             var rawParameters = string.Join(", ", rest.Select(p => $"{TypeName(p.Type, shadowed)} {p.Name}"));
             var rawArguments = string.Join(string.Empty, rest.Select(p => ", " + p.Name));
@@ -439,9 +539,9 @@ internal sealed class CSharpEmitter
             {
                 var exposed = rest.Where(p => p.Kind != ParameterKind.Count).ToList();
                 writer.Line();
-                WriteFunctionDocs(writer, function, exposed);
+                WriteFunctionDocs(writer, function, exposed, generic: true);
                 WritePlatformAttributes(writer, function);
-                var parameters = string.Join(", ", exposed.Select(p => $"{FriendlyType(p, shadowed)} {p.Name}"));
+                var parameters = string.Join(", ", exposed.Select(p => $"{FriendlyType(function, p, shadowed)} {p.Name}"));
                 var arguments = string.Join(string.Empty, exposed.Select(p => ", " + p.Kind switch
                 {
                     ParameterKind.In => "in " + p.Name,
@@ -449,7 +549,7 @@ internal sealed class CSharpEmitter
                     ParameterKind.Ref => "ref " + p.Name,
                     _ => p.Name,
                 }));
-                writer.Line($"public {TypeName(function.Return, shadowed)} {name}({parameters}) => {_model.FunctionsClass}.{function.Name}(this{arguments});");
+                writer.Line($"public {TypeName(function.Return, shadowed)} {name}{TypeParameters(function)}({parameters}){Constraints(function)} => {_model.FunctionsClass}.{function.Name}(this{arguments});");
             }
         }
 
@@ -457,7 +557,7 @@ internal sealed class CSharpEmitter
         return Finish(writer, nullable: true);
     }
 
-    private void WriteFunctionDocs(CodeWriter writer, FunctionModel function, IReadOnlyList<ParameterModel> parameters)
+    private void WriteFunctionDocs(CodeWriter writer, FunctionModel function, IReadOnlyList<ParameterModel> parameters, bool generic)
     {
         var documentation = function.Documentation;
         var binds = $"Binds `{function.NativeName}`.";
@@ -478,6 +578,10 @@ internal sealed class CSharpEmitter
             .ToList();
         var returns = function.Return.Kind == TypeKind.Void ? null : documentation.Returns;
         DocWriter.Write(writer, documentation.Summary ?? binds, remarks, parameterDocs, returns);
+        foreach (var parameter in generic ? parameters.Where(IsByteSpan) : [])
+        {
+            writer.Line($"/// <typeparam name=\"{TypeParameter(function, parameter)}\">{DocWriter.Inline($"The element type of `{parameter.Name.TrimStart('@')}`, passed as bytes.")}</typeparam>");
+        }
     }
 
     private void WriteFieldDocs(CodeWriter writer, FieldModel field)
@@ -552,15 +656,60 @@ internal sealed class CSharpEmitter
 
     private static string InlineArrayName(FieldModel field) => field.Name + "Array";
 
-    private string FriendlyType(ParameterModel parameter, HashSet<string> shadowed) => parameter.Kind switch
+    private string FriendlyType(FunctionModel function, ParameterModel parameter, HashSet<string> shadowed) => parameter.Kind switch
     {
-        ParameterKind.Utf8String => "ReadOnlySpan<byte>",
+        ParameterKind.Utf8String or ParameterKind.StringView => "ReadOnlySpan<byte>",
         ParameterKind.In => "in " + TypeName(parameter.Type.Element!, shadowed),
         ParameterKind.Out => "out " + TypeName(parameter.Type.Element!, shadowed),
         ParameterKind.Ref => "ref " + TypeName(parameter.Type.Element!, shadowed),
-        ParameterKind.Span => $"{(parameter.Type.IsConst ? "ReadOnlySpan" : "Span")}<{TypeName(parameter.Type.Element!, shadowed)}>",
+        ParameterKind.Span => $"{(parameter.Type.IsConst ? "ReadOnlySpan" : "Span")}<{(IsByteSpan(parameter) ? TypeParameter(function, parameter) : TypeName(parameter.Type.Element!, shadowed))}>",
         _ => TypeName(parameter.Type, shadowed),
     };
+
+    // A `void*` and byte count pair takes a span of any unmanaged type, so callers pass their own element type without
+    // converting to bytes first.
+    private static bool IsByteSpan(ParameterModel parameter) => parameter.Kind == ParameterKind.Span && parameter.Type.Element!.Kind == TypeKind.Void;
+
+    private static string TypeParameter(FunctionModel function, ParameterModel parameter) =>
+        function.Parameters.Count(IsByteSpan) == 1 ? "T" : "T" + char.ToUpperInvariant(parameter.Name.TrimStart('@')[0]) + parameter.Name.TrimStart('@')[1..];
+
+    private static string TypeParameters(FunctionModel function)
+    {
+        var names = function.Parameters.Where(IsByteSpan).Select(p => TypeParameter(function, p)).ToList();
+        return names.Count == 0 ? string.Empty : $"<{string.Join(", ", names)}>";
+    }
+
+    private static string Constraints(FunctionModel function) =>
+        string.Concat(function.Parameters.Where(IsByteSpan).Select(p => $" where {TypeParameter(function, p)} : unmanaged"));
+
+    private string CountArgument(FunctionModel function, ParameterModel count, HashSet<string> shadowed)
+    {
+        var span = function.Parameters.First(p => p.Name == count.Pair);
+        if (IsByteSpan(span))
+        {
+            // A span cannot exceed the address space, so the product fits nuint.
+            var bytes = $"(nuint){span.Name}.Length * (nuint)sizeof({TypeParameter(function, span)})";
+            return count.Type.Is(PrimitiveType.NUInt) ? bytes : $"({TypeName(count.Type, shadowed)})({bytes})";
+        }
+
+        return count.Type.Is(PrimitiveType.Int32) ? $"{span.Name}.Length" : $"({TypeName(count.Type, shadowed)}){span.Name}.Length";
+    }
+
+    private string StringViewArgument(ParameterModel parameter, HashSet<string> shadowed)
+    {
+        var view = _model.StringView ?? throw new InvalidOperationException($"{_model.Name}: {parameter.NativeName} is a string view, but the model names no string view struct.");
+        var structModel = _structs[view.Struct];
+        var data = structModel.Fields.First(f => f.NativeName == view.Data);
+        var length = structModel.Fields.First(f => f.NativeName == view.Length);
+        return $"new {TypeName(TypeRef.Named(view.Struct), shadowed)} {{ {data.Name} = {PinnedLocal(parameter)}, {length.Name} = ({TypeName(length.Type, shadowed)}){parameter.Name}.Length }}";
+    }
+
+    private static bool HasFunctionPointer(FunctionModel function) =>
+        function.Return.Kind == TypeKind.FunctionPointer || function.Parameters.Any(p => p.Type.Kind == TypeKind.FunctionPointer);
+
+    private static string ImportName(FunctionModel function) => HasFunctionPointer(function) ? function.Name + "Import" : function.Name;
+
+    private string ImportTypeName(TypeRef type, HashSet<string> shadowed) => type.Kind == TypeKind.FunctionPointer ? "nint" : TypeName(type, shadowed);
 
     private string TypeName(TypeRef type, HashSet<string> shadowed) => type.Kind switch
     {

@@ -16,6 +16,18 @@ internal sealed class HandleModel
     /// <summary>Gets whether the handle belongs to another API (<see cref="LibraryConfig.ForeignHandles"/>), which gives it no instance methods.</summary>
     public bool IsForeign { get; init; }
 
+    /// <summary>
+    /// Gets whether <see cref="NativeName"/> already names the pointer, as WebGPU's <c>typedef struct WGPUBufferImpl* WGPUBuffer</c>
+    /// does, rather than the struct it points to.
+    /// </summary>
+    public bool IsPointerTypedef { get; init; }
+
     /// <summary>Gets the upstream documentation.</summary>
     public required Documentation Documentation { get; init; }
+
+    /// <summary>Gets the only platforms (<c>OperatingSystem.IsOSPlatform</c> names) where the native type exists, or none when it exists everywhere.</summary>
+    public IReadOnlyList<string> SupportedPlatforms { get; init; } = [];
+
+    /// <summary>Gets the platforms (<c>OperatingSystem.IsOSPlatform</c> names) where the native type does not exist.</summary>
+    public IReadOnlyList<string> UnsupportedPlatforms { get; init; } = [];
 }

@@ -425,9 +425,11 @@ public static unsafe partial class Sdl
     /// <param name="entry">the entry to be updated.</param>
     /// <param name="callback">a callback to be invoked when the entry is selected.</param>
     /// <param name="userdata">an optional pointer to pass extra data to the callback when it will be invoked.</param>
+    public static void SetTrayEntryCallback(TrayEntry entry, delegate* unmanaged[Cdecl]<void*, TrayEntry, void> callback, void* userdata) => SetTrayEntryCallbackImport(entry, (nint)callback, userdata);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_SetTrayEntryCallback")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void SetTrayEntryCallback(TrayEntry entry, delegate* unmanaged[Cdecl]<void*, TrayEntry, void> callback, void* userdata);
+    private static partial void SetTrayEntryCallbackImport(TrayEntry entry, nint callback, void* userdata);
 
     /// <summary>Simulate a click on a tray entry.</summary>
     /// <remarks>
