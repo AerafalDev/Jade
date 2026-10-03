@@ -171,8 +171,13 @@ package("dawn")
         for _, name in ipairs(names) do
             table.insert(configs, "-D" .. dependencies[name].var .. "=" .. path.join(depsdir, name))
         end
-        if package:is_plat("macosx") and get_config("target_minver") then
-            table.insert(configs, "-DCMAKE_OSX_DEPLOYMENT_TARGET=" .. get_config("target_minver"))
+        -- The compiler flags already carry both, but CMake's own checks read the variables. Since
+        -- CMake 4, nothing sets the SDK by default, and Tint's find_library(CoreGraphics) fails.
+        if package:is_plat("macosx") then
+            table.insert(configs, "-DCMAKE_OSX_SYSROOT=" .. os.iorun("xcrun --sdk macosx --show-sdk-path"):trim())
+            if get_config("target_minver") then
+                table.insert(configs, "-DCMAKE_OSX_DEPLOYMENT_TARGET=" .. get_config("target_minver"))
+            end
         end
         -- Abseil picks the MSVC runtime itself and defaults to the DLL one (its CMakeLists.txt),
         -- which would clash with the static CRT of everything else (ADR-0003).
