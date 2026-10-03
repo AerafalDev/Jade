@@ -20,9 +20,9 @@ by C name, with a layout cross-check (equal with `IMGUI_DISABLE_OBSOLETE_FUNCTIO
 functions such as `ImPlot_PlotLine_FloatPtrInt` become C# overloads. Compile `implot_demo.cpp` or
 exclude `ImPlot_ShowDemoWindow`.
 
-Decided with the user on 2026-10-03: no issue is opened to ask for licenses. ImPlot3D stays deferred
-until cimplot3d has a license, and imnodes goes through our own shim in 314, not cimnodes. This task
-binds ImPlot and ImGuizmo only.
+Decided with the user on 2026-10-03: no unlicensed wrapper is used. ImPlot3D comes in 317
+through a C wrapper we produce ourselves, and imnodes through our own shim in 314. This
+task binds ImPlot and ImGuizmo only.
 
 ## Acceptance criteria
 
