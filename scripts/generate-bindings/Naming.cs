@@ -1,3 +1,4 @@
+// Labeler check.
 using System.Text;
 
 /// <summary>Turns C names into C# names (ADR-0006: prefixes stripped, PascalCase).</summary>
