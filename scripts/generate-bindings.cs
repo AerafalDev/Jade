@@ -5,6 +5,8 @@
 // for some platforms only become [SupportedOSPlatform]) and that each generated struct has clang's layout
 // on every target, checks the bindings against the staged library's exports, then writes
 // src/Jade.Interop/Generated/<Lib>/ and the matching layout tests under tests/Jade.Interop.Tests/Generated/<Lib>/.
+// WebGPU is read from the staged dawn.json instead, and its generated header is parsed per target only to
+// cross-check the model and to measure layouts.
 //
 // Usage: dotnet scripts/generate-bindings.cs [--rid <rid>]
 //   --rid  the staged artifacts/native/<rid>/ to read headers from (defaults to the host RID). Headers are
@@ -19,6 +21,8 @@
 #:include generate-bindings/CodeWriter.cs
 #:include generate-bindings/ConstantModel.cs
 #:include generate-bindings/CSharpEmitter.cs
+#:include generate-bindings/DawnHeaderCheck.cs
+#:include generate-bindings/DawnJsonReader.cs
 #:include generate-bindings/DocBlock.cs
 #:include generate-bindings/DocBlockKind.cs
 #:include generate-bindings/DocCommentParser.cs
@@ -28,6 +32,7 @@
 #:include generate-bindings/EnumMemberModel.cs
 #:include generate-bindings/EnumModel.cs
 #:include generate-bindings/ExportCheck.cs
+#:include generate-bindings/FieldInitializer.cs
 #:include generate-bindings/FieldModel.cs
 #:include generate-bindings/FunctionModel.cs
 #:include generate-bindings/GeneratedFiles.cs
@@ -54,6 +59,7 @@
 #:include generate-bindings/ReferenceKind.cs
 #:include generate-bindings/Sdl3Config.cs
 #:include generate-bindings/StructModel.cs
+#:include generate-bindings/StringViewModel.cs
 #:include generate-bindings/Target.cs
 #:include generate-bindings/TargetModel.cs
 #:include generate-bindings/Targets.cs
@@ -62,6 +68,7 @@
 #:include generate-bindings/TypeRef.cs
 #:include generate-bindings/TypeReference.cs
 #:include generate-bindings/VarianceCheck.cs
+#:include generate-bindings/WebGpuConfig.cs
 
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -122,15 +129,29 @@ try
         var upstream = versions.RootElement.GetProperty("upstreams").EnumerateArray().Single(u => u.GetProperty("name").GetString() == config.Upstream);
         var defines = upstream.GetProperty("defines").EnumerateArray().Select(d => d.GetString()!).ToList();
 
-        var parsed = config.Targets.Select(t => ClangReader.Read(index, config, t, includeDirectory, sysroot, defines)).ToList();
-        Console.WriteLine($"{config.Name}: parsed {upstream.GetProperty("version").GetString()} for {parsed.Count} targets ({string.Join(", ", parsed.Select(t => t.Target.Rid))}).");
-
-        var mergeReport = new List<string>();
-        var (targets, mergeErrors) = PlatformMerge.Run(parsed, mergeReport);
-        if (mergeReport.Count > 0)
+        IReadOnlyList<TargetModel> targets;
+        IReadOnlyList<string> mergeErrors = [];
+        if (config.ApiDescription is { } description)
         {
-            Console.WriteLine($"{config.Name}: declarations only some targets have, bound with [SupportedOSPlatform]:");
-            mergeReport.ForEach(Console.WriteLine);
+            // One model from the API description; the header generated from it gives each target's layouts.
+            var (model, usedKeys) = DawnJsonReader.Read(config, Path.Combine(stageDirectory, "metadata", description));
+            var headerReport = new List<string>();
+            targets = [.. config.Targets.Select((t, i) => DawnHeaderCheck.Run(index, config, t, includeDirectory, sysroot, model, usedKeys, i == 0 ? headerReport : null))];
+            Console.WriteLine($"{config.Name}: read {description} of {upstream.GetProperty("version").GetString()}, checked against {config.CrossCheckHeader} for {targets.Count} targets ({string.Join(", ", targets.Select(t => t.Target.Rid))}).");
+            headerReport.ForEach(Console.WriteLine);
+        }
+        else
+        {
+            var parsed = config.Targets.Select(t => ClangReader.Read(index, config, t, includeDirectory, sysroot, defines)).ToList();
+            Console.WriteLine($"{config.Name}: parsed {upstream.GetProperty("version").GetString()} for {parsed.Count} targets ({string.Join(", ", parsed.Select(t => t.Target.Rid))}).");
+
+            var mergeReport = new List<string>();
+            (targets, mergeErrors) = PlatformMerge.Run(parsed, mergeReport);
+            if (mergeReport.Count > 0)
+            {
+                Console.WriteLine($"{config.Name}: declarations only some targets have, bound with [SupportedOSPlatform]:");
+                mergeReport.ForEach(Console.WriteLine);
+            }
         }
 
         var report = new List<string>();
@@ -157,7 +178,8 @@ try
         else
         {
             var exportReport = new List<string>();
-            var exportErrors = ExportCheck.Run(config, targets, exports, exportReport, usedConfigKeys);
+            var platform = Targets.All.FirstOrDefault(t => t.Rid == rid)?.Platform ?? rid.Split('-')[0];
+            var exportErrors = ExportCheck.Run(config, targets, exports, platform, exportReport, usedConfigKeys);
             exportReport.ForEach(Console.WriteLine);
             if (exportErrors.Count > 0)
             {
@@ -183,6 +205,7 @@ try
             .Concat(config.IdTypedefs)
             .Concat(config.TypedefMappings.Keys)
             .Concat(config.LayoutDecisions.Keys)
+            .Concat(config.Notes.Keys)
             .Where(k => !usedConfigKeys.Contains(k))
             .Distinct(StringComparer.Ordinal)
             .Order(StringComparer.Ordinal)

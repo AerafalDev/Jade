@@ -152,10 +152,12 @@ public static unsafe partial class Sdl
     /// </param>
     /// <param name="userdata">a pointer that is passed to the cleanup function.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    public static bool SetPointerPropertyWithCleanup(PropertiesID props, byte* name, void* value, delegate* unmanaged[Cdecl]<void*, void*, void> cleanup, void* userdata) => SetPointerPropertyWithCleanupImport(props, name, value, (nint)cleanup, userdata);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_SetPointerPropertyWithCleanup")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.U1)]
-    public static partial bool SetPointerPropertyWithCleanup(PropertiesID props, byte* name, void* value, delegate* unmanaged[Cdecl]<void*, void*, void> cleanup, void* userdata);
+    private static partial bool SetPointerPropertyWithCleanupImport(PropertiesID props, byte* name, void* value, nint cleanup, void* userdata);
 
     /// <summary>
     /// Set a pointer property in a group of properties with a cleanup function that is called when the property is
@@ -746,10 +748,12 @@ public static unsafe partial class Sdl
     /// <param name="callback">the function to call for each property.</param>
     /// <param name="userdata">a pointer that is passed to <c>callback</c>.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    public static bool EnumerateProperties(PropertiesID props, delegate* unmanaged[Cdecl]<void*, PropertiesID, byte*, void> callback, void* userdata) => EnumeratePropertiesImport(props, (nint)callback, userdata);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_EnumerateProperties")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.U1)]
-    public static partial bool EnumerateProperties(PropertiesID props, delegate* unmanaged[Cdecl]<void*, PropertiesID, byte*, void> callback, void* userdata);
+    private static partial bool EnumeratePropertiesImport(PropertiesID props, nint callback, void* userdata);
 
     /// <summary>Destroy a group of properties.</summary>
     /// <remarks>

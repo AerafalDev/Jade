@@ -5052,10 +5052,12 @@ public static unsafe partial class Sdl
     /// <param name="callback">An SDL_HintCallback function that will be called when the hint value changes.</param>
     /// <param name="userdata">a pointer to pass to the callback function.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    public static bool AddHintCallback(byte* name, delegate* unmanaged[Cdecl]<void*, byte*, byte*, byte*, void> callback, void* userdata) => AddHintCallbackImport(name, (nint)callback, userdata);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_AddHintCallback")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.U1)]
-    public static partial bool AddHintCallback(byte* name, delegate* unmanaged[Cdecl]<void*, byte*, byte*, byte*, void> callback, void* userdata);
+    private static partial bool AddHintCallbackImport(byte* name, nint callback, void* userdata);
 
     /// <summary>Add a function to watch a particular hint.</summary>
     /// <remarks>
@@ -5113,9 +5115,11 @@ public static unsafe partial class Sdl
     /// <param name="name">the hint being watched.</param>
     /// <param name="callback">an SDL_HintCallback function that will be called when the hint value changes.</param>
     /// <param name="userdata">a pointer being passed to the callback function.</param>
+    public static void RemoveHintCallback(byte* name, delegate* unmanaged[Cdecl]<void*, byte*, byte*, byte*, void> callback, void* userdata) => RemoveHintCallbackImport(name, (nint)callback, userdata);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_RemoveHintCallback")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void RemoveHintCallback(byte* name, delegate* unmanaged[Cdecl]<void*, byte*, byte*, byte*, void> callback, void* userdata);
+    private static partial void RemoveHintCallbackImport(byte* name, nint callback, void* userdata);
 
     /// <summary>Remove a function watching a particular hint.</summary>
     /// <remarks>

@@ -55,10 +55,12 @@ public static unsafe partial class Sdl
     /// </remarks>
     /// <param name="callback">the SDL_WindowsMessageHook function to call.</param>
     /// <param name="userdata">a pointer to pass to every iteration of <c>callback</c>.</param>
+    [SupportedOSPlatform("windows")]
+    public static void SetWindowsMessageHook(delegate* unmanaged[Cdecl]<void*, Msg*, bool> callback, void* userdata) => SetWindowsMessageHookImport((nint)callback, userdata);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_SetWindowsMessageHook")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [SupportedOSPlatform("windows")]
-    public static partial void SetWindowsMessageHook(delegate* unmanaged[Cdecl]<void*, Msg*, bool> callback, void* userdata);
+    private static partial void SetWindowsMessageHookImport(nint callback, void* userdata);
 
     /// <summary>Get the D3D9 adapter index that matches the specified display.</summary>
     /// <remarks>
@@ -140,10 +142,12 @@ public static unsafe partial class Sdl
     /// </remarks>
     /// <param name="callback">the SDL_X11EventHook function to call.</param>
     /// <param name="userdata">a pointer to pass to every iteration of <c>callback</c>.</param>
+    [SupportedOSPlatform("linux")]
+    public static void SetX11EventHook(delegate* unmanaged[Cdecl]<void*, XEvent*, bool> callback, void* userdata) => SetX11EventHookImport((nint)callback, userdata);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_SetX11EventHook")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [SupportedOSPlatform("linux")]
-    public static partial void SetX11EventHook(delegate* unmanaged[Cdecl]<void*, XEvent*, bool> callback, void* userdata);
+    private static partial void SetX11EventHookImport(nint callback, void* userdata);
 
     /// <summary>Use this function to set the animation callback on Apple iOS.</summary>
     /// <remarks>
@@ -183,11 +187,13 @@ public static unsafe partial class Sdl
     /// <param name="callback">the function to call for every frame.</param>
     /// <param name="callbackParam">a pointer that is passed to <c>callback</c>.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    [SupportedOSPlatform("ios")]
+    public static bool SetiOSAnimationCallback(Window window, int interval, delegate* unmanaged[Cdecl]<void*, void> callback, void* callbackParam) => SetiOSAnimationCallbackImport(window, interval, (nint)callback, callbackParam);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_SetiOSAnimationCallback")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [SupportedOSPlatform("ios")]
     [return: MarshalAs(UnmanagedType.U1)]
-    public static partial bool SetiOSAnimationCallback(Window window, int interval, delegate* unmanaged[Cdecl]<void*, void> callback, void* callbackParam);
+    private static partial bool SetiOSAnimationCallbackImport(Window window, int interval, nint callback, void* callbackParam);
 
     /// <summary>Use this function to enable or disable the SDL event pump on Apple iOS.</summary>
     /// <remarks>
@@ -450,11 +456,13 @@ public static unsafe partial class Sdl
     /// true if the request was submitted, false if there was an error submitting. The result of the request is only
     /// ever reported through the callback, not this return value.
     /// </returns>
+    [SupportedOSPlatform("android")]
+    public static bool RequestAndroidPermission(byte* permission, delegate* unmanaged[Cdecl]<void*, byte*, bool, void> cb, void* userdata) => RequestAndroidPermissionImport(permission, (nint)cb, userdata);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_RequestAndroidPermission")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [SupportedOSPlatform("android")]
     [return: MarshalAs(UnmanagedType.U1)]
-    public static partial bool RequestAndroidPermission(byte* permission, delegate* unmanaged[Cdecl]<void*, byte*, bool, void> cb, void* userdata);
+    private static partial bool RequestAndroidPermissionImport(byte* permission, nint cb, void* userdata);
 
     /// <summary>Request permissions at runtime, asynchronously.</summary>
     /// <remarks>

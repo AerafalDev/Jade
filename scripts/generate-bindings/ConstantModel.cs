@@ -31,6 +31,9 @@ internal sealed class ConstantModel
     /// <summary>Gets the only platforms (<c>OperatingSystem.IsOSPlatform</c> names) whose headers define the macro, or none when all do.</summary>
     public IReadOnlyList<string> SupportedPlatforms { get; init; } = [];
 
+    /// <summary>Gets the platforms (<c>OperatingSystem.IsOSPlatform</c> names) where the constant does not exist.</summary>
+    public IReadOnlyList<string> UnsupportedPlatforms { get; init; } = [];
+
     /// <summary>Gets whether the value is a string.</summary>
     public bool IsString => Type.Kind == TypeKind.FixedArray;
 

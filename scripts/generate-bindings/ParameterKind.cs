@@ -21,4 +21,10 @@ internal enum ParameterKind
 
     /// <summary>The length of a <see cref="Span"/> parameter, filled from the span in the friendly overload.</summary>
     Count,
+
+    /// <summary>
+    /// A string view passed by value (<see cref="LibraryModel.StringView"/>): <c>ReadOnlySpan&lt;byte&gt;</c> of UTF-8, which the
+    /// view carries with its length, so no terminator is needed.
+    /// </summary>
+    StringView,
 }

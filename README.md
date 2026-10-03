@@ -24,7 +24,7 @@ Nothing is published on nuget.org yet.
 | --- | --- |
 | `jade_native` with SDL3, miniaudio and Dawn | Built in CI for the six desktop RIDs |
 | SDL3 bindings (`Jade.Interop.Sdl3`) | Complete public API, checked against the binary's exports |
-| WebGPU bindings from Dawn's `dawn.json` | Planned |
+| WebGPU bindings from Dawn's `dawn.json` (`Jade.Interop.WebGpu`) | Complete API with Dawn's extensions, checked against the header and the binary's exports |
 | miniaudio bindings | Planned |
 | Android, iOS, browser (WebAssembly) | Planned |
 | Dear ImGui and extensions, Box2D and Box3D, FreeType, HarfBuzz, msdfgen, asset libraries | Planned |
@@ -79,7 +79,8 @@ dotnet scripts/build-native.cs --rid linux-x64 --container    # glibc 2.28 build
 dotnet scripts/smoke-native.cs                                # check the staged library
 ```
 
-The bindings are regenerated from the staged headers with `dotnet scripts/generate-bindings.cs`.
+The bindings are regenerated from the staged headers and Dawn's `dawn.json` with
+`dotnet scripts/generate-bindings.cs`.
 See [CONTRIBUTING.md](https://github.com/AerafalDev/Jade/blob/main/CONTRIBUTING.md) for conventions,
 and [`design/`](https://github.com/AerafalDev/Jade/blob/main/design/architecture.md) for the
 architecture and its decision records.

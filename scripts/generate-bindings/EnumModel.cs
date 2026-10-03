@@ -18,4 +18,10 @@ internal sealed class EnumModel
 
     /// <summary>Gets the upstream documentation.</summary>
     public required Documentation Documentation { get; init; }
+
+    /// <summary>Gets the only platforms (<c>OperatingSystem.IsOSPlatform</c> names) where the enum exists, or none when it exists everywhere.</summary>
+    public IReadOnlyList<string> SupportedPlatforms { get; init; } = [];
+
+    /// <summary>Gets the platforms (<c>OperatingSystem.IsOSPlatform</c> names) where the enum does not exist.</summary>
+    public IReadOnlyList<string> UnsupportedPlatforms { get; init; } = [];
 }

@@ -64,9 +64,11 @@ public static unsafe partial class Sdl
     /// <param name="handle">a valid shared object handle returned by SDL_LoadObject().</param>
     /// <param name="name">the name of the function to look up.</param>
     /// <returns>a pointer to the function or NULL on failure; call SDL_GetError() for more information.</returns>
+    public static delegate* unmanaged[Cdecl]<void> LoadFunction(SharedObject handle, byte* name) => (delegate* unmanaged[Cdecl]<void>)LoadFunctionImport(handle, name);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_LoadFunction")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial delegate* unmanaged[Cdecl]<void> LoadFunction(SharedObject handle, byte* name);
+    private static partial nint LoadFunctionImport(SharedObject handle, byte* name);
 
     /// <summary>Look up the address of the named function in a shared object.</summary>
     /// <remarks>

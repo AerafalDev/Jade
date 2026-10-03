@@ -542,9 +542,11 @@ public static unsafe partial class Sdl
     /// </remarks>
     /// <param name="filter">a function to call when an event happens.</param>
     /// <param name="userdata">a pointer that is passed to <c>filter</c>.</param>
+    public static void SetEventFilter(delegate* unmanaged[Cdecl]<void*, Event*, bool> filter, void* userdata) => SetEventFilterImport((nint)filter, userdata);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_SetEventFilter")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void SetEventFilter(delegate* unmanaged[Cdecl]<void*, Event*, bool> filter, void* userdata);
+    private static partial void SetEventFilterImport(nint filter, void* userdata);
 
     /// <summary>Query the current event filter.</summary>
     /// <remarks>
@@ -626,10 +628,12 @@ public static unsafe partial class Sdl
     /// <param name="filter">an SDL_EventFilter function to call when an event happens.</param>
     /// <param name="userdata">a pointer that is passed to <c>filter</c>.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    public static bool AddEventWatch(delegate* unmanaged[Cdecl]<void*, Event*, bool> filter, void* userdata) => AddEventWatchImport((nint)filter, userdata);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_AddEventWatch")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.U1)]
-    public static partial bool AddEventWatch(delegate* unmanaged[Cdecl]<void*, Event*, bool> filter, void* userdata);
+    private static partial bool AddEventWatchImport(nint filter, void* userdata);
 
     /// <summary>Remove an event watch callback added with SDL_AddEventWatch().</summary>
     /// <remarks>
@@ -657,9 +661,11 @@ public static unsafe partial class Sdl
     /// </remarks>
     /// <param name="filter">the function originally passed to SDL_AddEventWatch().</param>
     /// <param name="userdata">the pointer originally passed to SDL_AddEventWatch().</param>
+    public static void RemoveEventWatch(delegate* unmanaged[Cdecl]<void*, Event*, bool> filter, void* userdata) => RemoveEventWatchImport((nint)filter, userdata);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_RemoveEventWatch")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void RemoveEventWatch(delegate* unmanaged[Cdecl]<void*, Event*, bool> filter, void* userdata);
+    private static partial void RemoveEventWatchImport(nint filter, void* userdata);
 
     /// <summary>
     /// Run a specific filter function on the current event queue, removing any events for which the filter returns
@@ -691,9 +697,11 @@ public static unsafe partial class Sdl
     /// </remarks>
     /// <param name="filter">the SDL_EventFilter function to call when an event happens.</param>
     /// <param name="userdata">a pointer that is passed to <c>filter</c>.</param>
+    public static void FilterEvents(delegate* unmanaged[Cdecl]<void*, Event*, bool> filter, void* userdata) => FilterEventsImport((nint)filter, userdata);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_FilterEvents")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void FilterEvents(delegate* unmanaged[Cdecl]<void*, Event*, bool> filter, void* userdata);
+    private static partial void FilterEventsImport(nint filter, void* userdata);
 
     /// <summary>Set the state of processing events by type.</summary>
     /// <remarks>

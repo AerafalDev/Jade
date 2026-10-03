@@ -58,9 +58,11 @@ public static unsafe partial class Sdl
     /// an opaque pointer to the new thread object on success, NULL if the new thread could not be created; call
     /// SDL_GetError() for more information.
     /// </returns>
+    public static SdlThread CreateThreadRuntime(delegate* unmanaged[Cdecl]<void*, int> fn, byte* name, void* data, delegate* unmanaged[Cdecl]<void> pfnBeginThread, delegate* unmanaged[Cdecl]<void> pfnEndThread) => CreateThreadRuntimeImport((nint)fn, name, data, (nint)pfnBeginThread, (nint)pfnEndThread);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_CreateThreadRuntime")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial SdlThread CreateThreadRuntime(delegate* unmanaged[Cdecl]<void*, int> fn, byte* name, void* data, delegate* unmanaged[Cdecl]<void> pfnBeginThread, delegate* unmanaged[Cdecl]<void> pfnEndThread);
+    private static partial SdlThread CreateThreadRuntimeImport(nint fn, byte* name, void* data, nint pfnBeginThread, nint pfnEndThread);
 
     /// <summary>The actual entry point for SDL_CreateThread.</summary>
     /// <remarks>
@@ -111,9 +113,11 @@ public static unsafe partial class Sdl
     /// an opaque pointer to the new thread object on success, NULL if the new thread could not be created; call
     /// SDL_GetError() for more information.
     /// </returns>
+    public static SdlThread CreateThreadWithPropertiesRuntime(PropertiesID props, delegate* unmanaged[Cdecl]<void> pfnBeginThread, delegate* unmanaged[Cdecl]<void> pfnEndThread) => CreateThreadWithPropertiesRuntimeImport(props, (nint)pfnBeginThread, (nint)pfnEndThread);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_CreateThreadWithPropertiesRuntime")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial SdlThread CreateThreadWithPropertiesRuntime(PropertiesID props, delegate* unmanaged[Cdecl]<void> pfnBeginThread, delegate* unmanaged[Cdecl]<void> pfnEndThread);
+    private static partial SdlThread CreateThreadWithPropertiesRuntimeImport(PropertiesID props, nint pfnBeginThread, nint pfnEndThread);
 
     /// <summary>Get the thread name as it was specified in SDL_CreateThread().</summary>
     /// <remarks>
@@ -378,10 +382,12 @@ public static unsafe partial class Sdl
     /// <param name="value">the value to associate with the ID for the current thread.</param>
     /// <param name="destructor">a function called when the thread exits, to free the value, may be NULL.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    public static bool SetTLS(AtomicInt* id, void* value, delegate* unmanaged[Cdecl]<void*, void> destructor) => SetTLSImport(id, value, (nint)destructor);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_SetTLS")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.U1)]
-    public static partial bool SetTLS(AtomicInt* id, void* value, delegate* unmanaged[Cdecl]<void*, void> destructor);
+    private static partial bool SetTLSImport(AtomicInt* id, void* value, nint destructor);
 
     /// <summary>Set the current thread's value associated with a thread local storage ID.</summary>
     /// <remarks>

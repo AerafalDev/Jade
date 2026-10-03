@@ -46,6 +46,7 @@ internal static class PlatformMerge
             Text = donor.Text,
             Documentation = donor.Documentation,
             SupportedPlatforms = platforms,
+            UnsupportedPlatforms = donor.UnsupportedPlatforms,
         });
 
         var result = new List<TargetModel>(targets.Count);
@@ -87,6 +88,7 @@ internal static class PlatformMerge
                     Handles = [.. handles.OrderBy(h => h.Name, StringComparer.Ordinal)],
                     Constants = constantList,
                     Callbacks = callbacks,
+                    StringView = model.StringView,
                 },
                 Layouts = target.Layouts,
                 PointerSize = target.PointerSize,

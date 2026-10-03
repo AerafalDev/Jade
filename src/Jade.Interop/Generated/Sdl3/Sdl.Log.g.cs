@@ -117,9 +117,11 @@ public static unsafe partial class Sdl
     /// <para>See also: <c>SDL_SetLogOutputFunction</c>, <c>SDL_GetLogOutputFunction</c>.</para>
     /// </remarks>
     /// <returns>the default log output callback. It should be called with NULL for the userdata argument.</returns>
+    public static delegate* unmanaged[Cdecl]<void*, int, LogPriority, byte*, void> GetDefaultLogOutputFunction() => (delegate* unmanaged[Cdecl]<void*, int, LogPriority, byte*, void>)GetDefaultLogOutputFunctionImport();
+
     [LibraryImport("jade_native", EntryPoint = "SDL_GetDefaultLogOutputFunction")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial delegate* unmanaged[Cdecl]<void*, int, LogPriority, byte*, void> GetDefaultLogOutputFunction();
+    private static partial nint GetDefaultLogOutputFunctionImport();
 
     /// <summary>Get the current log output function.</summary>
     /// <remarks>
@@ -172,7 +174,9 @@ public static unsafe partial class Sdl
     /// </remarks>
     /// <param name="callback">an SDL_LogOutputFunction to call instead of the default.</param>
     /// <param name="userdata">a pointer that is passed to <c>callback</c>.</param>
+    public static void SetLogOutputFunction(delegate* unmanaged[Cdecl]<void*, int, LogPriority, byte*, void> callback, void* userdata) => SetLogOutputFunctionImport((nint)callback, userdata);
+
     [LibraryImport("jade_native", EntryPoint = "SDL_SetLogOutputFunction")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void SetLogOutputFunction(delegate* unmanaged[Cdecl]<void*, int, LogPriority, byte*, void> callback, void* userdata);
+    private static partial void SetLogOutputFunctionImport(nint callback, void* userdata);
 }
