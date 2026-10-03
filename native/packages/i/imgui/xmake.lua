@@ -136,10 +136,19 @@ package("imgui")
         for _, backend in ipairs(backends) do
             metadata[("dear_bindings/backends/dcimgui_impl_%s.json"):format(backend)] = ("dcimgui_impl_%s.json"):format(backend)
         end
+        -- dear_bindings names each function after its C++ class (ImGui_, ImDrawList_, ImFontAtlas_, ...),
+        -- DearBindings_ or, in the backends, cImGui_. Every metadata function must carry one of these
+        -- prefixes, so that the comparison below, which only sees names carrying one, covers all of them.
+        local function api(name)
+            return name:match("^Im%u") or name:startswith("DearBindings_") or name:startswith("cImGui_")
+        end
         local exports = {}
         local listed = {}
         for _, source in ipairs(table.orderkeys(metadata)) do
             for _, func in ipairs(json.loadfile(source).functions) do
+                if not api(func.name) then
+                    raise("imgui: %s in %s has no C API prefix", func.name, source)
+                end
                 local enabled = true
                 for _, conditional in ipairs(func.conditionals or {}) do
                     if not holds(conditional) then
@@ -153,10 +162,12 @@ package("imgui")
             end
         end
 
-        -- The list must be exactly the functions the wrappers define, the only unmangled ones (ImGui and
-        -- its backends are C++). A wrong entry in the macros above would otherwise hide a function, or
-        -- list one the linker cannot find (which only Linux tolerates). The object files are read rather
-        -- than the archive: xmake 3.1.1's archive reader skips the members whose names are long.
+        -- The list must be exactly the C API functions the wrappers define. A wrong entry in the macros
+        -- above would otherwise hide a function, or list one the linker cannot find (which only Linux
+        -- tolerates). Only names with a C API prefix are compared: ImGui and its backends are C++, but
+        -- MSVC's CRT headers define printf, snprintf, time, localtime_s and others as unmangled inline
+        -- functions in every object that includes them (fabsf too on x64). The object files are read
+        -- rather than the archive: xmake 3.1.1's archive reader skips the members whose names are long.
         local objects = os.files(path.join(package:builddir(), ".objs", "**" .. (package:is_plat("windows") and ".obj" or ".o")))
         assert(#objects == #sources, ("imgui: %d object files for %d sources"):format(#objects, #sources))
         local underscore = package:is_plat("macosx", "iphoneos")
@@ -168,7 +179,7 @@ package("imgui")
                     if underscore and name:startswith("_") then
                         name = name:sub(2)
                     end
-                    if symbol.type == "T" and name:match("^%a[%w_]*$") then
+                    if symbol.type == "T" and api(name) then
                         defined[name] = true
                     end
                 end
