@@ -1,0 +1,107 @@
+# The repository's labels. `dotnet scripts/sync-labels.cs` applies this file through gh: it creates the
+# missing labels and updates the changed ones, and deletes labels that are not listed here only with --delete.
+#
+# Names carry their group as a prefix, so that a filter such as `label:area/native` needs no quotes. The last
+# four keep their usual names: GitHub surfaces `good first issue` to newcomers, `help wanted` is one of its
+# default labels, and Dependabot adds `dependencies` and `github_actions` (see dependabot.yml). labeler.yml adds
+# the area/ and platform/ labels to pull requests from the paths they change.
+
+- name: type/bug
+  color: "d73a4a"
+  description: Something does not work as documented
+
+- name: type/feature
+  color: "a2eeef"
+  description: A new capability or API
+
+- name: type/docs
+  color: "0075ca"
+  description: README, contributing guide, XML docs or design documents
+
+- name: type/ci
+  color: "bfd4f2"
+  description: GitHub Actions workflows and repository automation
+
+- name: type/build
+  color: "d4c5f9"
+  description: MSBuild, packages, the .NET SDK or the native build
+
+- name: type/chore
+  color: "ededed"
+  description: Housekeeping with no effect on behavior
+
+- name: type/performance
+  color: "f9d0c4"
+  description: Speed, memory use or binary size
+
+- name: area/native
+  color: "fef2c0"
+  description: "jade_native: xmake build, upstream recipes and C shims"
+
+- name: area/bindings
+  color: "fef2c0"
+  description: Jade.Interop and its generated bindings
+
+- name: area/generator
+  color: "fef2c0"
+  description: The binding generator, scripts/generate-bindings
+
+- name: area/packaging
+  color: "fef2c0"
+  description: The Jade and Jade.Native packages and their layout
+
+- name: area/engine
+  color: "fef2c0"
+  description: The engine, src/Jade
+
+- name: area/docs-site
+  color: "fef2c0"
+  description: The public documentation site under docs/
+
+- name: platform/windows
+  color: "c2e0c6"
+  description: Windows (win-x64, win-arm64)
+
+- name: platform/linux
+  color: "c2e0c6"
+  description: Linux (linux-x64, linux-arm64)
+
+- name: platform/macos
+  color: "c2e0c6"
+  description: macOS (osx-x64, osx-arm64)
+
+- name: platform/android
+  color: "c2e0c6"
+  description: Android (android-arm64, android-x64)
+
+- name: platform/ios
+  color: "c2e0c6"
+  description: iOS and the iOS simulator
+
+- name: platform/browser
+  color: "c2e0c6"
+  description: The browser (browser-wasm)
+
+- name: status/blocked
+  color: "b60205"
+  description: Waits on another issue, pull request or upstream change
+
+- name: status/needs-decision
+  color: "d93f0b"
+  description: Needs a decision from the maintainer before work starts
+
+- name: good first issue
+  color: "7057ff"
+  description: Good for newcomers
+
+- name: help wanted
+  color: "008672"
+  description: Extra attention is needed
+
+- name: dependencies
+  color: "0366d6"
+  description: Pull requests that update a dependency file
+
+- name: github_actions
+  color: "000000"
+  description: Pull requests that update GitHub Actions code

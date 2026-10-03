@@ -1,0 +1,39 @@
+name: Feature request
+description: Suggest a capability, an API or a library for Jade.
+labels: ["type/feature"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What you are trying to do, and what stops you today.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: The API or behavior you have in mind. Code sketches are welcome.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives
+      description: Workarounds you use now, or other designs you considered.
+
+  - type: dropdown
+    id: platforms
+    attributes:
+      label: Platforms
+      description: Leave it empty when the request applies everywhere.
+      multiple: true
+      options:
+        - Windows
+        - Linux
+        - macOS
+        - Android
+        - iOS
+        - Browser

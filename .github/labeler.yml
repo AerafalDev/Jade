@@ -1,0 +1,71 @@
+# Area and platform labels that workflows/labeler.yml adds to pull requests from the paths they change, with
+# actions/labeler's match syntax. It never removes a label, so labels added by hand stay. Type and status labels
+# are set by hand. The labels themselves are declared in labels.yml.
+
+area/native:
+  - changed-files:
+      - any-glob-to-any-file:
+          - native/**
+          - scripts/build-native.cs
+          - scripts/build-native/**
+          - scripts/fetch-native.cs
+          - scripts/fetch-native/**
+          - scripts/smoke-native.cs
+          - scripts/smoke-native/**
+          - .github/workflows/native.yml
+
+area/bindings:
+  - changed-files:
+      - any-glob-to-any-file:
+          - src/Jade.Interop/**
+          - tests/Jade.Interop.Tests/**
+
+area/generator:
+  - changed-files:
+      - any-glob-to-any-file:
+          - scripts/generate-bindings.cs
+          - scripts/generate-bindings/**
+
+area/packaging:
+  - changed-files:
+      - any-glob-to-any-file:
+          - src/Jade.Native/**
+          - tests/Jade.PackageTests/**
+          - scripts/test-package.cs
+          - THIRD-PARTY-NOTICES.md
+
+area/engine:
+  - changed-files:
+      - any-glob-to-any-file:
+          - src/Jade/**
+
+area/docs-site:
+  - changed-files:
+      - any-glob-to-any-file:
+          - docs/**
+
+# Platform-specific files live in a folder named after their platform, as native/linux/ does. Globs are
+# case-sensitive.
+platform/windows:
+  - changed-files:
+      - any-glob-to-any-file: "**/windows/**"
+
+platform/linux:
+  - changed-files:
+      - any-glob-to-any-file: "**/linux/**"
+
+platform/macos:
+  - changed-files:
+      - any-glob-to-any-file: "**/macos/**"
+
+platform/android:
+  - changed-files:
+      - any-glob-to-any-file: "**/android/**"
+
+platform/ios:
+  - changed-files:
+      - any-glob-to-any-file: "**/ios/**"
+
+platform/browser:
+  - changed-files:
+      - any-glob-to-any-file: "**/browser/**"

@@ -1,0 +1,90 @@
+name: Bug report
+description: Something in Jade does not work as documented.
+labels: ["type/bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report it. A security issue goes through the
+        [security policy](https://github.com/AerafalDev/Jade/security/policy), not a public issue.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what happened instead.
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Minimal repro
+      description: The smallest code or steps that show the problem. A link to a repository works too.
+    validations:
+      required: true
+
+  - type: input
+    id: jade-version
+    attributes:
+      label: Jade version
+      description: The package version, or the commit when you build Jade from source.
+      placeholder: 0.1.0 or 83a59d4
+    validations:
+      required: true
+
+  - type: dropdown
+    id: rid
+    attributes:
+      label: RID
+      description: The runtime identifier the application runs as.
+      options:
+        - win-x64
+        - win-arm64
+        - linux-x64
+        - linux-arm64
+        - osx-x64
+        - osx-arm64
+        - Another RID (name it under What happened)
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: OS
+      description: Name and version.
+      placeholder: Windows 11 24H2, Ubuntu 24.04, macOS 26.0
+    validations:
+      required: true
+
+  - type: input
+    id: dotnet-sdk
+    attributes:
+      label: .NET SDK
+      description: The output of `dotnet --version`.
+      placeholder: 10.0.401
+    validations:
+      required: true
+
+  - type: dropdown
+    id: native-backend
+    attributes:
+      label: Native backend
+      description: The Dawn backend in use, with the display server on Linux.
+      options:
+        - D3D12
+        - Vulkan on X11
+        - Vulkan on Wayland
+        - Metal
+        - "Null"
+        - Not graphics-related, or not sure
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Error messages, stack traces or native crash output.
+      render: text

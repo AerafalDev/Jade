@@ -1,0 +1,33 @@
+name: Labeler
+
+# Adds the area/ and platform/ labels of .github/labeler.yml to pull requests from the paths they change.
+#
+# It runs on pull_request rather than the pull_request_target that actions/labeler suggests. pull_request_target
+# runs the base branch's workflow and configuration, so a pull request that changes them could not show their
+# effect, and it hands a write token to runs that fork pull requests trigger. On pull_request, a fork's token is
+# read-only whatever the permissions below say, so forks are skipped and labeled by hand. Dependabot's token does
+# take the permissions below.
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  label:
+    name: Label
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    permissions:
+      # Reads .github/labeler.yml at the pull request's merge commit.
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Label from changed paths
+        uses: actions/labeler@v7
