@@ -150,17 +150,18 @@ jobs:
           case "$GITHUB_EVENT_NAME" in
             pull_request) runs='true' ;;
             push) runs=".workflow_run.head_branch == \"$GITHUB_REF_NAME\"" ;;
-            *) runs= ;;
+            *)
+              echo "Building $RID: a $GITHUB_EVENT_NAME run always builds."
+              echo "build=true" >> "$GITHUB_OUTPUT"
+              exit 0
+              ;;
           esac
-          found=
-          if [ -n "$runs" ]; then
-            filter="map(select((.expired | not) and .workflow_run.head_repository_id == $GITHUB_REPOSITORY_ID and $runs)) | max_by(.created_at) | .workflow_run // empty | \"\(.id) \(.head_branch) \(.head_sha)\""
-            found=$(gh api "repos/$GH_REPO/actions/artifacts?name=$MARKER&per_page=100" --jq ".artifacts | $filter") \
-              || echo "::warning::Cannot list the artifacts of earlier runs."
-          fi
+          filter="map(select((.expired | not) and .workflow_run.head_repository_id == $GITHUB_REPOSITORY_ID and $runs)) | max_by(.created_at) | .workflow_run // empty | \"\\(.id) \\(.head_branch) \\(.head_sha)\""
+          found=$(gh api "repos/$GH_REPO/actions/artifacts?name=$MARKER&per_page=100" --jq ".artifacts | $filter") \
+            || echo "::warning::Cannot list the artifacts of earlier runs."
           build=true
           if [ -z "$found" ]; then
-            echo "Building $RID: no usable earlier run built it from these inputs ($MARKER), or a $GITHUB_EVENT_NAME run always builds."
+            echo "Building $RID: no earlier run built it from these native inputs ($MARKER)."
           else
             read -r run branch commit <<< "$found"
             echo "Reusing $RID from run $run ($branch, $commit), built from the same native inputs."
@@ -201,7 +202,7 @@ jobs:
             Windows)
               vs=$(cygpath -u "$("/c/Program Files (x86)/Microsoft Visual Studio/Installer/vswhere.exe" -latest -property installationPath | tr -d '\r')")
               msvc=$(tr -d '\r' < "$vs/VC/Auxiliary/Build/Microsoft.VCToolsVersion.default.txt")
-              sdk=$(ls "/c/Program Files (x86)/Windows Kits/10/Include" | grep '^10\.' | sort -V | tail -n 1)
+              sdk=$(cd "/c/Program Files (x86)/Windows Kits/10/Include" && printf '%s\n' 10.* | sort -V | tail -n 1)
               id="msvc-$msvc-sdk-$sdk"
               ;;
           esac
