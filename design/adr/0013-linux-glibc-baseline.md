@@ -1,6 +1,6 @@
 # ADR-0013: Linux glibc baseline: AlmaLinux 8 container, glibc 2.28
 
-- Status: Proposed
+- Status: Accepted (2026-10-03)
 - Date: 2026-10-03
 
 ## Context

@@ -18,7 +18,7 @@ ADRs with status `Proposed`; the orchestrator, together with the user, accepts o
 | [0010](0010-script-entry-point-next-to-its-folder.md) | Script entry point `scripts/<name>.cs`, helpers in `scripts/<name>/`, one type per file | Accepted |
 | [0011](0011-csharp-coding-conventions.md) | C# conventions: dotnet/runtime style, `var` everywhere, file-scoped namespaces, enforced at build | Accepted |
 | [0012](0012-c-bool-maps-to-system-boolean.md) | C `bool` maps to `System.Boolean`; wider boolean typedefs keep their width | Accepted |
-| [0013](0013-linux-glibc-baseline.md) | Linux RIDs build in an AlmaLinux 8 container: glibc 2.28 baseline, clang 21 with gcc-toolset-15 | Proposed |
+| [0013](0013-linux-glibc-baseline.md) | Linux RIDs build in an AlmaLinux 8 container: glibc 2.28 baseline, clang 21 with gcc-toolset-15 | Accepted |
 
 ## Template
 
