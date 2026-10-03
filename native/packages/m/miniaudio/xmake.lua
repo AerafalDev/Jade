@@ -1,5 +1,5 @@
 -- miniaudio as a static library for jade_native, so its implementation is compiled exactly once.
--- Only Linux is supported so far; tasks 103, 104 and 105 add the other platforms.
+-- Linux, Windows and macOS for now; tasks 104 and 105 add the mobile platforms and the browser.
 local commits = {
     ["0.11.25"] = "9634bedb5b5a2ca38c1ee7108a9358a4e233f14d"
 }
@@ -31,7 +31,9 @@ package("miniaudio")
         end
     end)
 
-    on_install("linux", function (package)
+    -- Backends and their system libraries are loaded at runtime on every platform (no
+    -- MA_NO_RUNTIME_LINKING), so Windows and macOS need no system library here.
+    on_install("linux", "windows", "macosx", function (package)
         -- No mode.release rule: it compiles static targets with hidden visibility, which would hide
         -- every MA_API function (a plain `extern`) from jade_native's exports.
         local lines = {

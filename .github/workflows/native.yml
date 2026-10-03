@@ -1,0 +1,215 @@
+name: Native
+
+# Builds jade_native for every desktop RID, each on its own OS (ADR-0004), and uploads one artifact per
+# RID in the artifacts/native/<rid>/ layout, plus its debug symbols. scripts/fetch-native.cs downloads
+# them from the latest successful run on main. Changes to design documents and Markdown alone skip it.
+on:
+  push:
+    branches: [main]
+    paths-ignore: ['design/**', '**.md']
+  pull_request:
+    branches: [main]
+    paths-ignore: ['design/**', '**.md']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: jade_native (${{ matrix.rid }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Linux RIDs build in the glibc baseline container (ADR-0013), which brings its own xmake and
+          # toolchain. Its package cache lives in the container's home.
+          - rid: linux-x64
+            os: ubuntu-24.04
+            container: true
+            packages: native/build/container/linux-x64/home/.xmake/packages
+            bindings: true
+          - rid: linux-arm64
+            os: ubuntu-24.04-arm
+            container: true
+            packages: native/build/container/linux-arm64/home/.xmake/packages
+          # Both Windows images carry an MSVC newer than the 19.41 Dawn needs and the Windows SDK 10.0.26100
+          # it asks for. versions.json records which ones a build used.
+          - rid: win-x64
+            os: windows-2025
+            packages: native/build/xmake/.xmake/packages
+            bindings: true
+          - rid: win-arm64
+            os: windows-11-arm
+            packages: native/build/xmake/.xmake/packages
+          # Intel macOS still has hosted runners, so osx-x64 builds natively instead of cross-compiling.
+          - rid: osx-x64
+            os: macos-26-intel
+            packages: native/build/xmake/.xmake/packages
+          - rid: osx-arm64
+            os: macos-26
+            packages: native/build/xmake/.xmake/packages
+            bindings: true
+    runs-on: ${{ matrix.os }}
+
+    env:
+      MSBuildTreatWarningsAsErrors: true
+      # Host builds keep xmake's packages and download cache under native/build/, next to the container
+      # builds' ones, so that one cache step and one log glob cover both.
+      XMAKE_GLOBALDIR: ${{ github.workspace }}/native/build/xmake
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: global.json
+
+      - name: Setup xmake
+        if: ${{ !matrix.container }}
+        uses: xmake-io/github-action-setup-xmake@v1
+        with:
+          xmake-version: '3.1.1'
+
+      # Scripts must run on every desktop OS (ADR-0008); the style job only compiles them on Linux.
+      - name: Build scripts
+        shell: bash
+        run: for script in scripts/*.cs; do dotnet build "$script"; done
+
+      # xmake's package build hash ignores the compiler version, so the cache key carries it. The
+      # container's toolchain is pinned in native/linux/Dockerfile, which the key already hashes.
+      - name: Identify the toolchain
+        id: toolchain
+        shell: bash
+        run: |
+          case "$RUNNER_OS" in
+            Linux)
+              id=container
+              ;;
+            macOS)
+              id="xcode-$(xcodebuild -version | awk 'NR == 1 { version = $2 } NR == 2 { print version "-" $3 }')"
+              ;;
+            Windows)
+              vs=$(cygpath -u "$("/c/Program Files (x86)/Microsoft Visual Studio/Installer/vswhere.exe" -latest -property installationPath | tr -d '\r')")
+              msvc=$(tr -d '\r' < "$vs/VC/Auxiliary/Build/Microsoft.VCToolsVersion.default.txt")
+              sdk=$(ls "/c/Program Files (x86)/Windows Kits/10/Include" | grep '^10\.' | sort -V | tail -n 1)
+              id="msvc-$msvc-sdk-$sdk"
+              ;;
+          esac
+          echo "id=$id" | tee -a "$GITHUB_OUTPUT"
+
+      # Restoring an older cache of the same toolchain and RID mapping keeps every package whose recipe
+      # did not change: xmake reinstalls only what its build hash no longer finds. --prune-packages
+      # drops the rest before the cache is saved. The build and xmake directories under native/ are not
+      # inputs (xmake may already have written its global directory there).
+      - name: Restore xmake packages
+        id: packages
+        uses: actions/cache/restore@v6
+        with:
+          path: ${{ matrix.packages }}
+          key: native-${{ matrix.rid }}-${{ steps.toolchain.outputs.id }}-${{ hashFiles('scripts/build-native/Rids.cs') }}-${{ hashFiles('native/**', '!native/build/**', '!native/.xmake/**', 'scripts/build-native.cs', 'scripts/build-native/**') }}
+          restore-keys: native-${{ matrix.rid }}-${{ steps.toolchain.outputs.id }}-${{ hashFiles('scripts/build-native/Rids.cs') }}-
+
+      - name: Build jade_native
+        id: build
+        shell: bash
+        run: dotnet scripts/build-native.cs --rid ${{ matrix.rid }} ${{ matrix.container && '--container' || '' }} --prune-packages
+
+      # Saved as soon as the build succeeds: a failing check later on says nothing about the packages.
+      - name: Save xmake packages
+        if: steps.build.outcome == 'success' && steps.packages.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v6
+        with:
+          path: ${{ matrix.packages }}
+          key: ${{ steps.packages.outputs.cache-primary-key }}
+
+      - name: List exports
+        if: steps.build.outcome == 'success' && runner.os != 'Windows'
+        shell: bash
+        run: |
+          case "$RUNNER_OS" in
+            Linux) nm -D --defined-only "artifacts/native/${{ matrix.rid }}/lib/libjade_native.so" | awk '{ print $3 }' ;;
+            macOS) nm -gU "artifacts/native/${{ matrix.rid }}/lib/libjade_native.dylib" | awk '{ print substr($3, 2) }' ;;
+          esac | sed -E 's/^(SDL_|ma_|wgpu|jade_).*/\1/' | sort | uniq -c
+
+      # A failed package install prints only the first 17 lines of its output; xmake keeps the rest in the
+      # package cache, which the runner discards.
+      - name: Show xmake package install logs
+        if: failure()
+        shell: bash
+        run: |
+          find native/build -path '*/installdir.failed/logs/*.txt' | while read -r log; do
+            echo "::group::$log"
+            tail -n 200 "$log"
+            echo "::endgroup::"
+          done
+
+      - name: Upload xmake package install logs
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: xmake-install-logs-${{ matrix.rid }}
+          path: native/build/**/installdir.failed/logs/
+          include-hidden-files: true
+          if-no-files-found: ignore
+
+      - name: Check the glibc baseline
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          highest=$(objdump -T "artifacts/native/${{ matrix.rid }}/lib/libjade_native.so" | grep -o 'GLIBC_[0-9.]*' | sort -uV | tail -n 1)
+          echo "Highest glibc symbol version: $highest (baseline GLIBC_2.28)"
+          test "$(printf '%s\n' "$highest" GLIBC_2.28 | sort -V | tail -n 1)" = GLIBC_2.28
+
+      - name: Check the macOS deployment target
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          minos=$(otool -l "artifacts/native/${{ matrix.rid }}/lib/libjade_native.dylib" | awk '/LC_BUILD_VERSION/ { found = 1 } found && $1 == "minos" { print $2; exit }')
+          echo "Deployment target: $minos (expected 12.0)"
+          test "$minos" = 12.0
+
+      - name: Smoke check
+        run: dotnet scripts/smoke-native.cs
+
+      # The generator reads the headers just staged; the generated files must not depend on the host.
+      - name: Regenerate bindings
+        if: matrix.bindings
+        run: dotnet scripts/generate-bindings.cs
+
+      # Intent-to-add makes newly generated files show up in the diff too.
+      - name: Fail if the committed bindings differ
+        if: matrix.bindings
+        shell: bash
+        run: git add --intent-to-add src/Jade.Interop/Generated tests/Jade.Interop.Tests/Generated && git diff --exit-code
+
+      # Runs the tests that need jade_native, which ci.yml's build job skips. The dummy video driver lets
+      # the window test run without a display.
+      - name: Test against jade_native
+        if: matrix.bindings
+        run: dotnet test -c Release
+        env:
+          SDL_VIDEO_DRIVER: dummy
+
+      # Uploaded whenever the build succeeded, so that a library failing a check can be inspected.
+      - name: Upload jade_native
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: jade-native-${{ matrix.rid }}
+          path: artifacts/native/${{ matrix.rid }}/
+          if-no-files-found: error
+
+      - name: Upload debug symbols
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: jade-native-symbols-${{ matrix.rid }}
+          path: artifacts/native-symbols/${{ matrix.rid }}/
+          if-no-files-found: error

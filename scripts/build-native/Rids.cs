@@ -4,18 +4,25 @@ using System.Runtime.InteropServices;
 internal static class Rids
 {
     // Platform, architecture and toolchain names come from `xmake f --help` and
-    // `xmake show -l toolchains` (xmake 3.1.1). Only linux-x64 has been built; tasks 103, 104 and
-    // 105 verify the others and fix what they need.
+    // `xmake show -l toolchains` (xmake 3.1.1). Tasks 104 and 105 verify the mobile and browser RIDs
+    // and fix what they need.
+
+    // The oldest macOS jade_native loads on: the deployment target of .NET 10's own native code
+    // (eng/native/configurecompiler.cmake in dotnet/runtime), so nothing that can run .NET is left out.
+    private const string MacOSMinimumVersion = "--target_minver=12.0";
 
     /// <summary>Every RID built now (ADR-0007), with its xmake configuration.</summary>
     public static readonly IReadOnlyDictionary<string, XmakeTarget> All = new Dictionary<string, XmakeTarget>
     {
-        ["win-x64"] = new XmakeTarget("windows", "x64", "msvc", verified: false),
-        ["win-arm64"] = new XmakeTarget("windows", "arm64", "msvc", verified: false),
+        ["win-x64"] = new XmakeTarget("windows", "x64", "msvc", verified: true),
+        ["win-arm64"] = new XmakeTarget("windows", "arm64", "msvc", verified: true),
         ["linux-x64"] = new XmakeTarget("linux", "x86_64", "clang", verified: true),
-        ["linux-arm64"] = new XmakeTarget("linux", "arm64", "clang", verified: false),
-        ["osx-x64"] = new XmakeTarget("macosx", "x86_64", "xcode", verified: false),
-        ["osx-arm64"] = new XmakeTarget("macosx", "arm64", "xcode", verified: false),
+        ["linux-arm64"] = new XmakeTarget("linux", "arm64", "clang", verified: true),
+        // No --toolchain: xcode is the platform's default anyway, and packages inherit an explicit one.
+        // xmake does not count xcode as a host toolchain, so it would configure every CMake package as a
+        // cross build, without the SDK's frameworks on the search path.
+        ["osx-x64"] = new XmakeTarget("macosx", "x86_64", toolchain: null, verified: true, MacOSMinimumVersion),
+        ["osx-arm64"] = new XmakeTarget("macosx", "arm64", toolchain: null, verified: true, MacOSMinimumVersion),
         ["android-arm64"] = new XmakeTarget("android", "arm64-v8a", "ndk", verified: false),
         ["android-x64"] = new XmakeTarget("android", "x86_64", "ndk", verified: false),
         ["ios-arm64"] = new XmakeTarget("iphoneos", "arm64", "xcode", verified: false),

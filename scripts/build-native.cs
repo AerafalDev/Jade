@@ -3,13 +3,22 @@
 // artifacts/native/<rid>/:
 //   lib/        the library
 //   include/    headers the binding generator reads, one folder per library
-//   metadata/   versions.json (version, commit and SHA-256 of every upstream) and licenses/
+//   metadata/   versions.json (toolchain, and version, commit and SHA-256 of every upstream) and
+//               licenses/
+// and its separate debug symbols, when the build has some, into artifacts/native-symbols/<rid>/.
 // This is the only entry point for native builds (ADR-0004).
 //
-// Usage: dotnet scripts/build-native.cs [--rid <rid>] [--config release|debug]
+// --container builds a Linux RID inside the container of native/linux/Dockerfile, on the glibc
+// baseline of ADR-0013, as CI does. --prune-packages then uninstalls the package builds that no
+// xmake project uses any more (xmake require --clean); CI runs it before caching the packages.
+//
+// Usage: dotnet scripts/build-native.cs [--rid <rid>] [--config release|debug] [--container] [--prune-packages]
 
 #:include build-native/XmakeTarget.cs
 #:include build-native/Rids.cs
+#:include build-native/Command.cs
+#:include build-native/Container.cs
+#:include build-native/Posix.cs
 #:include build-native/Xmake.cs
 #:include build-native/Stage.cs
 #:include build-native/Json.cs
@@ -22,10 +31,12 @@
 
 using System.Diagnostics;
 
-const string Usage = "Usage: dotnet scripts/build-native.cs [--rid <rid>] [--config release|debug]";
+const string Usage = "Usage: dotnet scripts/build-native.cs [--rid <rid>] [--config release|debug] [--container] [--prune-packages]";
 
 string? rid = null;
 var config = "release";
+var container = false;
+var prunePackages = false;
 for (var i = 0; i < args.Length; i++)
 {
     switch (args[i])
@@ -36,6 +47,14 @@ for (var i = 0; i < args.Length; i++)
 
         case "--config" when i + 1 < args.Length:
             config = args[++i];
+            break;
+
+        case "--container":
+            container = true;
+            break;
+
+        case "--prune-packages":
+            prunePackages = true;
             break;
 
         case "-h" or "--help":
@@ -63,6 +82,12 @@ if (config is not ("release" or "debug"))
     return 2;
 }
 
+if (container && target.Platform != "linux")
+{
+    Console.Error.WriteLine($"--container builds Linux RIDs only, not {rid}.");
+    return 2;
+}
+
 if (!target.Verified)
 {
     Console.Error.WriteLine($"warning: the xmake mapping for {rid} has not been verified yet, see design/roadmap.md.");
@@ -70,9 +95,29 @@ if (!target.Verified)
 
 var stopwatch = Stopwatch.StartNew();
 var repositoryRoot = Path.GetFullPath(Path.Combine((string)AppContext.GetData("EntryPointFileDirectoryPath")!, ".."));
+if (container)
+{
+    try
+    {
+        Container.Run(repositoryRoot, rid, ["--rid", rid, "--config", config, .. prunePackages ? (string[])["--prune-packages"] : []]);
+        Console.WriteLine($"Container build of {rid} done in {stopwatch.Elapsed.TotalSeconds:0.0} s.");
+        return 0;
+    }
+    catch (InvalidOperationException e)
+    {
+        Console.Error.WriteLine($"error: {e.Message}");
+        return 1;
+    }
+}
+
 var nativeDirectory = Path.Combine(repositoryRoot, "native");
 var buildDirectory = Path.Combine(nativeDirectory, "build", rid);
 var stageDirectory = Path.Combine(repositoryRoot, "artifacts", "native", rid);
+var symbolsDirectory = Path.Combine(repositoryRoot, "artifacts", "native-symbols", rid);
+
+// The static CRT on Windows (ADR-0003). It reaches the packages too: xmake passes the project's
+// runtimes to every package it requires, and to CMake as CMAKE_MSVC_RUNTIME_LIBRARY.
+List<string> runtimes = target.Platform == "windows" ? [config == "debug" ? "--runtimes=MTd" : "--runtimes=MT"] : [];
 
 // Rewritten by every build, even an up-to-date one; deleting it first means a stale manifest is never staged.
 var manifestPath = Path.Combine(buildDirectory, target.Platform, target.Architecture, config, "jade_native.manifest.json");
@@ -85,7 +130,8 @@ try
 {
     // --require=y: xmake re-resolves packages only when the project files change, not when a recipe
     // under native/packages/ does. Forcing it lets a recipe edit (new hash, new options) take effect.
-    Xmake.Run(nativeDirectory, ["f", "-p", target.Platform, "-a", target.Architecture, "-m", config, $"--toolchain={target.Toolchain}", "-o", buildDirectory, "--require=y", "-y", .. target.ExtraArguments]);
+    List<string> toolchain = target.Toolchain is null ? [] : [$"--toolchain={target.Toolchain}"];
+    Xmake.Run(nativeDirectory, ["f", "-p", target.Platform, "-a", target.Architecture, "-m", config, .. toolchain, "-o", buildDirectory, "--require=y", "-y", .. runtimes, .. target.ExtraArguments]);
     Xmake.Run(nativeDirectory, ["build", "-y", "jade_native"]);
 
     if (!File.Exists(manifestPath))
@@ -94,8 +140,16 @@ try
     }
 
     var manifest = Json.Read(manifestPath, JsonContext.Default.Manifest);
-    var library = Stage.Run(manifest, rid, config, stageDirectory);
+    var library = Stage.Run(manifest, rid, config, stageDirectory, symbolsDirectory);
     Console.WriteLine($"Staged {Path.GetRelativePath(repositoryRoot, library)} ({new FileInfo(library).Length / 1024} KiB) in {stopwatch.Elapsed.TotalSeconds:0.0} s.");
+
+    // Package builds are only removed once nothing references them: the configuration above has just
+    // recorded which ones this project uses.
+    if (prunePackages)
+    {
+        Xmake.Run(nativeDirectory, ["require", "--clean", "--clean_modes=package", "-y"]);
+    }
+
     return 0;
 }
 catch (InvalidOperationException e)

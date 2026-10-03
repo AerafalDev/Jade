@@ -72,8 +72,13 @@ unsafe
     Check("ma_version_string", Marshal.PtrToStringUTF8((nint)NativeMethods.ma_version_string())!, ExpectedVersion("miniaudio"));
     Check("jade_native_abi_version", NativeMethods.jade_native_abi_version().ToString(CultureInfo.InvariantCulture), expectedAbi);
 
+    // SDL silently leaves out a video backend whose headers were missing at build time, so the list is
+    // compared with SDL's bootstrap order for the platform (src/video/SDL_video.c).
     var drivers = Enumerable.Range(0, NativeMethods.SDL_GetNumVideoDrivers()).Select(i => Marshal.PtrToStringUTF8((nint)NativeMethods.SDL_GetVideoDriver(i)));
-    Console.WriteLine($"SDL video drivers: {string.Join(", ", drivers)}");
+    var expectedDrivers = OperatingSystem.IsWindows() ? "windows, offscreen, dummy"
+        : OperatingSystem.IsMacOS() ? "cocoa, offscreen, dummy"
+        : "wayland, x11, kmsdrm, offscreen, dummy, evdev";
+    Check("SDL video drivers", string.Join(", ", drivers), expectedDrivers);
 
     // Dawn has no version function. The Null backend answers without a GPU, so that request also
     // passes on headless CI. The default request finds a real adapter only where a GPU and its

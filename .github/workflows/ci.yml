@@ -69,8 +69,8 @@ jobs:
         with:
           global-json-file: global.json
 
-      # The build job never compiles scripts and the bindings job only compiles the two it runs. A build fails on every
-      # ADR-0011 rule that Roslyn runs on build.
+      # The build job never compiles scripts; native.yml compiles them on every desktop OS but checks no style. A build
+      # fails on every ADR-0011 rule that Roslyn runs on build.
       - name: Build scripts
         run: for script in scripts/*.cs; do dotnet build "$script"; done
 
@@ -89,79 +89,3 @@ jobs:
             dotnet project convert "$script" --output "artifacts/format/$name"
             dotnet format "artifacts/format/$name/$name.csproj" --verify-no-changes
           done
-
-  bindings:
-    name: Bindings are up to date
-    runs-on: ubuntu-latest
-
-    env:
-      MSBuildTreatWarningsAsErrors: true
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v6
-        with:
-          global-json-file: global.json
-
-      - name: Setup xmake
-        uses: xmake-io/github-action-setup-xmake@v1
-        with:
-          xmake-version: '3.1.1'
-
-      # SDL3's list in docs/README-linux.md ("Build Dependencies") of the pinned release-3.4.16: the Ubuntu
-      # 18.04 packages plus the 22.04+ additions. Without X11 or Wayland headers, SDL's CMake configure stops.
-      # The last line is Dawn's (102): python3 for its build (git is already on SDL's list) and libx11-xcb-dev
-      # for X11/Xlib-xcb.h, which Dawn includes and libx11-dev does not ship.
-      - name: Install native build dependencies
-        run: >-
-          sudo apt-get update &&
-          sudo apt-get install -y --no-install-recommends
-          build-essential git make pkg-config cmake ninja-build gnome-desktop-testing libasound2-dev libpulse-dev
-          libaudio-dev libfribidi-dev libjack-dev libsndio-dev libx11-dev libxext-dev
-          libxrandr-dev libxcursor-dev libxfixes-dev libxi-dev libxss-dev libxtst-dev
-          libxkbcommon-dev libdrm-dev libgbm-dev libgl1-mesa-dev libgles2-mesa-dev
-          libegl1-mesa-dev libdbus-1-dev libibus-1.0-dev libudev-dev libthai-dev libusb-1.0-0-dev
-          libpipewire-0.3-dev libwayland-dev libdecor-0-dev liburing-dev
-          python3 libx11-xcb-dev
-
-      # The generator reads the headers the native build stages. SDL3 and miniaudio build here in minutes;
-      # once Dawn makes this too slow (102), take the staged inputs from the native workflow (103) instead.
-      - name: Build jade_native
-        run: dotnet scripts/build-native.cs
-
-      # A failed package install prints only the first 17 lines of its output; xmake keeps the rest in the
-      # package cache, which the runner discards.
-      - name: Show xmake package install logs
-        if: failure()
-        run: |
-          shopt -s globstar nullglob
-          for log in ~/.xmake/cache/packages/**/installdir.failed/logs/*.txt; do
-            echo "::group::$log"
-            tail -n 200 "$log"
-            echo "::endgroup::"
-          done
-
-      - name: Upload xmake package install logs
-        if: failure()
-        uses: actions/upload-artifact@v7
-        with:
-          name: xmake-install-logs
-          path: ~/.xmake/cache/packages/**/installdir.failed/logs/
-          if-no-files-found: ignore
-
-      - name: Regenerate bindings
-        run: dotnet scripts/generate-bindings.cs
-
-      # Intent-to-add makes newly generated files show up in the diff too.
-      - name: Fail if the committed bindings differ
-        run: git add --intent-to-add src/Jade.Interop/Generated tests/Jade.Interop.Tests/Generated && git diff --exit-code
-
-      # Runs the tests that need jade_native, which the build job skips. The dummy video driver lets the
-      # window test run without a display.
-      - name: Test against jade_native
-        run: dotnet test -c Release
-        env:
-          SDL_VIDEO_DRIVER: dummy
