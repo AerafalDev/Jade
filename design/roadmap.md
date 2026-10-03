@@ -32,6 +32,10 @@ back before the orchestrator writes their brief.
 
 Notes for the 107 brief, collected from earlier Outcomes:
 
+- Release notes come from `CHANGELOG.md`: the release moves `## [Unreleased]` to
+  `## [x.y.z] - date`, adds the compare links, and uses that section as the GitHub release body
+  (and possibly `PackageReleaseNotes`). Add the NuGet badge to the README with the first published
+  version.
 - `actions/checkout` is shallow by default, so MinVer computes `0.0.0-alpha.0`. Use
   `fetch-depth: 0`, as HostFxrSharp's `publish.yml` does (002).
 - `THIRD-PARTY-NOTICES.md` lacks the notices of the 24 Wayland protocol glue files that SDL
