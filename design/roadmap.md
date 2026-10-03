@@ -62,7 +62,7 @@ Notes for the 107 brief, collected from earlier Outcomes:
 | [301](tasks/301-imgui-survey.md) | Survey: Dear ImGui, its extensions and backends | 201 | done |
 | [302](tasks/302-physics-box2d-box3d.md) | Box2D v3 and Box3D: native and bindings | 201, 103 | todo |
 | [303](tasks/303-text-stack.md) | FreeType + HarfBuzz + msdfgen: native, C shim, bindings | 201, 103 | todo |
-| [304](tasks/304-assets-survey.md) | Survey: asset libraries for runtime and import pipeline | 201, 003 | todo |
+| [304](tasks/304-assets-survey.md) | Survey: asset libraries for runtime and import pipeline | 201, 003 | done |
 | [310](tasks/310-imgui-native.md) | Dear ImGui (docking), dear_bindings C API and backends in jade_native | 103, 003 | todo |
 | [311](tasks/311-imgui-bindings.md) | Dear ImGui core bindings | 310, 201 | todo |
 | [312](tasks/312-imgui-backends-sample.md) | ImGui SDL3 and WebGPU backend bindings, demo sample | 311, 202, 203, 206 | todo |
