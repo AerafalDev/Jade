@@ -78,7 +78,7 @@ Notes for the 107 brief, collected from earlier Outcomes:
 | [305](tasks/305-zstd-meshoptimizer.md) | zstd and meshoptimizer | 201, 103 | todo |
 | [306](tasks/306-basisu-transcoder.md) | basis_universal transcoder | 305, 201, 103 | todo |
 | [307](tasks/307-stb-image-vorbis.md) | stb_image and Vorbis through miniaudio | 201, 103, 204 | todo |
-| [310](tasks/310-imgui-native.md) | Dear ImGui (docking), dear_bindings C API and backends in jade_native | 103, 003 | todo |
+| [310](tasks/310-imgui-native.md) | Dear ImGui (docking), dear_bindings C API and backends in jade_native | 103, 003 | done |
 | [311](tasks/311-imgui-bindings.md) | Dear ImGui core bindings | 310, 201 | todo |
 | [312](tasks/312-imgui-backends-sample.md) | ImGui SDL3 and WebGPU backend bindings, demo sample | 311, 202, 203, 206 | todo |
 | [313](tasks/313-implot-imguizmo.md) | ImPlot and ImGuizmo | 311 | todo |

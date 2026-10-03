@@ -116,7 +116,8 @@ artifacts/                build outputs (gitignored): native/<rid>/, packages/
   line in the `bundled` list of `native/xmake.lua`. The `jade.bundle` rule
   (`native/rules/bundle.lua`) does whole-archive linking and export control.
 - Native build prerequisites: xmake 3.1.1, CMake, Ninja (xmake 3.1.1 builds every CMake package
-  with it), clang (MSVC on Windows, Xcode on macOS), Python 3 and git.
+  with it), clang (MSVC on Windows, Xcode on macOS), Python 3, git and, on Linux, unzip (xmake
+  extracts zip archives with it there).
 - Linux libraries that CI builds or anyone ships come from the glibc 2.28 container of
   `native/linux/Dockerfile` (`--container`, ADR-0013), which needs Docker with a rootful daemon.
   The Dockerfile holds the toolchain and the only list of system headers. A host build needs the

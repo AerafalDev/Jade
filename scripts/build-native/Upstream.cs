@@ -21,4 +21,7 @@ internal sealed class Upstream
 
     /// <summary>Gets the compile-time defines that shape the public API, which header parsers must reuse.</summary>
     public required IReadOnlyList<string> Defines { get; init; }
+
+    /// <summary>Gets the other upstreams the package downloads and builds with its sources, sorted by name.</summary>
+    public required IReadOnlyList<UpstreamResource> Resources { get; init; }
 }

@@ -8,7 +8,8 @@ FROM almalinux:8.10@sha256:8b469a3a78515e8a18ea8fc727e6a3679e1d0c5ba6f58d5b30be3
 # gcc-toolset-15, which provides libstdc++ (C++20 for Dawn, with a full libstdc++.a to link
 # statically), libgcc and binutils; the system GCC 8 only builds xmake and libdecor below.
 # Build tools: CMake, Ninja (xmake builds CMake packages with it), Python 3.12 for Dawn's code
-# generator (EL8's default python3 is 3.6), git for Dawn's dependency fetch.
+# generator (EL8's default python3 is 3.6), git for Dawn's dependency fetch, unzip for the zip
+# archives xmake extracts (it has no zip reader of its own on Linux).
 # The packages that compile or link jade_native are pinned to a version (AlmaLinux keeps the older
 # ones in its repositories), so this file names the toolchain and CI's package cache key, which
 # hashes it, changes with it. The rest only follows EL 8.10's fixes.
@@ -21,7 +22,7 @@ RUN dnf -y install dnf-plugins-core \
  && dnf config-manager --set-enabled powertools \
  && dnf -y install \
       clang-21.1.8 llvm-21.1.8 gcc-toolset-15-gcc-c++-15.2.1 gcc-toolset-15-binutils-2.44 \
-      cmake-3.26.5 ninja-build-1.8.2 gcc make python3.12 git-core pkgconf-pkg-config \
+      cmake-3.26.5 ninja-build-1.8.2 gcc make python3.12 git-core pkgconf-pkg-config unzip \
       alsa-lib-devel fribidi-devel pulseaudio-libs-devel pipewire-devel \
       libX11-devel libXext-devel libXrandr-devel libXcursor-devel libXfixes-devel \
       libXi-devel libXScrnSaver-devel libXtst-devel dbus-devel ibus-devel \
