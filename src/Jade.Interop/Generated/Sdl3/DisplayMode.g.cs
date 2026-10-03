@@ -17,7 +17,7 @@ namespace Jade.Interop.Sdl3;
 public unsafe partial struct DisplayMode
 {
     /// <summary>the display this mode is associated with</summary>
-    public uint DisplayID;
+    public global::Jade.Interop.Sdl3.DisplayID DisplayID;
 
     /// <summary>pixel format</summary>
     public PixelFormat Format;

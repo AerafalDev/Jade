@@ -2,12 +2,1270 @@
 
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 
 namespace Jade.Interop.Sdl3;
 
 public static unsafe partial class Sdl
 {
-    // Functions from SDL3/SDL_video.h.
+    // Declarations from SDL3/SDL_video.h.
+
+    /// <summary>The pointer to the global <c>wl_display</c> object used by the Wayland video backend.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_GLOBAL_VIDEO_WAYLAND_WL_DISPLAY_POINTER</c>.</para>
+    /// <para>The value is <c>SDL.video.wayland.wl_display</c>.</para>
+    /// <para>
+    /// Can be set before the video subsystem is initialized to import an external <c>wl_display</c> object from an
+    /// application or toolkit for use in SDL, or read after initialization to export the <c>wl_display</c> used by the
+    /// Wayland video backend. Setting this property after the video subsystem has been initialized has no effect, and
+    /// reading it when the video subsystem is uninitialized will either return the user provided value, if one was set
+    /// prior to initialization, or NULL. See docs/README-wayland.md for more information.
+    /// </para>
+    /// <para>This macro is available since SDL 3.2.0.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropGlobalVideoWaylandWlDisplayPointer => "SDL.video.wayland.wl_display"u8;
+
+    /// <summary>A magic value used with SDL_WINDOWPOS_UNDEFINED.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_WINDOWPOS_UNDEFINED_MASK</c>.</para>
+    /// <para>
+    /// Generally this macro isn't used directly, but rather through SDL_WINDOWPOS_UNDEFINED or
+    /// SDL_WINDOWPOS_UNDEFINED_DISPLAY.
+    /// </para>
+    /// <para>This macro is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_SetWindowPosition</c>.</para>
+    /// </remarks>
+    public const uint WindowPosUndefinedMask = 0x1FFF0000;
+
+    /// <summary>Used to indicate that you don't care what the window position/display is.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_WINDOWPOS_UNDEFINED</c>.</para>
+    /// <para>This always uses the primary display.</para>
+    /// <para>This macro is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_SetWindowPosition</c>.</para>
+    /// </remarks>
+    public const uint WindowPosUndefined = 0x1FFF0000;
+
+    /// <summary>A magic value used with SDL_WINDOWPOS_CENTERED.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_WINDOWPOS_CENTERED_MASK</c>.</para>
+    /// <para>
+    /// Generally this macro isn't used directly, but rather through SDL_WINDOWPOS_CENTERED or
+    /// SDL_WINDOWPOS_CENTERED_DISPLAY.
+    /// </para>
+    /// <para>This macro is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_SetWindowPosition</c>.</para>
+    /// </remarks>
+    public const uint WindowPosCenteredMask = 0x2FFF0000;
+
+    /// <summary>Used to indicate that the window position should be centered.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_WINDOWPOS_CENTERED</c>.</para>
+    /// <para>This always uses the primary display.</para>
+    /// <para>This macro is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_SetWindowPosition</c>.</para>
+    /// </remarks>
+    public const uint WindowPosCentered = 0x2FFF0000;
+
+    /// <summary>
+    /// true if the display has HDR headroom above the SDR white point. This is for informational and diagnostic
+    /// purposes only, as not all platforms provide this information at the display level. See
+    /// <c>SDL_GetDisplayProperties</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_DISPLAY_HDR_ENABLED_BOOLEAN</c>.</para>
+    /// <para>The value is <c>SDL.display.HDR_enabled</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropDisplayHdrEnabledBoolean => "SDL.display.HDR_enabled"u8;
+
+    /// <summary>
+    /// the "panel orientation" property for the display in degrees of clockwise rotation. Note that this is provided
+    /// only as a hint, and the application is responsible for any coordinate transformations needed to conform to the
+    /// requested display orientation. See <c>SDL_GetDisplayProperties</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_DISPLAY_KMSDRM_PANEL_ORIENTATION_NUMBER</c>.</para>
+    /// <para>The value is <c>SDL.display.KMSDRM.panel_orientation</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropDisplayKmsdrmPanelOrientationNumber => "SDL.display.KMSDRM.panel_orientation"u8;
+
+    /// <summary>the wl_output associated with the display. See <c>SDL_GetDisplayProperties</c>.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_DISPLAY_WAYLAND_WL_OUTPUT_POINTER</c>.</para>
+    /// <para>The value is <c>SDL.display.wayland.wl_output</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropDisplayWaylandWlOutputPointer => "SDL.display.wayland.wl_output"u8;
+
+    /// <summary>
+    /// the monitor handle (HMONITOR) associated with the display. See <c>SDL_GetDisplayProperties</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_DISPLAY_WINDOWS_HMONITOR_POINTER</c>.</para>
+    /// <para>The value is <c>SDL.display.windows.hmonitor</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropDisplayWindowsHmonitorPointer => "SDL.display.windows.hmonitor"u8;
+
+    /// <summary>true if the window should be always on top. See <c>SDL_CreateWindowWithProperties</c>.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_CREATE_ALWAYS_ON_TOP_BOOLEAN</c>.</para>
+    /// <para>The value is <c>SDL.window.create.always_on_top</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCreateAlwaysOnTopBoolean => "SDL.window.create.always_on_top"u8;
+
+    /// <summary>true if the window has no window decoration. See <c>SDL_CreateWindowWithProperties</c>.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_CREATE_BORDERLESS_BOOLEAN</c>.</para>
+    /// <para>The value is <c>SDL.window.create.borderless</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCreateBorderlessBoolean => "SDL.window.create.borderless"u8;
+
+    /// <summary>
+    /// true if the "tooltip" and "menu" window types should be automatically constrained to be entirely within display
+    /// bounds (default), false if no constraints on the position are desired. See
+    /// <c>SDL_CreateWindowWithProperties</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_CREATE_CONSTRAIN_POPUP_BOOLEAN</c>.</para>
+    /// <para>The value is <c>SDL.window.create.constrain_popup</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCreateConstrainPopupBoolean => "SDL.window.create.constrain_popup"u8;
+
+    /// <summary>
+    /// true if the window should accept keyboard input (defaults true). See <c>SDL_CreateWindowWithProperties</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_CREATE_FOCUSABLE_BOOLEAN</c>.</para>
+    /// <para>The value is <c>SDL.window.create.focusable</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCreateFocusableBoolean => "SDL.window.create.focusable"u8;
+
+    /// <summary>
+    /// true if the window will be used with an externally managed graphics context. See
+    /// <c>SDL_CreateWindowWithProperties</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN</c>.</para>
+    /// <para>The value is <c>SDL.window.create.external_graphics_context</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCreateExternalGraphicsContextBoolean => "SDL.window.create.external_graphics_context"u8;
+
+    /// <summary>Binds <c>SDL_PROP_WINDOW_CREATE_FLAGS_NUMBER</c>.</summary>
+    /// <remarks>
+    /// <para>The value is <c>SDL.window.create.flags</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCreateFlagsNumber => "SDL.window.create.flags"u8;
+
+    /// <summary>
+    /// true if the window should start in fullscreen mode at desktop resolution. See
+    /// <c>SDL_CreateWindowWithProperties</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_CREATE_FULLSCREEN_BOOLEAN</c>.</para>
+    /// <para>The value is <c>SDL.window.create.fullscreen</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCreateFullscreenBoolean => "SDL.window.create.fullscreen"u8;
+
+    /// <summary>the height of the window. See <c>SDL_CreateWindowWithProperties</c>.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_CREATE_HEIGHT_NUMBER</c>.</para>
+    /// <para>The value is <c>SDL.window.create.height</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCreateHeightNumber => "SDL.window.create.height"u8;
+
+    /// <summary>true if the window should start hidden. See <c>SDL_CreateWindowWithProperties</c>.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_CREATE_HIDDEN_BOOLEAN</c>.</para>
+    /// <para>The value is <c>SDL.window.create.hidden</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCreateHiddenBoolean => "SDL.window.create.hidden"u8;
+
+    /// <summary>
+    /// true if the window uses a high pixel density buffer if possible. See <c>SDL_CreateWindowWithProperties</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_CREATE_HIGH_PIXEL_DENSITY_BOOLEAN</c>.</para>
+    /// <para>The value is <c>SDL.window.create.high_pixel_density</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCreateHighPixelDensityBoolean => "SDL.window.create.high_pixel_density"u8;
+
+    /// <summary>true if the window should start maximized. See <c>SDL_CreateWindowWithProperties</c>.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_CREATE_MAXIMIZED_BOOLEAN</c>.</para>
+    /// <para>The value is <c>SDL.window.create.maximized</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCreateMaximizedBoolean => "SDL.window.create.maximized"u8;
+
+    /// <summary>true if the window is a popup menu. See <c>SDL_CreateWindowWithProperties</c>.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_CREATE_MENU_BOOLEAN</c>.</para>
+    /// <para>The value is <c>SDL.window.create.menu</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCreateMenuBoolean => "SDL.window.create.menu"u8;
+
+    /// <summary>
+    /// true if the window will be used with Metal rendering. See <c>SDL_CreateWindowWithProperties</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_CREATE_METAL_BOOLEAN</c>.</para>
+    /// <para>The value is <c>SDL.window.create.metal</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCreateMetalBoolean => "SDL.window.create.metal"u8;
+
+    /// <summary>true if the window should start minimized. See <c>SDL_CreateWindowWithProperties</c>.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_CREATE_MINIMIZED_BOOLEAN</c>.</para>
+    /// <para>The value is <c>SDL.window.create.minimized</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCreateMinimizedBoolean => "SDL.window.create.minimized"u8;
+
+    /// <summary>true if the window is modal to its parent. See <c>SDL_CreateWindowWithProperties</c>.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_CREATE_MODAL_BOOLEAN</c>.</para>
+    /// <para>The value is <c>SDL.window.create.modal</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCreateModalBoolean => "SDL.window.create.modal"u8;
+
+    /// <summary>
+    /// true if the window starts with grabbed mouse focus. See <c>SDL_CreateWindowWithProperties</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_CREATE_MOUSE_GRABBED_BOOLEAN</c>.</para>
+    /// <para>The value is <c>SDL.window.create.mouse_grabbed</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCreateMouseGrabbedBoolean => "SDL.window.create.mouse_grabbed"u8;
+
+    /// <summary>
+    /// true if the window will be used with OpenGL rendering. See <c>SDL_CreateWindowWithProperties</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_CREATE_OPENGL_BOOLEAN</c>.</para>
+    /// <para>The value is <c>SDL.window.create.opengl</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCreateOpenGLBoolean => "SDL.window.create.opengl"u8;
+
+    /// <summary>
+    /// an SDL_Window that will be the parent of this window, required for windows with the "tooltip", "menu", and
+    /// "modal" properties. See <c>SDL_CreateWindowWithProperties</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_CREATE_PARENT_POINTER</c>.</para>
+    /// <para>The value is <c>SDL.window.create.parent</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCreateParentPointer => "SDL.window.create.parent"u8;
+
+    /// <summary>true if the window should be resizable. See <c>SDL_CreateWindowWithProperties</c>.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_CREATE_RESIZABLE_BOOLEAN</c>.</para>
+    /// <para>The value is <c>SDL.window.create.resizable</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCreateResizableBoolean => "SDL.window.create.resizable"u8;
+
+    /// <summary>the title of the window, in UTF-8 encoding. See <c>SDL_CreateWindowWithProperties</c>.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_CREATE_TITLE_STRING</c>.</para>
+    /// <para>The value is <c>SDL.window.create.title</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCreateTitleString => "SDL.window.create.title"u8;
+
+    /// <summary>
+    /// true if the window show transparent in the areas with alpha of 0. See <c>SDL_CreateWindowWithProperties</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_CREATE_TRANSPARENT_BOOLEAN</c>.</para>
+    /// <para>The value is <c>SDL.window.create.transparent</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCreateTransparentBoolean => "SDL.window.create.transparent"u8;
+
+    /// <summary>true if the window is a tooltip. See <c>SDL_CreateWindowWithProperties</c>.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_CREATE_TOOLTIP_BOOLEAN</c>.</para>
+    /// <para>The value is <c>SDL.window.create.tooltip</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCreateTooltipBoolean => "SDL.window.create.tooltip"u8;
+
+    /// <summary>
+    /// true if the window is a utility window, not showing in the task bar and window list. See
+    /// <c>SDL_CreateWindowWithProperties</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_CREATE_UTILITY_BOOLEAN</c>.</para>
+    /// <para>The value is <c>SDL.window.create.utility</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCreateUtilityBoolean => "SDL.window.create.utility"u8;
+
+    /// <summary>
+    /// true if the window will be used with Vulkan rendering. See <c>SDL_CreateWindowWithProperties</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_CREATE_VULKAN_BOOLEAN</c>.</para>
+    /// <para>The value is <c>SDL.window.create.vulkan</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCreateVulkanBoolean => "SDL.window.create.vulkan"u8;
+
+    /// <summary>the width of the window. See <c>SDL_CreateWindowWithProperties</c>.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_CREATE_WIDTH_NUMBER</c>.</para>
+    /// <para>The value is <c>SDL.window.create.width</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCreateWidthNumber => "SDL.window.create.width"u8;
+
+    /// <summary>
+    /// the x position of the window, or <c>SDL_WINDOWPOS_CENTERED</c>, defaults to <c>SDL_WINDOWPOS_UNDEFINED</c>. This
+    /// is relative to the parent for windows with the "tooltip" or "menu" property set. See
+    /// <c>SDL_CreateWindowWithProperties</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_CREATE_X_NUMBER</c>.</para>
+    /// <para>The value is <c>SDL.window.create.x</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCreateXNumber => "SDL.window.create.x"u8;
+
+    /// <summary>
+    /// the y position of the window, or <c>SDL_WINDOWPOS_CENTERED</c>, defaults to <c>SDL_WINDOWPOS_UNDEFINED</c>. This
+    /// is relative to the parent for windows with the "tooltip" or "menu" property set. See
+    /// <c>SDL_CreateWindowWithProperties</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_CREATE_Y_NUMBER</c>.</para>
+    /// <para>The value is <c>SDL.window.create.y</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCreateYNumber => "SDL.window.create.y"u8;
+
+    /// <summary>
+    /// the <c>(__unsafe_unretained)</c> NSWindow associated with the window, if you want to wrap an existing window.
+    /// See <c>SDL_CreateWindowWithProperties</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_CREATE_COCOA_WINDOW_POINTER</c>.</para>
+    /// <para>The value is <c>SDL.window.create.cocoa.window</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCreateCocoaWindowPointer => "SDL.window.create.cocoa.window"u8;
+
+    /// <summary>
+    /// the <c>(__unsafe_unretained)</c> NSView associated with the window, defaults to <c>[window contentView]</c>. See
+    /// <c>SDL_CreateWindowWithProperties</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_CREATE_COCOA_VIEW_POINTER</c>.</para>
+    /// <para>The value is <c>SDL.window.create.cocoa.view</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCreateCocoaViewPointer => "SDL.window.create.cocoa.view"u8;
+
+    /// <summary>
+    /// the <c>(__unsafe_unretained)</c> UIWindowScene associated with the window, defaults to the active window scene.
+    /// See <c>SDL_CreateWindowWithProperties</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_CREATE_WINDOWSCENE_POINTER</c>.</para>
+    /// <para>The value is <c>SDL.window.create.uikit.windowscene</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCreateWindowscenePointer => "SDL.window.create.uikit.windowscene"u8;
+
+    /// <summary>Binds <c>SDL_PROP_WINDOW_CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN</c>.</summary>
+    /// <remarks>
+    /// <para>The value is <c>SDL.window.create.wayland.surface_role_custom</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCreateWaylandSurfaceRoleCustomBoolean => "SDL.window.create.wayland.surface_role_custom"u8;
+
+    /// <summary>Binds <c>SDL_PROP_WINDOW_CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN</c>.</summary>
+    /// <remarks>
+    /// <para>The value is <c>SDL.window.create.wayland.create_egl_window</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCreateWaylandCreateEglWindowBoolean => "SDL.window.create.wayland.create_egl_window"u8;
+
+    /// <summary>Binds <c>SDL_PROP_WINDOW_CREATE_WAYLAND_WL_SURFACE_POINTER</c>.</summary>
+    /// <remarks>
+    /// <para>The value is <c>SDL.window.create.wayland.wl_surface</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCreateWaylandWlSurfacePointer => "SDL.window.create.wayland.wl_surface"u8;
+
+    /// <summary>
+    /// the HWND associated with the window, if you want to wrap an existing window. See
+    /// <c>SDL_CreateWindowWithProperties</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_CREATE_WIN32_HWND_POINTER</c>.</para>
+    /// <para>The value is <c>SDL.window.create.win32.hwnd</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCreateWin32HwndPointer => "SDL.window.create.win32.hwnd"u8;
+
+    /// <summary>
+    /// optional, another window to share pixel format with, useful for OpenGL windows. See
+    /// <c>SDL_CreateWindowWithProperties</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER</c>.</para>
+    /// <para>The value is <c>SDL.window.create.win32.pixel_format_hwnd</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCreateWin32PixelFormatHwndPointer => "SDL.window.create.win32.pixel_format_hwnd"u8;
+
+    /// <summary>
+    /// the X11 Window associated with the window, if you want to wrap an existing window. See
+    /// <c>SDL_CreateWindowWithProperties</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_CREATE_X11_WINDOW_NUMBER</c>.</para>
+    /// <para>The value is <c>SDL.window.create.x11.window</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCreateX11WindowNumber => "SDL.window.create.x11.window"u8;
+
+    /// <summary>
+    /// the id given to the canvas element. This should start with a '#' sign. See
+    /// <c>SDL_CreateWindowWithProperties</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_CANVAS_ID_STRING</c>.</para>
+    /// <para>The value is <c>SDL.window.create.emscripten.canvas_id</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCreateEmscriptenCanvasIdString => "SDL.window.create.emscripten.canvas_id"u8;
+
+    /// <summary>
+    /// override the binding element for keyboard inputs for this canvas. The variable can be one of:. See
+    /// <c>SDL_CreateWindowWithProperties</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_CREATE_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING</c>.</para>
+    /// <para>The value is <c>SDL.window.create.emscripten.keyboard_element</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCreateEmscriptenKeyboardElementString => "SDL.window.create.emscripten.keyboard_element"u8;
+
+    /// <summary>the surface associated with a shaped window. See <c>SDL_GetWindowProperties</c>.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_SHAPE_POINTER</c>.</para>
+    /// <para>The value is <c>SDL.window.shape</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowShapePointer => "SDL.window.shape"u8;
+
+    /// <summary>
+    /// true if the window has HDR headroom above the SDR white point. This property can change dynamically when
+    /// SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent. See <c>SDL_GetWindowProperties</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_HDR_ENABLED_BOOLEAN</c>.</para>
+    /// <para>The value is <c>SDL.window.HDR_enabled</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowHdrEnabledBoolean => "SDL.window.HDR_enabled"u8;
+
+    /// <summary>
+    /// the value of SDR white in the SDL_COLORSPACE_SRGB_LINEAR colorspace. On Windows this corresponds to the SDR
+    /// white level in scRGB colorspace, and on Apple platforms this is always 1.0 for EDR content. This property can
+    /// change dynamically when SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent. See <c>SDL_GetWindowProperties</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_SDR_WHITE_LEVEL_FLOAT</c>.</para>
+    /// <para>The value is <c>SDL.window.SDR_white_level</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowSdrWhiteLevelFloat => "SDL.window.SDR_white_level"u8;
+
+    /// <summary>
+    /// the additional high dynamic range that can be displayed, in terms of the SDR white point. When HDR is not
+    /// enabled, this will be 1.0. This property can change dynamically when SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.
+    /// See <c>SDL_GetWindowProperties</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_HDR_HEADROOM_FLOAT</c>.</para>
+    /// <para>The value is <c>SDL.window.HDR_headroom</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowHdrHeadroomFloat => "SDL.window.HDR_headroom"u8;
+
+    /// <summary>the ANativeWindow associated with the window. See <c>SDL_GetWindowProperties</c>.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_ANDROID_WINDOW_POINTER</c>.</para>
+    /// <para>The value is <c>SDL.window.android.window</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowAndroidWindowPointer => "SDL.window.android.window"u8;
+
+    /// <summary>the EGLSurface associated with the window. See <c>SDL_GetWindowProperties</c>.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_ANDROID_SURFACE_POINTER</c>.</para>
+    /// <para>The value is <c>SDL.window.android.surface</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowAndroidSurfacePointer => "SDL.window.android.surface"u8;
+
+    /// <summary>
+    /// the <c>(__unsafe_unretained)</c> UIWindow associated with the window. See <c>SDL_GetWindowProperties</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_UIKIT_WINDOW_POINTER</c>.</para>
+    /// <para>The value is <c>SDL.window.uikit.window</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowUikitWindowPointer => "SDL.window.uikit.window"u8;
+
+    /// <summary>
+    /// the NSInteger tag associated with metal views on the window. See <c>SDL_GetWindowProperties</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_UIKIT_METAL_VIEW_TAG_NUMBER</c>.</para>
+    /// <para>The value is <c>SDL.window.uikit.metal_view_tag</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowUikitMetalViewTagNumber => "SDL.window.uikit.metal_view_tag"u8;
+
+    /// <summary>
+    /// the OpenGL view's framebuffer object. It must be bound when rendering to the screen using OpenGL. See
+    /// <c>SDL_GetWindowProperties</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_UIKIT_OPENGL_FRAMEBUFFER_NUMBER</c>.</para>
+    /// <para>The value is <c>SDL.window.uikit.opengl.framebuffer</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowUikitOpenGLFramebufferNumber => "SDL.window.uikit.opengl.framebuffer"u8;
+
+    /// <summary>
+    /// the OpenGL view's renderbuffer object. It must be bound when SDL_GL_SwapWindow is called. See
+    /// <c>SDL_GetWindowProperties</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_UIKIT_OPENGL_RENDERBUFFER_NUMBER</c>.</para>
+    /// <para>The value is <c>SDL.window.uikit.opengl.renderbuffer</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowUikitOpenGLRenderbufferNumber => "SDL.window.uikit.opengl.renderbuffer"u8;
+
+    /// <summary>the OpenGL view's resolve framebuffer, when MSAA is used. See <c>SDL_GetWindowProperties</c>.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER</c>.</para>
+    /// <para>The value is <c>SDL.window.uikit.opengl.resolve_framebuffer</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowUikitOpenGLResolveFramebufferNumber => "SDL.window.uikit.opengl.resolve_framebuffer"u8;
+
+    /// <summary>
+    /// the device index associated with the window (e.g. the X in /dev/dri/cardX). See <c>SDL_GetWindowProperties</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_KMSDRM_DEVICE_INDEX_NUMBER</c>.</para>
+    /// <para>The value is <c>SDL.window.kmsdrm.dev_index</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowKmsdrmDeviceIndexNumber => "SDL.window.kmsdrm.dev_index"u8;
+
+    /// <summary>the DRM FD associated with the window. See <c>SDL_GetWindowProperties</c>.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_KMSDRM_DRM_FD_NUMBER</c>.</para>
+    /// <para>The value is <c>SDL.window.kmsdrm.drm_fd</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowKmsdrmDrmFdNumber => "SDL.window.kmsdrm.drm_fd"u8;
+
+    /// <summary>the GBM device associated with the window. See <c>SDL_GetWindowProperties</c>.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_KMSDRM_GBM_DEVICE_POINTER</c>.</para>
+    /// <para>The value is <c>SDL.window.kmsdrm.gbm_dev</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowKmsdrmGbmDevicePointer => "SDL.window.kmsdrm.gbm_dev"u8;
+
+    /// <summary>
+    /// the <c>(__unsafe_unretained)</c> NSWindow associated with the window. See <c>SDL_GetWindowProperties</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_COCOA_WINDOW_POINTER</c>.</para>
+    /// <para>The value is <c>SDL.window.cocoa.window</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCocoaWindowPointer => "SDL.window.cocoa.window"u8;
+
+    /// <summary>
+    /// the NSInteger tag associated with metal views on the window. See <c>SDL_GetWindowProperties</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_COCOA_METAL_VIEW_TAG_NUMBER</c>.</para>
+    /// <para>The value is <c>SDL.window.cocoa.metal_view_tag</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowCocoaMetalViewTagNumber => "SDL.window.cocoa.metal_view_tag"u8;
+
+    /// <summary>
+    /// the OpenVR Overlay Handle ID for the associated overlay window. See <c>SDL_GetWindowProperties</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_OPENVR_OVERLAY_ID_NUMBER</c>.</para>
+    /// <para>The value is <c>SDL.window.openvr.overlay_id</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowOpenvrOverlayIdNumber => "SDL.window.openvr.overlay_id"u8;
+
+    /// <summary>the EGLNativeDisplayType associated with the window. See <c>SDL_GetWindowProperties</c>.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_VIVANTE_DISPLAY_POINTER</c>.</para>
+    /// <para>The value is <c>SDL.window.vivante.display</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowVivanteDisplayPointer => "SDL.window.vivante.display"u8;
+
+    /// <summary>the EGLNativeWindowType associated with the window. See <c>SDL_GetWindowProperties</c>.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_VIVANTE_WINDOW_POINTER</c>.</para>
+    /// <para>The value is <c>SDL.window.vivante.window</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowVivanteWindowPointer => "SDL.window.vivante.window"u8;
+
+    /// <summary>the EGLSurface associated with the window. See <c>SDL_GetWindowProperties</c>.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_VIVANTE_SURFACE_POINTER</c>.</para>
+    /// <para>The value is <c>SDL.window.vivante.surface</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowVivanteSurfacePointer => "SDL.window.vivante.surface"u8;
+
+    /// <summary>the HWND associated with the window. See <c>SDL_GetWindowProperties</c>.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_WIN32_HWND_POINTER</c>.</para>
+    /// <para>The value is <c>SDL.window.win32.hwnd</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowWin32HwndPointer => "SDL.window.win32.hwnd"u8;
+
+    /// <summary>the HDC associated with the window. See <c>SDL_GetWindowProperties</c>.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_WIN32_HDC_POINTER</c>.</para>
+    /// <para>The value is <c>SDL.window.win32.hdc</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowWin32HdcPointer => "SDL.window.win32.hdc"u8;
+
+    /// <summary>the HINSTANCE associated with the window. See <c>SDL_GetWindowProperties</c>.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_WIN32_INSTANCE_POINTER</c>.</para>
+    /// <para>The value is <c>SDL.window.win32.instance</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowWin32InstancePointer => "SDL.window.win32.instance"u8;
+
+    /// <summary>the wl_display associated with the window. See <c>SDL_GetWindowProperties</c>.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_WAYLAND_DISPLAY_POINTER</c>.</para>
+    /// <para>The value is <c>SDL.window.wayland.display</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowWaylandDisplayPointer => "SDL.window.wayland.display"u8;
+
+    /// <summary>the wl_surface associated with the window. See <c>SDL_GetWindowProperties</c>.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_WAYLAND_SURFACE_POINTER</c>.</para>
+    /// <para>The value is <c>SDL.window.wayland.surface</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowWaylandSurfacePointer => "SDL.window.wayland.surface"u8;
+
+    /// <summary>the wp_viewport associated with the window. See <c>SDL_GetWindowProperties</c>.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_WAYLAND_VIEWPORT_POINTER</c>.</para>
+    /// <para>The value is <c>SDL.window.wayland.viewport</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowWaylandViewportPointer => "SDL.window.wayland.viewport"u8;
+
+    /// <summary>the wl_egl_window associated with the window. See <c>SDL_GetWindowProperties</c>.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_WAYLAND_EGL_WINDOW_POINTER</c>.</para>
+    /// <para>The value is <c>SDL.window.wayland.egl_window</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowWaylandEglWindowPointer => "SDL.window.wayland.egl_window"u8;
+
+    /// <summary>the xdg_surface associated with the window. See <c>SDL_GetWindowProperties</c>.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_WAYLAND_XDG_SURFACE_POINTER</c>.</para>
+    /// <para>The value is <c>SDL.window.wayland.xdg_surface</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowWaylandXdgSurfacePointer => "SDL.window.wayland.xdg_surface"u8;
+
+    /// <summary>the xdg_toplevel role associated with the window. See <c>SDL_GetWindowProperties</c>.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_WAYLAND_XDG_TOPLEVEL_POINTER</c>.</para>
+    /// <para>The value is <c>SDL.window.wayland.xdg_toplevel</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowWaylandXdgToplevelPointer => "SDL.window.wayland.xdg_toplevel"u8;
+
+    /// <summary>Binds <c>SDL_PROP_WINDOW_WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING</c>.</summary>
+    /// <remarks>
+    /// <para>The value is <c>SDL.window.wayland.xdg_toplevel_export_handle</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowWaylandXdgToplevelExportHandleString => "SDL.window.wayland.xdg_toplevel_export_handle"u8;
+
+    /// <summary>the xdg_popup role associated with the window. See <c>SDL_GetWindowProperties</c>.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_WAYLAND_XDG_POPUP_POINTER</c>.</para>
+    /// <para>The value is <c>SDL.window.wayland.xdg_popup</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowWaylandXdgPopupPointer => "SDL.window.wayland.xdg_popup"u8;
+
+    /// <summary>
+    /// the xdg_positioner associated with the window, in popup mode. See <c>SDL_GetWindowProperties</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_WAYLAND_XDG_POSITIONER_POINTER</c>.</para>
+    /// <para>The value is <c>SDL.window.wayland.xdg_positioner</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowWaylandXdgPositionerPointer => "SDL.window.wayland.xdg_positioner"u8;
+
+    /// <summary>the X11 Display associated with the window. See <c>SDL_GetWindowProperties</c>.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_X11_DISPLAY_POINTER</c>.</para>
+    /// <para>The value is <c>SDL.window.x11.display</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowX11DisplayPointer => "SDL.window.x11.display"u8;
+
+    /// <summary>the screen number associated with the window. See <c>SDL_GetWindowProperties</c>.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_X11_SCREEN_NUMBER</c>.</para>
+    /// <para>The value is <c>SDL.window.x11.screen</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowX11ScreenNumber => "SDL.window.x11.screen"u8;
+
+    /// <summary>the X11 Window associated with the window. See <c>SDL_GetWindowProperties</c>.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_X11_WINDOW_NUMBER</c>.</para>
+    /// <para>The value is <c>SDL.window.x11.window</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowX11WindowNumber => "SDL.window.x11.window"u8;
+
+    /// <summary>the id the canvas element will have. See <c>SDL_GetWindowProperties</c>.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_EMSCRIPTEN_CANVAS_ID_STRING</c>.</para>
+    /// <para>The value is <c>SDL.window.emscripten.canvas_id</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowEmscriptenCanvasIdString => "SDL.window.emscripten.canvas_id"u8;
+
+    /// <summary>
+    /// the keyboard element that associates keyboard events to this window. See <c>SDL_GetWindowProperties</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_WINDOW_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING</c>.</para>
+    /// <para>The value is <c>SDL.window.emscripten.keyboard_element</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropWindowEmscriptenKeyboardElementString => "SDL.window.emscripten.keyboard_element"u8;
+
+    /// <summary>Binds <c>SDL_WINDOW_SURFACE_VSYNC_DISABLED</c>.</summary>
+    public const int WindowSurfaceVSyncDisabled = 0;
+
+    /// <summary>Binds <c>SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE</c>.</summary>
+    public const int WindowSurfaceVSyncAdaptive = -1;
+
+    /// <summary>Get the number of video drivers compiled into SDL.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GetNumVideoDrivers</c>.</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GetVideoDriver</c>.</para>
+    /// </remarks>
+    /// <returns>the number of built in video drivers.</returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_GetNumVideoDrivers")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int GetNumVideoDrivers();
+
+    /// <summary>Get the name of a built in video driver.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GetVideoDriver</c>.</para>
+    /// <para>
+    /// The video drivers are presented in the order in which they are normally checked during initialization.
+    /// </para>
+    /// <para>
+    /// The names of drivers are all simple, low-ASCII identifiers, like "cocoa", "x11" or "windows". These never have
+    /// Unicode characters, and are not meant to be proper names.
+    /// </para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GetNumVideoDrivers</c>.</para>
+    /// </remarks>
+    /// <param name="index">the index of a video driver.</param>
+    /// <returns>the name of the video driver with the given <b>index</b>, or NULL if index is out of bounds.</returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_GetVideoDriver")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial byte* GetVideoDriver(int index);
+
+    /// <summary>Get the name of the currently initialized video driver.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GetCurrentVideoDriver</c>.</para>
+    /// <para>
+    /// The names of drivers are all simple, low-ASCII identifiers, like "cocoa", "x11" or "windows". These never have
+    /// Unicode characters, and are not meant to be proper names.
+    /// </para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GetNumVideoDrivers</c>, <c>SDL_GetVideoDriver</c>.</para>
+    /// </remarks>
+    /// <returns>the name of the current video driver or NULL if no driver has been initialized.</returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_GetCurrentVideoDriver")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial byte* GetCurrentVideoDriver();
+
+    /// <summary>Get the current system theme.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GetSystemTheme</c>.</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// </remarks>
+    /// <returns>the current system theme, light, dark, or unknown.</returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_GetSystemTheme")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial SystemTheme GetSystemTheme();
+
+    /// <summary>Get a list of currently connected displays.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GetDisplays</c>.</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// </remarks>
+    /// <param name="count">a pointer filled in with the number of displays returned, may be NULL.</param>
+    /// <returns>
+    /// a 0 terminated array of display instance IDs or NULL on failure; call SDL_GetError() for more information. This
+    /// should be freed with SDL_free() when it is no longer needed.
+    /// </returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_GetDisplays")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial DisplayID* GetDisplays(int* count);
+
+    /// <summary>Get a list of currently connected displays.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GetDisplays</c>.</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// </remarks>
+    /// <param name="count">a pointer filled in with the number of displays returned, may be NULL.</param>
+    /// <returns>
+    /// a 0 terminated array of display instance IDs or NULL on failure; call SDL_GetError() for more information. This
+    /// should be freed with SDL_free() when it is no longer needed.
+    /// </returns>
+    public static DisplayID* GetDisplays(out int count)
+    {
+        count = default;
+        fixed (int* countPtr = &count)
+        {
+            return GetDisplays(countPtr);
+        }
+    }
+
+    /// <summary>Return the primary display.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GetPrimaryDisplay</c>.</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GetDisplays</c>.</para>
+    /// </remarks>
+    /// <returns>
+    /// the instance ID of the primary display on success or 0 on failure; call SDL_GetError() for more information.
+    /// </returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_GetPrimaryDisplay")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial DisplayID GetPrimaryDisplay();
+
+    /// <summary>Get the properties associated with a display.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GetDisplayProperties</c>.</para>
+    /// <para>The following read-only properties are provided by SDL:</para>
+    /// <list type="bullet">
+    /// <item>
+    /// <description><c>SDL_PROP_DISPLAY_HDR_ENABLED_BOOLEAN</c>: true if the display has HDR headroom above the SDR
+    /// white point. This is for informational and diagnostic purposes only, as not all platforms provide this
+    /// information at the display level.</description>
+    /// </item>
+    /// </list>
+    /// <para>On KMS/DRM:</para>
+    /// <list type="bullet">
+    /// <item>
+    /// <description><c>SDL_PROP_DISPLAY_KMSDRM_PANEL_ORIENTATION_NUMBER</c>: the "panel orientation" property for the
+    /// display in degrees of clockwise rotation. Note that this is provided only as a hint, and the application is
+    /// responsible for any coordinate transformations needed to conform to the requested display
+    /// orientation.</description>
+    /// </item>
+    /// </list>
+    /// <para>On Wayland:</para>
+    /// <list type="bullet">
+    /// <item>
+    /// <description><c>SDL_PROP_DISPLAY_WAYLAND_WL_OUTPUT_POINTER</c>: the wl_output associated with the
+    /// display</description>
+    /// </item>
+    /// </list>
+    /// <para>On Windows:</para>
+    /// <list type="bullet">
+    /// <item>
+    /// <description><c>SDL_PROP_DISPLAY_WINDOWS_HMONITOR_POINTER</c>: the monitor handle (HMONITOR) associated with the
+    /// display</description>
+    /// </item>
+    /// </list>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// </remarks>
+    /// <param name="displayID">the instance ID of the display to query.</param>
+    /// <returns>a valid property ID on success or 0 on failure; call SDL_GetError() for more information.</returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_GetDisplayProperties")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial PropertiesID GetDisplayProperties(DisplayID displayID);
+
+    /// <summary>Get the name of a display in UTF-8 encoding.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GetDisplayName</c>.</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GetDisplays</c>.</para>
+    /// </remarks>
+    /// <param name="displayID">the instance ID of the display to query.</param>
+    /// <returns>the name of a display or NULL on failure; call SDL_GetError() for more information.</returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_GetDisplayName")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial byte* GetDisplayName(DisplayID displayID);
+
+    /// <summary>Get the desktop area represented by a display.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GetDisplayBounds</c>.</para>
+    /// <para>
+    /// The primary display is often located at (0,0), but may be placed at a different location depending on monitor
+    /// layout.
+    /// </para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GetDisplayUsableBounds</c>, <c>SDL_GetDisplays</c>.</para>
+    /// </remarks>
+    /// <param name="displayID">the instance ID of the display to query.</param>
+    /// <param name="rect">the SDL_Rect structure filled in with the display bounds.</param>
+    /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_GetDisplayBounds")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool GetDisplayBounds(DisplayID displayID, Rect* rect);
+
+    /// <summary>Get the desktop area represented by a display.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GetDisplayBounds</c>.</para>
+    /// <para>
+    /// The primary display is often located at (0,0), but may be placed at a different location depending on monitor
+    /// layout.
+    /// </para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GetDisplayUsableBounds</c>, <c>SDL_GetDisplays</c>.</para>
+    /// </remarks>
+    /// <param name="displayID">the instance ID of the display to query.</param>
+    /// <param name="rect">the SDL_Rect structure filled in with the display bounds.</param>
+    /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    public static bool GetDisplayBounds(DisplayID displayID, out Rect rect)
+    {
+        rect = default;
+        fixed (Rect* rectPtr = &rect)
+        {
+            return GetDisplayBounds(displayID, rectPtr);
+        }
+    }
+
+    /// <summary>Get the usable desktop area represented by a display, in screen coordinates.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GetDisplayUsableBounds</c>.</para>
+    /// <para>
+    /// This is the same area as SDL_GetDisplayBounds() reports, but with portions reserved by the system removed. For
+    /// example, on Apple's macOS, this subtracts the area occupied by the menu bar and dock.
+    /// </para>
+    /// <para>
+    /// Setting a window to be fullscreen generally bypasses these unusable areas, so these are good guidelines for the
+    /// maximum space available to a non-fullscreen window.
+    /// </para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GetDisplayBounds</c>, <c>SDL_GetDisplays</c>.</para>
+    /// </remarks>
+    /// <param name="displayID">the instance ID of the display to query.</param>
+    /// <param name="rect">the SDL_Rect structure filled in with the display bounds.</param>
+    /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_GetDisplayUsableBounds")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool GetDisplayUsableBounds(DisplayID displayID, Rect* rect);
+
+    /// <summary>Get the usable desktop area represented by a display, in screen coordinates.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GetDisplayUsableBounds</c>.</para>
+    /// <para>
+    /// This is the same area as SDL_GetDisplayBounds() reports, but with portions reserved by the system removed. For
+    /// example, on Apple's macOS, this subtracts the area occupied by the menu bar and dock.
+    /// </para>
+    /// <para>
+    /// Setting a window to be fullscreen generally bypasses these unusable areas, so these are good guidelines for the
+    /// maximum space available to a non-fullscreen window.
+    /// </para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GetDisplayBounds</c>, <c>SDL_GetDisplays</c>.</para>
+    /// </remarks>
+    /// <param name="displayID">the instance ID of the display to query.</param>
+    /// <param name="rect">the SDL_Rect structure filled in with the display bounds.</param>
+    /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    public static bool GetDisplayUsableBounds(DisplayID displayID, out Rect rect)
+    {
+        rect = default;
+        fixed (Rect* rectPtr = &rect)
+        {
+            return GetDisplayUsableBounds(displayID, rectPtr);
+        }
+    }
+
+    /// <summary>Get the orientation of a display when it is unrotated.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GetNaturalDisplayOrientation</c>.</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GetDisplays</c>.</para>
+    /// </remarks>
+    /// <param name="displayID">the instance ID of the display to query.</param>
+    /// <returns>
+    /// the SDL_DisplayOrientation enum value of the display, or <c>SDL_ORIENTATION_UNKNOWN</c> if it isn't available.
+    /// </returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_GetNaturalDisplayOrientation")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial DisplayOrientation GetNaturalDisplayOrientation(DisplayID displayID);
+
+    /// <summary>Get the orientation of a display.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GetCurrentDisplayOrientation</c>.</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GetDisplays</c>.</para>
+    /// </remarks>
+    /// <param name="displayID">the instance ID of the display to query.</param>
+    /// <returns>
+    /// the SDL_DisplayOrientation enum value of the display, or <c>SDL_ORIENTATION_UNKNOWN</c> if it isn't available.
+    /// </returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_GetCurrentDisplayOrientation")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial DisplayOrientation GetCurrentDisplayOrientation(DisplayID displayID);
+
+    /// <summary>Get the content scale of a display.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GetDisplayContentScale</c>.</para>
+    /// <para>
+    /// The content scale is the expected scale for content based on the DPI settings of the display. For example, a 4K
+    /// display might have a 2.0 (200%) display scale, which means that the user expects UI elements to be twice as big
+    /// on this display, to aid in readability.
+    /// </para>
+    /// <para>
+    /// After window creation, SDL_GetWindowDisplayScale() should be used to query the content scale factor for
+    /// individual windows instead of querying the display for a window and calling this function, as the per-window
+    /// content scale factor may differ from the base value of the display it is on, particularly on high-DPI and/or
+    /// multi-monitor desktop configurations.
+    /// </para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GetWindowDisplayScale</c>, <c>SDL_GetDisplays</c>.</para>
+    /// </remarks>
+    /// <param name="displayID">the instance ID of the display to query.</param>
+    /// <returns>
+    /// the content scale of the display, or 0.0f on failure; call SDL_GetError() for more information.
+    /// </returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_GetDisplayContentScale")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial float GetDisplayContentScale(DisplayID displayID);
+
+    /// <summary>Get a list of fullscreen display modes available on a display.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GetFullscreenDisplayModes</c>.</para>
+    /// <para>The display modes are sorted in this priority:</para>
+    /// <list type="bullet">
+    /// <item><description>w -&gt; largest to smallest</description></item>
+    /// <item><description>h -&gt; largest to smallest</description></item>
+    /// <item><description>bits per pixel -&gt; more colors to fewer colors</description></item>
+    /// <item><description>packed pixel layout -&gt; largest to smallest</description></item>
+    /// <item><description>refresh rate -&gt; highest to lowest</description></item>
+    /// <item><description>pixel density -&gt; lowest to highest</description></item>
+    /// </list>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GetDisplays</c>.</para>
+    /// </remarks>
+    /// <param name="displayID">the instance ID of the display to query.</param>
+    /// <param name="count">a pointer filled in with the number of display modes returned, may be NULL.</param>
+    /// <returns>
+    /// a NULL terminated array of display mode pointers or NULL on failure; call SDL_GetError() for more information.
+    /// This is a single allocation that should be freed with SDL_free() when it is no longer needed.
+    /// </returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_GetFullscreenDisplayModes")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial DisplayMode** GetFullscreenDisplayModes(DisplayID displayID, int* count);
+
+    /// <summary>Get a list of fullscreen display modes available on a display.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GetFullscreenDisplayModes</c>.</para>
+    /// <para>The display modes are sorted in this priority:</para>
+    /// <list type="bullet">
+    /// <item><description>w -&gt; largest to smallest</description></item>
+    /// <item><description>h -&gt; largest to smallest</description></item>
+    /// <item><description>bits per pixel -&gt; more colors to fewer colors</description></item>
+    /// <item><description>packed pixel layout -&gt; largest to smallest</description></item>
+    /// <item><description>refresh rate -&gt; highest to lowest</description></item>
+    /// <item><description>pixel density -&gt; lowest to highest</description></item>
+    /// </list>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GetDisplays</c>.</para>
+    /// </remarks>
+    /// <param name="displayID">the instance ID of the display to query.</param>
+    /// <param name="count">a pointer filled in with the number of display modes returned, may be NULL.</param>
+    /// <returns>
+    /// a NULL terminated array of display mode pointers or NULL on failure; call SDL_GetError() for more information.
+    /// This is a single allocation that should be freed with SDL_free() when it is no longer needed.
+    /// </returns>
+    public static DisplayMode** GetFullscreenDisplayModes(DisplayID displayID, out int count)
+    {
+        count = default;
+        fixed (int* countPtr = &count)
+        {
+            return GetFullscreenDisplayModes(displayID, countPtr);
+        }
+    }
+
+    /// <summary>Get the closest match to the requested display mode.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GetClosestFullscreenDisplayMode</c>.</para>
+    /// <para>
+    /// The available display modes are scanned and <c>closest</c> is filled in with the closest mode matching the
+    /// requested mode and returned. The mode format and refresh rate default to the desktop mode if they are set to 0.
+    /// The modes are scanned with size being first priority, format being second priority, and finally checking the
+    /// refresh rate. If all the available modes are too small, then false is returned.
+    /// </para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GetDisplays</c>, <c>SDL_GetFullscreenDisplayModes</c>.</para>
+    /// </remarks>
+    /// <param name="displayID">the instance ID of the display to query.</param>
+    /// <param name="w">the width in pixels of the desired display mode.</param>
+    /// <param name="h">the height in pixels of the desired display mode.</param>
+    /// <param name="refreshRate">
+    /// the refresh rate of the desired display mode, or 0.0f for the desktop refresh rate.
+    /// </param>
+    /// <param name="includeHighDensityModes">boolean to include high density modes in the search.</param>
+    /// <param name="closest">
+    /// a pointer filled in with the closest display mode equal to or larger than the desired mode.
+    /// </param>
+    /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_GetClosestFullscreenDisplayMode")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool GetClosestFullscreenDisplayMode(DisplayID displayID, int w, int h, float refreshRate, [MarshalAs(UnmanagedType.U1)] bool includeHighDensityModes, DisplayMode* closest);
+
+    /// <summary>Get the closest match to the requested display mode.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GetClosestFullscreenDisplayMode</c>.</para>
+    /// <para>
+    /// The available display modes are scanned and <c>closest</c> is filled in with the closest mode matching the
+    /// requested mode and returned. The mode format and refresh rate default to the desktop mode if they are set to 0.
+    /// The modes are scanned with size being first priority, format being second priority, and finally checking the
+    /// refresh rate. If all the available modes are too small, then false is returned.
+    /// </para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GetDisplays</c>, <c>SDL_GetFullscreenDisplayModes</c>.</para>
+    /// </remarks>
+    /// <param name="displayID">the instance ID of the display to query.</param>
+    /// <param name="w">the width in pixels of the desired display mode.</param>
+    /// <param name="h">the height in pixels of the desired display mode.</param>
+    /// <param name="refreshRate">
+    /// the refresh rate of the desired display mode, or 0.0f for the desktop refresh rate.
+    /// </param>
+    /// <param name="includeHighDensityModes">boolean to include high density modes in the search.</param>
+    /// <param name="closest">
+    /// a pointer filled in with the closest display mode equal to or larger than the desired mode.
+    /// </param>
+    /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    public static bool GetClosestFullscreenDisplayMode(DisplayID displayID, int w, int h, float refreshRate, bool includeHighDensityModes, out DisplayMode closest)
+    {
+        closest = default;
+        fixed (DisplayMode* closestPtr = &closest)
+        {
+            return GetClosestFullscreenDisplayMode(displayID, w, h, refreshRate, includeHighDensityModes, closestPtr);
+        }
+    }
+
+    /// <summary>Get information about the desktop's display mode.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GetDesktopDisplayMode</c>.</para>
+    /// <para>
+    /// There's a difference between this function and SDL_GetCurrentDisplayMode() when SDL runs fullscreen and has
+    /// changed the resolution. In that case this function will return the previous native display mode, and not the
+    /// current display mode.
+    /// </para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GetCurrentDisplayMode</c>, <c>SDL_GetDisplays</c>.</para>
+    /// </remarks>
+    /// <param name="displayID">the instance ID of the display to query.</param>
+    /// <returns>
+    /// a pointer to the desktop display mode or NULL on failure; call SDL_GetError() for more information.
+    /// </returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_GetDesktopDisplayMode")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial DisplayMode* GetDesktopDisplayMode(DisplayID displayID);
+
+    /// <summary>Get information about the current display mode.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GetCurrentDisplayMode</c>.</para>
+    /// <para>
+    /// There's a difference between this function and SDL_GetDesktopDisplayMode() when SDL runs fullscreen and has
+    /// changed the resolution. In that case this function will return the current display mode, and not the previous
+    /// native display mode.
+    /// </para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GetDesktopDisplayMode</c>, <c>SDL_GetDisplays</c>.</para>
+    /// </remarks>
+    /// <param name="displayID">the instance ID of the display to query.</param>
+    /// <returns>
+    /// a pointer to the desktop display mode or NULL on failure; call SDL_GetError() for more information.
+    /// </returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_GetCurrentDisplayMode")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial DisplayMode* GetCurrentDisplayMode(DisplayID displayID);
+
+    /// <summary>Get the display containing a point.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GetDisplayForPoint</c>.</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GetDisplayBounds</c>, <c>SDL_GetDisplays</c>.</para>
+    /// </remarks>
+    /// <param name="point">the point to query.</param>
+    /// <returns>
+    /// the instance ID of the display containing the point or 0 on failure; call SDL_GetError() for more information.
+    /// </returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_GetDisplayForPoint")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial DisplayID GetDisplayForPoint(Point* point);
+
+    /// <summary>Get the display containing a point.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GetDisplayForPoint</c>.</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GetDisplayBounds</c>, <c>SDL_GetDisplays</c>.</para>
+    /// </remarks>
+    /// <param name="point">the point to query.</param>
+    /// <returns>
+    /// the instance ID of the display containing the point or 0 on failure; call SDL_GetError() for more information.
+    /// </returns>
+    public static DisplayID GetDisplayForPoint(in Point point)
+    {
+        fixed (Point* pointPtr = &point)
+        {
+            return GetDisplayForPoint(pointPtr);
+        }
+    }
+
+    /// <summary>Get the display primarily containing a rect.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GetDisplayForRect</c>.</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GetDisplayBounds</c>, <c>SDL_GetDisplays</c>.</para>
+    /// </remarks>
+    /// <param name="rect">the rect to query.</param>
+    /// <returns>
+    /// the instance ID of the display entirely containing the rect or closest to the center of the rect on success or 0
+    /// on failure; call SDL_GetError() for more information.
+    /// </returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_GetDisplayForRect")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial DisplayID GetDisplayForRect(Rect* rect);
+
+    /// <summary>Get the display primarily containing a rect.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GetDisplayForRect</c>.</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GetDisplayBounds</c>, <c>SDL_GetDisplays</c>.</para>
+    /// </remarks>
+    /// <param name="rect">the rect to query.</param>
+    /// <returns>
+    /// the instance ID of the display entirely containing the rect or closest to the center of the rect on success or 0
+    /// on failure; call SDL_GetError() for more information.
+    /// </returns>
+    public static DisplayID GetDisplayForRect(in Rect rect)
+    {
+        fixed (Rect* rectPtr = &rect)
+        {
+            return GetDisplayForRect(rectPtr);
+        }
+    }
 
     /// <summary>Get the display associated with a window.</summary>
     /// <remarks>
@@ -23,7 +1281,7 @@ public static unsafe partial class Sdl
     /// </returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_GetDisplayForWindow")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial uint GetDisplayForWindow(Window window);
+    public static partial DisplayID GetDisplayForWindow(Window window);
 
     /// <summary>Get the pixel density of a window.</summary>
     /// <remarks>
@@ -94,7 +1352,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_SetWindowFullscreenMode")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte SetWindowFullscreenMode(Window window, DisplayMode* mode);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool SetWindowFullscreenMode(Window window, DisplayMode* mode);
 
     /// <summary>Set the display mode to use when a window is visible and fullscreen.</summary>
     /// <remarks>
@@ -124,7 +1383,7 @@ public static unsafe partial class Sdl
     /// fullscreen modes returned by SDL_GetFullscreenDisplayModes() to set an exclusive fullscreen mode.
     /// </param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public static byte SetWindowFullscreenMode(Window window, in DisplayMode mode)
+    public static bool SetWindowFullscreenMode(Window window, in DisplayMode mode)
     {
         fixed (DisplayMode* modePtr = &mode)
         {
@@ -713,7 +1972,7 @@ public static unsafe partial class Sdl
     /// <returns>the window that was created or NULL on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_CreateWindowWithProperties")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial Window CreateWindowWithProperties(uint props);
+    public static partial Window CreateWindowWithProperties(PropertiesID props);
 
     /// <summary>Get the numeric ID of a window.</summary>
     /// <remarks>
@@ -730,7 +1989,7 @@ public static unsafe partial class Sdl
     /// <returns>the ID of the window on success or 0 on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_GetWindowID")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial uint GetWindowID(Window window);
+    public static partial WindowID GetWindowID(Window window);
 
     /// <summary>Get a window from a stored ID.</summary>
     /// <remarks>
@@ -749,7 +2008,7 @@ public static unsafe partial class Sdl
     /// </returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_GetWindowFromID")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial Window GetWindowFromID(uint id);
+    public static partial Window GetWindowFromID(WindowID id);
 
     /// <summary>Get parent of a window.</summary>
     /// <remarks>
@@ -957,7 +2216,7 @@ public static unsafe partial class Sdl
     /// <returns>a valid property ID on success or 0 on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_GetWindowProperties")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial uint GetWindowProperties(Window window);
+    public static partial PropertiesID GetWindowProperties(Window window);
 
     /// <summary>Get the window flags.</summary>
     /// <remarks>
@@ -989,7 +2248,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_SetWindowTitle")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte SetWindowTitle(Window window, byte* title);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool SetWindowTitle(Window window, byte* title);
 
     /// <summary>Set the title of a window.</summary>
     /// <remarks>
@@ -1002,7 +2262,7 @@ public static unsafe partial class Sdl
     /// <param name="window">the window to change.</param>
     /// <param name="title">the desired window title in UTF-8 format.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public static byte SetWindowTitle(Window window, ReadOnlySpan<byte> title)
+    public static bool SetWindowTitle(Window window, ReadOnlySpan<byte> title)
     {
         using var titleUtf8 = new NulTerminatedUtf8(title, stackalloc byte[NulTerminatedUtf8.StackLength]);
         fixed (byte* titlePtr = titleUtf8)
@@ -1045,7 +2305,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_SetWindowIcon")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte SetWindowIcon(Window window, Surface* icon);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool SetWindowIcon(Window window, Surface* icon);
 
     /// <summary>Request that the window's position be set.</summary>
     /// <remarks>
@@ -1082,7 +2343,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_SetWindowPosition")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte SetWindowPosition(Window window, int x, int y);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool SetWindowPosition(Window window, int x, int y);
 
     /// <summary>Get the position of a window.</summary>
     /// <remarks>
@@ -1102,7 +2364,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_GetWindowPosition")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte GetWindowPosition(Window window, int* x, int* y);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool GetWindowPosition(Window window, int* x, int* y);
 
     /// <summary>Get the position of a window.</summary>
     /// <remarks>
@@ -1120,7 +2383,7 @@ public static unsafe partial class Sdl
     /// <param name="x">a pointer filled in with the x position of the window, may be NULL.</param>
     /// <param name="y">a pointer filled in with the y position of the window, may be NULL.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public static byte GetWindowPosition(Window window, out int x, out int y)
+    public static bool GetWindowPosition(Window window, out int x, out int y)
     {
         x = default;
         y = default;
@@ -1157,7 +2420,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_SetWindowSize")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte SetWindowSize(Window window, int w, int h);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool SetWindowSize(Window window, int w, int h);
 
     /// <summary>Get the size of a window's client area.</summary>
     /// <remarks>
@@ -1180,7 +2444,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_GetWindowSize")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte GetWindowSize(Window window, int* w, int* h);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool GetWindowSize(Window window, int* w, int* h);
 
     /// <summary>Get the size of a window's client area.</summary>
     /// <remarks>
@@ -1201,7 +2466,7 @@ public static unsafe partial class Sdl
     /// <param name="w">a pointer filled in with the width of the window, may be NULL.</param>
     /// <param name="h">a pointer filled in with the height of the window, may be NULL.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public static byte GetWindowSize(Window window, out int w, out int h)
+    public static bool GetWindowSize(Window window, out int w, out int h)
     {
         w = default;
         h = default;
@@ -1229,7 +2494,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_GetWindowSafeArea")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte GetWindowSafeArea(Window window, Rect* rect);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool GetWindowSafeArea(Window window, Rect* rect);
 
     /// <summary>Get the safe area for this window.</summary>
     /// <remarks>
@@ -1246,7 +2512,7 @@ public static unsafe partial class Sdl
     /// <param name="window">the window to query.</param>
     /// <param name="rect">a pointer filled in with the client area that is safe for interactive content.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public static byte GetWindowSafeArea(Window window, out Rect rect)
+    public static bool GetWindowSafeArea(Window window, out Rect rect)
     {
         rect = default;
         fixed (Rect* rectPtr = &rect)
@@ -1287,7 +2553,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_SetWindowAspectRatio")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte SetWindowAspectRatio(Window window, float minAspect, float maxAspect);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool SetWindowAspectRatio(Window window, float minAspect, float maxAspect);
 
     /// <summary>Get the aspect ratio of a window's client area.</summary>
     /// <remarks>
@@ -1302,7 +2569,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_GetWindowAspectRatio")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte GetWindowAspectRatio(Window window, float* minAspect, float* maxAspect);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool GetWindowAspectRatio(Window window, float* minAspect, float* maxAspect);
 
     /// <summary>Get the aspect ratio of a window's client area.</summary>
     /// <remarks>
@@ -1315,7 +2583,7 @@ public static unsafe partial class Sdl
     /// <param name="minAspect">a pointer filled in with the minimum aspect ratio of the window, may be NULL.</param>
     /// <param name="maxAspect">a pointer filled in with the maximum aspect ratio of the window, may be NULL.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public static byte GetWindowAspectRatio(Window window, out float minAspect, out float maxAspect)
+    public static bool GetWindowAspectRatio(Window window, out float minAspect, out float maxAspect)
     {
         minAspect = default;
         maxAspect = default;
@@ -1352,7 +2620,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_GetWindowBordersSize")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte GetWindowBordersSize(Window window, int* top, int* left, int* bottom, int* right);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool GetWindowBordersSize(Window window, int* top, int* left, int* bottom, int* right);
 
     /// <summary>Get the size of a window's borders (decorations) around the client area.</summary>
     /// <remarks>
@@ -1378,7 +2647,7 @@ public static unsafe partial class Sdl
     /// <param name="bottom">pointer to variable for storing the size of the bottom border; NULL is permitted.</param>
     /// <param name="right">pointer to variable for storing the size of the right border; NULL is permitted.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public static byte GetWindowBordersSize(Window window, out int top, out int left, out int bottom, out int right)
+    public static bool GetWindowBordersSize(Window window, out int top, out int left, out int bottom, out int right)
     {
         top = default;
         left = default;
@@ -1406,7 +2675,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_GetWindowSizeInPixels")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte GetWindowSizeInPixels(Window window, int* w, int* h);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool GetWindowSizeInPixels(Window window, int* w, int* h);
 
     /// <summary>Get the size of a window's client area, in pixels.</summary>
     /// <remarks>
@@ -1419,7 +2689,7 @@ public static unsafe partial class Sdl
     /// <param name="w">a pointer to variable for storing the width in pixels, may be NULL.</param>
     /// <param name="h">a pointer to variable for storing the height in pixels, may be NULL.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public static byte GetWindowSizeInPixels(Window window, out int w, out int h)
+    public static bool GetWindowSizeInPixels(Window window, out int w, out int h)
     {
         w = default;
         h = default;
@@ -1443,7 +2713,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_SetWindowMinimumSize")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte SetWindowMinimumSize(Window window, int minW, int minH);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool SetWindowMinimumSize(Window window, int minW, int minH);
 
     /// <summary>Get the minimum size of a window's client area.</summary>
     /// <remarks>
@@ -1458,7 +2729,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_GetWindowMinimumSize")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte GetWindowMinimumSize(Window window, int* w, int* h);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool GetWindowMinimumSize(Window window, int* w, int* h);
 
     /// <summary>Get the minimum size of a window's client area.</summary>
     /// <remarks>
@@ -1471,7 +2743,7 @@ public static unsafe partial class Sdl
     /// <param name="w">a pointer filled in with the minimum width of the window, may be NULL.</param>
     /// <param name="h">a pointer filled in with the minimum height of the window, may be NULL.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public static byte GetWindowMinimumSize(Window window, out int w, out int h)
+    public static bool GetWindowMinimumSize(Window window, out int w, out int h)
     {
         w = default;
         h = default;
@@ -1495,7 +2767,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_SetWindowMaximumSize")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte SetWindowMaximumSize(Window window, int maxW, int maxH);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool SetWindowMaximumSize(Window window, int maxW, int maxH);
 
     /// <summary>Get the maximum size of a window's client area.</summary>
     /// <remarks>
@@ -1510,7 +2783,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_GetWindowMaximumSize")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte GetWindowMaximumSize(Window window, int* w, int* h);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool GetWindowMaximumSize(Window window, int* w, int* h);
 
     /// <summary>Get the maximum size of a window's client area.</summary>
     /// <remarks>
@@ -1523,7 +2797,7 @@ public static unsafe partial class Sdl
     /// <param name="w">a pointer filled in with the maximum width of the window, may be NULL.</param>
     /// <param name="h">a pointer filled in with the maximum height of the window, may be NULL.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public static byte GetWindowMaximumSize(Window window, out int w, out int h)
+    public static bool GetWindowMaximumSize(Window window, out int w, out int h)
     {
         w = default;
         h = default;
@@ -1551,7 +2825,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_SetWindowBordered")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte SetWindowBordered(Window window, byte bordered);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool SetWindowBordered(Window window, [MarshalAs(UnmanagedType.U1)] bool bordered);
 
     /// <summary>Set the user-resizable state of a window.</summary>
     /// <remarks>
@@ -1570,7 +2845,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_SetWindowResizable")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte SetWindowResizable(Window window, byte resizable);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool SetWindowResizable(Window window, [MarshalAs(UnmanagedType.U1)] bool resizable);
 
     /// <summary>Set the window to always be above the others.</summary>
     /// <remarks>
@@ -1588,7 +2864,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_SetWindowAlwaysOnTop")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte SetWindowAlwaysOnTop(Window window, byte onTop);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool SetWindowAlwaysOnTop(Window window, [MarshalAs(UnmanagedType.U1)] bool onTop);
 
     /// <summary>Set the window to fill the current document space (Emscripten only).</summary>
     /// <remarks>
@@ -1614,7 +2891,9 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_SetWindowFillDocument")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte SetWindowFillDocument(Window window, byte fill);
+    [SupportedOSPlatform("browser")]
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool SetWindowFillDocument(Window window, [MarshalAs(UnmanagedType.U1)] bool fill);
 
     /// <summary>Show a window.</summary>
     /// <remarks>
@@ -1627,7 +2906,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_ShowWindow")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte ShowWindow(Window window);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool ShowWindow(Window window);
 
     /// <summary>Hide a window.</summary>
     /// <remarks>
@@ -1640,7 +2920,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_HideWindow")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte HideWindow(Window window);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool HideWindow(Window window);
 
     /// <summary>Request that a window be raised above other windows and gain the input focus.</summary>
     /// <remarks>
@@ -1658,7 +2939,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_RaiseWindow")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte RaiseWindow(Window window);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool RaiseWindow(Window window);
 
     /// <summary>Request that the window be made as large as possible.</summary>
     /// <remarks>
@@ -1689,7 +2971,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_MaximizeWindow")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte MaximizeWindow(Window window);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool MaximizeWindow(Window window);
 
     /// <summary>Request that the window be minimized to an iconic representation.</summary>
     /// <remarks>
@@ -1715,7 +2998,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_MinimizeWindow")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte MinimizeWindow(Window window);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool MinimizeWindow(Window window);
 
     /// <summary>Request that the size and position of a minimized or maximized window be restored.</summary>
     /// <remarks>
@@ -1741,7 +3025,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_RestoreWindow")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte RestoreWindow(Window window);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool RestoreWindow(Window window);
 
     /// <summary>Request that the window's fullscreen state be changed.</summary>
     /// <remarks>
@@ -1771,7 +3056,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_SetWindowFullscreen")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte SetWindowFullscreen(Window window, byte fullscreen);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool SetWindowFullscreen(Window window, [MarshalAs(UnmanagedType.U1)] bool fullscreen);
 
     /// <summary>Block until any pending window state is finalized.</summary>
     /// <remarks>
@@ -1797,7 +3083,8 @@ public static unsafe partial class Sdl
     /// </returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_SyncWindow")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte SyncWindow(Window window);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool SyncWindow(Window window);
 
     /// <summary>Return whether the window has a surface associated with it.</summary>
     /// <remarks>
@@ -1810,7 +3097,8 @@ public static unsafe partial class Sdl
     /// <returns>true if there is a surface associated with the window, or false otherwise.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_WindowHasSurface")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte WindowHasSurface(Window window);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool WindowHasSurface(Window window);
 
     /// <summary>Get the SDL surface associated with the window.</summary>
     /// <remarks>
@@ -1859,7 +3147,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_SetWindowSurfaceVSync")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte SetWindowSurfaceVSync(Window window, int vsync);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool SetWindowSurfaceVSync(Window window, int vsync);
 
     /// <summary>Get VSync for the window surface.</summary>
     /// <remarks>
@@ -1876,7 +3165,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_GetWindowSurfaceVSync")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte GetWindowSurfaceVSync(Window window, int* vsync);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool GetWindowSurfaceVSync(Window window, int* vsync);
 
     /// <summary>Get VSync for the window surface.</summary>
     /// <remarks>
@@ -1891,7 +3181,7 @@ public static unsafe partial class Sdl
     /// of the value.
     /// </param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public static byte GetWindowSurfaceVSync(Window window, out int vsync)
+    public static bool GetWindowSurfaceVSync(Window window, out int vsync)
     {
         vsync = default;
         fixed (int* vsyncPtr = &vsync)
@@ -1913,7 +3203,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_UpdateWindowSurface")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte UpdateWindowSurface(Window window);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool UpdateWindowSurface(Window window);
 
     /// <summary>Copy areas of the window surface to the screen.</summary>
     /// <remarks>
@@ -1937,7 +3228,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_UpdateWindowSurfaceRects")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte UpdateWindowSurfaceRects(Window window, Rect* rects, int numrects);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool UpdateWindowSurfaceRects(Window window, Rect* rects, int numrects);
 
     /// <summary>Copy areas of the window surface to the screen.</summary>
     /// <remarks>
@@ -1958,7 +3250,7 @@ public static unsafe partial class Sdl
     /// an array of SDL_Rect structures representing areas of the surface to copy, in pixels.
     /// </param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public static byte UpdateWindowSurfaceRects(Window window, ReadOnlySpan<Rect> rects)
+    public static bool UpdateWindowSurfaceRects(Window window, ReadOnlySpan<Rect> rects)
     {
         fixed (Rect* rectsPtr = rects)
         {
@@ -1977,7 +3269,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_DestroyWindowSurface")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte DestroyWindowSurface(Window window);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool DestroyWindowSurface(Window window);
 
     /// <summary>Set a window's keyboard grab mode.</summary>
     /// <remarks>
@@ -2008,7 +3301,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_SetWindowKeyboardGrab")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte SetWindowKeyboardGrab(Window window, byte grabbed);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool SetWindowKeyboardGrab(Window window, [MarshalAs(UnmanagedType.U1)] bool grabbed);
 
     /// <summary>Set a window's mouse grab mode.</summary>
     /// <remarks>
@@ -2025,7 +3319,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_SetWindowMouseGrab")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte SetWindowMouseGrab(Window window, byte grabbed);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool SetWindowMouseGrab(Window window, [MarshalAs(UnmanagedType.U1)] bool grabbed);
 
     /// <summary>Get a window's keyboard grab mode.</summary>
     /// <remarks>
@@ -2038,7 +3333,8 @@ public static unsafe partial class Sdl
     /// <returns>true if keyboard is grabbed, and false otherwise.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_GetWindowKeyboardGrab")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte GetWindowKeyboardGrab(Window window);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool GetWindowKeyboardGrab(Window window);
 
     /// <summary>Get a window's mouse grab mode.</summary>
     /// <remarks>
@@ -2054,7 +3350,8 @@ public static unsafe partial class Sdl
     /// <returns>true if mouse is grabbed, and false otherwise.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_GetWindowMouseGrab")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte GetWindowMouseGrab(Window window);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool GetWindowMouseGrab(Window window);
 
     /// <summary>Get the window that currently has an input grab enabled.</summary>
     /// <remarks>
@@ -2088,7 +3385,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_SetWindowMouseRect")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte SetWindowMouseRect(Window window, Rect* rect);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool SetWindowMouseRect(Window window, Rect* rect);
 
     /// <summary>Confines the cursor to the specified area of a window.</summary>
     /// <remarks>
@@ -2108,7 +3406,7 @@ public static unsafe partial class Sdl
     /// a rectangle area in window-relative coordinates. If NULL the barrier for the specified window will be destroyed.
     /// </param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public static byte SetWindowMouseRect(Window window, in Rect rect)
+    public static bool SetWindowMouseRect(Window window, in Rect rect)
     {
         fixed (Rect* rectPtr = &rect)
         {
@@ -2147,7 +3445,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_SetWindowOpacity")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte SetWindowOpacity(Window window, float opacity);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool SetWindowOpacity(Window window, float opacity);
 
     /// <summary>Get the opacity of a window.</summary>
     /// <remarks>
@@ -2195,7 +3494,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_SetWindowParent")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte SetWindowParent(Window window, Window parent);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool SetWindowParent(Window window, Window parent);
 
     /// <summary>Toggle the state of the window as modal.</summary>
     /// <remarks>
@@ -2213,7 +3513,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_SetWindowModal")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte SetWindowModal(Window window, byte modal);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool SetWindowModal(Window window, [MarshalAs(UnmanagedType.U1)] bool modal);
 
     /// <summary>Set whether the window may have input focus.</summary>
     /// <remarks>
@@ -2226,7 +3527,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_SetWindowFocusable")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte SetWindowFocusable(Window window, byte focusable);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool SetWindowFocusable(Window window, [MarshalAs(UnmanagedType.U1)] bool focusable);
 
     /// <summary>Display the system-level window menu.</summary>
     /// <remarks>
@@ -2246,7 +3548,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_ShowWindowSystemMenu")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte ShowWindowSystemMenu(Window window, int x, int y);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool ShowWindowSystemMenu(Window window, int x, int y);
 
     /// <summary>Provide a callback that decides if a window region has special properties.</summary>
     /// <remarks>
@@ -2280,6 +3583,15 @@ public static unsafe partial class Sdl
     /// </para>
     /// <para>Thread safety: This function should only be called on the main thread.</para>
     /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para><c>callback</c> is a <c>SDL_HitTest</c>: Callback used for hit-testing.</para>
+    /// <list type="bullet">
+    /// <item><description><c>win</c>: the SDL_Window where hit-testing was set on.</description></item>
+    /// <item><description><c>area</c>: an SDL_Point which should be hit-tested.</description></item>
+    /// <item>
+    /// <description><c>data</c>: what was passed as <c>callback_data</c> to SDL_SetWindowHitTest().</description>
+    /// </item>
+    /// <item><description>Returns an SDL_HitTestResult value.</description></item>
+    /// </list>
     /// </remarks>
     /// <param name="window">the window to set hit-testing on.</param>
     /// <param name="callback">the function to call when doing a hit-test.</param>
@@ -2287,7 +3599,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_SetWindowHitTest")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte SetWindowHitTest(Window window, delegate* unmanaged[Cdecl]<Window, Point*, void*, HitTestResult> callback, void* callbackData);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool SetWindowHitTest(Window window, delegate* unmanaged[Cdecl]<Window, Point*, void*, HitTestResult> callback, void* callbackData);
 
     /// <summary>Set the shape of a transparent window.</summary>
     /// <remarks>
@@ -2313,7 +3626,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_SetWindowShape")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte SetWindowShape(Window window, Surface* shape);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool SetWindowShape(Window window, Surface* shape);
 
     /// <summary>Request a window to demand attention from the user.</summary>
     /// <remarks>
@@ -2326,7 +3640,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_FlashWindow")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte FlashWindow(Window window, FlashOperation operation);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool FlashWindow(Window window, FlashOperation operation);
 
     /// <summary>Sets the state of the progress bar for the given window’s taskbar icon.</summary>
     /// <remarks>
@@ -2341,7 +3656,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_SetWindowProgressState")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte SetWindowProgressState(Window window, ProgressState state);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool SetWindowProgressState(Window window, ProgressState state);
 
     /// <summary>Get the state of the progress bar for the given window’s taskbar icon.</summary>
     /// <remarks>
@@ -2370,7 +3686,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_SetWindowProgressValue")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte SetWindowProgressValue(Window window, float value);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool SetWindowProgressValue(Window window, float value);
 
     /// <summary>Get the value of the progress bar for the given window’s taskbar icon.</summary>
     /// <remarks>
@@ -2404,4 +3721,657 @@ public static unsafe partial class Sdl
     [LibraryImport("jade_native", EntryPoint = "SDL_DestroyWindow")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void DestroyWindow(Window window);
+
+    /// <summary>Check whether the screensaver is currently enabled.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_ScreenSaverEnabled</c>.</para>
+    /// <para>The screensaver is disabled by default.</para>
+    /// <para>The default can also be changed using <c>SDL_HINT_VIDEO_ALLOW_SCREENSAVER</c>.</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_DisableScreenSaver</c>, <c>SDL_EnableScreenSaver</c>.</para>
+    /// </remarks>
+    /// <returns>true if the screensaver is enabled, false if it is disabled.</returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_ScreenSaverEnabled")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool ScreenSaverEnabled();
+
+    /// <summary>Allow the screen to be blanked by a screen saver.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_EnableScreenSaver</c>.</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_DisableScreenSaver</c>, <c>SDL_ScreenSaverEnabled</c>.</para>
+    /// </remarks>
+    /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_EnableScreenSaver")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool EnableScreenSaver();
+
+    /// <summary>Prevent the screen from being blanked by a screen saver.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_DisableScreenSaver</c>.</para>
+    /// <para>If you disable the screensaver, it is automatically re-enabled when SDL quits.</para>
+    /// <para>
+    /// The screensaver is disabled by default, but this may by changed by SDL_HINT_VIDEO_ALLOW_SCREENSAVER.
+    /// </para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_EnableScreenSaver</c>, <c>SDL_ScreenSaverEnabled</c>.</para>
+    /// </remarks>
+    /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_DisableScreenSaver")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool DisableScreenSaver();
+
+    /// <summary>Dynamically load an OpenGL library.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GL_LoadLibrary</c>.</para>
+    /// <para>
+    /// This should be done after initializing the video driver, but before creating any OpenGL windows. If no OpenGL
+    /// library is loaded, the default library will be loaded upon creation of the first OpenGL window.
+    /// </para>
+    /// <para>
+    /// If you do this, you need to retrieve all of the GL functions used in your program from the dynamic library using
+    /// SDL_GL_GetProcAddress().
+    /// </para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GL_GetProcAddress</c>, <c>SDL_GL_UnloadLibrary</c>.</para>
+    /// </remarks>
+    /// <param name="path">
+    /// the platform dependent OpenGL library name, or NULL to open the default OpenGL library.
+    /// </param>
+    /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_GL_LoadLibrary")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool GlLoadLibrary(byte* path);
+
+    /// <summary>Dynamically load an OpenGL library.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GL_LoadLibrary</c>.</para>
+    /// <para>
+    /// This should be done after initializing the video driver, but before creating any OpenGL windows. If no OpenGL
+    /// library is loaded, the default library will be loaded upon creation of the first OpenGL window.
+    /// </para>
+    /// <para>
+    /// If you do this, you need to retrieve all of the GL functions used in your program from the dynamic library using
+    /// SDL_GL_GetProcAddress().
+    /// </para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GL_GetProcAddress</c>, <c>SDL_GL_UnloadLibrary</c>.</para>
+    /// </remarks>
+    /// <param name="path">
+    /// the platform dependent OpenGL library name, or NULL to open the default OpenGL library.
+    /// </param>
+    /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    public static bool GlLoadLibrary(ReadOnlySpan<byte> path)
+    {
+        using var pathUtf8 = new NulTerminatedUtf8(path, stackalloc byte[NulTerminatedUtf8.StackLength]);
+        fixed (byte* pathPtr = pathUtf8)
+        {
+            return GlLoadLibrary(pathPtr);
+        }
+    }
+
+    /// <summary>Get an OpenGL function by name.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GL_GetProcAddress</c>.</para>
+    /// <para>
+    /// If the GL library is loaded at runtime with SDL_GL_LoadLibrary(), then all GL functions must be retrieved this
+    /// way. Usually this is used to retrieve function pointers to OpenGL extensions.
+    /// </para>
+    /// <para>
+    /// There are some quirks to looking up OpenGL functions that require some extra care from the application. If you
+    /// code carefully, you can handle these quirks without any platform-specific code, though:
+    /// </para>
+    /// <list type="bullet">
+    /// <item>
+    /// <description>On Windows, function pointers are specific to the current GL context; this means you need to have
+    /// created a GL context and made it current before calling SDL_GL_GetProcAddress(). If you recreate your context or
+    /// create a second context, you should assume that any existing function pointers aren't valid to use with it. This
+    /// is (currently) a Windows-specific limitation, and in practice lots of drivers don't suffer this limitation, but
+    /// it is still the way the wgl API is documented to work and you should expect crashes if you don't respect it.
+    /// Store a copy of the function pointers that comes and goes with context lifespan.</description>
+    /// </item>
+    /// <item>
+    /// <description>On X11, function pointers returned by this function are valid for any context, and can even be
+    /// looked up before a context is created at all. This means that, for at least some common OpenGL implementations,
+    /// if you look up a function that doesn't exist, you'll get a non-NULL result that is _NOT_ safe to call. You must
+    /// always make sure the function is actually available for a given GL context before calling it, by checking for
+    /// the existence of the appropriate extension with SDL_GL_ExtensionSupported(), or verifying that the version of
+    /// OpenGL you're using offers the function as core functionality.</description>
+    /// </item>
+    /// <item>
+    /// <description>Some OpenGL drivers, on all platforms, *will* return NULL if a function isn't supported, but you
+    /// can't count on this behavior. Check for extensions you use, and if you get a NULL anyway, act as if that
+    /// extension wasn't available. This is probably a bug in the driver, but you can code defensively for this scenario
+    /// anyhow.</description>
+    /// </item>
+    /// <item>
+    /// <description>Just because you're on Linux/Unix, don't assume you'll be using X11. Next-gen display servers are
+    /// waiting to replace it, and may or may not make the same promises about function pointers.</description>
+    /// </item>
+    /// <item>
+    /// <description>OpenGL function pointers must be declared <c>APIENTRY</c> as in the example code. This will ensure
+    /// the proper calling convention is followed on platforms where this matters (Win32) thereby avoiding stack
+    /// corruption.</description>
+    /// </item>
+    /// </list>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GL_ExtensionSupported</c>, <c>SDL_GL_LoadLibrary</c>, <c>SDL_GL_UnloadLibrary</c>.</para>
+    /// </remarks>
+    /// <param name="proc">the name of an OpenGL function.</param>
+    /// <returns>
+    /// a pointer to the named OpenGL function. The returned pointer should be cast to the appropriate function
+    /// signature.
+    /// </returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_GL_GetProcAddress")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial delegate* unmanaged[Cdecl]<void> GlGetProcAddress(byte* proc);
+
+    /// <summary>Get an OpenGL function by name.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GL_GetProcAddress</c>.</para>
+    /// <para>
+    /// If the GL library is loaded at runtime with SDL_GL_LoadLibrary(), then all GL functions must be retrieved this
+    /// way. Usually this is used to retrieve function pointers to OpenGL extensions.
+    /// </para>
+    /// <para>
+    /// There are some quirks to looking up OpenGL functions that require some extra care from the application. If you
+    /// code carefully, you can handle these quirks without any platform-specific code, though:
+    /// </para>
+    /// <list type="bullet">
+    /// <item>
+    /// <description>On Windows, function pointers are specific to the current GL context; this means you need to have
+    /// created a GL context and made it current before calling SDL_GL_GetProcAddress(). If you recreate your context or
+    /// create a second context, you should assume that any existing function pointers aren't valid to use with it. This
+    /// is (currently) a Windows-specific limitation, and in practice lots of drivers don't suffer this limitation, but
+    /// it is still the way the wgl API is documented to work and you should expect crashes if you don't respect it.
+    /// Store a copy of the function pointers that comes and goes with context lifespan.</description>
+    /// </item>
+    /// <item>
+    /// <description>On X11, function pointers returned by this function are valid for any context, and can even be
+    /// looked up before a context is created at all. This means that, for at least some common OpenGL implementations,
+    /// if you look up a function that doesn't exist, you'll get a non-NULL result that is _NOT_ safe to call. You must
+    /// always make sure the function is actually available for a given GL context before calling it, by checking for
+    /// the existence of the appropriate extension with SDL_GL_ExtensionSupported(), or verifying that the version of
+    /// OpenGL you're using offers the function as core functionality.</description>
+    /// </item>
+    /// <item>
+    /// <description>Some OpenGL drivers, on all platforms, *will* return NULL if a function isn't supported, but you
+    /// can't count on this behavior. Check for extensions you use, and if you get a NULL anyway, act as if that
+    /// extension wasn't available. This is probably a bug in the driver, but you can code defensively for this scenario
+    /// anyhow.</description>
+    /// </item>
+    /// <item>
+    /// <description>Just because you're on Linux/Unix, don't assume you'll be using X11. Next-gen display servers are
+    /// waiting to replace it, and may or may not make the same promises about function pointers.</description>
+    /// </item>
+    /// <item>
+    /// <description>OpenGL function pointers must be declared <c>APIENTRY</c> as in the example code. This will ensure
+    /// the proper calling convention is followed on platforms where this matters (Win32) thereby avoiding stack
+    /// corruption.</description>
+    /// </item>
+    /// </list>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GL_ExtensionSupported</c>, <c>SDL_GL_LoadLibrary</c>, <c>SDL_GL_UnloadLibrary</c>.</para>
+    /// </remarks>
+    /// <param name="proc">the name of an OpenGL function.</param>
+    /// <returns>
+    /// a pointer to the named OpenGL function. The returned pointer should be cast to the appropriate function
+    /// signature.
+    /// </returns>
+    public static delegate* unmanaged[Cdecl]<void> GlGetProcAddress(ReadOnlySpan<byte> proc)
+    {
+        using var procUtf8 = new NulTerminatedUtf8(proc, stackalloc byte[NulTerminatedUtf8.StackLength]);
+        fixed (byte* procPtr = procUtf8)
+        {
+            return GlGetProcAddress(procPtr);
+        }
+    }
+
+    /// <summary>Get an EGL library function by name.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_EGL_GetProcAddress</c>.</para>
+    /// <para>
+    /// If an EGL library is loaded, this function allows applications to get entry points for EGL functions. This is
+    /// useful to provide to an EGL API and extension loader.
+    /// </para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_EGL_GetCurrentDisplay</c>.</para>
+    /// </remarks>
+    /// <param name="proc">the name of an EGL function.</param>
+    /// <returns>
+    /// a pointer to the named EGL function. The returned pointer should be cast to the appropriate function signature.
+    /// </returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_EGL_GetProcAddress")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial delegate* unmanaged[Cdecl]<void> EglGetProcAddress(byte* proc);
+
+    /// <summary>Get an EGL library function by name.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_EGL_GetProcAddress</c>.</para>
+    /// <para>
+    /// If an EGL library is loaded, this function allows applications to get entry points for EGL functions. This is
+    /// useful to provide to an EGL API and extension loader.
+    /// </para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_EGL_GetCurrentDisplay</c>.</para>
+    /// </remarks>
+    /// <param name="proc">the name of an EGL function.</param>
+    /// <returns>
+    /// a pointer to the named EGL function. The returned pointer should be cast to the appropriate function signature.
+    /// </returns>
+    public static delegate* unmanaged[Cdecl]<void> EglGetProcAddress(ReadOnlySpan<byte> proc)
+    {
+        using var procUtf8 = new NulTerminatedUtf8(proc, stackalloc byte[NulTerminatedUtf8.StackLength]);
+        fixed (byte* procPtr = procUtf8)
+        {
+            return EglGetProcAddress(procPtr);
+        }
+    }
+
+    /// <summary>Unload the OpenGL library previously loaded by SDL_GL_LoadLibrary().</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GL_UnloadLibrary</c>.</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GL_LoadLibrary</c>.</para>
+    /// </remarks>
+    [LibraryImport("jade_native", EntryPoint = "SDL_GL_UnloadLibrary")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void GlUnloadLibrary();
+
+    /// <summary>Check if an OpenGL extension is supported for the current context.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GL_ExtensionSupported</c>.</para>
+    /// <para>
+    /// This function operates on the current GL context; you must have created a context and it must be current before
+    /// calling this function. Do not assume that all contexts you create will have the same set of extensions
+    /// available, or that recreating an existing context will offer the same extensions again.
+    /// </para>
+    /// <para>
+    /// While it's probably not a massive overhead, this function is not an O(1) operation. Check the extensions you
+    /// care about after creating the GL context and save that information somewhere instead of calling the function
+    /// every time you need to know.
+    /// </para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// </remarks>
+    /// <param name="extension">the name of the extension to check.</param>
+    /// <returns>true if the extension is supported, false otherwise.</returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_GL_ExtensionSupported")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool GlExtensionSupported(byte* extension);
+
+    /// <summary>Check if an OpenGL extension is supported for the current context.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GL_ExtensionSupported</c>.</para>
+    /// <para>
+    /// This function operates on the current GL context; you must have created a context and it must be current before
+    /// calling this function. Do not assume that all contexts you create will have the same set of extensions
+    /// available, or that recreating an existing context will offer the same extensions again.
+    /// </para>
+    /// <para>
+    /// While it's probably not a massive overhead, this function is not an O(1) operation. Check the extensions you
+    /// care about after creating the GL context and save that information somewhere instead of calling the function
+    /// every time you need to know.
+    /// </para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// </remarks>
+    /// <param name="extension">the name of the extension to check.</param>
+    /// <returns>true if the extension is supported, false otherwise.</returns>
+    public static bool GlExtensionSupported(ReadOnlySpan<byte> extension)
+    {
+        using var extensionUtf8 = new NulTerminatedUtf8(extension, stackalloc byte[NulTerminatedUtf8.StackLength]);
+        fixed (byte* extensionPtr = extensionUtf8)
+        {
+            return GlExtensionSupported(extensionPtr);
+        }
+    }
+
+    /// <summary>Reset all previously set OpenGL context attributes to their default values.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GL_ResetAttributes</c>.</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GL_GetAttribute</c>, <c>SDL_GL_SetAttribute</c>.</para>
+    /// </remarks>
+    [LibraryImport("jade_native", EntryPoint = "SDL_GL_ResetAttributes")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void GlResetAttributes();
+
+    /// <summary>Set an OpenGL window attribute before window creation.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GL_SetAttribute</c>.</para>
+    /// <para>
+    /// This function sets the OpenGL attribute <c>attr</c> to <c>value</c>. The requested attributes should be set
+    /// before creating an OpenGL window. You should use SDL_GL_GetAttribute() to check the values after creating the
+    /// OpenGL context, since the values obtained can differ from the requested ones.
+    /// </para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GL_CreateContext</c>, <c>SDL_GL_GetAttribute</c>, <c>SDL_GL_ResetAttributes</c>.</para>
+    /// </remarks>
+    /// <param name="attr">an enum value specifying the OpenGL attribute to set.</param>
+    /// <param name="value">the desired value for the attribute.</param>
+    /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_GL_SetAttribute")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool GlSetAttribute(GLAttr attr, int value);
+
+    /// <summary>Get the actual value for an attribute from the current context.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GL_GetAttribute</c>.</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GL_ResetAttributes</c>, <c>SDL_GL_SetAttribute</c>.</para>
+    /// </remarks>
+    /// <param name="attr">an SDL_GLAttr enum value specifying the OpenGL attribute to get.</param>
+    /// <param name="value">a pointer filled in with the current value of <c>attr</c>.</param>
+    /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_GL_GetAttribute")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool GlGetAttribute(GLAttr attr, int* value);
+
+    /// <summary>Get the actual value for an attribute from the current context.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GL_GetAttribute</c>.</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GL_ResetAttributes</c>, <c>SDL_GL_SetAttribute</c>.</para>
+    /// </remarks>
+    /// <param name="attr">an SDL_GLAttr enum value specifying the OpenGL attribute to get.</param>
+    /// <param name="value">a pointer filled in with the current value of <c>attr</c>.</param>
+    /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    public static bool GlGetAttribute(GLAttr attr, out int value)
+    {
+        value = default;
+        fixed (int* valuePtr = &value)
+        {
+            return GlGetAttribute(attr, valuePtr);
+        }
+    }
+
+    /// <summary>Create an OpenGL context for an OpenGL window, and make it current.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GL_CreateContext</c>.</para>
+    /// <para>The OpenGL context will be created with the current states set through SDL_GL_SetAttribute().</para>
+    /// <para>
+    /// The SDL_Window specified must have been created with the SDL_WINDOW_OPENGL flag, or context creation will fail.
+    /// </para>
+    /// <para>
+    /// Windows users new to OpenGL should note that, for historical reasons, GL functions added after OpenGL version
+    /// 1.1 are not available by default. Those functions must be loaded at run-time, either with an OpenGL
+    /// extension-handling library or with SDL_GL_GetProcAddress() and its related functions.
+    /// </para>
+    /// <para>SDL_GLContext is opaque to the application.</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GL_DestroyContext</c>, <c>SDL_GL_MakeCurrent</c>.</para>
+    /// </remarks>
+    /// <param name="window">the window to associate with the context.</param>
+    /// <returns>
+    /// the OpenGL context associated with <c>window</c> or NULL on failure; call SDL_GetError() for more information.
+    /// </returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_GL_CreateContext")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial GLContext GlCreateContext(Window window);
+
+    /// <summary>Set up an OpenGL context for rendering into an OpenGL window.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GL_MakeCurrent</c>.</para>
+    /// <para>The context must have been created with a compatible window.</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GL_CreateContext</c>.</para>
+    /// </remarks>
+    /// <param name="window">the window to associate with the context.</param>
+    /// <param name="context">the OpenGL context to associate with the window.</param>
+    /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_GL_MakeCurrent")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool GlMakeCurrent(Window window, GLContext context);
+
+    /// <summary>Get the currently active OpenGL window.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GL_GetCurrentWindow</c>.</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// </remarks>
+    /// <returns>
+    /// the currently active OpenGL window on success or NULL on failure; call SDL_GetError() for more information.
+    /// </returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_GL_GetCurrentWindow")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial Window GlGetCurrentWindow();
+
+    /// <summary>Get the currently active OpenGL context.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GL_GetCurrentContext</c>.</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GL_MakeCurrent</c>.</para>
+    /// </remarks>
+    /// <returns>
+    /// the currently active OpenGL context or NULL on failure; call SDL_GetError() for more information.
+    /// </returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_GL_GetCurrentContext")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial GLContext GlGetCurrentContext();
+
+    /// <summary>Get the currently active EGL display.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_EGL_GetCurrentDisplay</c>.</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// </remarks>
+    /// <returns>
+    /// the currently active EGL display or NULL on failure; call SDL_GetError() for more information.
+    /// </returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_EGL_GetCurrentDisplay")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void* EglGetCurrentDisplay();
+
+    /// <summary>Get the currently active EGL config.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_EGL_GetCurrentConfig</c>.</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// </remarks>
+    /// <returns>the currently active EGL config or NULL on failure; call SDL_GetError() for more information.</returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_EGL_GetCurrentConfig")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void* EglGetCurrentConfig();
+
+    /// <summary>Get the EGL surface associated with the window.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_EGL_GetWindowSurface</c>.</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// </remarks>
+    /// <param name="window">the window to query.</param>
+    /// <returns>the EGLSurface pointer associated with the window, or NULL on failure.</returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_EGL_GetWindowSurface")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void* EglGetWindowSurface(Window window);
+
+    /// <summary>Sets the callbacks for defining custom EGLAttrib arrays for EGL initialization.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_EGL_SetAttributeCallbacks</c>.</para>
+    /// <para>Callbacks that aren't needed can be set to NULL.</para>
+    /// <para>NOTE: These callback pointers will be reset after SDL_GL_ResetAttributes.</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>
+    /// <c>platformAttribCallback</c> is a <c>SDL_EGLAttribArrayCallback</c>: EGL platform attribute initialization
+    /// callback.
+    /// </para>
+    /// <list type="bullet">
+    /// <item>
+    /// <description><c>userdata</c>: an app-controlled pointer that is passed to the callback.</description>
+    /// </item>
+    /// <item>
+    /// <description>Returns a newly-allocated array of attributes, terminated with <c>EGL_NONE</c>.</description>
+    /// </item>
+    /// </list>
+    /// <para>
+    /// <c>surfaceAttribCallback</c> is a <c>SDL_EGLIntArrayCallback</c>: EGL surface/context attribute initialization
+    /// callback types.
+    /// </para>
+    /// <list type="bullet">
+    /// <item>
+    /// <description><c>userdata</c>: an app-controlled pointer that is passed to the callback.</description>
+    /// </item>
+    /// <item><description><c>display</c>: the EGL display to be used.</description></item>
+    /// <item><description><c>config</c>: the EGL config to be used.</description></item>
+    /// <item>
+    /// <description>Returns a newly-allocated array of attributes, terminated with <c>EGL_NONE</c>.</description>
+    /// </item>
+    /// </list>
+    /// <para>
+    /// <c>contextAttribCallback</c> is a <c>SDL_EGLIntArrayCallback</c>: EGL surface/context attribute initialization
+    /// callback types.
+    /// </para>
+    /// <list type="bullet">
+    /// <item>
+    /// <description><c>userdata</c>: an app-controlled pointer that is passed to the callback.</description>
+    /// </item>
+    /// <item><description><c>display</c>: the EGL display to be used.</description></item>
+    /// <item><description><c>config</c>: the EGL config to be used.</description></item>
+    /// <item>
+    /// <description>Returns a newly-allocated array of attributes, terminated with <c>EGL_NONE</c>.</description>
+    /// </item>
+    /// </list>
+    /// </remarks>
+    /// <param name="platformAttribCallback">
+    /// callback for attributes to pass to eglGetPlatformDisplay. May be NULL.
+    /// </param>
+    /// <param name="surfaceAttribCallback">callback for attributes to pass to eglCreateSurface. May be NULL.</param>
+    /// <param name="contextAttribCallback">callback for attributes to pass to eglCreateContext. May be NULL.</param>
+    /// <param name="userdata">a pointer that is passed to the callbacks.</param>
+    [LibraryImport("jade_native", EntryPoint = "SDL_EGL_SetAttributeCallbacks")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void EglSetAttributeCallbacks(delegate* unmanaged[Cdecl]<void*, nint*> platformAttribCallback, delegate* unmanaged[Cdecl]<void*, void*, void*, int*> surfaceAttribCallback, delegate* unmanaged[Cdecl]<void*, void*, void*, int*> contextAttribCallback, void* userdata);
+
+    /// <summary>Set the swap interval for the current OpenGL context.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GL_SetSwapInterval</c>.</para>
+    /// <para>
+    /// Some systems allow specifying -1 for the interval, to enable adaptive vsync. Adaptive vsync works the same as
+    /// vsync, but if you've already missed the vertical retrace for a given frame, it swaps buffers immediately, which
+    /// might be less jarring for the user during occasional framerate drops. If an application requests adaptive vsync
+    /// and the system does not support it, this function will fail and return false. In such a case, you should
+    /// probably retry the call with 1 for the interval.
+    /// </para>
+    /// <para>
+    /// Adaptive vsync is implemented for some glX drivers with GLX_EXT_swap_control_tear, and for some Windows drivers
+    /// with WGL_EXT_swap_control_tear.
+    /// </para>
+    /// <para>Read more on the Khronos wiki: https://www.khronos.org/opengl/wiki/Swap_Interval#Adaptive_Vsync</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GL_GetSwapInterval</c>.</para>
+    /// </remarks>
+    /// <param name="interval">
+    /// 0 for immediate updates, 1 for updates synchronized with the vertical retrace, -1 for adaptive vsync.
+    /// </param>
+    /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_GL_SetSwapInterval")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool GlSetSwapInterval(int interval);
+
+    /// <summary>Get the swap interval for the current OpenGL context.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GL_GetSwapInterval</c>.</para>
+    /// <para>
+    /// If the system can't determine the swap interval, or there isn't a valid current context, this function will set
+    /// *interval to 0 as a safe default.
+    /// </para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GL_SetSwapInterval</c>.</para>
+    /// </remarks>
+    /// <param name="interval">
+    /// output interval value. 0 if there is no vertical retrace synchronization, 1 if the buffer swap is synchronized
+    /// with the vertical retrace, and -1 if late swaps happen immediately instead of waiting for the next retrace.
+    /// </param>
+    /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_GL_GetSwapInterval")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool GlGetSwapInterval(int* interval);
+
+    /// <summary>Get the swap interval for the current OpenGL context.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GL_GetSwapInterval</c>.</para>
+    /// <para>
+    /// If the system can't determine the swap interval, or there isn't a valid current context, this function will set
+    /// *interval to 0 as a safe default.
+    /// </para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GL_SetSwapInterval</c>.</para>
+    /// </remarks>
+    /// <param name="interval">
+    /// output interval value. 0 if there is no vertical retrace synchronization, 1 if the buffer swap is synchronized
+    /// with the vertical retrace, and -1 if late swaps happen immediately instead of waiting for the next retrace.
+    /// </param>
+    /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    public static bool GlGetSwapInterval(out int interval)
+    {
+        interval = default;
+        fixed (int* intervalPtr = &interval)
+        {
+            return GlGetSwapInterval(intervalPtr);
+        }
+    }
+
+    /// <summary>Update a window with OpenGL rendering.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GL_SwapWindow</c>.</para>
+    /// <para>This is used with double-buffered OpenGL contexts, which are the default.</para>
+    /// <para>
+    /// On macOS, make sure you bind 0 to the draw framebuffer before swapping the window, otherwise nothing will
+    /// happen. If you aren't using glBindFramebuffer(), this is the default and you won't have to do anything extra.
+    /// </para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// </remarks>
+    /// <param name="window">the window to change.</param>
+    /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_GL_SwapWindow")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool GlSwapWindow(Window window);
+
+    /// <summary>Delete an OpenGL context.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GL_DestroyContext</c>.</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GL_CreateContext</c>.</para>
+    /// </remarks>
+    /// <param name="context">the OpenGL context to be deleted.</param>
+    /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_GL_DestroyContext")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool GlDestroyContext(GLContext context);
 }

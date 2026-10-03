@@ -7,7 +7,7 @@ namespace Jade.Interop.Sdl3;
 
 public static unsafe partial class Sdl
 {
-    // Functions from SDL3/SDL_events.h.
+    // Declarations from SDL3/SDL_events.h.
 
     /// <summary>Pump the event loop, gathering events from the input devices.</summary>
     /// <remarks>
@@ -27,6 +27,194 @@ public static unsafe partial class Sdl
     [LibraryImport("jade_native", EntryPoint = "SDL_PumpEvents")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void PumpEvents();
+
+    /// <summary>Check the event queue for messages and optionally return them.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PeepEvents</c>.</para>
+    /// <para><c>action</c> may be any of the following:</para>
+    /// <list type="bullet">
+    /// <item>
+    /// <description><c>SDL_ADDEVENT</c>: up to <c>numevents</c> events will be added to the back of the event
+    /// queue.</description>
+    /// </item>
+    /// <item>
+    /// <description><c>SDL_PEEKEVENT</c>: <c>numevents</c> events at the front of the event queue, within the specified
+    /// minimum and maximum type, will be returned to the caller and will _not_ be removed from the queue. If you pass
+    /// NULL for <c>events</c>, then <c>numevents</c> is ignored and the total number of matching events will be
+    /// returned.</description>
+    /// </item>
+    /// <item>
+    /// <description><c>SDL_GETEVENT</c>: up to <c>numevents</c> events at the front of the event queue, within the
+    /// specified minimum and maximum type, will be returned to the caller and will be removed from the
+    /// queue.</description>
+    /// </item>
+    /// </list>
+    /// <para>
+    /// You may have to call SDL_PumpEvents() before calling this function. Otherwise, the events may not be ready to be
+    /// filtered when you call SDL_PeepEvents().
+    /// </para>
+    /// <para>Thread safety: It is safe to call this function from any thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_PollEvent</c>, <c>SDL_PumpEvents</c>, <c>SDL_PushEvent</c>.</para>
+    /// </remarks>
+    /// <param name="events">
+    /// destination buffer for the retrieved events, may be NULL to leave the events in the queue and return the number
+    /// of events that would have been stored.
+    /// </param>
+    /// <param name="numevents">
+    /// if action is SDL_ADDEVENT, the number of events to add back to the event queue; if action is SDL_PEEKEVENT or
+    /// SDL_GETEVENT, the maximum number of events to retrieve.
+    /// </param>
+    /// <param name="action">action to take; see [Remarks](#remarks) for details.</param>
+    /// <param name="minType">
+    /// minimum value of the event type to be considered; SDL_EVENT_FIRST is a safe choice.
+    /// </param>
+    /// <param name="maxType">maximum value of the event type to be considered; SDL_EVENT_LAST is a safe choice.</param>
+    /// <returns>
+    /// the number of events actually stored or -1 on failure; call SDL_GetError() for more information.
+    /// </returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_PeepEvents")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int PeepEvents(Event* events, int numevents, EventAction action, uint minType, uint maxType);
+
+    /// <summary>Check the event queue for messages and optionally return them.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PeepEvents</c>.</para>
+    /// <para><c>action</c> may be any of the following:</para>
+    /// <list type="bullet">
+    /// <item>
+    /// <description><c>SDL_ADDEVENT</c>: up to <c>numevents</c> events will be added to the back of the event
+    /// queue.</description>
+    /// </item>
+    /// <item>
+    /// <description><c>SDL_PEEKEVENT</c>: <c>numevents</c> events at the front of the event queue, within the specified
+    /// minimum and maximum type, will be returned to the caller and will _not_ be removed from the queue. If you pass
+    /// NULL for <c>events</c>, then <c>numevents</c> is ignored and the total number of matching events will be
+    /// returned.</description>
+    /// </item>
+    /// <item>
+    /// <description><c>SDL_GETEVENT</c>: up to <c>numevents</c> events at the front of the event queue, within the
+    /// specified minimum and maximum type, will be returned to the caller and will be removed from the
+    /// queue.</description>
+    /// </item>
+    /// </list>
+    /// <para>
+    /// You may have to call SDL_PumpEvents() before calling this function. Otherwise, the events may not be ready to be
+    /// filtered when you call SDL_PeepEvents().
+    /// </para>
+    /// <para>Thread safety: It is safe to call this function from any thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_PollEvent</c>, <c>SDL_PumpEvents</c>, <c>SDL_PushEvent</c>.</para>
+    /// </remarks>
+    /// <param name="events">
+    /// destination buffer for the retrieved events, may be NULL to leave the events in the queue and return the number
+    /// of events that would have been stored.
+    /// </param>
+    /// <param name="action">action to take; see [Remarks](#remarks) for details.</param>
+    /// <param name="minType">
+    /// minimum value of the event type to be considered; SDL_EVENT_FIRST is a safe choice.
+    /// </param>
+    /// <param name="maxType">maximum value of the event type to be considered; SDL_EVENT_LAST is a safe choice.</param>
+    /// <returns>
+    /// the number of events actually stored or -1 on failure; call SDL_GetError() for more information.
+    /// </returns>
+    public static int PeepEvents(Span<Event> events, EventAction action, uint minType, uint maxType)
+    {
+        fixed (Event* eventsPtr = events)
+        {
+            return PeepEvents(eventsPtr, events.Length, action, minType, maxType);
+        }
+    }
+
+    /// <summary>Check for the existence of a certain event type in the event queue.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_HasEvent</c>.</para>
+    /// <para>If you need to check for a range of event types, use SDL_HasEvents() instead.</para>
+    /// <para>Thread safety: It is safe to call this function from any thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_HasEvents</c>.</para>
+    /// </remarks>
+    /// <param name="type">the type of event to be queried; see SDL_EventType for details.</param>
+    /// <returns>
+    /// true if events matching <c>type</c> are present, or false if events matching <c>type</c> are not present.
+    /// </returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_HasEvent")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool HasEvent(uint type);
+
+    /// <summary>Check for the existence of certain event types in the event queue.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_HasEvents</c>.</para>
+    /// <para>If you need to check for a single event type, use SDL_HasEvent() instead.</para>
+    /// <para>Thread safety: It is safe to call this function from any thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_HasEvents</c>.</para>
+    /// </remarks>
+    /// <param name="minType">the low end of event type to be queried, inclusive; see SDL_EventType for details.</param>
+    /// <param name="maxType">
+    /// the high end of event type to be queried, inclusive; see SDL_EventType for details.
+    /// </param>
+    /// <returns>
+    /// true if events with type &gt;= <c>minType</c> and &lt;= <c>maxType</c> are present, or false if not.
+    /// </returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_HasEvents")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool HasEvents(uint minType, uint maxType);
+
+    /// <summary>Clear events of a specific type from the event queue.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_FlushEvent</c>.</para>
+    /// <para>
+    /// This will unconditionally remove any events from the queue that match <c>type</c>. If you need to remove a range
+    /// of event types, use SDL_FlushEvents() instead.
+    /// </para>
+    /// <para>
+    /// It's also normal to just ignore events you don't care about in your event loop without calling this function.
+    /// </para>
+    /// <para>
+    /// This function only affects currently queued events. If you want to make sure that all pending OS events are
+    /// flushed, you can call SDL_PumpEvents() on the main thread immediately before the flush call.
+    /// </para>
+    /// <para>
+    /// If you have user events with custom data that needs to be freed, you should use SDL_PeepEvents() to remove and
+    /// clean up those events before calling this function.
+    /// </para>
+    /// <para>Thread safety: It is safe to call this function from any thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_FlushEvents</c>.</para>
+    /// </remarks>
+    /// <param name="type">the type of event to be cleared; see SDL_EventType for details.</param>
+    [LibraryImport("jade_native", EntryPoint = "SDL_FlushEvent")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void FlushEvent(uint type);
+
+    /// <summary>Clear events of a range of types from the event queue.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_FlushEvents</c>.</para>
+    /// <para>
+    /// This will unconditionally remove any events from the queue that are in the range of <c>minType</c> to
+    /// <c>maxType</c>, inclusive. If you need to remove a single event type, use SDL_FlushEvent() instead.
+    /// </para>
+    /// <para>
+    /// It's also normal to just ignore events you don't care about in your event loop without calling this function.
+    /// </para>
+    /// <para>
+    /// This function only affects currently queued events. If you want to make sure that all pending OS events are
+    /// flushed, you can call SDL_PumpEvents() on the main thread immediately before the flush call.
+    /// </para>
+    /// <para>Thread safety: It is safe to call this function from any thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_FlushEvent</c>.</para>
+    /// </remarks>
+    /// <param name="minType">the low end of event type to be cleared, inclusive; see SDL_EventType for details.</param>
+    /// <param name="maxType">
+    /// the high end of event type to be cleared, inclusive; see SDL_EventType for details.
+    /// </param>
+    [LibraryImport("jade_native", EntryPoint = "SDL_FlushEvents")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void FlushEvents(uint minType, uint maxType);
 
     /// <summary>Poll for currently pending events.</summary>
     /// <remarks>
@@ -75,7 +263,8 @@ public static unsafe partial class Sdl
     /// <returns>true if this got an event or false if there are none available.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_PollEvent")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte PollEvent(Event* @event);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool PollEvent(Event* @event);
 
     /// <summary>Poll for currently pending events.</summary>
     /// <remarks>
@@ -122,7 +311,7 @@ public static unsafe partial class Sdl
     /// </remarks>
     /// <param name="event">the SDL_Event structure to be filled with the next event from the queue, or NULL.</param>
     /// <returns>true if this got an event or false if there are none available.</returns>
-    public static byte PollEvent(out Event @event)
+    public static bool PollEvent(out Event @event)
     {
         @event = default;
         fixed (Event* eventPtr = &@event)
@@ -153,7 +342,8 @@ public static unsafe partial class Sdl
     /// </returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_WaitEvent")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte WaitEvent(Event* @event);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool WaitEvent(Event* @event);
 
     /// <summary>Wait indefinitely for the next available event.</summary>
     /// <remarks>
@@ -175,7 +365,7 @@ public static unsafe partial class Sdl
     /// true on success or false if there was an error while waiting for events; call SDL_GetError() for more
     /// information.
     /// </returns>
-    public static byte WaitEvent(out Event @event)
+    public static bool WaitEvent(out Event @event)
     {
         @event = default;
         fixed (Event* eventPtr = &@event)
@@ -205,7 +395,8 @@ public static unsafe partial class Sdl
     /// <returns>true if this got an event or false if the timeout elapsed without any events available.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_WaitEventTimeout")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte WaitEventTimeout(Event* @event, int timeoutMS);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool WaitEventTimeout(Event* @event, int timeoutMS);
 
     /// <summary>Wait until the specified timeout (in milliseconds) for the next available event.</summary>
     /// <remarks>
@@ -226,7 +417,7 @@ public static unsafe partial class Sdl
     /// <param name="event">the SDL_Event structure to be filled in with the next event from the queue, or NULL.</param>
     /// <param name="timeoutMS">the maximum number of milliseconds to wait for the next available event.</param>
     /// <returns>true if this got an event or false if the timeout elapsed without any events available.</returns>
-    public static byte WaitEventTimeout(out Event @event, int timeoutMS)
+    public static bool WaitEventTimeout(out Event @event, int timeoutMS)
     {
         @event = default;
         fixed (Event* eventPtr = &@event)
@@ -264,7 +455,8 @@ public static unsafe partial class Sdl
     /// </returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_PushEvent")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte PushEvent(Event* @event);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool PushEvent(Event* @event);
 
     /// <summary>Add an event to the event queue.</summary>
     /// <remarks>
@@ -293,13 +485,259 @@ public static unsafe partial class Sdl
     /// true on success, false if the event was filtered or on failure; call SDL_GetError() for more information. A
     /// common reason for error is the event queue being full.
     /// </returns>
-    public static byte PushEvent(ref Event @event)
+    public static bool PushEvent(ref Event @event)
     {
         fixed (Event* eventPtr = &@event)
         {
             return PushEvent(eventPtr);
         }
     }
+
+    /// <summary>Set up a filter to process all events before they are added to the internal event queue.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_SetEventFilter</c>.</para>
+    /// <para>
+    /// If you just want to see events without modifying them or preventing them from being queued, you should use
+    /// SDL_AddEventWatch() instead.
+    /// </para>
+    /// <para>
+    /// If the filter function returns true when called, then the event will be added to the internal queue. If it
+    /// returns false, then the event will be dropped from the queue, but the internal state will still be updated. This
+    /// allows selective filtering of dynamically arriving events.
+    /// </para>
+    /// <para>
+    /// <b>WARNING</b>: Be very careful of what you do in the event filter function, as it may run in a different
+    /// thread! The exception is handling of SDL_EVENT_WINDOW_EXPOSED, which is guaranteed to be sent from the OS on the
+    /// main thread and you are expected to redraw your window in response to this event.
+    /// </para>
+    /// <para>
+    /// On platforms that support it, if the quit event is generated by an interrupt signal (e.g. pressing Ctrl-C), it
+    /// will be delivered to the application at the next event poll.
+    /// </para>
+    /// <para>Note: Disabled events never make it to the event filter function; see SDL_SetEventEnabled().</para>
+    /// <para>
+    /// Note: Events pushed onto the queue with SDL_PushEvent() get passed through the event filter, but events pushed
+    /// onto the queue with SDL_PeepEvents() do not.
+    /// </para>
+    /// <para>Thread safety: It is safe to call this function from any thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>
+    /// See also: <c>SDL_AddEventWatch</c>, <c>SDL_SetEventEnabled</c>, <c>SDL_GetEventFilter</c>,
+    /// <c>SDL_PeepEvents</c>, <c>SDL_PushEvent</c>.
+    /// </para>
+    /// <para>
+    /// <c>filter</c> is a <c>SDL_EventFilter</c>: A function pointer used for callbacks that watch the event queue.
+    /// </para>
+    /// <list type="bullet">
+    /// <item>
+    /// <description><c>userdata</c>: what was passed as <c>userdata</c> to SDL_SetEventFilter() or SDL_AddEventWatch,
+    /// etc.</description>
+    /// </item>
+    /// <item><description><c>event</c>: the event that triggered the callback.</description></item>
+    /// <item>
+    /// <description>Returns true to permit event to be added to the queue, and false to disallow it. When used with
+    /// SDL_AddEventWatch, the return value is ignored.</description>
+    /// </item>
+    /// </list>
+    /// </remarks>
+    /// <param name="filter">a function to call when an event happens.</param>
+    /// <param name="userdata">a pointer that is passed to <c>filter</c>.</param>
+    [LibraryImport("jade_native", EntryPoint = "SDL_SetEventFilter")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void SetEventFilter(delegate* unmanaged[Cdecl]<void*, Event*, bool> filter, void* userdata);
+
+    /// <summary>Query the current event filter.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GetEventFilter</c>.</para>
+    /// <para>
+    /// This function can be used to "chain" filters, by saving the existing filter before replacing it with a function
+    /// that will call that saved filter.
+    /// </para>
+    /// <para>Thread safety: It is safe to call this function from any thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_SetEventFilter</c>.</para>
+    /// </remarks>
+    /// <param name="filter">the current callback function will be stored here.</param>
+    /// <param name="userdata">the pointer that is passed to the current event filter will be stored here.</param>
+    /// <returns>true on success or false if there is no event filter set.</returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_GetEventFilter")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool GetEventFilter(delegate* unmanaged[Cdecl]<void*, Event*, bool>* filter, void** userdata);
+
+    /// <summary>Query the current event filter.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GetEventFilter</c>.</para>
+    /// <para>
+    /// This function can be used to "chain" filters, by saving the existing filter before replacing it with a function
+    /// that will call that saved filter.
+    /// </para>
+    /// <para>Thread safety: It is safe to call this function from any thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_SetEventFilter</c>.</para>
+    /// </remarks>
+    /// <param name="filter">the current callback function will be stored here.</param>
+    /// <param name="userdata">the pointer that is passed to the current event filter will be stored here.</param>
+    /// <returns>true on success or false if there is no event filter set.</returns>
+    public static bool GetEventFilter(delegate* unmanaged[Cdecl]<void*, Event*, bool>* filter, out void* userdata)
+    {
+        userdata = default;
+        fixed (void** userdataPtr = &userdata)
+        {
+            return GetEventFilter(filter, userdataPtr);
+        }
+    }
+
+    /// <summary>Add a callback to be triggered when an event is added to the event queue.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_AddEventWatch</c>.</para>
+    /// <para><c>filter</c> will be called when an event happens, and its return value is ignored.</para>
+    /// <para>
+    /// <b>WARNING</b>: Be very careful of what you do in the event filter function, as it may run in a different
+    /// thread!
+    /// </para>
+    /// <para>
+    /// If the quit event is generated by a signal (e.g. SIGINT), it will bypass the internal queue and be delivered to
+    /// the watch callback immediately, and arrive at the next event poll.
+    /// </para>
+    /// <para>
+    /// Note: the callback is called for events posted by the user through SDL_PushEvent(), but not for disabled events,
+    /// nor for events by a filter callback set with SDL_SetEventFilter(), nor for events posted by the user through
+    /// SDL_PeepEvents().
+    /// </para>
+    /// <para>Thread safety: It is safe to call this function from any thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_RemoveEventWatch</c>, <c>SDL_SetEventFilter</c>.</para>
+    /// <para>
+    /// <c>filter</c> is a <c>SDL_EventFilter</c>: A function pointer used for callbacks that watch the event queue.
+    /// </para>
+    /// <list type="bullet">
+    /// <item>
+    /// <description><c>userdata</c>: what was passed as <c>userdata</c> to SDL_SetEventFilter() or SDL_AddEventWatch,
+    /// etc.</description>
+    /// </item>
+    /// <item><description><c>event</c>: the event that triggered the callback.</description></item>
+    /// <item>
+    /// <description>Returns true to permit event to be added to the queue, and false to disallow it. When used with
+    /// SDL_AddEventWatch, the return value is ignored.</description>
+    /// </item>
+    /// </list>
+    /// </remarks>
+    /// <param name="filter">an SDL_EventFilter function to call when an event happens.</param>
+    /// <param name="userdata">a pointer that is passed to <c>filter</c>.</param>
+    /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_AddEventWatch")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool AddEventWatch(delegate* unmanaged[Cdecl]<void*, Event*, bool> filter, void* userdata);
+
+    /// <summary>Remove an event watch callback added with SDL_AddEventWatch().</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_RemoveEventWatch</c>.</para>
+    /// <para>
+    /// This function takes the same input as SDL_AddEventWatch() to identify and delete the corresponding callback.
+    /// </para>
+    /// <para>Thread safety: It is safe to call this function from any thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_AddEventWatch</c>.</para>
+    /// <para>
+    /// <c>filter</c> is a <c>SDL_EventFilter</c>: A function pointer used for callbacks that watch the event queue.
+    /// </para>
+    /// <list type="bullet">
+    /// <item>
+    /// <description><c>userdata</c>: what was passed as <c>userdata</c> to SDL_SetEventFilter() or SDL_AddEventWatch,
+    /// etc.</description>
+    /// </item>
+    /// <item><description><c>event</c>: the event that triggered the callback.</description></item>
+    /// <item>
+    /// <description>Returns true to permit event to be added to the queue, and false to disallow it. When used with
+    /// SDL_AddEventWatch, the return value is ignored.</description>
+    /// </item>
+    /// </list>
+    /// </remarks>
+    /// <param name="filter">the function originally passed to SDL_AddEventWatch().</param>
+    /// <param name="userdata">the pointer originally passed to SDL_AddEventWatch().</param>
+    [LibraryImport("jade_native", EntryPoint = "SDL_RemoveEventWatch")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void RemoveEventWatch(delegate* unmanaged[Cdecl]<void*, Event*, bool> filter, void* userdata);
+
+    /// <summary>
+    /// Run a specific filter function on the current event queue, removing any events for which the filter returns
+    /// false.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_FilterEvents</c>.</para>
+    /// <para>
+    /// See SDL_SetEventFilter() for more information. Unlike SDL_SetEventFilter(), this function does not change the
+    /// filter permanently, it only uses the supplied filter until this function returns.
+    /// </para>
+    /// <para>Thread safety: It is safe to call this function from any thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GetEventFilter</c>, <c>SDL_SetEventFilter</c>.</para>
+    /// <para>
+    /// <c>filter</c> is a <c>SDL_EventFilter</c>: A function pointer used for callbacks that watch the event queue.
+    /// </para>
+    /// <list type="bullet">
+    /// <item>
+    /// <description><c>userdata</c>: what was passed as <c>userdata</c> to SDL_SetEventFilter() or SDL_AddEventWatch,
+    /// etc.</description>
+    /// </item>
+    /// <item><description><c>event</c>: the event that triggered the callback.</description></item>
+    /// <item>
+    /// <description>Returns true to permit event to be added to the queue, and false to disallow it. When used with
+    /// SDL_AddEventWatch, the return value is ignored.</description>
+    /// </item>
+    /// </list>
+    /// </remarks>
+    /// <param name="filter">the SDL_EventFilter function to call when an event happens.</param>
+    /// <param name="userdata">a pointer that is passed to <c>filter</c>.</param>
+    [LibraryImport("jade_native", EntryPoint = "SDL_FilterEvents")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void FilterEvents(delegate* unmanaged[Cdecl]<void*, Event*, bool> filter, void* userdata);
+
+    /// <summary>Set the state of processing events by type.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_SetEventEnabled</c>.</para>
+    /// <para>Thread safety: It is safe to call this function from any thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_EventEnabled</c>.</para>
+    /// </remarks>
+    /// <param name="type">the type of event; see SDL_EventType for details.</param>
+    /// <param name="enabled">whether to process the event or not.</param>
+    [LibraryImport("jade_native", EntryPoint = "SDL_SetEventEnabled")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void SetEventEnabled(uint type, [MarshalAs(UnmanagedType.U1)] bool enabled);
+
+    /// <summary>Query the state of processing events by type.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_EventEnabled</c>.</para>
+    /// <para>Thread safety: It is safe to call this function from any thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_SetEventEnabled</c>.</para>
+    /// </remarks>
+    /// <param name="type">the type of event; see SDL_EventType for details.</param>
+    /// <returns>true if the event is being processed, false otherwise.</returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_EventEnabled")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool EventEnabled(uint type);
+
+    /// <summary>
+    /// Allocate a set of user-defined events, and return the beginning event number for that set of events.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_RegisterEvents</c>.</para>
+    /// <para>Thread safety: It is safe to call this function from any thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_PushEvent</c>.</para>
+    /// </remarks>
+    /// <param name="numevents">the number of events to be allocated.</param>
+    /// <returns>
+    /// the beginning event number, or 0 if numevents is invalid or if there are not enough user-defined events left.
+    /// </returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_RegisterEvents")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial uint RegisterEvents(int numevents);
 
     /// <summary>Get window associated with an event.</summary>
     /// <remarks>
@@ -328,6 +766,66 @@ public static unsafe partial class Sdl
         fixed (Event* eventPtr = &@event)
         {
             return GetWindowFromEvent(eventPtr);
+        }
+    }
+
+    /// <summary>Generate an English description of an event.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GetEventDescription</c>.</para>
+    /// <para>This will fill <c>buf</c> with a null-terminated string that might look something like this:</para>
+    /// <code>
+    /// SDL_EVENT_MOUSE_MOTION (timestamp=1140256324 windowid=2 which=0 state=0 x=492.99 y=139.09 xrel=52 yrel=6)
+    /// </code>
+    /// <para>
+    /// The exact format of the string is not guaranteed; it is intended for logging purposes, to be read by a human,
+    /// and not parsed by a computer.
+    /// </para>
+    /// <para>
+    /// The returned value follows the same rules as SDL_snprintf(): <c>buf</c> will always be NULL-terminated (unless
+    /// <c>buflen</c> is zero), and will be truncated if <c>buflen</c> is too small. The return code is the number of
+    /// bytes needed for the complete string, not counting the NULL-terminator, whether the string was truncated or not.
+    /// Unlike SDL_snprintf(), though, this function never returns -1.
+    /// </para>
+    /// <para>Thread safety: It is safe to call this function from any thread.</para>
+    /// <para>This function is available since SDL 3.4.0.</para>
+    /// </remarks>
+    /// <param name="event">an event to describe. May be NULL.</param>
+    /// <param name="buf">the buffer to fill with the description string. May be NULL.</param>
+    /// <param name="buflen">the maximum bytes that can be written to <c>buf</c>.</param>
+    /// <returns>number of bytes needed for the full string, not counting the null-terminator byte.</returns>
+    [LibraryImport("jade_native", EntryPoint = "SDL_GetEventDescription")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int GetEventDescription(Event* @event, byte* buf, int buflen);
+
+    /// <summary>Generate an English description of an event.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GetEventDescription</c>.</para>
+    /// <para>This will fill <c>buf</c> with a null-terminated string that might look something like this:</para>
+    /// <code>
+    /// SDL_EVENT_MOUSE_MOTION (timestamp=1140256324 windowid=2 which=0 state=0 x=492.99 y=139.09 xrel=52 yrel=6)
+    /// </code>
+    /// <para>
+    /// The exact format of the string is not guaranteed; it is intended for logging purposes, to be read by a human,
+    /// and not parsed by a computer.
+    /// </para>
+    /// <para>
+    /// The returned value follows the same rules as SDL_snprintf(): <c>buf</c> will always be NULL-terminated (unless
+    /// <c>buflen</c> is zero), and will be truncated if <c>buflen</c> is too small. The return code is the number of
+    /// bytes needed for the complete string, not counting the NULL-terminator, whether the string was truncated or not.
+    /// Unlike SDL_snprintf(), though, this function never returns -1.
+    /// </para>
+    /// <para>Thread safety: It is safe to call this function from any thread.</para>
+    /// <para>This function is available since SDL 3.4.0.</para>
+    /// </remarks>
+    /// <param name="event">an event to describe. May be NULL.</param>
+    /// <param name="buf">the buffer to fill with the description string. May be NULL.</param>
+    /// <returns>number of bytes needed for the full string, not counting the null-terminator byte.</returns>
+    public static int GetEventDescription(in Event @event, Span<byte> buf)
+    {
+        fixed (Event* eventPtr = &@event)
+        fixed (byte* bufPtr = buf)
+        {
+            return GetEventDescription(eventPtr, bufPtr, buf.Length);
         }
     }
 }

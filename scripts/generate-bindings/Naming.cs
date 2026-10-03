@@ -33,13 +33,15 @@ internal static class Naming
 
     /// <summary>
     /// Converts a C name to PascalCase, one <c>_</c>-separated word at a time: all-caps words become capitalized
-    /// (<c>WINDOW_SHOWN</c> to <c>WindowShown</c>) unless <paramref name="words"/> says otherwise, and other words only
-    /// get their first letter raised, which keeps C names already in PascalCase (<c>GetWindowID</c>) intact.
+    /// (<c>WINDOW_SHOWN</c> to <c>WindowShown</c>), with a new word after each run of digits (<c>INDEX1LSB</c> to
+    /// <c>Index1Lsb</c>), unless <paramref name="words"/> says otherwise; other words only get their first letter raised,
+    /// which keeps C names already in PascalCase (<c>GetWindowID</c>) intact.
     /// </summary>
     /// <param name="name">A C name without its library prefix.</param>
     /// <param name="words">Casing overrides for all-caps words.</param>
+    /// <param name="leadingDigitPrefix">What goes before a name that would start with a digit (C# names cannot).</param>
     /// <returns>A valid C# identifier.</returns>
-    public static string Pascal(string name, IReadOnlyDictionary<string, string> words)
+    public static string Pascal(string name, IReadOnlyDictionary<string, string> words, string leadingDigitPrefix)
     {
         var builder = new StringBuilder(name.Length);
         foreach (var word in name.Split('_', StringSplitOptions.RemoveEmptyEntries))
@@ -50,7 +52,11 @@ internal static class Naming
             }
             else if (word.Any(char.IsLetter) && !word.Any(char.IsLower))
             {
-                builder.Append(word[0]).Append(word[1..].ToLowerInvariant());
+                for (var i = 0; i < word.Length; i++)
+                {
+                    var startsWord = i == 0 || (char.IsLetter(word[i]) && char.IsDigit(word[i - 1]));
+                    builder.Append(startsWord ? word[i] : char.ToLowerInvariant(word[i]));
+                }
             }
             else
             {
@@ -58,7 +64,8 @@ internal static class Naming
             }
         }
 
-        return Identifier(builder.ToString());
+        var pascal = builder.ToString();
+        return pascal.Length == 0 || char.IsDigit(pascal[0]) ? leadingDigitPrefix + pascal : pascal;
     }
 
     /// <summary>Converts a C parameter name to camelCase, escaping C# keywords.</summary>
@@ -67,7 +74,7 @@ internal static class Naming
     /// <returns>A valid C# identifier.</returns>
     public static string Camel(string name, IReadOnlyDictionary<string, string> words)
     {
-        var pascal = Pascal(name, words);
+        var pascal = Pascal(name, words, "_");
         var camel = pascal[0] == '_' ? pascal : char.ToLowerInvariant(pascal[0]) + pascal[1..];
         return s_keywords.Contains(camel) ? "@" + camel : camel;
     }
@@ -92,7 +99,4 @@ internal static class Naming
 
         return count == 0 ? string.Empty : string.Join('_', split[0][..count]) + "_";
     }
-
-    // An identifier cannot start with a digit (enum members such as SDL_SCANCODE_1 once their prefix is gone).
-    private static string Identifier(string name) => name.Length == 0 || char.IsDigit(name[0]) ? "_" + name : name;
 }

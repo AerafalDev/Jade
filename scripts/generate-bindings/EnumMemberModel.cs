@@ -1,4 +1,4 @@
-/// <summary>An enum constant, or one flag macro of a flags typedef.</summary>
+/// <summary>An enum constant, or one macro of a macro enum (<see cref="LibraryConfig.MacroEnums"/>).</summary>
 internal sealed class EnumMemberModel
 {
     /// <summary>Gets the C name.</summary>

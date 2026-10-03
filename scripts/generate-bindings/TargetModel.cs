@@ -15,4 +15,10 @@ internal sealed class TargetModel
 
     /// <summary>Gets <c>sizeof(long)</c>.</summary>
     public required int LongSize { get; init; }
+
+    /// <summary>Gets the exportable functions declared in excluded headers, mapped to their header, for the export cross-check.</summary>
+    public required IReadOnlyDictionary<string, string> ExcludedFunctions { get; init; }
+
+    /// <summary>Gets the config entries this target's parse used. An entry no target uses is stale.</summary>
+    public required IReadOnlySet<string> UsedConfigKeys { get; init; }
 }

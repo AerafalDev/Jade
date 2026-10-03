@@ -5,10 +5,85 @@ using System.Runtime.InteropServices;
 
 namespace Jade.Interop.Sdl3;
 
-/// <summary>Functions of Sdl3, imported from <c>jade_native</c>.</summary>
 public static unsafe partial class Sdl
 {
-    // Functions from SDL3/SDL_init.h.
+    // Declarations from SDL3/SDL_init.h.
+
+    /// <summary>
+    /// The human-readable name of the application, like "My Game 2: Bad Guy's Revenge!". This will show up anywhere the
+    /// OS shows the name of the application separately from window titles, such as volume control applets, etc. This
+    /// defaults to "SDL Application". See <c>SDL_SetAppMetadataProperty</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_APP_METADATA_NAME_STRING</c>.</para>
+    /// <para>The value is <c>SDL.app.metadata.name</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropAppMetadataNameString => "SDL.app.metadata.name"u8;
+
+    /// <summary>
+    /// The version of the app that is running; there are no rules on format, so "1.0.3beta2" and "April 22nd, 2024" and
+    /// a git hash are all valid options. This has no default. See <c>SDL_SetAppMetadataProperty</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_APP_METADATA_VERSION_STRING</c>.</para>
+    /// <para>The value is <c>SDL.app.metadata.version</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropAppMetadataVersionString => "SDL.app.metadata.version"u8;
+
+    /// <summary>
+    /// A unique string that identifies this app. This must be in reverse-domain format, like "com.example.mygame2".
+    /// This string is used by desktop compositors to identify and group windows together, as well as match applications
+    /// with associated desktop settings and icons. If you plan to package your application in a container such as
+    /// Flatpak, the app ID should match the name of your Flatpak container as well. This has no default. See
+    /// <c>SDL_SetAppMetadataProperty</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_APP_METADATA_IDENTIFIER_STRING</c>.</para>
+    /// <para>The value is <c>SDL.app.metadata.identifier</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropAppMetadataIdentifierString => "SDL.app.metadata.identifier"u8;
+
+    /// <summary>
+    /// The human-readable name of the creator/developer/maker of this app, like "MojoWorkshop, LLC". See
+    /// <c>SDL_SetAppMetadataProperty</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_APP_METADATA_CREATOR_STRING</c>.</para>
+    /// <para>The value is <c>SDL.app.metadata.creator</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropAppMetadataCreatorString => "SDL.app.metadata.creator"u8;
+
+    /// <summary>
+    /// The human-readable copyright notice, like "Copyright (c) 2024 MojoWorkshop, LLC" or whatnot. Keep this to one
+    /// line, don't paste a copy of a whole software license in here. This has no default. See
+    /// <c>SDL_SetAppMetadataProperty</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_APP_METADATA_COPYRIGHT_STRING</c>.</para>
+    /// <para>The value is <c>SDL.app.metadata.copyright</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropAppMetadataCopyrightString => "SDL.app.metadata.copyright"u8;
+
+    /// <summary>
+    /// A URL to the app on the web. Maybe a product page, or a storefront, or even a GitHub repository, for user's
+    /// further information This has no default. See <c>SDL_SetAppMetadataProperty</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_APP_METADATA_URL_STRING</c>.</para>
+    /// <para>The value is <c>SDL.app.metadata.url</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropAppMetadataUrlString => "SDL.app.metadata.url"u8;
+
+    /// <summary>
+    /// The type of application this is. Currently this string can be "game" for a video game, "mediaplayer" for a media
+    /// player, or generically "application" if nothing else applies. Future versions of SDL might add new types. This
+    /// defaults to "application". See <c>SDL_SetAppMetadataProperty</c>.
+    /// </summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_PROP_APP_METADATA_TYPE_STRING</c>.</para>
+    /// <para>The value is <c>SDL.app.metadata.type</c>.</para>
+    /// </remarks>
+    public static ReadOnlySpan<byte> PropAppMetadataTypeString => "SDL.app.metadata.type"u8;
 
     /// <summary>Initialize the SDL library.</summary>
     /// <remarks>
@@ -73,7 +148,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_Init")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte Init(InitFlags flags);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool Init(InitFlags flags);
 
     /// <summary>Compatibility function to initialize the SDL library.</summary>
     /// <remarks>
@@ -87,7 +163,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_InitSubSystem")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte InitSubSystem(InitFlags flags);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool InitSubSystem(InitFlags flags);
 
     /// <summary>Shut down specific SDL subsystems.</summary>
     /// <remarks>
@@ -153,7 +230,8 @@ public static unsafe partial class Sdl
     /// <returns>true if this thread is the main thread, or false otherwise.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_IsMainThread")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte IsMainThread();
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool IsMainThread();
 
     /// <summary>Call a function on the main thread during event processing.</summary>
     /// <remarks>
@@ -169,6 +247,12 @@ public static unsafe partial class Sdl
     /// <para>Thread safety: It is safe to call this function from any thread.</para>
     /// <para>This function is available since SDL 3.2.0.</para>
     /// <para>See also: <c>SDL_IsMainThread</c>.</para>
+    /// <para><c>callback</c> is a <c>SDL_MainThreadCallback</c>: Callback run on the main thread.</para>
+    /// <list type="bullet">
+    /// <item>
+    /// <description><c>userdata</c>: an app-controlled pointer that is passed to the callback.</description>
+    /// </item>
+    /// </list>
     /// </remarks>
     /// <param name="callback">the callback to call on the main thread.</param>
     /// <param name="userdata">a pointer that is passed to <c>callback</c>.</param>
@@ -176,7 +260,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_RunOnMainThread")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte RunOnMainThread(delegate* unmanaged[Cdecl]<void*, void> callback, void* userdata, byte waitComplete);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool RunOnMainThread(delegate* unmanaged[Cdecl]<void*, void> callback, void* userdata, [MarshalAs(UnmanagedType.U1)] bool waitComplete);
 
     /// <summary>Specify basic metadata about your app.</summary>
     /// <remarks>
@@ -212,7 +297,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_SetAppMetadata")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte SetAppMetadata(byte* appname, byte* appversion, byte* appidentifier);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool SetAppMetadata(byte* appname, byte* appversion, byte* appidentifier);
 
     /// <summary>Specify basic metadata about your app.</summary>
     /// <remarks>
@@ -246,7 +332,7 @@ public static unsafe partial class Sdl
     /// A unique string in reverse-domain format that identifies this app ("com.example.mygame2").
     /// </param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public static byte SetAppMetadata(ReadOnlySpan<byte> appname, ReadOnlySpan<byte> appversion, ReadOnlySpan<byte> appidentifier)
+    public static bool SetAppMetadata(ReadOnlySpan<byte> appname, ReadOnlySpan<byte> appversion, ReadOnlySpan<byte> appidentifier)
     {
         using var appnameUtf8 = new NulTerminatedUtf8(appname, stackalloc byte[NulTerminatedUtf8.StackLength]);
         using var appversionUtf8 = new NulTerminatedUtf8(appversion, stackalloc byte[NulTerminatedUtf8.StackLength]);
@@ -322,7 +408,8 @@ public static unsafe partial class Sdl
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_SetAppMetadataProperty")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte SetAppMetadataProperty(byte* name, byte* value);
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool SetAppMetadataProperty(byte* name, byte* value);
 
     /// <summary>Specify metadata about your app through a set of properties.</summary>
     /// <remarks>
@@ -385,7 +472,7 @@ public static unsafe partial class Sdl
     /// <param name="name">the name of the metadata property to set.</param>
     /// <param name="value">the value of the property, or NULL to remove that property.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public static byte SetAppMetadataProperty(ReadOnlySpan<byte> name, ReadOnlySpan<byte> value)
+    public static bool SetAppMetadataProperty(ReadOnlySpan<byte> name, ReadOnlySpan<byte> value)
     {
         using var nameUtf8 = new NulTerminatedUtf8(name, stackalloc byte[NulTerminatedUtf8.StackLength]);
         using var valueUtf8 = new NulTerminatedUtf8(value, stackalloc byte[NulTerminatedUtf8.StackLength]);

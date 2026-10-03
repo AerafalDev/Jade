@@ -2,6 +2,8 @@
 
 #nullable enable
 
+using System.Runtime.Versioning;
+
 namespace Jade.Interop.Sdl3;
 
 /// <summary>The struct used as an opaque handle to a window.</summary>
@@ -61,7 +63,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// the instance ID of the display containing the center of the window on success or 0 on failure; call
     /// SDL_GetError() for more information.
     /// </returns>
-    public uint GetDisplayForWindow() => Sdl.GetDisplayForWindow(this);
+    public DisplayID GetDisplayForWindow() => Sdl.GetDisplayForWindow(this);
 
     /// <summary>Get the pixel density of a window.</summary>
     /// <remarks>
@@ -123,7 +125,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// fullscreen modes returned by SDL_GetFullscreenDisplayModes() to set an exclusive fullscreen mode.
     /// </param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte SetFullscreenMode(DisplayMode* mode) => Sdl.SetWindowFullscreenMode(this, mode);
+    public bool SetFullscreenMode(DisplayMode* mode) => Sdl.SetWindowFullscreenMode(this, mode);
 
     /// <summary>Set the display mode to use when a window is visible and fullscreen.</summary>
     /// <remarks>
@@ -152,7 +154,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// fullscreen modes returned by SDL_GetFullscreenDisplayModes() to set an exclusive fullscreen mode.
     /// </param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte SetFullscreenMode(in DisplayMode mode) => Sdl.SetWindowFullscreenMode(this, in mode);
+    public bool SetFullscreenMode(in DisplayMode mode) => Sdl.SetWindowFullscreenMode(this, in mode);
 
     /// <summary>Query the display mode to use when a window is visible at fullscreen.</summary>
     /// <remarks>
@@ -289,7 +291,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// <para>See also: <c>SDL_GetWindowFromID</c>.</para>
     /// </remarks>
     /// <returns>the ID of the window on success or 0 on failure; call SDL_GetError() for more information.</returns>
-    public uint GetID() => Sdl.GetWindowID(this);
+    public WindowID GetID() => Sdl.GetWindowID(this);
 
     /// <summary>Get parent of a window.</summary>
     /// <remarks>
@@ -491,7 +493,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// <para>This function is available since SDL 3.2.0.</para>
     /// </remarks>
     /// <returns>a valid property ID on success or 0 on failure; call SDL_GetError() for more information.</returns>
-    public uint GetProperties() => Sdl.GetWindowProperties(this);
+    public PropertiesID GetProperties() => Sdl.GetWindowProperties(this);
 
     /// <summary>Get the window flags.</summary>
     /// <remarks>
@@ -517,7 +519,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// </remarks>
     /// <param name="title">the desired window title in UTF-8 format.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte SetTitle(byte* title) => Sdl.SetWindowTitle(this, title);
+    public bool SetTitle(byte* title) => Sdl.SetWindowTitle(this, title);
 
     /// <summary>Set the title of a window.</summary>
     /// <remarks>
@@ -529,7 +531,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// </remarks>
     /// <param name="title">the desired window title in UTF-8 format.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte SetTitle(ReadOnlySpan<byte> title) => Sdl.SetWindowTitle(this, title);
+    public bool SetTitle(ReadOnlySpan<byte> title) => Sdl.SetWindowTitle(this, title);
 
     /// <summary>Get the title of a window.</summary>
     /// <remarks>
@@ -559,7 +561,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// </remarks>
     /// <param name="icon">an SDL_Surface structure containing the icon for the window.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte SetIcon(Surface* icon) => Sdl.SetWindowIcon(this, icon);
+    public bool SetIcon(Surface* icon) => Sdl.SetWindowIcon(this, icon);
 
     /// <summary>Request that the window's position be set.</summary>
     /// <remarks>
@@ -593,7 +595,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// the y coordinate of the window, or <c>SDL_WINDOWPOS_CENTERED</c> or <c>SDL_WINDOWPOS_UNDEFINED</c>.
     /// </param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte SetPosition(int x, int y) => Sdl.SetWindowPosition(this, x, y);
+    public bool SetPosition(int x, int y) => Sdl.SetWindowPosition(this, x, y);
 
     /// <summary>Get the position of a window.</summary>
     /// <remarks>
@@ -610,7 +612,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// <param name="x">a pointer filled in with the x position of the window, may be NULL.</param>
     /// <param name="y">a pointer filled in with the y position of the window, may be NULL.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte GetPosition(int* x, int* y) => Sdl.GetWindowPosition(this, x, y);
+    public bool GetPosition(int* x, int* y) => Sdl.GetWindowPosition(this, x, y);
 
     /// <summary>Get the position of a window.</summary>
     /// <remarks>
@@ -627,7 +629,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// <param name="x">a pointer filled in with the x position of the window, may be NULL.</param>
     /// <param name="y">a pointer filled in with the y position of the window, may be NULL.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte GetPosition(out int x, out int y) => Sdl.GetWindowPosition(this, out x, out y);
+    public bool GetPosition(out int x, out int y) => Sdl.GetWindowPosition(this, out x, out y);
 
     /// <summary>Request that the size of a window's client area be set.</summary>
     /// <remarks>
@@ -652,7 +654,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// <param name="w">the width of the window, must be &gt; 0.</param>
     /// <param name="h">the height of the window, must be &gt; 0.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte SetSize(int w, int h) => Sdl.SetWindowSize(this, w, h);
+    public bool SetSize(int w, int h) => Sdl.SetWindowSize(this, w, h);
 
     /// <summary>Get the size of a window's client area.</summary>
     /// <remarks>
@@ -672,7 +674,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// <param name="w">a pointer filled in with the width of the window, may be NULL.</param>
     /// <param name="h">a pointer filled in with the height of the window, may be NULL.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte GetSize(int* w, int* h) => Sdl.GetWindowSize(this, w, h);
+    public bool GetSize(int* w, int* h) => Sdl.GetWindowSize(this, w, h);
 
     /// <summary>Get the size of a window's client area.</summary>
     /// <remarks>
@@ -692,7 +694,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// <param name="w">a pointer filled in with the width of the window, may be NULL.</param>
     /// <param name="h">a pointer filled in with the height of the window, may be NULL.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte GetSize(out int w, out int h) => Sdl.GetWindowSize(this, out w, out h);
+    public bool GetSize(out int w, out int h) => Sdl.GetWindowSize(this, out w, out h);
 
     /// <summary>Get the safe area for this window.</summary>
     /// <remarks>
@@ -708,7 +710,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// </remarks>
     /// <param name="rect">a pointer filled in with the client area that is safe for interactive content.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte GetSafeArea(Rect* rect) => Sdl.GetWindowSafeArea(this, rect);
+    public bool GetSafeArea(Rect* rect) => Sdl.GetWindowSafeArea(this, rect);
 
     /// <summary>Get the safe area for this window.</summary>
     /// <remarks>
@@ -724,7 +726,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// </remarks>
     /// <param name="rect">a pointer filled in with the client area that is safe for interactive content.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte GetSafeArea(out Rect rect) => Sdl.GetWindowSafeArea(this, out rect);
+    public bool GetSafeArea(out Rect rect) => Sdl.GetWindowSafeArea(this, out rect);
 
     /// <summary>Request that the aspect ratio of a window's client area be set.</summary>
     /// <remarks>
@@ -755,7 +757,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// <param name="minAspect">the minimum aspect ratio of the window, or 0.0f for no limit.</param>
     /// <param name="maxAspect">the maximum aspect ratio of the window, or 0.0f for no limit.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte SetAspectRatio(float minAspect, float maxAspect) => Sdl.SetWindowAspectRatio(this, minAspect, maxAspect);
+    public bool SetAspectRatio(float minAspect, float maxAspect) => Sdl.SetWindowAspectRatio(this, minAspect, maxAspect);
 
     /// <summary>Get the aspect ratio of a window's client area.</summary>
     /// <remarks>
@@ -767,7 +769,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// <param name="minAspect">a pointer filled in with the minimum aspect ratio of the window, may be NULL.</param>
     /// <param name="maxAspect">a pointer filled in with the maximum aspect ratio of the window, may be NULL.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte GetAspectRatio(float* minAspect, float* maxAspect) => Sdl.GetWindowAspectRatio(this, minAspect, maxAspect);
+    public bool GetAspectRatio(float* minAspect, float* maxAspect) => Sdl.GetWindowAspectRatio(this, minAspect, maxAspect);
 
     /// <summary>Get the aspect ratio of a window's client area.</summary>
     /// <remarks>
@@ -779,7 +781,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// <param name="minAspect">a pointer filled in with the minimum aspect ratio of the window, may be NULL.</param>
     /// <param name="maxAspect">a pointer filled in with the maximum aspect ratio of the window, may be NULL.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte GetAspectRatio(out float minAspect, out float maxAspect) => Sdl.GetWindowAspectRatio(this, out minAspect, out maxAspect);
+    public bool GetAspectRatio(out float minAspect, out float maxAspect) => Sdl.GetWindowAspectRatio(this, out minAspect, out maxAspect);
 
     /// <summary>Get the size of a window's borders (decorations) around the client area.</summary>
     /// <remarks>
@@ -804,7 +806,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// <param name="bottom">pointer to variable for storing the size of the bottom border; NULL is permitted.</param>
     /// <param name="right">pointer to variable for storing the size of the right border; NULL is permitted.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte GetBordersSize(int* top, int* left, int* bottom, int* right) => Sdl.GetWindowBordersSize(this, top, left, bottom, right);
+    public bool GetBordersSize(int* top, int* left, int* bottom, int* right) => Sdl.GetWindowBordersSize(this, top, left, bottom, right);
 
     /// <summary>Get the size of a window's borders (decorations) around the client area.</summary>
     /// <remarks>
@@ -829,7 +831,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// <param name="bottom">pointer to variable for storing the size of the bottom border; NULL is permitted.</param>
     /// <param name="right">pointer to variable for storing the size of the right border; NULL is permitted.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte GetBordersSize(out int top, out int left, out int bottom, out int right) => Sdl.GetWindowBordersSize(this, out top, out left, out bottom, out right);
+    public bool GetBordersSize(out int top, out int left, out int bottom, out int right) => Sdl.GetWindowBordersSize(this, out top, out left, out bottom, out right);
 
     /// <summary>Get the size of a window's client area, in pixels.</summary>
     /// <remarks>
@@ -841,7 +843,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// <param name="w">a pointer to variable for storing the width in pixels, may be NULL.</param>
     /// <param name="h">a pointer to variable for storing the height in pixels, may be NULL.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte GetSizeInPixels(int* w, int* h) => Sdl.GetWindowSizeInPixels(this, w, h);
+    public bool GetSizeInPixels(int* w, int* h) => Sdl.GetWindowSizeInPixels(this, w, h);
 
     /// <summary>Get the size of a window's client area, in pixels.</summary>
     /// <remarks>
@@ -853,7 +855,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// <param name="w">a pointer to variable for storing the width in pixels, may be NULL.</param>
     /// <param name="h">a pointer to variable for storing the height in pixels, may be NULL.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte GetSizeInPixels(out int w, out int h) => Sdl.GetWindowSizeInPixels(this, out w, out h);
+    public bool GetSizeInPixels(out int w, out int h) => Sdl.GetWindowSizeInPixels(this, out w, out h);
 
     /// <summary>Set the minimum size of a window's client area.</summary>
     /// <remarks>
@@ -865,7 +867,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// <param name="minW">the minimum width of the window, or 0 for no limit.</param>
     /// <param name="minH">the minimum height of the window, or 0 for no limit.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte SetMinimumSize(int minW, int minH) => Sdl.SetWindowMinimumSize(this, minW, minH);
+    public bool SetMinimumSize(int minW, int minH) => Sdl.SetWindowMinimumSize(this, minW, minH);
 
     /// <summary>Get the minimum size of a window's client area.</summary>
     /// <remarks>
@@ -877,7 +879,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// <param name="w">a pointer filled in with the minimum width of the window, may be NULL.</param>
     /// <param name="h">a pointer filled in with the minimum height of the window, may be NULL.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte GetMinimumSize(int* w, int* h) => Sdl.GetWindowMinimumSize(this, w, h);
+    public bool GetMinimumSize(int* w, int* h) => Sdl.GetWindowMinimumSize(this, w, h);
 
     /// <summary>Get the minimum size of a window's client area.</summary>
     /// <remarks>
@@ -889,7 +891,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// <param name="w">a pointer filled in with the minimum width of the window, may be NULL.</param>
     /// <param name="h">a pointer filled in with the minimum height of the window, may be NULL.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte GetMinimumSize(out int w, out int h) => Sdl.GetWindowMinimumSize(this, out w, out h);
+    public bool GetMinimumSize(out int w, out int h) => Sdl.GetWindowMinimumSize(this, out w, out h);
 
     /// <summary>Set the maximum size of a window's client area.</summary>
     /// <remarks>
@@ -901,7 +903,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// <param name="maxW">the maximum width of the window, or 0 for no limit.</param>
     /// <param name="maxH">the maximum height of the window, or 0 for no limit.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte SetMaximumSize(int maxW, int maxH) => Sdl.SetWindowMaximumSize(this, maxW, maxH);
+    public bool SetMaximumSize(int maxW, int maxH) => Sdl.SetWindowMaximumSize(this, maxW, maxH);
 
     /// <summary>Get the maximum size of a window's client area.</summary>
     /// <remarks>
@@ -913,7 +915,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// <param name="w">a pointer filled in with the maximum width of the window, may be NULL.</param>
     /// <param name="h">a pointer filled in with the maximum height of the window, may be NULL.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte GetMaximumSize(int* w, int* h) => Sdl.GetWindowMaximumSize(this, w, h);
+    public bool GetMaximumSize(int* w, int* h) => Sdl.GetWindowMaximumSize(this, w, h);
 
     /// <summary>Get the maximum size of a window's client area.</summary>
     /// <remarks>
@@ -925,7 +927,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// <param name="w">a pointer filled in with the maximum width of the window, may be NULL.</param>
     /// <param name="h">a pointer filled in with the maximum height of the window, may be NULL.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte GetMaximumSize(out int w, out int h) => Sdl.GetWindowMaximumSize(this, out w, out h);
+    public bool GetMaximumSize(out int w, out int h) => Sdl.GetWindowMaximumSize(this, out w, out h);
 
     /// <summary>Set the border state of a window.</summary>
     /// <remarks>
@@ -941,7 +943,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// </remarks>
     /// <param name="bordered">false to remove border, true to add border.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte SetBordered(byte bordered) => Sdl.SetWindowBordered(this, bordered);
+    public bool SetBordered(bool bordered) => Sdl.SetWindowBordered(this, bordered);
 
     /// <summary>Set the user-resizable state of a window.</summary>
     /// <remarks>
@@ -957,7 +959,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// </remarks>
     /// <param name="resizable">true to allow resizing, false to disallow.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte SetResizable(byte resizable) => Sdl.SetWindowResizable(this, resizable);
+    public bool SetResizable(bool resizable) => Sdl.SetWindowResizable(this, resizable);
 
     /// <summary>Set the window to always be above the others.</summary>
     /// <remarks>
@@ -972,7 +974,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// </remarks>
     /// <param name="onTop">true to set the window always on top, false to disable.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte SetAlwaysOnTop(byte onTop) => Sdl.SetWindowAlwaysOnTop(this, onTop);
+    public bool SetAlwaysOnTop(bool onTop) => Sdl.SetWindowAlwaysOnTop(this, onTop);
 
     /// <summary>Set the window to fill the current document space (Emscripten only).</summary>
     /// <remarks>
@@ -995,7 +997,8 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// </remarks>
     /// <param name="fill">true to set the window to fill the document, false to disable.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte SetFillDocument(byte fill) => Sdl.SetWindowFillDocument(this, fill);
+    [SupportedOSPlatform("browser")]
+    public bool SetFillDocument(bool fill) => Sdl.SetWindowFillDocument(this, fill);
 
     /// <summary>Show a window.</summary>
     /// <remarks>
@@ -1005,7 +1008,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// <para>See also: <c>SDL_HideWindow</c>, <c>SDL_RaiseWindow</c>.</para>
     /// </remarks>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte Show() => Sdl.ShowWindow(this);
+    public bool Show() => Sdl.ShowWindow(this);
 
     /// <summary>Hide a window.</summary>
     /// <remarks>
@@ -1015,7 +1018,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// <para>See also: <c>SDL_ShowWindow</c>, <c>SDL_WINDOW_HIDDEN</c>.</para>
     /// </remarks>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte Hide() => Sdl.HideWindow(this);
+    public bool Hide() => Sdl.HideWindow(this);
 
     /// <summary>Request that a window be raised above other windows and gain the input focus.</summary>
     /// <remarks>
@@ -1030,7 +1033,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// <para>This function is available since SDL 3.2.0.</para>
     /// </remarks>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte Raise() => Sdl.RaiseWindow(this);
+    public bool Raise() => Sdl.RaiseWindow(this);
 
     /// <summary>Request that the window be made as large as possible.</summary>
     /// <remarks>
@@ -1058,7 +1061,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// <para>See also: <c>SDL_MinimizeWindow</c>, <c>SDL_RestoreWindow</c>, <c>SDL_SyncWindow</c>.</para>
     /// </remarks>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte Maximize() => Sdl.MaximizeWindow(this);
+    public bool Maximize() => Sdl.MaximizeWindow(this);
 
     /// <summary>Request that the window be minimized to an iconic representation.</summary>
     /// <remarks>
@@ -1081,7 +1084,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// <para>See also: <c>SDL_MaximizeWindow</c>, <c>SDL_RestoreWindow</c>, <c>SDL_SyncWindow</c>.</para>
     /// </remarks>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte Minimize() => Sdl.MinimizeWindow(this);
+    public bool Minimize() => Sdl.MinimizeWindow(this);
 
     /// <summary>Request that the size and position of a minimized or maximized window be restored.</summary>
     /// <remarks>
@@ -1104,7 +1107,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// <para>See also: <c>SDL_MaximizeWindow</c>, <c>SDL_MinimizeWindow</c>, <c>SDL_SyncWindow</c>.</para>
     /// </remarks>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte Restore() => Sdl.RestoreWindow(this);
+    public bool Restore() => Sdl.RestoreWindow(this);
 
     /// <summary>Request that the window's fullscreen state be changed.</summary>
     /// <remarks>
@@ -1131,7 +1134,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// </remarks>
     /// <param name="fullscreen">true for fullscreen mode, false for windowed mode.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte SetFullscreen(byte fullscreen) => Sdl.SetWindowFullscreen(this, fullscreen);
+    public bool SetFullscreen(bool fullscreen) => Sdl.SetWindowFullscreen(this, fullscreen);
 
     /// <summary>Block until any pending window state is finalized.</summary>
     /// <remarks>
@@ -1154,7 +1157,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// <returns>
     /// true on success or false if the operation timed out before the window was in the requested state.
     /// </returns>
-    public byte Sync() => Sdl.SyncWindow(this);
+    public bool Sync() => Sdl.SyncWindow(this);
 
     /// <summary>Return whether the window has a surface associated with it.</summary>
     /// <remarks>
@@ -1164,7 +1167,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// <para>See also: <c>SDL_GetWindowSurface</c>.</para>
     /// </remarks>
     /// <returns>true if there is a surface associated with the window, or false otherwise.</returns>
-    public byte HasSurface() => Sdl.WindowHasSurface(this);
+    public bool HasSurface() => Sdl.WindowHasSurface(this);
 
     /// <summary>Get the SDL surface associated with the window.</summary>
     /// <remarks>
@@ -1207,7 +1210,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// </remarks>
     /// <param name="vsync">the vertical refresh sync interval.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte SetSurfaceVSync(int vsync) => Sdl.SetWindowSurfaceVSync(this, vsync);
+    public bool SetSurfaceVSync(int vsync) => Sdl.SetWindowSurfaceVSync(this, vsync);
 
     /// <summary>Get VSync for the window surface.</summary>
     /// <remarks>
@@ -1221,7 +1224,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// of the value.
     /// </param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte GetSurfaceVSync(int* vsync) => Sdl.GetWindowSurfaceVSync(this, vsync);
+    public bool GetSurfaceVSync(int* vsync) => Sdl.GetWindowSurfaceVSync(this, vsync);
 
     /// <summary>Get VSync for the window surface.</summary>
     /// <remarks>
@@ -1235,7 +1238,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// of the value.
     /// </param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte GetSurfaceVSync(out int vsync) => Sdl.GetWindowSurfaceVSync(this, out vsync);
+    public bool GetSurfaceVSync(out int vsync) => Sdl.GetWindowSurfaceVSync(this, out vsync);
 
     /// <summary>Copy the window surface to the screen.</summary>
     /// <remarks>
@@ -1247,7 +1250,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// <para>See also: <c>SDL_GetWindowSurface</c>, <c>SDL_UpdateWindowSurfaceRects</c>.</para>
     /// </remarks>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte UpdateSurface() => Sdl.UpdateWindowSurface(this);
+    public bool UpdateSurface() => Sdl.UpdateWindowSurface(this);
 
     /// <summary>Copy areas of the window surface to the screen.</summary>
     /// <remarks>
@@ -1268,7 +1271,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// </param>
     /// <param name="numrects">the number of rectangles.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte UpdateSurfaceRects(Rect* rects, int numrects) => Sdl.UpdateWindowSurfaceRects(this, rects, numrects);
+    public bool UpdateSurfaceRects(Rect* rects, int numrects) => Sdl.UpdateWindowSurfaceRects(this, rects, numrects);
 
     /// <summary>Copy areas of the window surface to the screen.</summary>
     /// <remarks>
@@ -1288,7 +1291,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// an array of SDL_Rect structures representing areas of the surface to copy, in pixels.
     /// </param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte UpdateSurfaceRects(ReadOnlySpan<Rect> rects) => Sdl.UpdateWindowSurfaceRects(this, rects);
+    public bool UpdateSurfaceRects(ReadOnlySpan<Rect> rects) => Sdl.UpdateWindowSurfaceRects(this, rects);
 
     /// <summary>Destroy the surface associated with the window.</summary>
     /// <remarks>
@@ -1298,7 +1301,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// <para>See also: <c>SDL_GetWindowSurface</c>, <c>SDL_WindowHasSurface</c>.</para>
     /// </remarks>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte DestroySurface() => Sdl.DestroyWindowSurface(this);
+    public bool DestroySurface() => Sdl.DestroyWindowSurface(this);
 
     /// <summary>Set a window's keyboard grab mode.</summary>
     /// <remarks>
@@ -1326,7 +1329,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// </remarks>
     /// <param name="grabbed">this is true to grab keyboard, and false to release.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte SetKeyboardGrab(byte grabbed) => Sdl.SetWindowKeyboardGrab(this, grabbed);
+    public bool SetKeyboardGrab(bool grabbed) => Sdl.SetWindowKeyboardGrab(this, grabbed);
 
     /// <summary>Set a window's mouse grab mode.</summary>
     /// <remarks>
@@ -1340,7 +1343,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// </remarks>
     /// <param name="grabbed">this is true to grab mouse, and false to release.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte SetMouseGrab(byte grabbed) => Sdl.SetWindowMouseGrab(this, grabbed);
+    public bool SetMouseGrab(bool grabbed) => Sdl.SetWindowMouseGrab(this, grabbed);
 
     /// <summary>Get a window's keyboard grab mode.</summary>
     /// <remarks>
@@ -1350,7 +1353,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// <para>See also: <c>SDL_SetWindowKeyboardGrab</c>.</para>
     /// </remarks>
     /// <returns>true if keyboard is grabbed, and false otherwise.</returns>
-    public byte GetKeyboardGrab() => Sdl.GetWindowKeyboardGrab(this);
+    public bool GetKeyboardGrab() => Sdl.GetWindowKeyboardGrab(this);
 
     /// <summary>Get a window's mouse grab mode.</summary>
     /// <remarks>
@@ -1363,7 +1366,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// </para>
     /// </remarks>
     /// <returns>true if mouse is grabbed, and false otherwise.</returns>
-    public byte GetMouseGrab() => Sdl.GetWindowMouseGrab(this);
+    public bool GetMouseGrab() => Sdl.GetWindowMouseGrab(this);
 
     /// <summary>Confines the cursor to the specified area of a window.</summary>
     /// <remarks>
@@ -1382,7 +1385,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// a rectangle area in window-relative coordinates. If NULL the barrier for the specified window will be destroyed.
     /// </param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte SetMouseRect(Rect* rect) => Sdl.SetWindowMouseRect(this, rect);
+    public bool SetMouseRect(Rect* rect) => Sdl.SetWindowMouseRect(this, rect);
 
     /// <summary>Confines the cursor to the specified area of a window.</summary>
     /// <remarks>
@@ -1401,7 +1404,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// a rectangle area in window-relative coordinates. If NULL the barrier for the specified window will be destroyed.
     /// </param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte SetMouseRect(in Rect rect) => Sdl.SetWindowMouseRect(this, in rect);
+    public bool SetMouseRect(in Rect rect) => Sdl.SetWindowMouseRect(this, in rect);
 
     /// <summary>Get the mouse confinement rectangle of a window.</summary>
     /// <remarks>
@@ -1428,7 +1431,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// </remarks>
     /// <param name="opacity">the opacity value (0.0f - transparent, 1.0f - opaque).</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte SetOpacity(float opacity) => Sdl.SetWindowOpacity(this, opacity);
+    public bool SetOpacity(float opacity) => Sdl.SetWindowOpacity(this, opacity);
 
     /// <summary>Get the opacity of a window.</summary>
     /// <remarks>
@@ -1470,7 +1473,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// </remarks>
     /// <param name="parent">the new parent window for the child window.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte SetParent(Window parent) => Sdl.SetWindowParent(this, parent);
+    public bool SetParent(Window parent) => Sdl.SetWindowParent(this, parent);
 
     /// <summary>Toggle the state of the window as modal.</summary>
     /// <remarks>
@@ -1485,7 +1488,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// </remarks>
     /// <param name="modal">true to toggle modal status on, false to toggle it off.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte SetModal(byte modal) => Sdl.SetWindowModal(this, modal);
+    public bool SetModal(bool modal) => Sdl.SetWindowModal(this, modal);
 
     /// <summary>Set whether the window may have input focus.</summary>
     /// <remarks>
@@ -1495,7 +1498,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// </remarks>
     /// <param name="focusable">true to allow input focus, false to not allow input focus.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte SetFocusable(byte focusable) => Sdl.SetWindowFocusable(this, focusable);
+    public bool SetFocusable(bool focusable) => Sdl.SetWindowFocusable(this, focusable);
 
     /// <summary>Display the system-level window menu.</summary>
     /// <remarks>
@@ -1512,7 +1515,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// <param name="x">the x coordinate of the menu, relative to the origin (top-left) of the client area.</param>
     /// <param name="y">the y coordinate of the menu, relative to the origin (top-left) of the client area.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte ShowSystemMenu(int x, int y) => Sdl.ShowWindowSystemMenu(this, x, y);
+    public bool ShowSystemMenu(int x, int y) => Sdl.ShowWindowSystemMenu(this, x, y);
 
     /// <summary>Provide a callback that decides if a window region has special properties.</summary>
     /// <remarks>
@@ -1546,11 +1549,20 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// </para>
     /// <para>Thread safety: This function should only be called on the main thread.</para>
     /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para><c>callback</c> is a <c>SDL_HitTest</c>: Callback used for hit-testing.</para>
+    /// <list type="bullet">
+    /// <item><description><c>win</c>: the SDL_Window where hit-testing was set on.</description></item>
+    /// <item><description><c>area</c>: an SDL_Point which should be hit-tested.</description></item>
+    /// <item>
+    /// <description><c>data</c>: what was passed as <c>callback_data</c> to SDL_SetWindowHitTest().</description>
+    /// </item>
+    /// <item><description>Returns an SDL_HitTestResult value.</description></item>
+    /// </list>
     /// </remarks>
     /// <param name="callback">the function to call when doing a hit-test.</param>
     /// <param name="callbackData">an app-defined void pointer passed to <b>callback</b>.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte SetHitTest(delegate* unmanaged[Cdecl]<Window, Point*, void*, HitTestResult> callback, void* callbackData) => Sdl.SetWindowHitTest(this, callback, callbackData);
+    public bool SetHitTest(delegate* unmanaged[Cdecl]<Window, Point*, void*, HitTestResult> callback, void* callbackData) => Sdl.SetWindowHitTest(this, callback, callbackData);
 
     /// <summary>Set the shape of a transparent window.</summary>
     /// <remarks>
@@ -1573,7 +1585,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// the surface representing the shape of the window, or NULL to remove any current shape.
     /// </param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte SetShape(Surface* shape) => Sdl.SetWindowShape(this, shape);
+    public bool SetShape(Surface* shape) => Sdl.SetWindowShape(this, shape);
 
     /// <summary>Request a window to demand attention from the user.</summary>
     /// <remarks>
@@ -1583,7 +1595,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// </remarks>
     /// <param name="operation">the operation to perform.</param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte Flash(FlashOperation operation) => Sdl.FlashWindow(this, operation);
+    public bool Flash(FlashOperation operation) => Sdl.FlashWindow(this, operation);
 
     /// <summary>Sets the state of the progress bar for the given window’s taskbar icon.</summary>
     /// <remarks>
@@ -1595,7 +1607,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// the progress state. <c>SDL_PROGRESS_STATE_NONE</c> stops displaying the progress bar.
     /// </param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte SetProgressState(ProgressState state) => Sdl.SetWindowProgressState(this, state);
+    public bool SetProgressState(ProgressState state) => Sdl.SetWindowProgressState(this, state);
 
     /// <summary>Get the state of the progress bar for the given window’s taskbar icon.</summary>
     /// <remarks>
@@ -1618,7 +1630,7 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// the progress value in the range of [0.0f - 1.0f]. If the value is outside the valid range, it gets clamped.
     /// </param>
     /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
-    public byte SetProgressValue(float value) => Sdl.SetWindowProgressValue(this, value);
+    public bool SetProgressValue(float value) => Sdl.SetWindowProgressValue(this, value);
 
     /// <summary>Get the value of the progress bar for the given window’s taskbar icon.</summary>
     /// <remarks>
@@ -1646,4 +1658,401 @@ public readonly unsafe partial struct Window : IEquatable<Window>
     /// </para>
     /// </remarks>
     public void Destroy() => Sdl.DestroyWindow(this);
+
+    /// <summary>Create an OpenGL context for an OpenGL window, and make it current.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GL_CreateContext</c>.</para>
+    /// <para>The OpenGL context will be created with the current states set through SDL_GL_SetAttribute().</para>
+    /// <para>
+    /// The SDL_Window specified must have been created with the SDL_WINDOW_OPENGL flag, or context creation will fail.
+    /// </para>
+    /// <para>
+    /// Windows users new to OpenGL should note that, for historical reasons, GL functions added after OpenGL version
+    /// 1.1 are not available by default. Those functions must be loaded at run-time, either with an OpenGL
+    /// extension-handling library or with SDL_GL_GetProcAddress() and its related functions.
+    /// </para>
+    /// <para>SDL_GLContext is opaque to the application.</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GL_DestroyContext</c>, <c>SDL_GL_MakeCurrent</c>.</para>
+    /// </remarks>
+    /// <returns>
+    /// the OpenGL context associated with <c>window</c> or NULL on failure; call SDL_GetError() for more information.
+    /// </returns>
+    public GLContext GlCreateContext() => Sdl.GlCreateContext(this);
+
+    /// <summary>Set up an OpenGL context for rendering into an OpenGL window.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GL_MakeCurrent</c>.</para>
+    /// <para>The context must have been created with a compatible window.</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GL_CreateContext</c>.</para>
+    /// </remarks>
+    /// <param name="context">the OpenGL context to associate with the window.</param>
+    /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    public bool GlMakeCurrent(GLContext context) => Sdl.GlMakeCurrent(this, context);
+
+    /// <summary>Get the EGL surface associated with the window.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_EGL_GetWindowSurface</c>.</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// </remarks>
+    /// <returns>the EGLSurface pointer associated with the window, or NULL on failure.</returns>
+    public void* EglGetWindowSurface() => Sdl.EglGetWindowSurface(this);
+
+    /// <summary>Update a window with OpenGL rendering.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GL_SwapWindow</c>.</para>
+    /// <para>This is used with double-buffered OpenGL contexts, which are the default.</para>
+    /// <para>
+    /// On macOS, make sure you bind 0 to the draw framebuffer before swapping the window, otherwise nothing will
+    /// happen. If you aren't using glBindFramebuffer(), this is the default and you won't have to do anything extra.
+    /// </para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// </remarks>
+    /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    public bool GlSwapWindow() => Sdl.GlSwapWindow(this);
+
+    /// <summary>Start accepting Unicode text input events in a window.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_StartTextInput</c>.</para>
+    /// <para>
+    /// This function will enable text input (SDL_EVENT_TEXT_INPUT and SDL_EVENT_TEXT_EDITING events) in the specified
+    /// window. Please use this function paired with SDL_StopTextInput().
+    /// </para>
+    /// <para>Text input events are not received by default.</para>
+    /// <para>
+    /// On some platforms using this function shows the screen keyboard and/or activates an IME, which can prevent some
+    /// key press events from being passed through.
+    /// </para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>
+    /// See also: <c>SDL_SetTextInputArea</c>, <c>SDL_StartTextInputWithProperties</c>, <c>SDL_StopTextInput</c>,
+    /// <c>SDL_TextInputActive</c>.
+    /// </para>
+    /// </remarks>
+    /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    public bool StartTextInput() => Sdl.StartTextInput(this);
+
+    /// <summary>Start accepting Unicode text input events in a window, with properties describing the input.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_StartTextInputWithProperties</c>.</para>
+    /// <para>
+    /// This function will enable text input (SDL_EVENT_TEXT_INPUT and SDL_EVENT_TEXT_EDITING events) in the specified
+    /// window. Please use this function paired with SDL_StopTextInput().
+    /// </para>
+    /// <para>Text input events are not received by default.</para>
+    /// <para>
+    /// On some platforms using this function shows the screen keyboard and/or activates an IME, which can prevent some
+    /// key press events from being passed through.
+    /// </para>
+    /// <para>These are the supported properties:</para>
+    /// <list type="bullet">
+    /// <item>
+    /// <description><c>SDL_PROP_TEXTINPUT_TYPE_NUMBER</c> - an SDL_TextInputType value that describes text being input,
+    /// defaults to SDL_TEXTINPUT_TYPE_TEXT.</description>
+    /// </item>
+    /// <item>
+    /// <description><c>SDL_PROP_TEXTINPUT_CAPITALIZATION_NUMBER</c> - an SDL_Capitalization value that describes how
+    /// text should be capitalized, defaults to SDL_CAPITALIZE_SENTENCES for normal text entry, SDL_CAPITALIZE_WORDS for
+    /// SDL_TEXTINPUT_TYPE_TEXT_NAME, and SDL_CAPITALIZE_NONE for e-mail addresses, usernames, and
+    /// passwords.</description>
+    /// </item>
+    /// <item>
+    /// <description><c>SDL_PROP_TEXTINPUT_AUTOCORRECT_BOOLEAN</c> - true to enable auto completion and auto correction,
+    /// defaults to true.</description>
+    /// </item>
+    /// <item>
+    /// <description><c>SDL_PROP_TEXTINPUT_MULTILINE_BOOLEAN</c> - true if multiple lines of text are allowed. This
+    /// defaults to true if SDL_HINT_RETURN_KEY_HIDES_IME is "0" or is not set, and defaults to false if
+    /// SDL_HINT_RETURN_KEY_HIDES_IME is "1".</description>
+    /// </item>
+    /// </list>
+    /// <para>On Android you can directly specify the input type:</para>
+    /// <list type="bullet">
+    /// <item>
+    /// <description><c>SDL_PROP_TEXTINPUT_ANDROID_INPUTTYPE_NUMBER</c> - the text input type to use, overriding other
+    /// properties. This is documented at https://developer.android.com/reference/android/text/InputType</description>
+    /// </item>
+    /// </list>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>
+    /// See also: <c>SDL_SetTextInputArea</c>, <c>SDL_StartTextInput</c>, <c>SDL_StopTextInput</c>,
+    /// <c>SDL_TextInputActive</c>.
+    /// </para>
+    /// </remarks>
+    /// <param name="props">the properties to use.</param>
+    /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    public bool StartTextInputWithProperties(PropertiesID props) => Sdl.StartTextInputWithProperties(this, props);
+
+    /// <summary>Check whether or not Unicode text input events are enabled for a window.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_TextInputActive</c>.</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_StartTextInput</c>.</para>
+    /// </remarks>
+    /// <returns>true if text input events are enabled else false.</returns>
+    public bool TextInputActive() => Sdl.TextInputActive(this);
+
+    /// <summary>Stop receiving any text input events in a window.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_StopTextInput</c>.</para>
+    /// <para>If SDL_StartTextInput() showed the screen keyboard, this function will hide it.</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_StartTextInput</c>.</para>
+    /// </remarks>
+    /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    public bool StopTextInput() => Sdl.StopTextInput(this);
+
+    /// <summary>Dismiss the composition window/IME without disabling the subsystem.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_ClearComposition</c>.</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_StartTextInput</c>, <c>SDL_StopTextInput</c>.</para>
+    /// </remarks>
+    /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    public bool ClearComposition() => Sdl.ClearComposition(this);
+
+    /// <summary>Set the area used to type Unicode text input.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_SetTextInputArea</c>.</para>
+    /// <para>
+    /// Native input methods may place a window with word suggestions near the cursor, without covering the text being
+    /// entered.
+    /// </para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GetTextInputArea</c>, <c>SDL_StartTextInput</c>.</para>
+    /// </remarks>
+    /// <param name="rect">
+    /// the SDL_Rect representing the text input area, in window coordinates, or NULL to clear it.
+    /// </param>
+    /// <param name="cursor">
+    /// the offset of the current cursor location relative to <c>rect-&gt;x</c>, in window coordinates.
+    /// </param>
+    /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    public bool SetTextInputArea(Rect* rect, int cursor) => Sdl.SetTextInputArea(this, rect, cursor);
+
+    /// <summary>Set the area used to type Unicode text input.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_SetTextInputArea</c>.</para>
+    /// <para>
+    /// Native input methods may place a window with word suggestions near the cursor, without covering the text being
+    /// entered.
+    /// </para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GetTextInputArea</c>, <c>SDL_StartTextInput</c>.</para>
+    /// </remarks>
+    /// <param name="rect">
+    /// the SDL_Rect representing the text input area, in window coordinates, or NULL to clear it.
+    /// </param>
+    /// <param name="cursor">
+    /// the offset of the current cursor location relative to <c>rect-&gt;x</c>, in window coordinates.
+    /// </param>
+    /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    public bool SetTextInputArea(in Rect rect, int cursor) => Sdl.SetTextInputArea(this, in rect, cursor);
+
+    /// <summary>Get the area used to type Unicode text input.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GetTextInputArea</c>.</para>
+    /// <para>This returns the values previously set by SDL_SetTextInputArea().</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_SetTextInputArea</c>.</para>
+    /// </remarks>
+    /// <param name="rect">a pointer to an SDL_Rect filled in with the text input area, may be NULL.</param>
+    /// <param name="cursor">
+    /// a pointer to the offset of the current cursor location relative to <c>rect-&gt;x</c>, may be NULL.
+    /// </param>
+    /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    public bool GetTextInputArea(Rect* rect, int* cursor) => Sdl.GetTextInputArea(this, rect, cursor);
+
+    /// <summary>Get the area used to type Unicode text input.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GetTextInputArea</c>.</para>
+    /// <para>This returns the values previously set by SDL_SetTextInputArea().</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_SetTextInputArea</c>.</para>
+    /// </remarks>
+    /// <param name="rect">a pointer to an SDL_Rect filled in with the text input area, may be NULL.</param>
+    /// <param name="cursor">
+    /// a pointer to the offset of the current cursor location relative to <c>rect-&gt;x</c>, may be NULL.
+    /// </param>
+    /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    public bool GetTextInputArea(out Rect rect, out int cursor) => Sdl.GetTextInputArea(this, out rect, out cursor);
+
+    /// <summary>Check whether the screen keyboard is shown for given window.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_ScreenKeyboardShown</c>.</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_HasScreenKeyboardSupport</c>.</para>
+    /// </remarks>
+    /// <returns>true if screen keyboard is shown or false if not.</returns>
+    public bool ScreenKeyboardShown() => Sdl.ScreenKeyboardShown(this);
+
+    /// <summary>Move the mouse cursor to the given position within the window.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_WarpMouseInWindow</c>.</para>
+    /// <para>
+    /// This function generates a mouse motion event if relative mode is not enabled. If relative mode is enabled, you
+    /// can force mouse events for the warp by setting the SDL_HINT_MOUSE_RELATIVE_WARP_MOTION hint.
+    /// </para>
+    /// <para>
+    /// Note that this function will appear to succeed, but not actually move the mouse when used over Microsoft Remote
+    /// Desktop.
+    /// </para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_WarpMouseGlobal</c>.</para>
+    /// </remarks>
+    /// <param name="x">the x coordinate within the window.</param>
+    /// <param name="y">the y coordinate within the window.</param>
+    public void WarpMouseInWindow(float x, float y) => Sdl.WarpMouseInWindow(this, x, y);
+
+    /// <summary>Set relative mouse mode for a window.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_SetWindowRelativeMouseMode</c>.</para>
+    /// <para>
+    /// While the window has focus and relative mouse mode is enabled, the cursor is hidden, the mouse position is
+    /// constrained to the window, and SDL will report continuous relative mouse motion even if the mouse is at the edge
+    /// of the window.
+    /// </para>
+    /// <para>
+    /// If you'd like to keep the mouse position fixed while in relative mode you can use SDL_SetWindowMouseRect(). If
+    /// you'd like the cursor to be at a specific location when relative mode ends, you should use
+    /// SDL_WarpMouseInWindow() before disabling relative mode.
+    /// </para>
+    /// <para>This function will flush any pending mouse motion for this window.</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GetWindowRelativeMouseMode</c>.</para>
+    /// </remarks>
+    /// <param name="enabled">true to enable relative mode, false to disable.</param>
+    /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    public bool SetRelativeMouseMode(bool enabled) => Sdl.SetWindowRelativeMouseMode(this, enabled);
+
+    /// <summary>Query whether relative mouse mode is enabled for a window.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_GetWindowRelativeMouseMode</c>.</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_SetWindowRelativeMouseMode</c>.</para>
+    /// </remarks>
+    /// <returns>true if relative mode is enabled for a window or false otherwise.</returns>
+    public bool GetRelativeMouseMode() => Sdl.GetWindowRelativeMouseMode(this);
+
+    /// <summary>Create a CAMetalLayer-backed NSView/UIView and attach it to the specified window.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_Metal_CreateView</c>.</para>
+    /// <para>
+    /// On macOS, this does *not* associate a MTLDevice with the CAMetalLayer on its own. It is up to user code to do
+    /// that.
+    /// </para>
+    /// <para>
+    /// The returned handle can be casted directly to a NSView or UIView. To access the backing CAMetalLayer, call
+    /// SDL_Metal_GetLayer().
+    /// </para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_Metal_DestroyView</c>, <c>SDL_Metal_GetLayer</c>.</para>
+    /// </remarks>
+    /// <returns>handle NSView or UIView.</returns>
+    [SupportedOSPlatform("ios")]
+    [SupportedOSPlatform("macos")]
+    public void* MetalCreateView() => Sdl.MetalCreateView(this);
+
+    /// <summary>Use this function to set the animation callback on Apple iOS.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_SetiOSAnimationCallback</c>.</para>
+    /// <para>The function prototype for <c>callback</c> is:</para>
+    /// <code>
+    /// void callback(void *callbackParam);
+    /// </code>
+    /// <para>
+    /// Where its parameter, <c>callbackParam</c>, is what was passed as <c>callbackParam</c> to
+    /// SDL_SetiOSAnimationCallback().
+    /// </para>
+    /// <para>This function is only available on Apple iOS.</para>
+    /// <para>For more information see:</para>
+    /// <para>https://wiki.libsdl.org/SDL3/README-ios</para>
+    /// <para>
+    /// Note that if you use the "main callbacks" instead of a standard C <c>main</c> function, you don't have to use
+    /// this API, as SDL will manage this for you.
+    /// </para>
+    /// <para>Details on main callbacks are here:</para>
+    /// <para>https://wiki.libsdl.org/SDL3/README-main-functions</para>
+    /// <para>Thread safety: This function should only be called on the main thread.</para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_SetiOSEventPump</c>.</para>
+    /// <para>
+    /// <c>callback</c> is a <c>SDL_iOSAnimationCallback</c>: The prototype for an Apple iOS animation callback.
+    /// </para>
+    /// <list type="bullet">
+    /// <item>
+    /// <description><c>userdata</c>: what was passed as <c>callbackParam</c> to SDL_SetiOSAnimationCallback as
+    /// <c>callbackParam</c>.</description>
+    /// </item>
+    /// </list>
+    /// </remarks>
+    /// <param name="interval">the number of frames after which <b>callback</b> will be called.</param>
+    /// <param name="callback">the function to call for every frame.</param>
+    /// <param name="callbackParam">a pointer that is passed to <c>callback</c>.</param>
+    /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    [SupportedOSPlatform("ios")]
+    public bool SetiOSAnimationCallback(int interval, delegate* unmanaged[Cdecl]<void*, void> callback, void* callbackParam) => Sdl.SetiOSAnimationCallback(this, interval, callback, callbackParam);
+
+    /// <summary>Create a Vulkan rendering surface for a window.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_Vulkan_CreateSurface</c>.</para>
+    /// <para>
+    /// The <c>window</c> must have been created with the <c>SDL_WINDOW_VULKAN</c> flag and <c>instance</c> must have
+    /// been created with extensions returned by SDL_Vulkan_GetInstanceExtensions() enabled.
+    /// </para>
+    /// <para>
+    /// If <c>allocator</c> is NULL, Vulkan will use the system default allocator. This argument is passed directly to
+    /// Vulkan and isn't used by SDL itself.
+    /// </para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_Vulkan_GetInstanceExtensions</c>, <c>SDL_Vulkan_DestroySurface</c>.</para>
+    /// </remarks>
+    /// <param name="instance">the Vulkan instance handle.</param>
+    /// <param name="allocator">
+    /// a VkAllocationCallbacks struct, which lets the app set the allocator that creates the surface. Can be NULL.
+    /// </param>
+    /// <param name="surface">a pointer to a VkSurfaceKHR handle to output the newly created surface.</param>
+    /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    public bool VulkanCreateSurface(VkInstance instance, VkAllocationCallbacks* allocator, ulong* surface) => Sdl.VulkanCreateSurface(this, instance, allocator, surface);
+
+    /// <summary>Create a Vulkan rendering surface for a window.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_Vulkan_CreateSurface</c>.</para>
+    /// <para>
+    /// The <c>window</c> must have been created with the <c>SDL_WINDOW_VULKAN</c> flag and <c>instance</c> must have
+    /// been created with extensions returned by SDL_Vulkan_GetInstanceExtensions() enabled.
+    /// </para>
+    /// <para>
+    /// If <c>allocator</c> is NULL, Vulkan will use the system default allocator. This argument is passed directly to
+    /// Vulkan and isn't used by SDL itself.
+    /// </para>
+    /// <para>This function is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_Vulkan_GetInstanceExtensions</c>, <c>SDL_Vulkan_DestroySurface</c>.</para>
+    /// </remarks>
+    /// <param name="instance">the Vulkan instance handle.</param>
+    /// <param name="allocator">
+    /// a VkAllocationCallbacks struct, which lets the app set the allocator that creates the surface. Can be NULL.
+    /// </param>
+    /// <param name="surface">a pointer to a VkSurfaceKHR handle to output the newly created surface.</param>
+    /// <returns>true on success or false on failure; call SDL_GetError() for more information.</returns>
+    public bool VulkanCreateSurface(VkInstance instance, VkAllocationCallbacks* allocator, out ulong surface) => Sdl.VulkanCreateSurface(this, instance, allocator, out surface);
 }

@@ -31,9 +31,13 @@ internal sealed class TypeMapper
     private readonly int _longSize;
     private readonly List<TypeReference> _references = [];
     private readonly HashSet<string> _referenced = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, RecordDecl> _anonymousRecords = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, TypedefNameDecl> _callbacks = new(StringComparer.Ordinal);
+    private readonly HashSet<string> _usedMappings = new(StringComparer.Ordinal);
+    private string? _owner;
 
     /// <summary>Creates a mapper for one target.</summary>
-    /// <param name="config">The library config: handles, opaque structs, flag typedefs, bool type.</param>
+    /// <param name="config">The library config: handles, opaque structs, typedef rules, bool type.</param>
     /// <param name="isLibraryDeclaration">Whether a declaration lives in the library's own headers.</param>
     /// <param name="pointerSize">The target's <c>sizeof(void*)</c>.</param>
     /// <param name="longSize">The target's <c>sizeof(long)</c>.</param>
@@ -48,11 +52,56 @@ internal sealed class TypeMapper
     /// <summary>Gets the declarations used so far, in first-use order. Mapping can append while a caller iterates by index.</summary>
     public IReadOnlyList<TypeReference> References => _references;
 
+    /// <summary>Gets the anonymous structs and unions of named fields, by synthetic C name (<c>Owner.field</c>).</summary>
+    public IReadOnlyDictionary<string, RecordDecl> AnonymousRecords => _anonymousRecords;
+
+    /// <summary>Gets the callback typedefs that mapped types carry as <see cref="TypeRef.Alias"/>, by C name.</summary>
+    public IReadOnlyDictionary<string, TypedefNameDecl> Callbacks => _callbacks;
+
+    /// <summary>Gets the <see cref="LibraryConfig.TypedefMappings"/> entries applied so far.</summary>
+    public IReadOnlySet<string> UsedMappings => _usedMappings;
+
     /// <summary>Returns the name a record or enum is known by: its tag, or the typedef naming an anonymous one.</summary>
     /// <param name="declaration">The record or enum.</param>
-    /// <returns>The C name, or an empty string.</returns>
+    /// <returns>The C name, or an empty string for a tag without a name (libclang spells those <c>struct (unnamed at ...)</c>).</returns>
     public static string NameOf(TagDecl declaration) =>
-        declaration.Name.Length > 0 ? declaration.Name : declaration.TypedefNameForAnonDecl?.Name ?? string.Empty;
+        !declaration.Handle.IsAnonymous ? declaration.Name : declaration.TypedefNameForAnonDecl?.Name ?? string.Empty;
+
+    /// <summary>Maps the type of a struct field. An anonymous struct or union there is named after the field (<c>Owner.field</c>).</summary>
+    /// <param name="type">The libclang type.</param>
+    /// <param name="owner">The C name of the struct holding the field.</param>
+    /// <param name="field">The field name.</param>
+    /// <returns>The model type.</returns>
+    /// <exception cref="MappingException">The type has no portable managed form, or the config does not cover it.</exception>
+    public TypeRef MapField(Type type, string owner, string field)
+    {
+        var previous = _owner;
+        _owner = $"{owner}.{field}";
+        try
+        {
+            return Map(type);
+        }
+        finally
+        {
+            _owner = previous;
+        }
+    }
+
+    /// <summary>Records a declaration that is bound even if nothing uses it, such as an enum of a bound header.</summary>
+    /// <param name="name">The C name.</param>
+    /// <param name="kind">What it turns into.</param>
+    public void Reference(string name, ReferenceKind kind)
+    {
+        if (_referenced.Add(name))
+        {
+            _references.Add(new TypeReference(name, kind));
+        }
+    }
+
+    /// <summary>Returns what a referenced declaration turns into.</summary>
+    /// <param name="name">The C name.</param>
+    /// <returns>The kind, or <see langword="null"/> if nothing referenced it.</returns>
+    public ReferenceKind? KindOf(string name) => _references.FirstOrDefault(r => r.Name == name)?.Kind;
 
     /// <summary>Maps a type used by value: a parameter, a return value or a field.</summary>
     /// <param name="type">The libclang type.</param>
@@ -93,10 +142,35 @@ internal sealed class TypeMapper
                         throw new MappingException("va_list differs on every ABI and cannot be built from C#");
                     }
 
-                    if (_config.FlagMacros.ContainsKey(name))
+                    if (name == "wchar_t")
                     {
-                        Reference(name, ReferenceKind.FlagMacros);
+                        throw new MappingException("wchar_t is 2 bytes on Windows and 4 elsewhere");
+                    }
+
+                    if (_config.TypedefMappings.TryGetValue(name, out var mapped))
+                    {
+                        _usedMappings.Add(name);
+                        return TypeRef.Of(mapped);
+                    }
+
+                    if (_config.MacroEnums.ContainsKey(name))
+                    {
+                        Reference(name, ReferenceKind.MacroEnum);
                         return TypeRef.Named(name);
+                    }
+
+                    if (_config.IdTypedefs.Contains(name))
+                    {
+                        RequireLibrary(typedef.Decl, name);
+                        Reference(name, ReferenceKind.IdEnum);
+                        return TypeRef.Named(name);
+                    }
+
+                    // A callback typedef keeps its name so the emitter can carry its documentation to every use.
+                    if (Peel(typedef.Decl.UnderlyingType) is PointerType { PointeeType: var target } && Peel(target) is FunctionProtoType callback && _isLibraryDeclaration(typedef.Decl))
+                    {
+                        _callbacks.TryAdd(name, typedef.Decl);
+                        return MapFunction(callback, name);
                     }
 
                     current = typedef.Decl.UnderlyingType;
@@ -170,6 +244,12 @@ internal sealed class TypeMapper
     private TypeRef MapPointer(Type pointee)
     {
         var isConst = pointee.IsLocalConstQualified;
+        if (IsWideChar(pointee))
+        {
+            // The pointer has one size everywhere, only its pointee differs: callers size wide-char buffers per platform.
+            return TypeRef.PointerTo(TypeRef.Void, isConst);
+        }
+
         var bare = Peel(pointee);
         if (bare is FunctionProtoType function)
         {
@@ -184,7 +264,7 @@ internal sealed class TypeMapper
         if (bare is RecordType record)
         {
             var name = NameOf(record.Decl);
-            if (_config.Handles.Contains(name))
+            if (_config.Handles.Contains(name) || _config.ForeignHandles.Contains(name))
             {
                 RequireLibrary(record.Decl, name);
                 Reference(name, ReferenceKind.Handle);
@@ -202,7 +282,35 @@ internal sealed class TypeMapper
         return TypeRef.PointerTo(Map(pointee), isConst);
     }
 
-    private TypeRef MapFunction(FunctionProtoType function)
+    private static bool IsWideChar(Type type)
+    {
+        var current = type;
+        while (true)
+        {
+            switch (current)
+            {
+                case ElaboratedType elaborated:
+                    current = elaborated.NamedType;
+                    break;
+
+                case AttributedType attributed:
+                    current = attributed.ModifiedType;
+                    break;
+
+                case ParenType paren:
+                    current = paren.InnerType;
+                    break;
+
+                case TypedefType typedef:
+                    return typedef.Decl.Name == "wchar_t";
+
+                default:
+                    return current is BuiltinType { Kind: CXTypeKind.CXType_WChar };
+            }
+        }
+    }
+
+    private TypeRef MapFunction(FunctionProtoType function, string? alias = null)
     {
         if (function.CallConv != CXCallingConv.CXCallingConv_C)
         {
@@ -216,13 +324,26 @@ internal sealed class TypeMapper
 
         var returnType = Map(function.ReturnType);
         var parameters = function.ParamTypes.Select(Map).ToList();
-        return TypeRef.FunctionPointer(returnType, parameters);
+        return TypeRef.FunctionPointer(returnType, parameters, alias);
     }
 
     private TypeRef MapRecord(RecordDecl declaration)
     {
         var name = NameOf(declaration);
-        if (_config.Handles.Contains(name))
+        if (name.Length == 0)
+        {
+            if (_owner is null)
+            {
+                throw new MappingException("an anonymous struct or union is only bindable as the type of a named field");
+            }
+
+            RequireLibrary(declaration, _owner);
+            _anonymousRecords.TryAdd(_owner, declaration);
+            Reference(_owner, ReferenceKind.Struct);
+            return TypeRef.Named(_owner);
+        }
+
+        if (_config.Handles.Contains(name) || _config.ForeignHandles.Contains(name))
         {
             throw new MappingException($"{name} is a handle, only valid behind a pointer");
         }
@@ -296,14 +417,6 @@ internal sealed class TypeMapper
         if (!_isLibraryDeclaration(declaration))
         {
             throw new MappingException($"{name} is not declared in the library's headers");
-        }
-    }
-
-    private void Reference(string name, ReferenceKind kind)
-    {
-        if (_referenced.Add(name))
-        {
-            _references.Add(new TypeReference(name, kind));
         }
     }
 }

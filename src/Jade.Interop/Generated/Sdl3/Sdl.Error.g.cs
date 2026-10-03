@@ -7,7 +7,7 @@ namespace Jade.Interop.Sdl3;
 
 public static unsafe partial class Sdl
 {
-    // Functions from SDL3/SDL_error.h.
+    // Declarations from SDL3/SDL_error.h.
 
     /// <summary>Set an error indicating that memory allocation failed.</summary>
     /// <remarks>
@@ -19,7 +19,8 @@ public static unsafe partial class Sdl
     /// <returns>false.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_OutOfMemory")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte OutOfMemory();
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool OutOfMemory();
 
     /// <summary>Retrieve a message about the last error that occurred on the current thread.</summary>
     /// <remarks>
@@ -67,5 +68,6 @@ public static unsafe partial class Sdl
     /// <returns>true.</returns>
     [LibraryImport("jade_native", EntryPoint = "SDL_ClearError")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial byte ClearError();
+    [return: MarshalAs(UnmanagedType.U1)]
+    public static partial bool ClearError();
 }

@@ -4,10 +4,13 @@ internal enum PrimitiveType
     /// <summary>C <c>char</c>: emitted as <c>byte</c>, marked so <c>const char*</c> can get UTF-8 overloads.</summary>
     Char,
 
+    /// <summary>C <c>bool</c>/<c>_Bool</c>, one byte holding 0 or 1: <c>bool</c> under disabled runtime marshalling (ADR-0012).</summary>
+    Bool,
+
     /// <summary><c>signed char</c>, <c>int8_t</c>.</summary>
     SByte,
 
-    /// <summary><c>unsigned char</c>, <c>uint8_t</c>, and C <c>bool</c> when the library maps it to one byte.</summary>
+    /// <summary><c>unsigned char</c>, <c>uint8_t</c>.</summary>
     Byte,
 
     /// <summary><c>short</c>, <c>int16_t</c>.</summary>

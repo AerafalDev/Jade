@@ -36,7 +36,8 @@ native/                   xmake project for jade_native, local package repo, C s
                           Linux build container (native/linux/)                           (103)
 scripts/                  C# file-based apps: build-native, generate-bindings, ...         (101, 201)
 src/Jade/                 engine (later); the only package users reference                 (001)
-src/Jade.Interop/         public bindings, Generated/ is generator output; packed into Jade (001)
+src/Jade.Interop/         public bindings, Generated/ is generator output, <Lib>/ hand-written
+                          helpers; packed into Jade                                        (001)
 src/Jade.Native/          packaging-only project for runtimes/<rid>/native                 (106)
 tests/                    xunit.v3 test projects                                           (001)
 samples/                  runnable samples                                                 (206)
@@ -91,10 +92,12 @@ artifacts/                build outputs (gitignored): native/<rid>/, packages/
 - `DisableRuntimeMarshalling`: every native signature is blittable. No `string`, delegates or
   `SetLastError`. UTF-8 goes through `byte*` and `ReadOnlySpan<byte>`, callbacks through
   `delegate* unmanaged[Cdecl]`. C `bool` (1 byte) maps to C# `bool`; boolean typedefs over wider
-  integers (`WGPUBool`, `ma_bool32`) keep their width (ADR-0012).
+  integers (`WGPUBool`, `ma_bool32`) keep their width (ADR-0012). The `[LibraryImport]` generator
+  rejects a bare `bool` (SYSLIB1051), so imports mark it `[MarshalAs(UnmanagedType.U1)]`.
 - Every import names the single library `jade_native`.
 - Friendly overloads (`Span`, `ReadOnlySpan`, `in`, `ref`, `out`) never allocate on the GC heap.
   Anything that allocates or owns resources belongs to the engine layer, not the interop layer.
+  They only lend memory for the call: a pointer the C library returns or keeps stays raw.
 - Generated code throws no exceptions and returns native results as they are.
 - A C type whose size or layout differs between targets (`long`, platform `#ifdef` fields) is
   never exposed by value under a single definition. See ADR-0006.
