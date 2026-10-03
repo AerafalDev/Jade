@@ -15,3 +15,5 @@ public sealed class AssemblyTests
         assembly.GetCustomAttribute<DisableRuntimeMarshallingAttribute>().ShouldNotBeNull();
     }
 }
+
+// CI turnaround measurement for task 004, not for merge.
