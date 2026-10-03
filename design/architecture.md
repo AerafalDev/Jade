@@ -140,3 +140,5 @@ These are snapshots for orientation. Tasks re-check them before pinning.
 | msdfgen / msdf-atlas-gen | `v1.13` / `v1.4` | github.com/Chlumsky |
 | ClangSharp (generator) | `21.1.8.4` | nuget.org |
 | xmake | `v3.1.1` | xmake.io |
+
+<!-- CI turnaround measurement for task 004, not for merge. -->
