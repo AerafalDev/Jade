@@ -77,7 +77,7 @@ our zstd package [S5].
 
 libktx is rejected. Its stable release, v4.4.2 (2025-10-04), embeds basisu 1.16, which predates UASTC
 HDR (first released in basisu 1.50.0, 2024-09-10). Its v5.0.0-rc2 (pre-release, 2026-08-17) embeds
-basisu 2.10 [S6][S7]. Both versions compile their own copy of zstd into the library [S6], which
+basisu 2.10 [S6], [S7]. Both versions compile their own copy of zstd into the library [S6], which
 collides with a zstd package in the same static link. A standalone basisu and libktx's embedded
 basisu cannot share one binary either, since both define the same `basist::` symbols. What libktx
 adds over basisu's own KTX2 support (KTX1, Vulkan and OpenGL upload, writing any vkFormat) is not
@@ -93,7 +93,7 @@ The transcoder is built without the PVRTC1, PVRTC2, ATC and FXT1 targets (`BASIS
 [S5]), which WebGPU cannot sample. That saves 216 KiB (M2).
 
 **Compression.** zstd is needed as soon as basisu is in: UASTC supercompression, XUASTC's Zstd and
-hybrid profiles, and XUBC7 all use it [S3][S4]. On zstd's own benchmark, `zstd -1` compresses the
+hybrid profiles, and XUBC7 all use it [S3], [S4]. On zstd's own benchmark, `zstd -1` compresses the
 Silesia corpus 2.887:1 and decompresses at 1580 MB/s, against 2.101:1 and 4000 MB/s for lz4 [S9]. For
 asset files, a smaller file tends to save more load time than faster decoding beyond 1.5 GB/s per
 core, so lz4 would be a second codec for a gain nobody has measured a need for. The full library,
