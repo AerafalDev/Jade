@@ -170,6 +170,12 @@ C++ reader in our own generator (below).
   instantiates all ten types, so restricting them means regenerating cimplot with its Lua generator.
   Kept at ten types until browser-wasm download size says otherwise.
 
+## Amendment (2026-10-03)
+
+ImPlot3D no longer waits for cimplot3d's license. It comes through a C wrapper we produce from
+ImPlot3D's own MIT headers (cimgui's MIT generator run by us, or a hand-written shim), as task 317.
+Unlicensed wrappers are never vendored or compiled.
+
 ## Consequences
 
 - `jade_native` grows by about 1.5 MB (core and demo; the two backends add about 32 KB of code) plus

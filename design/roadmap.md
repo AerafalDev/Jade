@@ -62,7 +62,10 @@ Notes for the 107 brief, collected from earlier Outcomes:
 | [301](tasks/301-imgui-survey.md) | Survey: Dear ImGui, its extensions and backends | 201 | done |
 | [302](tasks/302-physics-box2d-box3d.md) | Box2D v3 and Box3D: native and bindings | 201, 103 | todo |
 | [303](tasks/303-text-stack.md) | FreeType + HarfBuzz + msdfgen: native, C shim, bindings | 201, 103 | todo |
-| [304](tasks/304-assets-survey.md) | Survey: asset libraries for runtime and import pipeline | 201, 003 | todo |
+| [304](tasks/304-assets-survey.md) | Survey: asset libraries for runtime and import pipeline | 201, 003 | done |
+| [305](tasks/305-zstd-meshoptimizer.md) | zstd and meshoptimizer | 201, 103 | todo |
+| [306](tasks/306-basisu-transcoder.md) | basis_universal transcoder | 305, 201, 103 | todo |
+| [307](tasks/307-stb-image-vorbis.md) | stb_image and Vorbis through miniaudio | 201, 103, 204 | todo |
 | [310](tasks/310-imgui-native.md) | Dear ImGui (docking), dear_bindings C API and backends in jade_native | 103, 003 | todo |
 | [311](tasks/311-imgui-bindings.md) | Dear ImGui core bindings | 310, 201 | todo |
 | [312](tasks/312-imgui-backends-sample.md) | ImGui SDL3 and WebGPU backend bindings, demo sample | 311, 202, 203, 206 | todo |
@@ -70,11 +73,15 @@ Notes for the 107 brief, collected from earlier Outcomes:
 | [314](tasks/314-imgui-widgets.md) | Small ImGui widgets and imnodes | 311 | todo |
 | [315](tasks/315-imgui-text-editor.md) | ImGuiColorTextEdit | 311 | todo |
 | [316](tasks/316-imgui-freetype.md) | imgui_freetype | 303, 310 | todo |
+| [317](tasks/317-implot3d.md) | ImPlot3D through our own C wrapper | 313 | todo |
 
 Surveys (301, 304) produce a Proposed ADR and draft briefs. The orchestrator turns them into
 implementation tasks.
 
-Deferred from 301 (ADR-0014): ImPlot3D, until its C wrapper has a license; imgui-node-editor, until
+Deferred from 304 (ADR-0015): `jade_tools` with the basisu encoder, cgltf and ufbx (drafts D, E
+and F in 304's Outcome), until the engine phase designs the asset pipeline.
+
+Deferred from 301 (ADR-0014): imgui-node-editor, until
 upstream compiles with the pinned ImGui or a fork is chosen; ImGuiFileDialog (optional, SDL3's
 dialogs come first); `dcimgui_internal` for the DockBuilder API.
 

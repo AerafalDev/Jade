@@ -64,6 +64,11 @@ method, a chained struct and a callback.
 
 ## Pitfalls
 
+- ADR-0016: implement the `nint` rule for function pointers in import signatures in the generator,
+  for every library, and regenerate SDL3 (its public API must not change). WebGPU is the first
+  callback-heavy library, so the rule belongs here.
+- From 203: `[LibraryImport]` needs `[MarshalAs(UnmanagedType.U1)]` on `bool` (ADR-0012 notes). That
+  is irrelevant for `WGPUBool`, a 32-bit integer.
 - Async operations (adapter and device requests, buffer mapping) complete through
   `wgpuInstanceProcessEvents` or `WaitAny`, depending on callback mode. The test must drive them.
 - `WGPUBool` is 32-bit.

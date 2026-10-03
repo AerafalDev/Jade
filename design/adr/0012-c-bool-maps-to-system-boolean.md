@@ -33,3 +33,10 @@ both read on 2026-10-02.
 - Task 203 switches the SDL3 mapping from `byte` to `bool` in the generator and regenerates the
   slice. Calls become `if (!Sdl.Init(...))`.
 - CLAUDE.md's interop rules are updated to match.
+
+## Notes from task 203 (2026-10-03)
+
+- `[LibraryImport]` rejects a bare `bool` even with runtime marshalling disabled (SYSLIB1051), since
+  this ADR only reasoned about `[DllImport]`. Generated imports therefore mark `bool` parameters and
+  returns `[MarshalAs(UnmanagedType.U1)]`. The generated stub passes one byte and reads a return as
+  `!= 0`, so the public API and the ABI are as decided. Struct fields stay plain `bool`.
