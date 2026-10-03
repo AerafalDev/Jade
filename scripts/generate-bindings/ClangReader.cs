@@ -11,11 +11,13 @@ using ClangSharp.Interop;
 internal sealed partial class ClangReader
 {
     private const string MainFile = "jade_bindings.c";
+    private const string MacroProbe = "jade_macro_";
 
     private readonly LibraryConfig _config;
     private readonly Target _target;
     private readonly string _includeDirectory;
     private readonly string _libraryDirectory;
+    private readonly Dictionary<string, HeaderConfig> _boundHeaders;
     private readonly List<string> _errors = [];
     private readonly List<FunctionDecl> _functions = [];
     private readonly HashSet<string> _functionNames = new(StringComparer.Ordinal);
@@ -24,6 +26,7 @@ internal sealed partial class ClangReader
     private readonly Dictionary<string, TypedefDecl> _typedefs = new(StringComparer.Ordinal);
     private readonly Dictionary<string, MacroDefinitionRecord> _macros = new(StringComparer.Ordinal);
     private readonly Dictionary<string, ulong> _probes = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, VarDecl> _macroProbes = new(StringComparer.Ordinal);
     private readonly Dictionary<string, string[]> _fileLines = new(StringComparer.Ordinal);
     private readonly HashSet<string> _usedConfigKeys = new(StringComparer.Ordinal);
 
@@ -33,6 +36,7 @@ internal sealed partial class ClangReader
         _target = target;
         _includeDirectory = Path.GetFullPath(includeDirectory);
         _libraryDirectory = Path.Combine(_includeDirectory, config.IncludeDirectory) + Path.DirectorySeparatorChar;
+        _boundHeaders = config.Headers.ToDictionary(h => h.Path, StringComparer.Ordinal);
     }
 
     /// <summary>Parses the library for one target.</summary>
@@ -52,29 +56,32 @@ internal sealed partial class ClangReader
 
     private TargetModel Read(CXIndex index, string sysroot, IReadOnlyList<string> defines)
     {
+        CheckHeaders();
         string[] arguments =
         [
             "-x", "c", "-std=c11", $"--target={_target.Triple}", "-nostdinc", "-isystem", Path.GetFullPath(sysroot), "-I", _includeDirectory,
+            "-ferror-limit=0",
             .. defines.Select(d => "-D" + d),
         ];
-        using var source = CXUnsavedFile.Create(MainFile, MainSource());
-        var options = CXTranslationUnit_Flags.CXTranslationUnit_SkipFunctionBodies | CXTranslationUnit_Flags.CXTranslationUnit_DetailedPreprocessingRecord;
-        var result = CXTranslationUnit.TryParse(index, MainFile, arguments, [source], options, out var handle);
-        if (result != CXErrorCode.CXError_Success)
-        {
-            throw new InvalidOperationException($"{_config.Name} on {_target.Rid}: libclang failed to parse ({result}).");
-        }
 
-        using var translationUnit = TranslationUnit.GetOrCreate(handle);
-        CheckDiagnostics(handle);
+        // A macro is a constant if `__typeof__(M) probe = M;` compiles and evaluates. The first parse probes every
+        // object-like macro of the bound headers and ignores the errors of those that are not constants; the second
+        // only probes the valid ones, so any error left is a real one.
+        var constants = ProbeMacros(index, arguments, MacroCandidates());
+
+        using var translationUnit = Parse(index, arguments, MainSource(constants));
+        CheckDiagnostics(translationUnit.Handle);
         Index(translationUnit);
 
         var pointerSize = (int)Probe("jade_probe_pointer");
         var longSize = (int)Probe("jade_probe_long");
         var mapper = new TypeMapper(_config, IsLibraryDeclaration, pointerSize, longSize);
-        var functionModels = ReadFunctions(mapper);
+        var (functionModels, excludedFunctions) = ReadFunctions(mapper);
+        var consumed = new HashSet<string>(StringComparer.Ordinal);
+        var constantModels = ReadConstants(mapper, functionModels, consumed);
         var (enumModels, structModels, handleModels, layouts) = ReadTypes(mapper);
-        CheckConfigUse(mapper);
+        var callbacks = mapper.Callbacks.ToDictionary(c => c.Key, c => DocumentationOf(c.Value), StringComparer.Ordinal);
+        RecordConfigUse(mapper);
 
         if (_errors.Count > 0)
         {
@@ -91,50 +98,110 @@ internal sealed partial class ClangReader
             Enums = [.. enumModels.OrderBy(e => e.Name, StringComparer.Ordinal)],
             Structs = [.. structModels.OrderBy(s => s.Name, StringComparer.Ordinal)],
             Handles = [.. handleModels.OrderBy(h => h.Name, StringComparer.Ordinal)],
+            Constants = constantModels,
+            Callbacks = callbacks,
         };
-        return new TargetModel { Target = _target, Model = model, Layouts = layouts, PointerSize = pointerSize, LongSize = longSize };
+        return new TargetModel
+        {
+            Target = _target,
+            Model = model,
+            Layouts = layouts,
+            PointerSize = pointerSize,
+            LongSize = longSize,
+            ExcludedFunctions = excludedFunctions,
+            UsedConfigKeys = _usedConfigKeys,
+        };
     }
 
-    // The bound headers, then probes: target sizes, and every object-like macro that may hold a flag value.
-    // Each macro probe is guarded, so a macro missing on one target only drops that member there, which the
-    // cross-target comparison then reports.
-    private string MainSource()
+    // Every header of the library is either bound or excluded with a reason, so a new upstream header cannot go unnoticed.
+    private void CheckHeaders()
+    {
+        var files = Directory.EnumerateFiles(_libraryDirectory, "*.h").Select(f => $"{_config.IncludeDirectory}/{Path.GetFileName(f)}").ToHashSet(StringComparer.Ordinal);
+        var configured = _config.Headers.Select(h => h.Path).Concat(_config.ExcludedHeaders.Keys).ToList();
+        foreach (var file in files.Where(f => !configured.Contains(f)).Order(StringComparer.Ordinal))
+        {
+            _errors.Add($"header {file} is neither bound nor excluded: add it to Headers or ExcludedHeaders.");
+        }
+
+        foreach (var header in configured.Where(h => !files.Contains(h)).Order(StringComparer.Ordinal))
+        {
+            _errors.Add($"configured header {header} does not exist.");
+        }
+
+        foreach (var duplicate in configured.GroupBy(h => h, StringComparer.Ordinal).Where(g => g.Count() > 1))
+        {
+            _errors.Add($"header {duplicate.Key} is configured twice.");
+        }
+
+        if (_errors.Count > 0)
+        {
+            throw new InvalidOperationException($"{_config.Name}:\n  {string.Join("\n  ", _errors)}");
+        }
+    }
+
+    private TranslationUnit Parse(CXIndex index, string[] arguments, string source)
+    {
+        using var file = CXUnsavedFile.Create(MainFile, source);
+        var options = CXTranslationUnit_Flags.CXTranslationUnit_SkipFunctionBodies | CXTranslationUnit_Flags.CXTranslationUnit_DetailedPreprocessingRecord;
+        var result = CXTranslationUnit.TryParse(index, MainFile, arguments, [file], options, out var handle);
+        if (result != CXErrorCode.CXError_Success)
+        {
+            throw new InvalidOperationException($"{_config.Name} on {_target.Rid}: libclang failed to parse ({result}).");
+        }
+
+        return TranslationUnit.GetOrCreate(handle);
+    }
+
+    private List<string> ProbeMacros(CXIndex index, string[] arguments, IReadOnlyCollection<string> candidates)
+    {
+        using var translationUnit = Parse(index, arguments, MainSource(candidates));
+        var valid = new List<string>();
+        foreach (var cursor in translationUnit.TranslationUnitDecl.CursorChildren)
+        {
+            if (cursor is VarDecl variable && variable.Location.IsFromMainFile && variable.Name.StartsWith(MacroProbe, StringComparison.Ordinal)
+                && !variable.Handle.IsInvalidDeclaration)
+            {
+                using var evaluation = variable.Handle.Evaluate;
+                if (evaluation.Kind is CXEvalResultKind.CXEval_Int or CXEvalResultKind.CXEval_Float or CXEvalResultKind.CXEval_StrLiteral)
+                {
+                    valid.Add(variable.Name[MacroProbe.Length..]);
+                }
+            }
+        }
+
+        return valid;
+    }
+
+    // The bound and excluded headers, then probes: target sizes, and the macros to evaluate. Each macro probe is
+    // guarded, so a macro missing on one target only drops it there, which the cross-target comparison then reports.
+    private string MainSource(IEnumerable<string> macros)
     {
         var builder = new StringBuilder();
-        foreach (var header in _config.Headers)
+        foreach (var header in _config.Headers.Select(h => h.Path).Concat(_config.ExcludedHeaders.Keys))
         {
-            builder.Append("#include <").Append(header.Path).Append(">\n");
+            builder.Append("#include <").Append(header).Append(">\n");
         }
 
         builder.Append("static const unsigned long long jade_probe_pointer = sizeof(void *);\n");
         builder.Append("static const unsigned long long jade_probe_long = sizeof(long);\n");
-        foreach (var macro in FlagMacroCandidates())
+        foreach (var macro in macros)
         {
             builder.Append("#ifdef ").Append(macro).Append('\n');
-            builder.Append("static const unsigned long long jade_macro_").Append(macro).Append(" = (unsigned long long)(").Append(macro).Append(");\n");
+            builder.Append("static const __typeof__(").Append(macro).Append(") ").Append(MacroProbe).Append(macro).Append(" = ").Append(macro).Append(";\n");
             builder.Append("#endif\n");
         }
 
         return builder.ToString();
     }
 
-    private SortedSet<string> FlagMacroCandidates()
+    private SortedSet<string> MacroCandidates()
     {
         var names = new SortedSet<string>(StringComparer.Ordinal);
-        if (_config.FlagMacros.Count == 0)
+        foreach (var header in _config.Headers)
         {
-            return names;
-        }
-
-        foreach (var file in Directory.EnumerateFiles(_libraryDirectory, "*.h"))
-        {
-            foreach (Match match in DefinePattern().Matches(File.ReadAllText(file)))
+            foreach (Match match in DefinePattern().Matches(File.ReadAllText(Path.Combine(_includeDirectory, header.Path))))
             {
-                var name = match.Groups["name"].Value;
-                if (_config.FlagMacros.Values.Any(prefix => name.StartsWith(prefix, StringComparison.Ordinal)))
-                {
-                    names.Add(name);
-                }
+                names.Add(match.Groups["name"].Value);
             }
         }
 
@@ -167,7 +234,11 @@ internal sealed partial class ClangReader
             switch (cursor)
             {
                 case MacroDefinitionRecord macro when !macro.IsFunctionLike && IsLibraryCursor(cursor):
-                    _macros.TryAdd(macro.Name, macro);
+                    _macros[macro.Name] = macro;
+                    break;
+
+                case VarDecl variable when variable.Location.IsFromMainFile && variable.Name.StartsWith(MacroProbe, StringComparison.Ordinal):
+                    _macroProbes[variable.Name[MacroProbe.Length..]] = variable;
                     break;
 
                 case VarDecl variable when variable.Location.IsFromMainFile:
@@ -204,19 +275,26 @@ internal sealed partial class ClangReader
         }
     }
 
-    private List<FunctionModel> ReadFunctions(TypeMapper mapper)
+    private (List<FunctionModel> Bound, Dictionary<string, string> Excluded) ReadFunctions(TypeMapper mapper)
     {
         var models = new List<FunctionModel>();
+        var excluded = new Dictionary<string, string>(StringComparer.Ordinal);
         foreach (var function in _functions)
         {
-            var header = _config.Headers.FirstOrDefault(h => h.Path == RelativePath(function));
-            if (header is null || header.Functions?.IsMatch(function.Name) == false)
+            // Inline and static functions have no exported symbol.
+            if (function.HasBody || function.IsInlined || function.StorageClass == CX_StorageClass.CX_SC_Static)
             {
                 continue;
             }
 
-            // Inline and static functions have no exported symbol.
-            if (function.HasBody || function.IsInlined || function.StorageClass == CX_StorageClass.CX_SC_Static)
+            var path = RelativePath(function);
+            if (_config.ExcludedHeaders.ContainsKey(path))
+            {
+                excluded[function.Name] = path;
+                continue;
+            }
+
+            if (!_boundHeaders.TryGetValue(path, out var header) || header.Functions?.IsMatch(function.Name) == false)
             {
                 continue;
             }
@@ -243,7 +321,7 @@ internal sealed partial class ClangReader
             }
         }
 
-        return models;
+        return (models, excluded);
     }
 
     private FunctionModel ReadFunction(FunctionDecl function, HeaderConfig header, TypeMapper mapper)
@@ -259,6 +337,7 @@ internal sealed partial class ClangReader
             throw new MappingException($"calling convention {typed.CallConv} is not cdecl");
         }
 
+        var documentation = DocumentationOf(function);
         var returnType = mapper.Map(function.ReturnType);
         var types = function.Parameters.Select(p => mapper.Map(p.Type)).ToList();
         var nativeNames = function.Parameters.Select((p, i) => p.Name.Length > 0 ? p.Name : $"arg{i}").ToList();
@@ -267,26 +346,47 @@ internal sealed partial class ClangReader
 
         for (var i = 0; i < types.Count; i++)
         {
+            if (kinds[i] != ParameterKind.None)
+            {
+                continue;
+            }
+
             var key = $"{function.Name}.{nativeNames[i]}";
-            if (_config.Parameters.TryGetValue(key, out var rule))
+            ParameterRule? rule = null;
+            if (_config.Parameters.TryGetValue(key, out var configured))
             {
                 _usedConfigKeys.Add(key);
-                CheckRule(key, rule, types[i]);
-                kinds[i] = rule.Kind;
-                if (rule.Kind == ParameterKind.Span)
-                {
-                    var count = nativeNames.IndexOf(rule.Count!);
-                    if (count < 0 || types[count].Kind != TypeKind.Primitive || types[count].Primitive is PrimitiveType.Single or PrimitiveType.Double)
-                    {
-                        throw new MappingException($"{key}: count parameter {rule.Count} is missing or not an integer");
-                    }
-
-                    kinds[count] = ParameterKind.Count;
-                    pairs[i] = rule.Count;
-                    pairs[count] = nativeNames[i];
-                }
+                CheckRule(key, configured, types[i]);
+                rule = configured;
             }
-            else if (kinds[i] == ParameterKind.None && _config.Utf8Strings && types[i] is { IsPointer: true, IsConst: true } pointer && pointer.Element!.Is(PrimitiveType.Char))
+            else if (_config.InferParameters)
+            {
+                rule = ParameterInference.Infer(i, nativeNames, types, documentation, name => mapper.KindOf(name) == ReferenceKind.Struct);
+            }
+
+            if (rule is not null && rule.Kind == ParameterKind.Span)
+            {
+                var count = nativeNames.IndexOf(rule.Count!);
+                if (count < 0 || !types[count].IsInteger())
+                {
+                    throw new MappingException($"{key}: count parameter {rule.Count} is missing or not an integer");
+                }
+
+                if (kinds[count] != ParameterKind.None)
+                {
+                    throw new MappingException($"{key}: count parameter {rule.Count} already has a rule");
+                }
+
+                kinds[count] = ParameterKind.Count;
+                pairs[i] = rule.Count;
+                pairs[count] = nativeNames[i];
+            }
+
+            if (rule is not null)
+            {
+                kinds[i] = rule.Kind;
+            }
+            else if (_config.Utf8Strings && types[i] is { IsPointer: true, IsConst: true } pointer && pointer.Element!.Is(PrimitiveType.Char))
             {
                 kinds[i] = ParameterKind.Utf8String;
             }
@@ -305,23 +405,28 @@ internal sealed partial class ClangReader
             });
         }
 
-        IReadOnlyList<string> platforms = [];
-        if (_config.UnsupportedPlatforms.TryGetValue(function.Name, out var unsupported))
-        {
-            _usedConfigKeys.Add(function.Name);
-            platforms = unsupported;
-        }
-
         return new FunctionModel
         {
             NativeName = function.Name,
-            Name = Rename(function.Name) ?? Naming.Pascal(Naming.StripPrefix(function.Name, _config.Prefixes), _config.Words),
+            Name = Rename(function.Name) ?? Pascal(Naming.StripPrefix(function.Name, _config.Prefixes)),
             Return = returnType,
             Parameters = parameters,
             Group = header.Group,
-            Documentation = DocumentationOf(function),
-            UnsupportedPlatforms = platforms,
+            Documentation = documentation,
+            SupportedPlatforms = Platforms(_config.SupportedPlatforms, function.Name),
+            UnsupportedPlatforms = Platforms(_config.UnsupportedPlatforms, function.Name),
         };
+    }
+
+    private IReadOnlyList<string> Platforms(IReadOnlyDictionary<string, IReadOnlyList<string>> platforms, string function)
+    {
+        if (!platforms.TryGetValue(function, out var list))
+        {
+            return [];
+        }
+
+        _usedConfigKeys.Add(function);
+        return list;
     }
 
     private static void CheckRule(string key, ParameterRule rule, TypeRef type)
@@ -331,12 +436,117 @@ internal sealed partial class ClangReader
             ParameterKind.None => true,
             ParameterKind.In => type is { IsPointer: true, IsConst: true } && type.Element!.Kind != TypeKind.Void,
             ParameterKind.Out or ParameterKind.Ref => type is { IsPointer: true, IsConst: false } && type.Element!.Kind != TypeKind.Void,
-            ParameterKind.Span => type.IsPointer && type.Element!.Kind != TypeKind.Void,
+            ParameterKind.Span => type.IsPointer && type.Element!.Kind is not (TypeKind.Void or TypeKind.Pointer or TypeKind.FunctionPointer),
             _ => false,
         };
         if (!valid)
         {
             throw new MappingException($"{key}: rule {rule.Kind} does not fit its C type");
+        }
+    }
+
+    private List<ConstantModel> ReadConstants(TypeMapper mapper, IReadOnlyList<FunctionModel> functions, HashSet<string> consumed)
+    {
+        // Macros of a macro enum are its members, not constants.
+        foreach (var (typedefName, macroEnum) in _config.MacroEnums)
+        {
+            if (_typedefs.TryGetValue(typedefName, out var typedef))
+            {
+                var header = FilePath(typedef);
+                consumed.UnionWith(_macros.Where(m => macroEnum.Matches(m.Key) && FilePath(m.Value) == header).Select(m => m.Key));
+            }
+        }
+
+        // SDL documents most property names only in the list of the function that takes them: "`SDL_PROP_X`: text".
+        var listed = new Dictionary<string, string>(StringComparer.Ordinal);
+        foreach (var function in functions)
+        {
+            foreach (var item in function.Documentation.Remarks.Where(b => b.Kind == DocBlockKind.List).SelectMany(b => b.Lines))
+            {
+                var match = ListedMacroPattern().Match(item);
+                if (match.Success)
+                {
+                    var text = match.Groups["text"].Value.TrimEnd();
+                    listed.TryAdd(match.Groups["name"].Value, $"{text}{(text.EndsWith('.') ? string.Empty : ".")} See `{function.NativeName}`.");
+                }
+            }
+        }
+
+        var constants = new List<(int Header, int Line, ConstantModel Model)>();
+        var headerOrder = _config.Headers.Select((h, i) => (h.Path, i)).ToDictionary(p => p.Path, p => p.i, StringComparer.Ordinal);
+        foreach (var (name, probe) in _macroProbes)
+        {
+            if (consumed.Contains(name) || !_macros.TryGetValue(name, out var macro) || !_boundHeaders.TryGetValue(RelativePath(macro), out var header))
+            {
+                continue;
+            }
+
+            if (_config.Exclusions.ContainsKey(name))
+            {
+                _usedConfigKeys.Add(name);
+                continue;
+            }
+
+            try
+            {
+                var documentation = MacroDocumentation(macro);
+                if (documentation.Summary is null && listed.TryGetValue(name, out var text))
+                {
+                    documentation = new Documentation { Summary = text, Remarks = documentation.Remarks };
+                }
+
+                var model = ReadConstant(name, probe, header, documentation, mapper);
+                constants.Add((headerOrder[header.Path], Line(macro), model));
+            }
+            catch (MappingException e)
+            {
+                _errors.Add($"{name}: {e.Message}. Add it to Exclusions with a reason, or teach the generator.");
+            }
+        }
+
+        return [.. constants.OrderBy(c => c.Header).ThenBy(c => c.Line).ThenBy(c => c.Model.NativeName, StringComparer.Ordinal).Select(c => c.Model)];
+    }
+
+    private ConstantModel ReadConstant(string name, VarDecl probe, HeaderConfig header, Documentation documentation, TypeMapper mapper)
+    {
+        using var evaluation = probe.Handle.Evaluate;
+        var type = mapper.Map(probe.Type);
+        var csharpName = Rename(name) ?? Pascal(Naming.StripPrefix(name, _config.Prefixes));
+        switch (evaluation.Kind)
+        {
+            case CXEvalResultKind.CXEval_StrLiteral when type is { Kind: TypeKind.FixedArray } array && array.Element!.Is(PrimitiveType.Char):
+                var text = evaluation.AsStr;
+                if (Encoding.UTF8.GetByteCount(text) + 1 != array.Length)
+                {
+                    throw new MappingException("the string holds a NUL or is not valid UTF-8");
+                }
+
+                return new ConstantModel { NativeName = name, Name = csharpName, Group = header.Group, Type = array, Text = text, Documentation = documentation };
+
+            case CXEvalResultKind.CXEval_Float when type.Is(PrimitiveType.Single) || type.Is(PrimitiveType.Double):
+                return new ConstantModel { NativeName = name, Name = csharpName, Group = header.Group, Type = type, Float = evaluation.AsDouble, Documentation = documentation };
+
+            case CXEvalResultKind.CXEval_Int:
+                // `long` constants come from INT64_C-style macros, which pick `long` where it is 64-bit and `long long`
+                // elsewhere: the width is what the macro means. A genuine 32-bit `long` constant then differs between
+                // targets, which the cross-target comparison reports.
+                if (type.Is(PrimitiveType.CLong) || type.Is(PrimitiveType.CULong))
+                {
+                    var is64 = (int)Probe("jade_probe_long") == 8;
+                    type = TypeRef.Of(type.Is(PrimitiveType.CLong) ? (is64 ? PrimitiveType.Int64 : PrimitiveType.Int32) : (is64 ? PrimitiveType.UInt64 : PrimitiveType.UInt32));
+                }
+
+                var isEnum = type.Kind == TypeKind.Named && mapper.KindOf(type.Name!) is ReferenceKind.Enum or ReferenceKind.IdEnum or ReferenceKind.MacroEnum;
+                if (!type.IsInteger() && !type.Is(PrimitiveType.Bool) && !isEnum)
+                {
+                    throw new MappingException($"constant of type {type.Describe()} is not supported");
+                }
+
+                var bits = evaluation.IsUnsignedInt ? evaluation.AsUnsigned : unchecked((ulong)evaluation.AsLongLong);
+                return new ConstantModel { NativeName = name, Name = csharpName, Group = header.Group, Type = type, Integer = bits, Documentation = documentation };
+
+            default:
+                throw new MappingException($"constant of type {type.Describe()} evaluates to {evaluation.Kind}");
         }
     }
 
@@ -346,6 +556,24 @@ internal sealed partial class ClangReader
         var structModels = new List<StructModel>();
         var handleModels = new List<HandleModel>();
         var layouts = new Dictionary<string, RecordLayout>(StringComparer.Ordinal);
+
+        // Enums and macro enums of bound headers are API even when no bound function names them, for example the
+        // indices of SDL_MessageBoxColorScheme.colors.
+        foreach (var (name, declaration) in _enums.Where(e => e.Key.Length > 0 && _boundHeaders.ContainsKey(RelativePath(e.Value))).OrderBy(e => e.Key, StringComparer.Ordinal))
+        {
+            if (_config.Exclusions.ContainsKey(name))
+            {
+                _usedConfigKeys.Add(name);
+                continue;
+            }
+
+            mapper.Reference(name, ReferenceKind.Enum);
+        }
+
+        foreach (var name in _config.MacroEnums.Keys.Where(_typedefs.ContainsKey).Order(StringComparer.Ordinal))
+        {
+            mapper.Reference(name, ReferenceKind.MacroEnum);
+        }
 
         // Reading a struct maps its fields, which can append references while this loop runs.
         for (var i = 0; i < mapper.References.Count; i++)
@@ -359,16 +587,28 @@ internal sealed partial class ClangReader
                         enumModels.Add(ReadEnum(_enums[reference.Name]));
                         break;
 
-                    case ReferenceKind.FlagMacros:
-                        enumModels.Add(ReadFlagMacros(reference.Name, mapper));
+                    case ReferenceKind.MacroEnum:
+                        enumModels.Add(ReadMacroEnum(reference.Name, mapper));
+                        break;
+
+                    case ReferenceKind.IdEnum:
+                        enumModels.Add(ReadIdEnum(reference.Name, mapper));
                         break;
 
                     case ReferenceKind.Struct:
-                        structModels.Add(ReadStruct(_records[reference.Name], mapper, layouts));
+                        var record = mapper.AnonymousRecords.TryGetValue(reference.Name, out var anonymous) ? anonymous : _records[reference.Name];
+                        structModels.Add(ReadStruct(reference.Name, record, mapper, layouts));
                         break;
 
                     case ReferenceKind.Handle:
-                        handleModels.Add(new HandleModel { NativeName = reference.Name, Name = TypeName(reference.Name), Documentation = TypeDocumentation(reference.Name) });
+                        handleModels.Add(new HandleModel
+                        {
+                            NativeName = reference.Name,
+                            Name = TypeName(reference.Name),
+                            Stem = MethodStem(reference.Name),
+                            Documentation = TypeDocumentation(reference.Name),
+                            IsForeign = _config.ForeignHandles.Contains(reference.Name),
+                        });
                         break;
 
                     case ReferenceKind.Opaque:
@@ -393,7 +633,7 @@ internal sealed partial class ClangReader
         var members = constants.Select(c => new EnumMemberModel
         {
             NativeName = c.Name,
-            Name = Rename($"{name}.{c.Name}") ?? Naming.Pascal(c.Name[prefix.Length..], _config.Words),
+            Name = Rename($"{name}.{c.Name}") ?? Pascal(c.Name[prefix.Length..]),
             Value = c.IsNegative ? unchecked((ulong)c.InitVal) : c.UnsignedInitVal,
             Documentation = DocumentationOf(c),
         }).ToList();
@@ -425,20 +665,20 @@ internal sealed partial class ClangReader
     }
 
     // A typedef such as `typedef Uint32 SDL_InitFlags;` followed by `#define SDL_INIT_VIDEO 0x20u` lines.
-    private EnumModel ReadFlagMacros(string name, TypeMapper mapper)
+    private EnumModel ReadMacroEnum(string name, TypeMapper mapper)
     {
         _usedConfigKeys.Add(name);
         var typedef = _typedefs[name];
         var underlying = mapper.Map(typedef.UnderlyingType);
-        if (underlying.Kind != TypeKind.Primitive || underlying.Primitive is PrimitiveType.Single or PrimitiveType.Double or PrimitiveType.Char)
+        if (!underlying.IsInteger())
         {
-            throw new MappingException("a flags typedef must be an integer");
+            throw new MappingException("a macro enum typedef must be an integer");
         }
 
-        var prefix = _config.FlagMacros[name];
+        var macroEnum = _config.MacroEnums[name];
         var header = FilePath(typedef);
         var members = new List<EnumMemberModel>();
-        foreach (var (macroName, macro) in _macros.Where(m => m.Key.StartsWith(prefix, StringComparison.Ordinal) && FilePath(m.Value) == header).OrderBy(m => Line(m.Value)))
+        foreach (var (macroName, macro) in _macros.Where(m => macroEnum.Matches(m.Key) && FilePath(m.Value) == header).OrderBy(m => Line(m.Value)))
         {
             if (_config.Exclusions.ContainsKey(macroName))
             {
@@ -446,31 +686,57 @@ internal sealed partial class ClangReader
                 continue;
             }
 
-            if (!_probes.TryGetValue("jade_macro_" + macroName, out var value))
+            if (!_macroProbes.TryGetValue(macroName, out var probe))
             {
-                throw new MappingException($"flag macro {macroName} does not evaluate to an integer: add it to Exclusions with a reason");
+                throw new MappingException($"macro {macroName} does not evaluate to a constant: add it to Exclusions with a reason");
+            }
+
+            using var evaluation = probe.Handle.Evaluate;
+            if (evaluation.Kind != CXEvalResultKind.CXEval_Int)
+            {
+                throw new MappingException($"macro {macroName} is not an integer: add it to Exclusions with a reason");
             }
 
             members.Add(new EnumMemberModel
             {
                 NativeName = macroName,
-                Name = Rename($"{name}.{macroName}") ?? Naming.Pascal(macroName[prefix.Length..], _config.Words),
-                Value = value,
-                Documentation = TrailingComment(macro),
+                Name = Rename($"{name}.{macroName}") ?? Pascal(macroName[macroEnum.Prefix.Length..]),
+                Value = evaluation.IsUnsignedInt ? evaluation.AsUnsigned : unchecked((ulong)evaluation.AsLongLong),
+                Documentation = MacroDocumentation(macro),
             });
         }
 
         if (members.Count == 0)
         {
-            throw new MappingException($"no macro starting with {prefix} in {RelativePath(typedef)}");
+            throw new MappingException($"no macro starting with {macroEnum.Prefix} in {RelativePath(typedef)}");
         }
 
-        return new EnumModel { NativeName = name, Name = TypeName(name), Underlying = underlying.Primitive, IsFlags = true, Members = Unique(name, members), Documentation = DocumentationOf(typedef) };
+        return new EnumModel
+        {
+            NativeName = name,
+            Name = TypeName(name),
+            Underlying = underlying.Primitive,
+            IsFlags = macroEnum.IsFlags,
+            Members = Unique(name, members),
+            Documentation = DocumentationOf(typedef),
+        };
     }
 
-    private StructModel ReadStruct(RecordDecl declaration, TypeMapper mapper, Dictionary<string, RecordLayout> layouts)
+    private EnumModel ReadIdEnum(string name, TypeMapper mapper)
     {
-        var name = TypeMapper.NameOf(declaration);
+        _usedConfigKeys.Add(name);
+        var typedef = _typedefs[name];
+        var underlying = mapper.Map(typedef.UnderlyingType);
+        if (!underlying.IsInteger())
+        {
+            throw new MappingException("an ID typedef must be an integer");
+        }
+
+        return new EnumModel { NativeName = name, Name = TypeName(name), Underlying = underlying.Primitive, Members = [], Documentation = DocumentationOf(typedef) };
+    }
+
+    private StructModel ReadStruct(string name, RecordDecl declaration, TypeMapper mapper, Dictionary<string, RecordLayout> layouts)
+    {
         IEnumerable<FieldDecl> fields = declaration.Fields;
         if (_config.UnionMembers.TryGetValue(name, out var kept))
         {
@@ -498,16 +764,16 @@ internal sealed partial class ClangReader
                 throw new MappingException($"field {field.Name} is a bit-field or anonymous member, which the generator does not support yet");
             }
 
-            var type = mapper.Map(field.Type);
-            if (type.Kind == TypeKind.FixedArray && type.Element!.Kind != TypeKind.Primitive)
+            var type = mapper.MapField(field.Type, name, field.Name);
+            if (type.Kind == TypeKind.FixedArray && type.Element!.Kind is TypeKind.FixedArray or TypeKind.FunctionPointer)
             {
-                throw new MappingException($"field {field.Name} is an array of non-scalars, which needs an [InlineArray] type the generator does not emit yet");
+                throw new MappingException($"field {field.Name} is an array of arrays or function pointers, which the generator does not support yet");
             }
 
             fieldModels.Add(new FieldModel
             {
                 NativeName = field.Name,
-                Name = Rename($"{name}.{field.Name}") ?? Naming.Pascal(field.Name, _config.Words),
+                Name = Rename($"{name}.{field.Name}") ?? Pascal(field.Name),
                 Type = type,
                 Documentation = DocumentationOf(field),
             });
@@ -516,35 +782,22 @@ internal sealed partial class ClangReader
 
         var recordType = declaration.TypeForDecl.Handle;
         layouts[name] = new RecordLayout(recordType.SizeOf, recordType.AlignOf, offsets);
-        return new StructModel { NativeName = name, Name = TypeName(name), IsUnion = declaration.IsUnion, Fields = fieldModels, Documentation = TypeDocumentation(name) };
+        var documentation = mapper.AnonymousRecords.ContainsKey(name) ? Documentation.None : TypeDocumentation(name);
+        return new StructModel { NativeName = name, Name = TypeName(name), IsUnion = declaration.IsUnion, Fields = fieldModels, Documentation = documentation };
     }
 
-    // A config entry that matches nothing is either stale or misspelled; both would silently change the output later.
-    private void CheckConfigUse(TypeMapper mapper)
+    // Config entries used by this target's parse; generate-bindings.cs reports those no target used.
+    private void RecordConfigUse(TypeMapper mapper)
     {
         foreach (var reference in mapper.References)
         {
             _usedConfigKeys.Add(reference.Name);
         }
 
+        _usedConfigKeys.UnionWith(mapper.UsedMappings);
         foreach (var (name, decision) in _config.LayoutDecisions.Where(d => d.Value.Kind != LayoutDecisionKind.Opaque))
         {
             _errors.Add($"layout decision {decision.Kind} for {name} is not implemented yet; only Opaque is.");
-        }
-
-        var keys = _config.Exclusions.Keys
-            .Concat(_config.Parameters.Keys)
-            .Concat(_config.FlagMacros.Keys)
-            .Concat(_config.FlagEnums)
-            .Concat(_config.UnionMembers.Keys)
-            .Concat(_config.UnsupportedPlatforms.Keys)
-            .Concat(_config.Renames.Keys)
-            .Concat(_config.Handles)
-            .Concat(_config.OpaqueStructs)
-            .Concat(_config.LayoutDecisions.Keys);
-        foreach (var key in keys.Where(k => !_usedConfigKeys.Contains(k)).Order(StringComparer.Ordinal))
-        {
-            _errors.Add($"config entry {key} matches nothing that is bound: remove it or fix its name.");
         }
     }
 
@@ -558,7 +811,32 @@ internal sealed partial class ClangReader
         return members;
     }
 
-    private string TypeName(string nativeName) => Rename(nativeName) ?? Naming.Pascal(Naming.StripPrefix(nativeName, _config.Prefixes), _config.Words);
+    private string Pascal(string name) => Naming.Pascal(name, _config.Words, _config.LeadingDigitPrefix);
+
+    private string MethodStem(string handle)
+    {
+        if (_config.MethodStems.TryGetValue(handle, out var stem))
+        {
+            _usedConfigKeys.Add(handle);
+            return stem;
+        }
+
+        return Pascal(Naming.StripPrefix(handle, _config.Prefixes));
+    }
+
+    // An anonymous struct or union is named after its field: SDL_GamepadBinding.input becomes GamepadBindingInput.
+    private string TypeName(string nativeName)
+    {
+        if (Rename(nativeName) is { } renamed)
+        {
+            return renamed;
+        }
+
+        var dot = nativeName.LastIndexOf('.');
+        return dot < 0
+            ? Pascal(Naming.StripPrefix(nativeName, _config.Prefixes))
+            : TypeName(nativeName[..dot]) + Pascal(nativeName[(dot + 1)..]);
+    }
 
     private string? Rename(string key)
     {
@@ -585,18 +863,49 @@ internal sealed partial class ClangReader
         return DocCommentParser.Parse(raw.ToString());
     }
 
-    // libclang attaches no comment to macros; SDL documents flag macros with a trailing /**< ... */.
-    private Documentation TrailingComment(MacroDefinitionRecord macro)
+    // libclang attaches no comment to macros: SDL documents them with a trailing /**< ... */ or a /** ... */ block
+    // that ends on the line right above.
+    private Documentation MacroDocumentation(MacroDefinitionRecord macro)
     {
-        var path = FilePath(macro);
+        var lines = FileLines(FilePath(macro));
+        var line = Line(macro) - 1;
+        var trailing = TrailingCommentPattern().Match(lines[line]);
+        if (trailing.Success)
+        {
+            return DocCommentParser.Parse(trailing.Value);
+        }
+
+        if (line == 0 || !lines[line - 1].TrimEnd().EndsWith("*/", StringComparison.Ordinal) || lines[line - 1].Contains("#define", StringComparison.Ordinal))
+        {
+            return Documentation.None;
+        }
+
+        for (var start = line - 1; start >= 0; start--)
+        {
+            var trimmed = lines[start].TrimStart();
+            if (trimmed.StartsWith("/**", StringComparison.Ordinal) && !trimmed.StartsWith("/**<", StringComparison.Ordinal))
+            {
+                return DocCommentParser.Parse(string.Join('\n', lines[start..line]));
+            }
+
+            if (start < line - 1 && trimmed.Contains("*/", StringComparison.Ordinal))
+            {
+                break;
+            }
+        }
+
+        return Documentation.None;
+    }
+
+    private string[] FileLines(string path)
+    {
         if (!_fileLines.TryGetValue(path, out var lines))
         {
             lines = File.ReadAllLines(path);
             _fileLines[path] = lines;
         }
 
-        var match = TrailingCommentPattern().Match(lines[Line(macro) - 1]);
-        return match.Success ? DocCommentParser.Parse(match.Value) : Documentation.None;
+        return lines;
     }
 
     private ulong Probe(string name) =>
@@ -627,4 +936,7 @@ internal sealed partial class ClangReader
 
     [GeneratedRegex(@"/\*\*<.*?\*/")]
     private static partial Regex TrailingCommentPattern();
+
+    [GeneratedRegex(@"^`(?<name>[A-Za-z_][A-Za-z0-9_]*)`: (?<text>.+)$")]
+    private static partial Regex ListedMacroPattern();
 }

@@ -26,9 +26,13 @@ internal static class LayoutTestEmitter
         foreach (var structModel in model.Structs.Where(s => !s.IsOpaque))
         {
             writer.Line("[Fact]");
-            writer.Open($"public void {structModel.Name}_has_the_layout_of_{structModel.NativeName}()");
+            writer.Open($"public void {structModel.Name}_has_the_layout_of_{structModel.NativeName.Replace('.', '_')}()");
             writer.Line($"{structModel.Name} value = default;");
-            var offsets = structModel.Fields.Select(f => f.Type.Kind == TypeKind.FixedArray ? $"Offset(&value, value.{f.Name})" : $"Offset(&value, &value.{f.Name})");
+
+            // A fixed buffer is already a pointer; anything else, inline arrays included, needs its address taken.
+            var offsets = structModel.Fields.Select(f => f.Type.Kind == TypeKind.FixedArray && CSharpEmitter.IsFixedBufferElement(f.Type.Element!)
+                ? $"Offset(&value, value.{f.Name})"
+                : $"Offset(&value, &value.{f.Name})");
             writer.Line($"long[] actual = [sizeof({structModel.Name}), {string.Join(", ", offsets)}];");
             writer.Line("long[] expected = HostRid.Current switch");
             writer.Line("{");

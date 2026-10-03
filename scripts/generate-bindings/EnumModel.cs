@@ -1,4 +1,4 @@
-/// <summary>A C enum, or an integer typedef whose values are <c>#define</c> flags.</summary>
+/// <summary>A C enum, an integer typedef whose values are <c>#define</c>s, or an ID typedef (an enum without members).</summary>
 internal sealed class EnumModel
 {
     /// <summary>Gets the C name of the enum or typedef.</summary>

@@ -10,6 +10,125 @@ namespace Jade.Interop.Tests;
 public sealed unsafe class Sdl3LayoutTests
 {
     [Fact]
+    public void AssertData_has_the_layout_of_SDL_AssertData()
+    {
+        AssertData value = default;
+        long[] actual = [sizeof(AssertData), Offset(&value, &value.AlwaysIgnore), Offset(&value, &value.TriggerCount), Offset(&value, &value.Condition), Offset(&value, &value.Filename), Offset(&value, &value.Linenum), Offset(&value, &value.Function), Offset(&value, &value.Next)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" => [48, 0, 4, 8, 16, 24, 32, 40],
+            "browser-wasm" => [28, 0, 4, 8, 12, 16, 20, 24],
+            var rid => throw new PlatformNotSupportedException($"No SDL_AssertData layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void AsyncIOOutcome_has_the_layout_of_SDL_AsyncIOOutcome()
+    {
+        AsyncIOOutcome value = default;
+        long[] actual = [sizeof(AsyncIOOutcome), Offset(&value, &value.Asyncio), Offset(&value, &value.Type), Offset(&value, &value.Result), Offset(&value, &value.Buffer), Offset(&value, &value.Offset), Offset(&value, &value.BytesRequested), Offset(&value, &value.BytesTransferred), Offset(&value, &value.Userdata)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" => [56, 0, 8, 12, 16, 24, 32, 40, 48],
+            "browser-wasm" => [48, 0, 4, 8, 12, 16, 24, 32, 40],
+            var rid => throw new PlatformNotSupportedException($"No SDL_AsyncIOOutcome layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void AtomicInt_has_the_layout_of_SDL_AtomicInt()
+    {
+        AtomicInt value = default;
+        long[] actual = [sizeof(AtomicInt), Offset(&value, &value.Value)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [4, 0],
+            var rid => throw new PlatformNotSupportedException($"No SDL_AtomicInt layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void AtomicU32_has_the_layout_of_SDL_AtomicU32()
+    {
+        AtomicU32 value = default;
+        long[] actual = [sizeof(AtomicU32), Offset(&value, &value.Value)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [4, 0],
+            var rid => throw new PlatformNotSupportedException($"No SDL_AtomicU32 layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void AudioDeviceEvent_has_the_layout_of_SDL_AudioDeviceEvent()
+    {
+        AudioDeviceEvent value = default;
+        long[] actual = [sizeof(AudioDeviceEvent), Offset(&value, &value.Type), Offset(&value, &value.Reserved), Offset(&value, &value.Timestamp), Offset(&value, &value.Which), Offset(&value, &value.Recording), Offset(&value, &value.Padding1), Offset(&value, &value.Padding2), Offset(&value, &value.Padding3)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [24, 0, 4, 8, 16, 20, 21, 22, 23],
+            var rid => throw new PlatformNotSupportedException($"No SDL_AudioDeviceEvent layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void CameraDeviceEvent_has_the_layout_of_SDL_CameraDeviceEvent()
+    {
+        CameraDeviceEvent value = default;
+        long[] actual = [sizeof(CameraDeviceEvent), Offset(&value, &value.Type), Offset(&value, &value.Reserved), Offset(&value, &value.Timestamp), Offset(&value, &value.Which)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [24, 0, 4, 8, 16],
+            var rid => throw new PlatformNotSupportedException($"No SDL_CameraDeviceEvent layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void CameraSpec_has_the_layout_of_SDL_CameraSpec()
+    {
+        CameraSpec value = default;
+        long[] actual = [sizeof(CameraSpec), Offset(&value, &value.Format), Offset(&value, &value.Colorspace), Offset(&value, &value.Width), Offset(&value, &value.Height), Offset(&value, &value.FramerateNumerator), Offset(&value, &value.FramerateDenominator)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [24, 0, 4, 8, 12, 16, 20],
+            var rid => throw new PlatformNotSupportedException($"No SDL_CameraSpec layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void ClipboardEvent_has_the_layout_of_SDL_ClipboardEvent()
+    {
+        ClipboardEvent value = default;
+        long[] actual = [sizeof(ClipboardEvent), Offset(&value, &value.Type), Offset(&value, &value.Reserved), Offset(&value, &value.Timestamp), Offset(&value, &value.Owner), Offset(&value, &value.NumMimeTypes), Offset(&value, &value.MimeTypes)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [32, 0, 4, 8, 16, 20, 24],
+            var rid => throw new PlatformNotSupportedException($"No SDL_ClipboardEvent layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void Color_has_the_layout_of_SDL_Color()
+    {
+        Color value = default;
+        long[] actual = [sizeof(Color), Offset(&value, &value.R), Offset(&value, &value.G), Offset(&value, &value.B), Offset(&value, &value.A)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [4, 0, 1, 2, 3],
+            var rid => throw new PlatformNotSupportedException($"No SDL_Color layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
     public void CommonEvent_has_the_layout_of_SDL_CommonEvent()
     {
         CommonEvent value = default;
@@ -18,6 +137,34 @@ public sealed unsafe class Sdl3LayoutTests
         {
             "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [16, 0, 4, 8],
             var rid => throw new PlatformNotSupportedException($"No SDL_CommonEvent layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void CursorFrameInfo_has_the_layout_of_SDL_CursorFrameInfo()
+    {
+        CursorFrameInfo value = default;
+        long[] actual = [sizeof(CursorFrameInfo), Offset(&value, &value.Surface), Offset(&value, &value.Duration)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" => [16, 0, 8],
+            "browser-wasm" => [8, 0, 4],
+            var rid => throw new PlatformNotSupportedException($"No SDL_CursorFrameInfo layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void DialogFileFilter_has_the_layout_of_SDL_DialogFileFilter()
+    {
+        DialogFileFilter value = default;
+        long[] actual = [sizeof(DialogFileFilter), Offset(&value, &value.Name), Offset(&value, &value.Pattern)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" => [16, 0, 8],
+            "browser-wasm" => [8, 0, 4],
+            var rid => throw new PlatformNotSupportedException($"No SDL_DialogFileFilter layout for {rid}."),
         };
         actual.ShouldBe(expected);
     }
@@ -50,14 +197,699 @@ public sealed unsafe class Sdl3LayoutTests
     }
 
     [Fact]
+    public void DropEvent_has_the_layout_of_SDL_DropEvent()
+    {
+        DropEvent value = default;
+        long[] actual = [sizeof(DropEvent), Offset(&value, &value.Type), Offset(&value, &value.Reserved), Offset(&value, &value.Timestamp), Offset(&value, &value.WindowID), Offset(&value, &value.X), Offset(&value, &value.Y), Offset(&value, &value.Source), Offset(&value, &value.Data)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" => [48, 0, 4, 8, 16, 20, 24, 32, 40],
+            "browser-wasm" => [40, 0, 4, 8, 16, 20, 24, 28, 32],
+            var rid => throw new PlatformNotSupportedException($"No SDL_DropEvent layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
     public void Event_has_the_layout_of_SDL_Event()
     {
         Event value = default;
-        long[] actual = [sizeof(Event), Offset(&value, &value.Type), Offset(&value, &value.Common), Offset(&value, &value.Display), Offset(&value, &value.Window), Offset(&value, &value.Quit), Offset(&value, value.Padding)];
+        long[] actual = [sizeof(Event), Offset(&value, &value.Type), Offset(&value, &value.Common), Offset(&value, &value.Display), Offset(&value, &value.Window), Offset(&value, &value.Kdevice), Offset(&value, &value.Key), Offset(&value, &value.Edit), Offset(&value, &value.EditCandidates), Offset(&value, &value.Text), Offset(&value, &value.Mdevice), Offset(&value, &value.Motion), Offset(&value, &value.Button), Offset(&value, &value.Wheel), Offset(&value, &value.Jdevice), Offset(&value, &value.Jaxis), Offset(&value, &value.Jball), Offset(&value, &value.Jhat), Offset(&value, &value.Jbutton), Offset(&value, &value.Jbattery), Offset(&value, &value.Gdevice), Offset(&value, &value.Gaxis), Offset(&value, &value.Gbutton), Offset(&value, &value.Gtouchpad), Offset(&value, &value.Gsensor), Offset(&value, &value.Adevice), Offset(&value, &value.Cdevice), Offset(&value, &value.Sensor), Offset(&value, &value.Quit), Offset(&value, &value.User), Offset(&value, &value.Tfinger), Offset(&value, &value.Pinch), Offset(&value, &value.Pproximity), Offset(&value, &value.Ptouch), Offset(&value, &value.Pmotion), Offset(&value, &value.Pbutton), Offset(&value, &value.Paxis), Offset(&value, &value.Render), Offset(&value, &value.Drop), Offset(&value, &value.Clipboard), Offset(&value, value.Padding)];
         long[] expected = HostRid.Current switch
         {
-            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [128, 0, 0, 0, 0, 0, 0],
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             var rid => throw new PlatformNotSupportedException($"No SDL_Event layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void FPoint_has_the_layout_of_SDL_FPoint()
+    {
+        FPoint value = default;
+        long[] actual = [sizeof(FPoint), Offset(&value, &value.X), Offset(&value, &value.Y)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [8, 0, 4],
+            var rid => throw new PlatformNotSupportedException($"No SDL_FPoint layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void FRect_has_the_layout_of_SDL_FRect()
+    {
+        FRect value = default;
+        long[] actual = [sizeof(FRect), Offset(&value, &value.X), Offset(&value, &value.Y), Offset(&value, &value.W), Offset(&value, &value.H)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [16, 0, 4, 8, 12],
+            var rid => throw new PlatformNotSupportedException($"No SDL_FRect layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void Finger_has_the_layout_of_SDL_Finger()
+    {
+        Finger value = default;
+        long[] actual = [sizeof(Finger), Offset(&value, &value.Id), Offset(&value, &value.X), Offset(&value, &value.Y), Offset(&value, &value.Pressure)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [24, 0, 8, 12, 16],
+            var rid => throw new PlatformNotSupportedException($"No SDL_Finger layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void GamepadAxisEvent_has_the_layout_of_SDL_GamepadAxisEvent()
+    {
+        GamepadAxisEvent value = default;
+        long[] actual = [sizeof(GamepadAxisEvent), Offset(&value, &value.Type), Offset(&value, &value.Reserved), Offset(&value, &value.Timestamp), Offset(&value, &value.Which), Offset(&value, &value.Axis), Offset(&value, &value.Padding1), Offset(&value, &value.Padding2), Offset(&value, &value.Padding3), Offset(&value, &value.Value), Offset(&value, &value.Padding4)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [32, 0, 4, 8, 16, 20, 21, 22, 23, 24, 26],
+            var rid => throw new PlatformNotSupportedException($"No SDL_GamepadAxisEvent layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void GamepadBinding_has_the_layout_of_SDL_GamepadBinding()
+    {
+        GamepadBinding value = default;
+        long[] actual = [sizeof(GamepadBinding), Offset(&value, &value.InputType), Offset(&value, &value.Input), Offset(&value, &value.OutputType), Offset(&value, &value.Output)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [32, 0, 4, 16, 20],
+            var rid => throw new PlatformNotSupportedException($"No SDL_GamepadBinding layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void GamepadBindingInput_has_the_layout_of_SDL_GamepadBinding_input()
+    {
+        GamepadBindingInput value = default;
+        long[] actual = [sizeof(GamepadBindingInput), Offset(&value, &value.Button), Offset(&value, &value.Axis), Offset(&value, &value.Hat)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [12, 0, 0, 0],
+            var rid => throw new PlatformNotSupportedException($"No SDL_GamepadBinding.input layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void GamepadBindingInputAxis_has_the_layout_of_SDL_GamepadBinding_input_axis()
+    {
+        GamepadBindingInputAxis value = default;
+        long[] actual = [sizeof(GamepadBindingInputAxis), Offset(&value, &value.Axis), Offset(&value, &value.AxisMin), Offset(&value, &value.AxisMax)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [12, 0, 4, 8],
+            var rid => throw new PlatformNotSupportedException($"No SDL_GamepadBinding.input.axis layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void GamepadBindingInputHat_has_the_layout_of_SDL_GamepadBinding_input_hat()
+    {
+        GamepadBindingInputHat value = default;
+        long[] actual = [sizeof(GamepadBindingInputHat), Offset(&value, &value.Hat), Offset(&value, &value.HatMask)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [8, 0, 4],
+            var rid => throw new PlatformNotSupportedException($"No SDL_GamepadBinding.input.hat layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void GamepadBindingOutput_has_the_layout_of_SDL_GamepadBinding_output()
+    {
+        GamepadBindingOutput value = default;
+        long[] actual = [sizeof(GamepadBindingOutput), Offset(&value, &value.Button), Offset(&value, &value.Axis)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [12, 0, 0],
+            var rid => throw new PlatformNotSupportedException($"No SDL_GamepadBinding.output layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void GamepadBindingOutputAxis_has_the_layout_of_SDL_GamepadBinding_output_axis()
+    {
+        GamepadBindingOutputAxis value = default;
+        long[] actual = [sizeof(GamepadBindingOutputAxis), Offset(&value, &value.Axis), Offset(&value, &value.AxisMin), Offset(&value, &value.AxisMax)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [12, 0, 4, 8],
+            var rid => throw new PlatformNotSupportedException($"No SDL_GamepadBinding.output.axis layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void GamepadButtonEvent_has_the_layout_of_SDL_GamepadButtonEvent()
+    {
+        GamepadButtonEvent value = default;
+        long[] actual = [sizeof(GamepadButtonEvent), Offset(&value, &value.Type), Offset(&value, &value.Reserved), Offset(&value, &value.Timestamp), Offset(&value, &value.Which), Offset(&value, &value.Button), Offset(&value, &value.Down), Offset(&value, &value.Padding1), Offset(&value, &value.Padding2)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [24, 0, 4, 8, 16, 20, 21, 22, 23],
+            var rid => throw new PlatformNotSupportedException($"No SDL_GamepadButtonEvent layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void GamepadDeviceEvent_has_the_layout_of_SDL_GamepadDeviceEvent()
+    {
+        GamepadDeviceEvent value = default;
+        long[] actual = [sizeof(GamepadDeviceEvent), Offset(&value, &value.Type), Offset(&value, &value.Reserved), Offset(&value, &value.Timestamp), Offset(&value, &value.Which)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [24, 0, 4, 8, 16],
+            var rid => throw new PlatformNotSupportedException($"No SDL_GamepadDeviceEvent layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void GamepadSensorEvent_has_the_layout_of_SDL_GamepadSensorEvent()
+    {
+        GamepadSensorEvent value = default;
+        long[] actual = [sizeof(GamepadSensorEvent), Offset(&value, &value.Type), Offset(&value, &value.Reserved), Offset(&value, &value.Timestamp), Offset(&value, &value.Which), Offset(&value, &value.Sensor), Offset(&value, value.Data), Offset(&value, &value.SensorTimestamp)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [48, 0, 4, 8, 16, 20, 24, 40],
+            var rid => throw new PlatformNotSupportedException($"No SDL_GamepadSensorEvent layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void GamepadTouchpadEvent_has_the_layout_of_SDL_GamepadTouchpadEvent()
+    {
+        GamepadTouchpadEvent value = default;
+        long[] actual = [sizeof(GamepadTouchpadEvent), Offset(&value, &value.Type), Offset(&value, &value.Reserved), Offset(&value, &value.Timestamp), Offset(&value, &value.Which), Offset(&value, &value.Touchpad), Offset(&value, &value.Finger), Offset(&value, &value.X), Offset(&value, &value.Y), Offset(&value, &value.Pressure)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [40, 0, 4, 8, 16, 20, 24, 28, 32, 36],
+            var rid => throw new PlatformNotSupportedException($"No SDL_GamepadTouchpadEvent layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void HapticCondition_has_the_layout_of_SDL_HapticCondition()
+    {
+        HapticCondition value = default;
+        long[] actual = [sizeof(HapticCondition), Offset(&value, &value.Type), Offset(&value, &value.Direction), Offset(&value, &value.Length), Offset(&value, &value.Delay), Offset(&value, &value.Button), Offset(&value, &value.Interval), Offset(&value, value.RightSat), Offset(&value, value.LeftSat), Offset(&value, value.RightCoeff), Offset(&value, value.LeftCoeff), Offset(&value, value.Deadband), Offset(&value, value.Center)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [68, 0, 4, 20, 24, 26, 28, 30, 36, 42, 48, 54, 60],
+            var rid => throw new PlatformNotSupportedException($"No SDL_HapticCondition layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void HapticConstant_has_the_layout_of_SDL_HapticConstant()
+    {
+        HapticConstant value = default;
+        long[] actual = [sizeof(HapticConstant), Offset(&value, &value.Type), Offset(&value, &value.Direction), Offset(&value, &value.Length), Offset(&value, &value.Delay), Offset(&value, &value.Button), Offset(&value, &value.Interval), Offset(&value, &value.Level), Offset(&value, &value.AttackLength), Offset(&value, &value.AttackLevel), Offset(&value, &value.FadeLength), Offset(&value, &value.FadeLevel)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [40, 0, 4, 20, 24, 26, 28, 30, 32, 34, 36, 38],
+            var rid => throw new PlatformNotSupportedException($"No SDL_HapticConstant layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void HapticCustom_has_the_layout_of_SDL_HapticCustom()
+    {
+        HapticCustom value = default;
+        long[] actual = [sizeof(HapticCustom), Offset(&value, &value.Type), Offset(&value, &value.Direction), Offset(&value, &value.Length), Offset(&value, &value.Delay), Offset(&value, &value.Button), Offset(&value, &value.Interval), Offset(&value, &value.Channels), Offset(&value, &value.Period), Offset(&value, &value.Samples), Offset(&value, &value.Data), Offset(&value, &value.AttackLength), Offset(&value, &value.AttackLevel), Offset(&value, &value.FadeLength), Offset(&value, &value.FadeLevel)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" => [56, 0, 4, 20, 24, 26, 28, 30, 32, 34, 40, 48, 50, 52, 54],
+            "browser-wasm" => [48, 0, 4, 20, 24, 26, 28, 30, 32, 34, 36, 40, 42, 44, 46],
+            var rid => throw new PlatformNotSupportedException($"No SDL_HapticCustom layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void HapticDirection_has_the_layout_of_SDL_HapticDirection()
+    {
+        HapticDirection value = default;
+        long[] actual = [sizeof(HapticDirection), Offset(&value, &value.Type), Offset(&value, value.Dir)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [16, 0, 4],
+            var rid => throw new PlatformNotSupportedException($"No SDL_HapticDirection layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void HapticEffect_has_the_layout_of_SDL_HapticEffect()
+    {
+        HapticEffect value = default;
+        long[] actual = [sizeof(HapticEffect), Offset(&value, &value.Type), Offset(&value, &value.Constant), Offset(&value, &value.Periodic), Offset(&value, &value.Condition), Offset(&value, &value.Ramp), Offset(&value, &value.Leftright), Offset(&value, &value.Custom)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" => [72, 0, 0, 0, 0, 0, 0, 0],
+            "browser-wasm" => [68, 0, 0, 0, 0, 0, 0, 0],
+            var rid => throw new PlatformNotSupportedException($"No SDL_HapticEffect layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void HapticLeftRight_has_the_layout_of_SDL_HapticLeftRight()
+    {
+        HapticLeftRight value = default;
+        long[] actual = [sizeof(HapticLeftRight), Offset(&value, &value.Type), Offset(&value, &value.Length), Offset(&value, &value.LargeMagnitude), Offset(&value, &value.SmallMagnitude)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [12, 0, 4, 8, 10],
+            var rid => throw new PlatformNotSupportedException($"No SDL_HapticLeftRight layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void HapticPeriodic_has_the_layout_of_SDL_HapticPeriodic()
+    {
+        HapticPeriodic value = default;
+        long[] actual = [sizeof(HapticPeriodic), Offset(&value, &value.Type), Offset(&value, &value.Direction), Offset(&value, &value.Length), Offset(&value, &value.Delay), Offset(&value, &value.Button), Offset(&value, &value.Interval), Offset(&value, &value.Period), Offset(&value, &value.Magnitude), Offset(&value, &value.Offset), Offset(&value, &value.Phase), Offset(&value, &value.AttackLength), Offset(&value, &value.AttackLevel), Offset(&value, &value.FadeLength), Offset(&value, &value.FadeLevel)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [48, 0, 4, 20, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44],
+            var rid => throw new PlatformNotSupportedException($"No SDL_HapticPeriodic layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void HapticRamp_has_the_layout_of_SDL_HapticRamp()
+    {
+        HapticRamp value = default;
+        long[] actual = [sizeof(HapticRamp), Offset(&value, &value.Type), Offset(&value, &value.Direction), Offset(&value, &value.Length), Offset(&value, &value.Delay), Offset(&value, &value.Button), Offset(&value, &value.Interval), Offset(&value, &value.Start), Offset(&value, &value.End), Offset(&value, &value.AttackLength), Offset(&value, &value.AttackLevel), Offset(&value, &value.FadeLength), Offset(&value, &value.FadeLevel)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [44, 0, 4, 20, 24, 26, 28, 30, 32, 34, 36, 38, 40],
+            var rid => throw new PlatformNotSupportedException($"No SDL_HapticRamp layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void HidDeviceInfo_has_the_layout_of_SDL_hid_device_info()
+    {
+        HidDeviceInfo value = default;
+        long[] actual = [sizeof(HidDeviceInfo), Offset(&value, &value.Path), Offset(&value, &value.VendorId), Offset(&value, &value.ProductId), Offset(&value, &value.SerialNumber), Offset(&value, &value.ReleaseNumber), Offset(&value, &value.ManufacturerString), Offset(&value, &value.ProductString), Offset(&value, &value.UsagePage), Offset(&value, &value.Usage), Offset(&value, &value.InterfaceNumber), Offset(&value, &value.InterfaceClass), Offset(&value, &value.InterfaceSubclass), Offset(&value, &value.InterfaceProtocol), Offset(&value, &value.BusType), Offset(&value, &value.Next)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" => [80, 0, 8, 10, 16, 24, 32, 40, 48, 50, 52, 56, 60, 64, 68, 72],
+            "browser-wasm" => [52, 0, 4, 6, 8, 12, 16, 20, 24, 26, 28, 32, 36, 40, 44, 48],
+            var rid => throw new PlatformNotSupportedException($"No SDL_hid_device_info layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void IOStreamInterface_has_the_layout_of_SDL_IOStreamInterface()
+    {
+        IOStreamInterface value = default;
+        long[] actual = [sizeof(IOStreamInterface), Offset(&value, &value.Version), Offset(&value, &value.Size), Offset(&value, &value.Seek), Offset(&value, &value.Read), Offset(&value, &value.Write), Offset(&value, &value.Flush), Offset(&value, &value.Close)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" => [56, 0, 8, 16, 24, 32, 40, 48],
+            "browser-wasm" => [28, 0, 4, 8, 12, 16, 20, 24],
+            var rid => throw new PlatformNotSupportedException($"No SDL_IOStreamInterface layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void InitState_has_the_layout_of_SDL_InitState()
+    {
+        InitState value = default;
+        long[] actual = [sizeof(InitState), Offset(&value, &value.Status), Offset(&value, &value.Thread), Offset(&value, &value.Reserved)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [24, 0, 8, 16],
+            var rid => throw new PlatformNotSupportedException($"No SDL_InitState layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void JoyAxisEvent_has_the_layout_of_SDL_JoyAxisEvent()
+    {
+        JoyAxisEvent value = default;
+        long[] actual = [sizeof(JoyAxisEvent), Offset(&value, &value.Type), Offset(&value, &value.Reserved), Offset(&value, &value.Timestamp), Offset(&value, &value.Which), Offset(&value, &value.Axis), Offset(&value, &value.Padding1), Offset(&value, &value.Padding2), Offset(&value, &value.Padding3), Offset(&value, &value.Value), Offset(&value, &value.Padding4)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [32, 0, 4, 8, 16, 20, 21, 22, 23, 24, 26],
+            var rid => throw new PlatformNotSupportedException($"No SDL_JoyAxisEvent layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void JoyBallEvent_has_the_layout_of_SDL_JoyBallEvent()
+    {
+        JoyBallEvent value = default;
+        long[] actual = [sizeof(JoyBallEvent), Offset(&value, &value.Type), Offset(&value, &value.Reserved), Offset(&value, &value.Timestamp), Offset(&value, &value.Which), Offset(&value, &value.Ball), Offset(&value, &value.Padding1), Offset(&value, &value.Padding2), Offset(&value, &value.Padding3), Offset(&value, &value.Xrel), Offset(&value, &value.Yrel)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [32, 0, 4, 8, 16, 20, 21, 22, 23, 24, 26],
+            var rid => throw new PlatformNotSupportedException($"No SDL_JoyBallEvent layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void JoyBatteryEvent_has_the_layout_of_SDL_JoyBatteryEvent()
+    {
+        JoyBatteryEvent value = default;
+        long[] actual = [sizeof(JoyBatteryEvent), Offset(&value, &value.Type), Offset(&value, &value.Reserved), Offset(&value, &value.Timestamp), Offset(&value, &value.Which), Offset(&value, &value.State), Offset(&value, &value.Percent)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [32, 0, 4, 8, 16, 20, 24],
+            var rid => throw new PlatformNotSupportedException($"No SDL_JoyBatteryEvent layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void JoyButtonEvent_has_the_layout_of_SDL_JoyButtonEvent()
+    {
+        JoyButtonEvent value = default;
+        long[] actual = [sizeof(JoyButtonEvent), Offset(&value, &value.Type), Offset(&value, &value.Reserved), Offset(&value, &value.Timestamp), Offset(&value, &value.Which), Offset(&value, &value.Button), Offset(&value, &value.Down), Offset(&value, &value.Padding1), Offset(&value, &value.Padding2)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [24, 0, 4, 8, 16, 20, 21, 22, 23],
+            var rid => throw new PlatformNotSupportedException($"No SDL_JoyButtonEvent layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void JoyDeviceEvent_has_the_layout_of_SDL_JoyDeviceEvent()
+    {
+        JoyDeviceEvent value = default;
+        long[] actual = [sizeof(JoyDeviceEvent), Offset(&value, &value.Type), Offset(&value, &value.Reserved), Offset(&value, &value.Timestamp), Offset(&value, &value.Which)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [24, 0, 4, 8, 16],
+            var rid => throw new PlatformNotSupportedException($"No SDL_JoyDeviceEvent layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void JoyHatEvent_has_the_layout_of_SDL_JoyHatEvent()
+    {
+        JoyHatEvent value = default;
+        long[] actual = [sizeof(JoyHatEvent), Offset(&value, &value.Type), Offset(&value, &value.Reserved), Offset(&value, &value.Timestamp), Offset(&value, &value.Which), Offset(&value, &value.Hat), Offset(&value, &value.Value), Offset(&value, &value.Padding1), Offset(&value, &value.Padding2)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [24, 0, 4, 8, 16, 20, 21, 22, 23],
+            var rid => throw new PlatformNotSupportedException($"No SDL_JoyHatEvent layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void KeyboardDeviceEvent_has_the_layout_of_SDL_KeyboardDeviceEvent()
+    {
+        KeyboardDeviceEvent value = default;
+        long[] actual = [sizeof(KeyboardDeviceEvent), Offset(&value, &value.Type), Offset(&value, &value.Reserved), Offset(&value, &value.Timestamp), Offset(&value, &value.Which)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [24, 0, 4, 8, 16],
+            var rid => throw new PlatformNotSupportedException($"No SDL_KeyboardDeviceEvent layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void KeyboardEvent_has_the_layout_of_SDL_KeyboardEvent()
+    {
+        KeyboardEvent value = default;
+        long[] actual = [sizeof(KeyboardEvent), Offset(&value, &value.Type), Offset(&value, &value.Reserved), Offset(&value, &value.Timestamp), Offset(&value, &value.WindowID), Offset(&value, &value.Which), Offset(&value, &value.Scancode), Offset(&value, &value.Key), Offset(&value, &value.Mod), Offset(&value, &value.Raw), Offset(&value, &value.Down), Offset(&value, &value.Repeat)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [40, 0, 4, 8, 16, 20, 24, 28, 32, 34, 36, 37],
+            var rid => throw new PlatformNotSupportedException($"No SDL_KeyboardEvent layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void Locale_has_the_layout_of_SDL_Locale()
+    {
+        Locale value = default;
+        long[] actual = [sizeof(Locale), Offset(&value, &value.Language), Offset(&value, &value.Country)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" => [16, 0, 8],
+            "browser-wasm" => [8, 0, 4],
+            var rid => throw new PlatformNotSupportedException($"No SDL_Locale layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void MessageBoxButtonData_has_the_layout_of_SDL_MessageBoxButtonData()
+    {
+        MessageBoxButtonData value = default;
+        long[] actual = [sizeof(MessageBoxButtonData), Offset(&value, &value.Flags), Offset(&value, &value.ButtonID), Offset(&value, &value.Text)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" => [16, 0, 4, 8],
+            "browser-wasm" => [12, 0, 4, 8],
+            var rid => throw new PlatformNotSupportedException($"No SDL_MessageBoxButtonData layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void MessageBoxColor_has_the_layout_of_SDL_MessageBoxColor()
+    {
+        MessageBoxColor value = default;
+        long[] actual = [sizeof(MessageBoxColor), Offset(&value, &value.R), Offset(&value, &value.G), Offset(&value, &value.B)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [3, 0, 1, 2],
+            var rid => throw new PlatformNotSupportedException($"No SDL_MessageBoxColor layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void MessageBoxColorScheme_has_the_layout_of_SDL_MessageBoxColorScheme()
+    {
+        MessageBoxColorScheme value = default;
+        long[] actual = [sizeof(MessageBoxColorScheme), Offset(&value, &value.Colors)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [15, 0],
+            var rid => throw new PlatformNotSupportedException($"No SDL_MessageBoxColorScheme layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void MessageBoxData_has_the_layout_of_SDL_MessageBoxData()
+    {
+        MessageBoxData value = default;
+        long[] actual = [sizeof(MessageBoxData), Offset(&value, &value.Flags), Offset(&value, &value.Window), Offset(&value, &value.Title), Offset(&value, &value.Message), Offset(&value, &value.Numbuttons), Offset(&value, &value.Buttons), Offset(&value, &value.ColorScheme)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" => [56, 0, 8, 16, 24, 32, 40, 48],
+            "browser-wasm" => [28, 0, 4, 8, 12, 16, 20, 24],
+            var rid => throw new PlatformNotSupportedException($"No SDL_MessageBoxData layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void MouseButtonEvent_has_the_layout_of_SDL_MouseButtonEvent()
+    {
+        MouseButtonEvent value = default;
+        long[] actual = [sizeof(MouseButtonEvent), Offset(&value, &value.Type), Offset(&value, &value.Reserved), Offset(&value, &value.Timestamp), Offset(&value, &value.WindowID), Offset(&value, &value.Which), Offset(&value, &value.Button), Offset(&value, &value.Down), Offset(&value, &value.Clicks), Offset(&value, &value.Padding), Offset(&value, &value.X), Offset(&value, &value.Y)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [40, 0, 4, 8, 16, 20, 24, 25, 26, 27, 28, 32],
+            var rid => throw new PlatformNotSupportedException($"No SDL_MouseButtonEvent layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void MouseDeviceEvent_has_the_layout_of_SDL_MouseDeviceEvent()
+    {
+        MouseDeviceEvent value = default;
+        long[] actual = [sizeof(MouseDeviceEvent), Offset(&value, &value.Type), Offset(&value, &value.Reserved), Offset(&value, &value.Timestamp), Offset(&value, &value.Which)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [24, 0, 4, 8, 16],
+            var rid => throw new PlatformNotSupportedException($"No SDL_MouseDeviceEvent layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void MouseMotionEvent_has_the_layout_of_SDL_MouseMotionEvent()
+    {
+        MouseMotionEvent value = default;
+        long[] actual = [sizeof(MouseMotionEvent), Offset(&value, &value.Type), Offset(&value, &value.Reserved), Offset(&value, &value.Timestamp), Offset(&value, &value.WindowID), Offset(&value, &value.Which), Offset(&value, &value.State), Offset(&value, &value.X), Offset(&value, &value.Y), Offset(&value, &value.Xrel), Offset(&value, &value.Yrel)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [48, 0, 4, 8, 16, 20, 24, 28, 32, 36, 40],
+            var rid => throw new PlatformNotSupportedException($"No SDL_MouseMotionEvent layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void MouseWheelEvent_has_the_layout_of_SDL_MouseWheelEvent()
+    {
+        MouseWheelEvent value = default;
+        long[] actual = [sizeof(MouseWheelEvent), Offset(&value, &value.Type), Offset(&value, &value.Reserved), Offset(&value, &value.Timestamp), Offset(&value, &value.WindowID), Offset(&value, &value.Which), Offset(&value, &value.X), Offset(&value, &value.Y), Offset(&value, &value.Direction), Offset(&value, &value.MouseX), Offset(&value, &value.MouseY), Offset(&value, &value.IntegerX), Offset(&value, &value.IntegerY)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [56, 0, 4, 8, 16, 20, 24, 28, 32, 36, 40, 44, 48],
+            var rid => throw new PlatformNotSupportedException($"No SDL_MouseWheelEvent layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void Palette_has_the_layout_of_SDL_Palette()
+    {
+        Palette value = default;
+        long[] actual = [sizeof(Palette), Offset(&value, &value.Ncolors), Offset(&value, &value.Colors), Offset(&value, &value.Version), Offset(&value, &value.Refcount)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" => [24, 0, 8, 16, 20],
+            "browser-wasm" => [16, 0, 4, 8, 12],
+            var rid => throw new PlatformNotSupportedException($"No SDL_Palette layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void PathInfo_has_the_layout_of_SDL_PathInfo()
+    {
+        PathInfo value = default;
+        long[] actual = [sizeof(PathInfo), Offset(&value, &value.Type), Offset(&value, &value.Size), Offset(&value, &value.CreateTime), Offset(&value, &value.ModifyTime), Offset(&value, &value.AccessTime)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [40, 0, 8, 16, 24, 32],
+            var rid => throw new PlatformNotSupportedException($"No SDL_PathInfo layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void PenAxisEvent_has_the_layout_of_SDL_PenAxisEvent()
+    {
+        PenAxisEvent value = default;
+        long[] actual = [sizeof(PenAxisEvent), Offset(&value, &value.Type), Offset(&value, &value.Reserved), Offset(&value, &value.Timestamp), Offset(&value, &value.WindowID), Offset(&value, &value.Which), Offset(&value, &value.PenState), Offset(&value, &value.X), Offset(&value, &value.Y), Offset(&value, &value.Axis), Offset(&value, &value.Value)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [48, 0, 4, 8, 16, 20, 24, 28, 32, 36, 40],
+            var rid => throw new PlatformNotSupportedException($"No SDL_PenAxisEvent layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void PenButtonEvent_has_the_layout_of_SDL_PenButtonEvent()
+    {
+        PenButtonEvent value = default;
+        long[] actual = [sizeof(PenButtonEvent), Offset(&value, &value.Type), Offset(&value, &value.Reserved), Offset(&value, &value.Timestamp), Offset(&value, &value.WindowID), Offset(&value, &value.Which), Offset(&value, &value.PenState), Offset(&value, &value.X), Offset(&value, &value.Y), Offset(&value, &value.Button), Offset(&value, &value.Down)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [40, 0, 4, 8, 16, 20, 24, 28, 32, 36, 37],
+            var rid => throw new PlatformNotSupportedException($"No SDL_PenButtonEvent layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void PenMotionEvent_has_the_layout_of_SDL_PenMotionEvent()
+    {
+        PenMotionEvent value = default;
+        long[] actual = [sizeof(PenMotionEvent), Offset(&value, &value.Type), Offset(&value, &value.Reserved), Offset(&value, &value.Timestamp), Offset(&value, &value.WindowID), Offset(&value, &value.Which), Offset(&value, &value.PenState), Offset(&value, &value.X), Offset(&value, &value.Y)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [40, 0, 4, 8, 16, 20, 24, 28, 32],
+            var rid => throw new PlatformNotSupportedException($"No SDL_PenMotionEvent layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void PenProximityEvent_has_the_layout_of_SDL_PenProximityEvent()
+    {
+        PenProximityEvent value = default;
+        long[] actual = [sizeof(PenProximityEvent), Offset(&value, &value.Type), Offset(&value, &value.Reserved), Offset(&value, &value.Timestamp), Offset(&value, &value.WindowID), Offset(&value, &value.Which), Offset(&value, &value.PenState)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [32, 0, 4, 8, 16, 20, 24],
+            var rid => throw new PlatformNotSupportedException($"No SDL_PenProximityEvent layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void PenTouchEvent_has_the_layout_of_SDL_PenTouchEvent()
+    {
+        PenTouchEvent value = default;
+        long[] actual = [sizeof(PenTouchEvent), Offset(&value, &value.Type), Offset(&value, &value.Reserved), Offset(&value, &value.Timestamp), Offset(&value, &value.WindowID), Offset(&value, &value.Which), Offset(&value, &value.PenState), Offset(&value, &value.X), Offset(&value, &value.Y), Offset(&value, &value.Eraser), Offset(&value, &value.Down)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [40, 0, 4, 8, 16, 20, 24, 28, 32, 36, 37],
+            var rid => throw new PlatformNotSupportedException($"No SDL_PenTouchEvent layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void PinchFingerEvent_has_the_layout_of_SDL_PinchFingerEvent()
+    {
+        PinchFingerEvent value = default;
+        long[] actual = [sizeof(PinchFingerEvent), Offset(&value, &value.Type), Offset(&value, &value.Reserved), Offset(&value, &value.Timestamp), Offset(&value, &value.Scale), Offset(&value, &value.WindowID)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [24, 0, 4, 8, 16, 20],
+            var rid => throw new PlatformNotSupportedException($"No SDL_PinchFingerEvent layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void PixelFormatDetails_has_the_layout_of_SDL_PixelFormatDetails()
+    {
+        PixelFormatDetails value = default;
+        long[] actual = [sizeof(PixelFormatDetails), Offset(&value, &value.Format), Offset(&value, &value.BitsPerPixel), Offset(&value, &value.BytesPerPixel), Offset(&value, value.Padding), Offset(&value, &value.Rmask), Offset(&value, &value.Gmask), Offset(&value, &value.Bmask), Offset(&value, &value.Amask), Offset(&value, &value.Rbits), Offset(&value, &value.Gbits), Offset(&value, &value.Bbits), Offset(&value, &value.Abits), Offset(&value, &value.Rshift), Offset(&value, &value.Gshift), Offset(&value, &value.Bshift), Offset(&value, &value.Ashift)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [32, 0, 4, 5, 6, 8, 12, 16, 20, 24, 25, 26, 27, 28, 29, 30, 31],
+            var rid => throw new PlatformNotSupportedException($"No SDL_PixelFormatDetails layout for {rid}."),
         };
         actual.ShouldBe(expected);
     }
@@ -102,6 +934,72 @@ public sealed unsafe class Sdl3LayoutTests
     }
 
     [Fact]
+    public void RenderEvent_has_the_layout_of_SDL_RenderEvent()
+    {
+        RenderEvent value = default;
+        long[] actual = [sizeof(RenderEvent), Offset(&value, &value.Type), Offset(&value, &value.Reserved), Offset(&value, &value.Timestamp), Offset(&value, &value.WindowID)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [24, 0, 4, 8, 16],
+            var rid => throw new PlatformNotSupportedException($"No SDL_RenderEvent layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void SdlDateTime_has_the_layout_of_SDL_DateTime()
+    {
+        SdlDateTime value = default;
+        long[] actual = [sizeof(SdlDateTime), Offset(&value, &value.Year), Offset(&value, &value.Month), Offset(&value, &value.Day), Offset(&value, &value.Hour), Offset(&value, &value.Minute), Offset(&value, &value.Second), Offset(&value, &value.Nanosecond), Offset(&value, &value.DayOfWeek), Offset(&value, &value.UtcOffset)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [36, 0, 4, 8, 12, 16, 20, 24, 28, 32],
+            var rid => throw new PlatformNotSupportedException($"No SDL_DateTime layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void SdlGuid_has_the_layout_of_SDL_GUID()
+    {
+        SdlGuid value = default;
+        long[] actual = [sizeof(SdlGuid), Offset(&value, value.Data)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [16, 0],
+            var rid => throw new PlatformNotSupportedException($"No SDL_GUID layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void SensorEvent_has_the_layout_of_SDL_SensorEvent()
+    {
+        SensorEvent value = default;
+        long[] actual = [sizeof(SensorEvent), Offset(&value, &value.Type), Offset(&value, &value.Reserved), Offset(&value, &value.Timestamp), Offset(&value, &value.Which), Offset(&value, value.Data), Offset(&value, &value.SensorTimestamp)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [56, 0, 4, 8, 16, 20, 48],
+            var rid => throw new PlatformNotSupportedException($"No SDL_SensorEvent layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void StorageInterface_has_the_layout_of_SDL_StorageInterface()
+    {
+        StorageInterface value = default;
+        long[] actual = [sizeof(StorageInterface), Offset(&value, &value.Version), Offset(&value, &value.Close), Offset(&value, &value.Ready), Offset(&value, &value.Enumerate), Offset(&value, &value.Info), Offset(&value, &value.ReadFile), Offset(&value, &value.WriteFile), Offset(&value, &value.Mkdir), Offset(&value, &value.Remove), Offset(&value, &value.Rename), Offset(&value, &value.Copy), Offset(&value, &value.SpaceRemaining)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" => [96, 0, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88],
+            "browser-wasm" => [48, 0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44],
+            var rid => throw new PlatformNotSupportedException($"No SDL_StorageInterface layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
     public void Surface_has_the_layout_of_SDL_Surface()
     {
         Surface value = default;
@@ -111,6 +1009,115 @@ public sealed unsafe class Sdl3LayoutTests
             "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" => [48, 0, 4, 8, 12, 16, 24, 32, 40],
             "browser-wasm" => [32, 0, 4, 8, 12, 16, 20, 24, 28],
             var rid => throw new PlatformNotSupportedException($"No SDL_Surface layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void TextEditingCandidatesEvent_has_the_layout_of_SDL_TextEditingCandidatesEvent()
+    {
+        TextEditingCandidatesEvent value = default;
+        long[] actual = [sizeof(TextEditingCandidatesEvent), Offset(&value, &value.Type), Offset(&value, &value.Reserved), Offset(&value, &value.Timestamp), Offset(&value, &value.WindowID), Offset(&value, &value.Candidates), Offset(&value, &value.NumCandidates), Offset(&value, &value.SelectedCandidate), Offset(&value, &value.Horizontal), Offset(&value, &value.Padding1), Offset(&value, &value.Padding2), Offset(&value, &value.Padding3)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" => [48, 0, 4, 8, 16, 24, 32, 36, 40, 41, 42, 43],
+            "browser-wasm" => [40, 0, 4, 8, 16, 20, 24, 28, 32, 33, 34, 35],
+            var rid => throw new PlatformNotSupportedException($"No SDL_TextEditingCandidatesEvent layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void TextEditingEvent_has_the_layout_of_SDL_TextEditingEvent()
+    {
+        TextEditingEvent value = default;
+        long[] actual = [sizeof(TextEditingEvent), Offset(&value, &value.Type), Offset(&value, &value.Reserved), Offset(&value, &value.Timestamp), Offset(&value, &value.WindowID), Offset(&value, &value.Text), Offset(&value, &value.Start), Offset(&value, &value.Length)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" => [40, 0, 4, 8, 16, 24, 32, 36],
+            "browser-wasm" => [32, 0, 4, 8, 16, 20, 24, 28],
+            var rid => throw new PlatformNotSupportedException($"No SDL_TextEditingEvent layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void TextInputEvent_has_the_layout_of_SDL_TextInputEvent()
+    {
+        TextInputEvent value = default;
+        long[] actual = [sizeof(TextInputEvent), Offset(&value, &value.Type), Offset(&value, &value.Reserved), Offset(&value, &value.Timestamp), Offset(&value, &value.WindowID), Offset(&value, &value.Text)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" => [32, 0, 4, 8, 16, 24],
+            "browser-wasm" => [24, 0, 4, 8, 16, 20],
+            var rid => throw new PlatformNotSupportedException($"No SDL_TextInputEvent layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void TouchFingerEvent_has_the_layout_of_SDL_TouchFingerEvent()
+    {
+        TouchFingerEvent value = default;
+        long[] actual = [sizeof(TouchFingerEvent), Offset(&value, &value.Type), Offset(&value, &value.Reserved), Offset(&value, &value.Timestamp), Offset(&value, &value.TouchID), Offset(&value, &value.FingerID), Offset(&value, &value.X), Offset(&value, &value.Y), Offset(&value, &value.Dx), Offset(&value, &value.Dy), Offset(&value, &value.Pressure), Offset(&value, &value.WindowID)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [56, 0, 4, 8, 16, 24, 32, 36, 40, 44, 48, 52],
+            var rid => throw new PlatformNotSupportedException($"No SDL_TouchFingerEvent layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void UserEvent_has_the_layout_of_SDL_UserEvent()
+    {
+        UserEvent value = default;
+        long[] actual = [sizeof(UserEvent), Offset(&value, &value.Type), Offset(&value, &value.Reserved), Offset(&value, &value.Timestamp), Offset(&value, &value.WindowID), Offset(&value, &value.Code), Offset(&value, &value.Data1), Offset(&value, &value.Data2)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" => [40, 0, 4, 8, 16, 20, 24, 32],
+            "browser-wasm" => [32, 0, 4, 8, 16, 20, 24, 28],
+            var rid => throw new PlatformNotSupportedException($"No SDL_UserEvent layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void VirtualJoystickDesc_has_the_layout_of_SDL_VirtualJoystickDesc()
+    {
+        VirtualJoystickDesc value = default;
+        long[] actual = [sizeof(VirtualJoystickDesc), Offset(&value, &value.Version), Offset(&value, &value.Type), Offset(&value, &value.Padding), Offset(&value, &value.VendorId), Offset(&value, &value.ProductId), Offset(&value, &value.Naxes), Offset(&value, &value.Nbuttons), Offset(&value, &value.Nballs), Offset(&value, &value.Nhats), Offset(&value, &value.Ntouchpads), Offset(&value, &value.Nsensors), Offset(&value, value.Padding2), Offset(&value, &value.ButtonMask), Offset(&value, &value.AxisMask), Offset(&value, &value.Name), Offset(&value, &value.Touchpads), Offset(&value, &value.Sensors), Offset(&value, &value.Userdata), Offset(&value, &value.Update), Offset(&value, &value.SetPlayerIndex), Offset(&value, &value.Rumble), Offset(&value, &value.RumbleTriggers), Offset(&value, &value.SetLED), Offset(&value, &value.SendEffect), Offset(&value, &value.SetSensorsEnabled), Offset(&value, &value.Cleanup)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" => [136, 0, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 28, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128],
+            "browser-wasm" => [84, 0, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80],
+            var rid => throw new PlatformNotSupportedException($"No SDL_VirtualJoystickDesc layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void VirtualJoystickSensorDesc_has_the_layout_of_SDL_VirtualJoystickSensorDesc()
+    {
+        VirtualJoystickSensorDesc value = default;
+        long[] actual = [sizeof(VirtualJoystickSensorDesc), Offset(&value, &value.Type), Offset(&value, &value.Rate)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [8, 0, 4],
+            var rid => throw new PlatformNotSupportedException($"No SDL_VirtualJoystickSensorDesc layout for {rid}."),
+        };
+        actual.ShouldBe(expected);
+    }
+
+    [Fact]
+    public void VirtualJoystickTouchpadDesc_has_the_layout_of_SDL_VirtualJoystickTouchpadDesc()
+    {
+        VirtualJoystickTouchpadDesc value = default;
+        long[] actual = [sizeof(VirtualJoystickTouchpadDesc), Offset(&value, &value.Nfingers), Offset(&value, value.Padding)];
+        long[] expected = HostRid.Current switch
+        {
+            "win-x64" or "win-arm64" or "linux-x64" or "linux-arm64" or "osx-x64" or "osx-arm64" or "android-arm64" or "android-x64" or "ios-arm64" or "iossimulator-arm64" or "iossimulator-x64" or "browser-wasm" => [8, 0, 2],
+            var rid => throw new PlatformNotSupportedException($"No SDL_VirtualJoystickTouchpadDesc layout for {rid}."),
         };
         actual.ShouldBe(expected);
     }

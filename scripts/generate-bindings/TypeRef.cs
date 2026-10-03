@@ -36,6 +36,9 @@ internal sealed class TypeRef
     /// <summary>Gets the parameter types, for <see cref="TypeKind.FunctionPointer"/>.</summary>
     public IReadOnlyList<TypeRef> Parameters { get; private init; } = [];
 
+    /// <summary>Gets the C typedef naming a <see cref="TypeKind.FunctionPointer"/> (a callback type), or <see langword="null"/>.</summary>
+    public string? Alias { get; private init; }
+
     /// <summary>Gets whether this is a data pointer.</summary>
     public bool IsPointer => Kind == TypeKind.Pointer;
 
@@ -64,12 +67,29 @@ internal sealed class TypeRef
     /// <summary>Creates a C function pointer type.</summary>
     /// <param name="returnType">The return type.</param>
     /// <param name="parameters">The parameter types.</param>
+    /// <param name="alias">The typedef naming it, or <see langword="null"/>.</param>
     /// <returns>The type.</returns>
-    public static TypeRef FunctionPointer(TypeRef returnType, IReadOnlyList<TypeRef> parameters) =>
-        new(TypeKind.FunctionPointer) { Return = returnType, Parameters = parameters };
+    public static TypeRef FunctionPointer(TypeRef returnType, IReadOnlyList<TypeRef> parameters, string? alias = null) =>
+        new(TypeKind.FunctionPointer) { Return = returnType, Parameters = parameters, Alias = alias };
 
     /// <summary>Gets whether this is a scalar of the given type.</summary>
     /// <param name="primitive">The scalar to test for.</param>
     /// <returns><see langword="true"/> for a <see cref="TypeKind.Primitive"/> of <paramref name="primitive"/>.</returns>
     public bool Is(PrimitiveType primitive) => Kind == TypeKind.Primitive && Primitive == primitive;
+
+    /// <summary>Returns whether this is an integer scalar, the only kind that can count elements or back an enum.</summary>
+    /// <returns><see langword="true"/> for integer primitives, <see langword="false"/> for <c>char</c>, <c>bool</c> and floating point.</returns>
+    public bool IsInteger() => Kind == TypeKind.Primitive && Primitive is not (PrimitiveType.Char or PrimitiveType.Bool or PrimitiveType.Single or PrimitiveType.Double);
+
+    /// <summary>Describes the type structurally, for comparing declarations read on different targets.</summary>
+    /// <returns>A string that is equal for equal types.</returns>
+    public string Describe() => Kind switch
+    {
+        TypeKind.Void => "void",
+        TypeKind.Primitive => Primitive.ToString(),
+        TypeKind.Pointer => $"{(IsConst ? "const " : string.Empty)}{Element!.Describe()}*",
+        TypeKind.Named => Name!,
+        TypeKind.FixedArray => $"{Element!.Describe()}[{Length}]",
+        _ => $"fn {Alias}({string.Join(", ", Parameters.Select(p => p.Describe()))}) -> {Return!.Describe()}",
+    };
 }

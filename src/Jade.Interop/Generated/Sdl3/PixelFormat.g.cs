@@ -44,22 +44,22 @@ public enum PixelFormat : int
     Unknown = 0,
 
     /// <summary>Binds <c>SDL_PIXELFORMAT_INDEX1LSB</c>.</summary>
-    Index1lsb = 286261504,
+    Index1Lsb = 286261504,
 
     /// <summary>Binds <c>SDL_PIXELFORMAT_INDEX1MSB</c>.</summary>
-    Index1msb = 287310080,
+    Index1Msb = 287310080,
 
     /// <summary>Binds <c>SDL_PIXELFORMAT_INDEX2LSB</c>.</summary>
-    Index2lsb = 470811136,
+    Index2Lsb = 470811136,
 
     /// <summary>Binds <c>SDL_PIXELFORMAT_INDEX2MSB</c>.</summary>
-    Index2msb = 471859712,
+    Index2Msb = 471859712,
 
     /// <summary>Binds <c>SDL_PIXELFORMAT_INDEX4LSB</c>.</summary>
-    Index4lsb = 303039488,
+    Index4Lsb = 303039488,
 
     /// <summary>Binds <c>SDL_PIXELFORMAT_INDEX4MSB</c>.</summary>
-    Index4msb = 304088064,
+    Index4Msb = 304088064,
 
     /// <summary>Binds <c>SDL_PIXELFORMAT_INDEX8</c>.</summary>
     Index8 = 318769153,

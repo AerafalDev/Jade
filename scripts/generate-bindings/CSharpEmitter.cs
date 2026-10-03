@@ -1,9 +1,10 @@
 using System.Globalization;
+using System.Text;
 
 /// <summary>
 /// Turns a <see cref="LibraryModel"/> into C# files following ADR-0006: a raw 1:1 import per function, friendly
-/// overloads where parameters are annotated, enums, structs and handles with instance methods. The output only
-/// depends on the model, so it is byte-identical for identical inputs.
+/// overloads where parameters are annotated, constants, enums, structs and handles with instance methods. The output
+/// only depends on the model, so it is byte-identical for identical inputs.
 /// </summary>
 internal sealed class CSharpEmitter
 {
@@ -13,6 +14,7 @@ internal sealed class CSharpEmitter
     private readonly LibraryModel _model;
     private readonly ImportStyle _importStyle;
     private readonly Dictionary<string, string> _managedNames = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, EnumModel> _enums = new(StringComparer.Ordinal);
     private readonly SortedSet<string> _usings = new(StringComparer.Ordinal);
 
     /// <summary>Creates an emitter.</summary>
@@ -28,6 +30,11 @@ internal sealed class CSharpEmitter
         {
             _managedNames.Add(native, managed);
         }
+
+        foreach (var enumModel in model.Enums)
+        {
+            _enums.Add(enumModel.NativeName, enumModel);
+        }
     }
 
     /// <summary>Renders every file of the library.</summary>
@@ -35,6 +42,7 @@ internal sealed class CSharpEmitter
     /// <exception cref="InvalidOperationException">Two declarations map to the same C# name.</exception>
     public IReadOnlyDictionary<string, string> Emit()
     {
+        CheckClassMembers();
         var files = new SortedDictionary<string, string>(StringComparer.Ordinal);
         void Add(string name, string content)
         {
@@ -44,11 +52,18 @@ internal sealed class CSharpEmitter
             }
         }
 
-        for (var i = 0; i < _model.Groups.Count; i++)
+        var documentClass = true;
+        foreach (var (group, source) in _model.Groups)
         {
-            var (group, source) = _model.Groups[i];
             var functions = _model.Functions.Where(f => f.Group == group).ToList();
-            Add($"{_model.FunctionsClass}.{group}.g.cs", EmitGroup(source, functions, documentClass: i == 0));
+            var constants = _model.Constants.Where(c => c.Group == group).ToList();
+            if (functions.Count == 0 && constants.Count == 0)
+            {
+                continue;
+            }
+
+            Add($"{_model.FunctionsClass}.{group}.g.cs", EmitGroup(source, functions, constants, documentClass));
+            documentClass = false;
         }
 
         foreach (var enumModel in _model.Enums)
@@ -68,6 +83,12 @@ internal sealed class CSharpEmitter
 
         return files;
     }
+
+    /// <summary>Returns whether an array field of this element type is a C# <c>fixed</c> buffer rather than an <c>[InlineArray]</c>.</summary>
+    /// <param name="element">The array's element type.</param>
+    /// <returns><see langword="true"/> for the primitives C# fixed buffers accept.</returns>
+    public static bool IsFixedBufferElement(TypeRef element) =>
+        element.Kind == TypeKind.Primitive && element.Primitive is not (PrimitiveType.NInt or PrimitiveType.NUInt or PrimitiveType.CLong or PrimitiveType.CULong);
 
     /// <summary>Returns the name of a handle's instance method for a function taking the handle first.</summary>
     /// <param name="function">The function's C# name, for example <c>GetWindowSize</c>.</param>
@@ -93,17 +114,33 @@ internal sealed class CSharpEmitter
             : function;
     }
 
-    private string EmitGroup(string source, IReadOnlyList<FunctionModel> functions, bool documentClass)
+    // Functions and constants share the static class: a C# name may only come from one C declaration.
+    private void CheckClassMembers()
+    {
+        var owners = _model.Functions.Select(f => (f.Name, f.NativeName)).Concat(_model.Constants.Select(c => (c.Name, c.NativeName)));
+        foreach (var clash in owners.GroupBy(o => o.Name, StringComparer.Ordinal).Where(g => g.Count() > 1))
+        {
+            throw new InvalidOperationException($"{_model.Name}: {string.Join(", ", clash.Select(c => c.NativeName))} all map to {_model.FunctionsClass}.{clash.Key}; add Renames.");
+        }
+    }
+
+    private string EmitGroup(string source, IReadOnlyList<FunctionModel> functions, IReadOnlyList<ConstantModel> constants, bool documentClass)
     {
         var writer = new CodeWriter();
-        var shadowed = _model.Functions.Select(f => f.Name).ToHashSet(StringComparer.Ordinal);
+        var shadowed = _model.Functions.Select(f => f.Name).Concat(_model.Constants.Select(c => c.Name)).ToHashSet(StringComparer.Ordinal);
         if (documentClass)
         {
-            DocWriter.Single(writer, "summary", $"Functions of {_model.Name}, imported from `jade_native`.");
+            DocWriter.Single(writer, "summary", $"Functions and constants of {_model.Name}, imported from `jade_native`.");
         }
 
         writer.Open($"public static unsafe partial class {_model.FunctionsClass}");
-        writer.Line($"// Functions from {source}.");
+        writer.Line($"// Declarations from {source}.");
+        foreach (var constant in constants)
+        {
+            writer.Line();
+            EmitConstant(writer, constant, shadowed);
+        }
+
         foreach (var function in functions)
         {
             writer.Line();
@@ -117,6 +154,37 @@ internal sealed class CSharpEmitter
 
         writer.Close();
         return Finish(writer);
+    }
+
+    private void EmitConstant(CodeWriter writer, ConstantModel constant, HashSet<string> shadowed)
+    {
+        var value = constant.IsString && !constant.Text!.Contains('`', StringComparison.Ordinal) ? $"The value is `{constant.Text}`." : null;
+        WriteTypeDocs(writer, constant.NativeName, constant.Documentation, value);
+        WritePlatformAttributes(writer, constant.SupportedPlatforms, []);
+        if (constant.IsString)
+        {
+            writer.Line($"public static ReadOnlySpan<byte> {constant.Name} => {StringLiteral(constant.Text!)}u8;");
+            return;
+        }
+
+        var type = constant.Type;
+        if (type.Kind == TypeKind.Named)
+        {
+            var enumModel = _enums[type.Name!];
+            var number = IntegerLiteral(enumModel.Underlying, constant.Integer, constant.NativeName);
+            var name = TypeName(type, shadowed);
+            writer.Line($"public const {name} {constant.Name} = ({name}){(number.StartsWith('-') ? $"({number})" : number)};");
+            return;
+        }
+
+        var literal = type.Primitive switch
+        {
+            PrimitiveType.Bool => constant.Integer != 0 ? "true" : "false",
+            PrimitiveType.Single => FloatLiteral((float)constant.Float, "F"),
+            PrimitiveType.Double => FloatLiteral(constant.Float, "D"),
+            _ => IntegerLiteral(type.Primitive, constant.Integer, constant.NativeName),
+        };
+        writer.Line($"public const {Keyword(type.Primitive)} {constant.Name} = {literal};");
     }
 
     private void EmitRawFunction(CodeWriter writer, FunctionModel function, HashSet<string> shadowed)
@@ -133,10 +201,18 @@ internal sealed class CSharpEmitter
         }
         else
         {
+            // The LibraryImport generator refuses a bare bool even with runtime marshalling disabled (SYSLIB1051): U1 makes
+            // it pass a C bool as one byte, and it reads a returned one as `!= 0`.
             _usings.Add("System.Runtime.CompilerServices");
             writer.Line($"[LibraryImport(\"jade_native\", EntryPoint = \"{function.NativeName}\")]");
             writer.Line("[UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]");
             WritePlatformAttributes(writer, function);
+            if (function.Return.Is(PrimitiveType.Bool))
+            {
+                writer.Line("[return: MarshalAs(UnmanagedType.U1)]");
+            }
+
+            parameters = string.Join(", ", function.Parameters.Select(p => $"{(p.Type.Is(PrimitiveType.Bool) ? "[MarshalAs(UnmanagedType.U1)] " : string.Empty)}{TypeName(p.Type, shadowed)} {p.Name}"));
             writer.Line($"public static partial {returnType} {function.Name}({parameters});");
         }
     }
@@ -206,7 +282,8 @@ internal sealed class CSharpEmitter
     private string EmitEnum(EnumModel enumModel)
     {
         var writer = new CodeWriter();
-        WriteTypeDocs(writer, enumModel.NativeName, enumModel.Documentation);
+        var note = enumModel.Members.Count == 0 ? "An identifier: values come from native calls and only compare for equality." : null;
+        WriteTypeDocs(writer, enumModel.NativeName, enumModel.Documentation, note);
         if (enumModel.IsFlags)
         {
             writer.Line("[Flags]");
@@ -242,10 +319,16 @@ internal sealed class CSharpEmitter
         }
 
         _usings.Add("System.Runtime.InteropServices");
-        WriteTypeDocs(writer, structModel.NativeName, structModel.Documentation);
+        WriteTypeDocs(writer, structModel.NativeName, structModel.Documentation, structModel.NativeName.Contains('.', StringComparison.Ordinal) ? "The anonymous type of that field." : null);
         writer.Line(structModel.IsUnion ? "[StructLayout(LayoutKind.Explicit)]" : "[StructLayout(LayoutKind.Sequential)]");
         writer.Open($"public unsafe partial struct {structModel.Name}");
-        var shadowed = structModel.Fields.Select(f => f.Name).ToHashSet(StringComparer.Ordinal);
+        var arrays = structModel.Fields.Where(f => f.Type.Kind == TypeKind.FixedArray && !IsFixedBufferElement(f.Type.Element!)).ToList();
+        var shadowed = structModel.Fields.Select(f => f.Name).Concat(arrays.Select(InlineArrayName)).ToHashSet(StringComparer.Ordinal);
+        if (shadowed.Count != structModel.Fields.Count + arrays.Count)
+        {
+            throw new InvalidOperationException($"{structModel.NativeName}: a field name clashes with a generated inline array type; rename the field in the config.");
+        }
+
         var first = true;
         foreach (var field in structModel.Fields)
         {
@@ -255,15 +338,36 @@ internal sealed class CSharpEmitter
             }
 
             first = false;
-            DocWriter.Single(writer, "summary", field.Documentation.Summary ?? $"Binds `{field.NativeName}`.");
+            WriteFieldDocs(writer, field);
             if (structModel.IsUnion)
             {
                 writer.Line("[FieldOffset(0)]");
             }
 
-            writer.Line(field.Type.Kind == TypeKind.FixedArray
-                ? $"public fixed {TypeName(field.Type.Element!, shadowed)} {field.Name}[{field.Type.Length}];"
-                : $"public {TypeName(field.Type, shadowed)} {field.Name};");
+            if (field.Type.Kind != TypeKind.FixedArray)
+            {
+                writer.Line($"public {TypeName(field.Type, shadowed)} {field.Name};");
+            }
+            else if (IsFixedBufferElement(field.Type.Element!))
+            {
+                writer.Line($"public fixed {TypeName(field.Type.Element!, shadowed)} {field.Name}[{field.Type.Length}];");
+            }
+            else
+            {
+                writer.Line($"public {InlineArrayName(field)} {field.Name};");
+            }
+        }
+
+        // C# fixed buffers only hold primitives; other element types get an [InlineArray] of the native length.
+        foreach (var field in arrays)
+        {
+            _usings.Add("System.Runtime.CompilerServices");
+            writer.Line();
+            DocWriter.Single(writer, "summary", $"The {field.Type.Length} elements of `{structModel.NativeName}.{field.NativeName}`, indexable like an array.");
+            writer.Line($"[InlineArray({field.Type.Length})]");
+            writer.Open($"public struct {InlineArrayName(field)}");
+            writer.Line($"private {TypeName(field.Type.Element!, shadowed)} _element0;");
+            writer.Close();
         }
 
         writer.Close();
@@ -273,10 +377,18 @@ internal sealed class CSharpEmitter
     private string EmitHandle(HandleModel handle)
     {
         var writer = new CodeWriter();
-        var instanceFunctions = _model.Functions
+        var instanceFunctions = handle.IsForeign ? [] : _model.Functions
             .Where(f => f.Parameters.Count > 0 && f.Parameters[0].Kind == ParameterKind.None && f.Parameters[0].Type is { Kind: TypeKind.Named } first && first.Name == handle.NativeName)
             .ToList();
-        var shadowed = instanceFunctions.Select(f => InstanceName(f.Name, handle.Name)).Concat(["Handle", "IsNull"]).ToHashSet(StringComparer.Ordinal);
+        // A shortened name that would hide a member of the handle or of object keeps the function's full name instead.
+        string[] members = ["Handle", "IsNull", "Equals", "GetHashCode", "GetType", "ToString", "MemberwiseClone", "ReferenceEquals", handle.Name];
+        var names = instanceFunctions.ToDictionary(f => f, f => InstanceName(f.Name, handle.Stem) is var name && !members.Contains(name) ? name : f.Name);
+        foreach (var clash in names.GroupBy(n => n.Value, StringComparer.Ordinal).Where(g => g.Count() > 1))
+        {
+            throw new InvalidOperationException($"{handle.NativeName}: {string.Join(", ", clash.Select(f => f.Key.NativeName))} give the instance method {clash.Key}; rename one in the config.");
+        }
+
+        var shadowed = names.Values.Concat(["Handle", "IsNull"]).ToHashSet(StringComparer.Ordinal);
 
         WriteTypeDocs(writer, handle.NativeName, handle.Documentation,
             $"A handle wrapping a native `{handle.NativeName}*`. It owns nothing: copies share the native object, and nothing releases it implicitly.");
@@ -301,6 +413,7 @@ internal sealed class CSharpEmitter
             writer.Line($"/// <returns><see langword=\"true\"/> if the handles {verb}.</returns>");
             writer.Line($"public static bool operator {op}({handle.Name} left, {handle.Name} right) => left.Handle {op} right.Handle;");
         }
+
         writer.Line();
         writer.Line("/// <inheritdoc/>");
         writer.Line($"public bool Equals({handle.Name} other) => Handle == other.Handle;");
@@ -313,7 +426,7 @@ internal sealed class CSharpEmitter
 
         foreach (var function in instanceFunctions)
         {
-            var name = InstanceName(function.Name, handle.Name);
+            var name = names[function];
             var rest = function.Parameters.Skip(1).ToList();
             writer.Line();
             WriteFunctionDocs(writer, function, rest);
@@ -344,16 +457,66 @@ internal sealed class CSharpEmitter
         return Finish(writer, nullable: true);
     }
 
-    private static void WriteFunctionDocs(CodeWriter writer, FunctionModel function, IReadOnlyList<ParameterModel> parameters)
+    private void WriteFunctionDocs(CodeWriter writer, FunctionModel function, IReadOnlyList<ParameterModel> parameters)
     {
         var documentation = function.Documentation;
         var binds = $"Binds `{function.NativeName}`.";
-        var remarks = documentation.Summary is null ? documentation.Remarks : [new DocBlock(DocBlockKind.Paragraph, [binds]), .. documentation.Remarks];
+        var remarks = new List<DocBlock>();
+        if (documentation.Summary is not null)
+        {
+            remarks.Add(new DocBlock(DocBlockKind.Paragraph, [binds]));
+        }
+
+        remarks.AddRange(documentation.Remarks);
+        foreach (var parameter in parameters)
+        {
+            remarks.AddRange(CallbackDocs(parameter.NativeName, parameter.Type));
+        }
+
         var parameterDocs = parameters
             .Select(p => KeyValuePair.Create(p.Name, documentation.Parameters.GetValueOrDefault(p.NativeName) ?? $"Native parameter `{p.NativeName}`."))
             .ToList();
         var returns = function.Return.Kind == TypeKind.Void ? null : documentation.Returns;
         DocWriter.Write(writer, documentation.Summary ?? binds, remarks, parameterDocs, returns);
+    }
+
+    private void WriteFieldDocs(CodeWriter writer, FieldModel field)
+    {
+        var summary = field.Documentation.Summary ?? $"Binds `{field.NativeName}`.";
+        var callback = CallbackDocs(field.NativeName, field.Type);
+        if (callback.Count == 0)
+        {
+            DocWriter.Single(writer, "summary", summary);
+        }
+        else
+        {
+            DocWriter.Write(writer, summary, callback, [], null);
+        }
+    }
+
+    // A callback typedef's own documentation, carried to each parameter or field that uses it: C# has no named function
+    // pointer types to hang it on.
+    private List<DocBlock> CallbackDocs(string name, TypeRef type)
+    {
+        var blocks = new List<DocBlock>();
+        if (type is not { Kind: TypeKind.FunctionPointer, Alias: { } alias } || !_model.Callbacks.TryGetValue(alias, out var documentation))
+        {
+            return blocks;
+        }
+
+        blocks.Add(new DocBlock(DocBlockKind.Paragraph, [$"`{name}` is a `{alias}`: {documentation.Summary ?? "a callback."}"]));
+        var items = documentation.Parameters.Select(p => $"`{p.Key}`: {p.Value}").ToList();
+        if (documentation.Returns is { } returns)
+        {
+            items.Add($"Returns {returns}");
+        }
+
+        if (items.Count > 0)
+        {
+            blocks.Add(new DocBlock(DocBlockKind.List, items));
+        }
+
+        return blocks;
     }
 
     private static void WriteTypeDocs(CodeWriter writer, string nativeName, Documentation documentation, string? note = null)
@@ -374,16 +537,20 @@ internal sealed class CSharpEmitter
         DocWriter.Write(writer, documentation.Summary ?? binds, remarks, [], null);
     }
 
-    private void WritePlatformAttributes(CodeWriter writer, FunctionModel function)
+    private void WritePlatformAttributes(CodeWriter writer, FunctionModel function) => WritePlatformAttributes(writer, function.SupportedPlatforms, function.UnsupportedPlatforms);
+
+    private void WritePlatformAttributes(CodeWriter writer, IReadOnlyList<string> supported, IReadOnlyList<string> unsupported)
     {
-        foreach (var platform in function.UnsupportedPlatforms)
+        foreach (var (attribute, platform) in supported.Select(p => ("SupportedOSPlatform", p)).Concat(unsupported.Select(p => ("UnsupportedOSPlatform", p))))
         {
             _usings.Add("System.Runtime.Versioning");
-            writer.Line($"[UnsupportedOSPlatform(\"{platform}\")]");
+            writer.Line($"[{attribute}(\"{platform}\")]");
         }
     }
 
     private static bool HasFriendlyForm(FunctionModel function) => function.Parameters.Any(p => p.Kind != ParameterKind.None);
+
+    private static string InlineArrayName(FieldModel field) => field.Name + "Array";
 
     private string FriendlyType(ParameterModel parameter, HashSet<string> shadowed) => parameter.Kind switch
     {
@@ -417,6 +584,7 @@ internal sealed class CSharpEmitter
 
         return primitive switch
         {
+            PrimitiveType.Bool => "bool",
             PrimitiveType.Char or PrimitiveType.Byte => "byte",
             PrimitiveType.SByte => "sbyte",
             PrimitiveType.Int16 => "short",
@@ -435,10 +603,25 @@ internal sealed class CSharpEmitter
         };
     }
 
-    private static string EnumValue(EnumModel enumModel, ulong bits)
+    private static string EnumValue(EnumModel enumModel, ulong bits) => FormatInteger(enumModel.Underlying, bits, hex: enumModel.IsFlags);
+
+    // Unsigned constants are usually masks or sentinels, which read best in hexadecimal.
+    private static string IntegerLiteral(PrimitiveType primitive, ulong bits, string nativeName)
     {
-        var size = LayoutCalculator.SizeOf(enumModel.Underlying, 8, 8);
-        var signed = enumModel.Underlying is PrimitiveType.SByte or PrimitiveType.Int16 or PrimitiveType.Int32 or PrimitiveType.Int64;
+        var text = FormatInteger(primitive, bits, hex: primitive is PrimitiveType.Byte or PrimitiveType.UInt16 or PrimitiveType.UInt32 or PrimitiveType.UInt64 or PrimitiveType.NUInt);
+        var fits = primitive switch
+        {
+            PrimitiveType.NInt => (long)bits is >= int.MinValue and <= int.MaxValue,
+            PrimitiveType.NUInt => bits <= uint.MaxValue,
+            _ => true,
+        };
+        return fits ? text : throw new InvalidOperationException($"{nativeName}: a native-sized constant must fit 32 bits; exclude it or map it.");
+    }
+
+    private static string FormatInteger(PrimitiveType primitive, ulong bits, bool hex)
+    {
+        var size = primitive is PrimitiveType.NInt or PrimitiveType.NUInt ? 4 : LayoutCalculator.SizeOf(primitive, 8, 8);
+        var signed = primitive is PrimitiveType.SByte or PrimitiveType.Int16 or PrimitiveType.Int32 or PrimitiveType.Int64 or PrimitiveType.NInt;
         if (signed)
         {
             var shift = 64 - (size * 8);
@@ -446,7 +629,46 @@ internal sealed class CSharpEmitter
         }
 
         var masked = size == 8 ? bits : bits & ((1UL << (size * 8)) - 1);
-        return enumModel.IsFlags ? "0x" + masked.ToString("X" + (size * 2).ToString(CultureInfo.InvariantCulture), CultureInfo.InvariantCulture) : masked.ToString(CultureInfo.InvariantCulture);
+        return hex ? "0x" + masked.ToString("X" + (size * 2).ToString(CultureInfo.InvariantCulture), CultureInfo.InvariantCulture) : masked.ToString(CultureInfo.InvariantCulture);
+    }
+
+    private static string FloatLiteral(double value, string suffix)
+    {
+        var type = suffix == "F" ? "float" : "double";
+        if (double.IsNaN(value))
+        {
+            return type + ".NaN";
+        }
+
+        if (double.IsInfinity(value))
+        {
+            return value > 0 ? type + ".PositiveInfinity" : type + ".NegativeInfinity";
+        }
+
+        var text = suffix == "F" ? ((float)value).ToString("R", CultureInfo.InvariantCulture) : value.ToString("R", CultureInfo.InvariantCulture);
+        return text + suffix;
+    }
+
+    private static string StringLiteral(string text)
+    {
+        var builder = new StringBuilder("\"");
+        foreach (var c in text)
+        {
+            if (c is '"' or '\\')
+            {
+                builder.Append('\\').Append(c);
+            }
+            else if (c < ' ')
+            {
+                builder.Append("\\u").Append(((int)c).ToString("X4", CultureInfo.InvariantCulture));
+            }
+            else
+            {
+                builder.Append(c);
+            }
+        }
+
+        return builder.Append('"').ToString();
     }
 
     private static string PinnedLocal(ParameterModel parameter) => parameter.Name.TrimStart('@') + "Ptr";

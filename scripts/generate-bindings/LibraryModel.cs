@@ -7,7 +7,7 @@ internal sealed class LibraryModel
     /// <summary>Gets the C# namespace.</summary>
     public required string Namespace { get; init; }
 
-    /// <summary>Gets the static class holding the functions.</summary>
+    /// <summary>Gets the static class holding the functions and constants.</summary>
     public required string FunctionsClass { get; init; }
 
     /// <summary>Gets the function groups in output order, each with the header or section it comes from.</summary>
@@ -24,4 +24,10 @@ internal sealed class LibraryModel
 
     /// <summary>Gets the handles.</summary>
     public required IReadOnlyList<HandleModel> Handles { get; init; }
+
+    /// <summary>Gets the constants, in source order.</summary>
+    public required IReadOnlyList<ConstantModel> Constants { get; init; }
+
+    /// <summary>Gets the documentation of the callback typedefs that <see cref="TypeRef.Alias"/> names, by C name.</summary>
+    public required IReadOnlyDictionary<string, Documentation> Callbacks { get; init; }
 }

@@ -7,7 +7,40 @@ namespace Jade.Interop.Sdl3;
 
 public static unsafe partial class Sdl
 {
-    // Functions from SDL3/SDL_version.h.
+    // Declarations from SDL3/SDL_version.h.
+
+    /// <summary>The current major version of SDL headers.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_MAJOR_VERSION</c>.</para>
+    /// <para>If this were SDL version 3.2.1, this value would be 3.</para>
+    /// <para>This macro is available since SDL 3.2.0.</para>
+    /// </remarks>
+    public const int MajorVersion = 3;
+
+    /// <summary>The current minor version of the SDL headers.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_MINOR_VERSION</c>.</para>
+    /// <para>If this were SDL version 3.2.1, this value would be 2.</para>
+    /// <para>This macro is available since SDL 3.2.0.</para>
+    /// </remarks>
+    public const int MinorVersion = 4;
+
+    /// <summary>The current micro (or patchlevel) version of the SDL headers.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_MICRO_VERSION</c>.</para>
+    /// <para>If this were SDL version 3.2.1, this value would be 1.</para>
+    /// <para>This macro is available since SDL 3.2.0.</para>
+    /// </remarks>
+    public const int MicroVersion = 16;
+
+    /// <summary>This is the version number macro for the current SDL version.</summary>
+    /// <remarks>
+    /// <para>Binds <c>SDL_VERSION</c>.</para>
+    /// <para>Thread safety: It is safe to call this macro from any thread.</para>
+    /// <para>This macro is available since SDL 3.2.0.</para>
+    /// <para>See also: <c>SDL_GetVersion</c>.</para>
+    /// </remarks>
+    public const int Version = 3004016;
 
     /// <summary>Get the version of SDL that is linked against your program.</summary>
     /// <remarks>

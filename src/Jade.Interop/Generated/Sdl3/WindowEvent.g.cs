@@ -22,7 +22,7 @@ public unsafe partial struct WindowEvent
     public ulong Timestamp;
 
     /// <summary>The associated window</summary>
-    public uint WindowID;
+    public global::Jade.Interop.Sdl3.WindowID WindowID;
 
     /// <summary>event dependent data</summary>
     public int Data1;

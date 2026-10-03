@@ -19,6 +19,14 @@ internal sealed class FunctionModel
     /// <summary>Gets the upstream documentation.</summary>
     public required Documentation Documentation { get; init; }
 
+    /// <summary>Gets the only platforms (<c>OperatingSystem.IsOSPlatform</c> names) where the function works, or none when it works everywhere.</summary>
+    public IReadOnlyList<string> SupportedPlatforms { get; init; } = [];
+
     /// <summary>Gets the platforms (<c>OperatingSystem.IsOSPlatform</c> names) where the function must not be called.</summary>
     public IReadOnlyList<string> UnsupportedPlatforms { get; init; } = [];
+
+    /// <summary>Describes the signature structurally, for comparing a declaration read on different targets.</summary>
+    /// <returns>A string that is equal for equal signatures.</returns>
+    public string Describe() =>
+        $"{Return.Describe()} {Name}({string.Join(", ", Parameters.Select(p => $"{p.Type.Describe()} {p.Name} {p.Kind} {p.Pair}"))}) in {Group}";
 }

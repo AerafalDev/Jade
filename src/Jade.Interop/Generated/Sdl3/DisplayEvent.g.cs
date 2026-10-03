@@ -22,7 +22,7 @@ public unsafe partial struct DisplayEvent
     public ulong Timestamp;
 
     /// <summary>The associated display</summary>
-    public uint DisplayID;
+    public global::Jade.Interop.Sdl3.DisplayID DisplayID;
 
     /// <summary>event dependent data</summary>
     public int Data1;

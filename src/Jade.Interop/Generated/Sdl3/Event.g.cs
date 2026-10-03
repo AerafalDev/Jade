@@ -34,9 +34,145 @@ public unsafe partial struct Event
     [FieldOffset(0)]
     public WindowEvent Window;
 
+    /// <summary>Keyboard device change event data</summary>
+    [FieldOffset(0)]
+    public KeyboardDeviceEvent Kdevice;
+
+    /// <summary>Keyboard event data</summary>
+    [FieldOffset(0)]
+    public KeyboardEvent Key;
+
+    /// <summary>Text editing event data</summary>
+    [FieldOffset(0)]
+    public TextEditingEvent Edit;
+
+    /// <summary>Text editing candidates event data</summary>
+    [FieldOffset(0)]
+    public TextEditingCandidatesEvent EditCandidates;
+
+    /// <summary>Text input event data</summary>
+    [FieldOffset(0)]
+    public TextInputEvent Text;
+
+    /// <summary>Mouse device change event data</summary>
+    [FieldOffset(0)]
+    public MouseDeviceEvent Mdevice;
+
+    /// <summary>Mouse motion event data</summary>
+    [FieldOffset(0)]
+    public MouseMotionEvent Motion;
+
+    /// <summary>Mouse button event data</summary>
+    [FieldOffset(0)]
+    public MouseButtonEvent Button;
+
+    /// <summary>Mouse wheel event data</summary>
+    [FieldOffset(0)]
+    public MouseWheelEvent Wheel;
+
+    /// <summary>Joystick device change event data</summary>
+    [FieldOffset(0)]
+    public JoyDeviceEvent Jdevice;
+
+    /// <summary>Joystick axis event data</summary>
+    [FieldOffset(0)]
+    public JoyAxisEvent Jaxis;
+
+    /// <summary>Joystick ball event data</summary>
+    [FieldOffset(0)]
+    public JoyBallEvent Jball;
+
+    /// <summary>Joystick hat event data</summary>
+    [FieldOffset(0)]
+    public JoyHatEvent Jhat;
+
+    /// <summary>Joystick button event data</summary>
+    [FieldOffset(0)]
+    public JoyButtonEvent Jbutton;
+
+    /// <summary>Joystick battery event data</summary>
+    [FieldOffset(0)]
+    public JoyBatteryEvent Jbattery;
+
+    /// <summary>Gamepad device event data</summary>
+    [FieldOffset(0)]
+    public GamepadDeviceEvent Gdevice;
+
+    /// <summary>Gamepad axis event data</summary>
+    [FieldOffset(0)]
+    public GamepadAxisEvent Gaxis;
+
+    /// <summary>Gamepad button event data</summary>
+    [FieldOffset(0)]
+    public GamepadButtonEvent Gbutton;
+
+    /// <summary>Gamepad touchpad event data</summary>
+    [FieldOffset(0)]
+    public GamepadTouchpadEvent Gtouchpad;
+
+    /// <summary>Gamepad sensor event data</summary>
+    [FieldOffset(0)]
+    public GamepadSensorEvent Gsensor;
+
+    /// <summary>Audio device event data</summary>
+    [FieldOffset(0)]
+    public AudioDeviceEvent Adevice;
+
+    /// <summary>Camera device event data</summary>
+    [FieldOffset(0)]
+    public CameraDeviceEvent Cdevice;
+
+    /// <summary>Sensor event data</summary>
+    [FieldOffset(0)]
+    public SensorEvent Sensor;
+
     /// <summary>Quit request event data</summary>
     [FieldOffset(0)]
     public QuitEvent Quit;
+
+    /// <summary>Custom event data</summary>
+    [FieldOffset(0)]
+    public UserEvent User;
+
+    /// <summary>Touch finger event data</summary>
+    [FieldOffset(0)]
+    public TouchFingerEvent Tfinger;
+
+    /// <summary>Pinch event data</summary>
+    [FieldOffset(0)]
+    public PinchFingerEvent Pinch;
+
+    /// <summary>Pen proximity event data</summary>
+    [FieldOffset(0)]
+    public PenProximityEvent Pproximity;
+
+    /// <summary>Pen tip touching event data</summary>
+    [FieldOffset(0)]
+    public PenTouchEvent Ptouch;
+
+    /// <summary>Pen motion event data</summary>
+    [FieldOffset(0)]
+    public PenMotionEvent Pmotion;
+
+    /// <summary>Pen button event data</summary>
+    [FieldOffset(0)]
+    public PenButtonEvent Pbutton;
+
+    /// <summary>Pen axis event data</summary>
+    [FieldOffset(0)]
+    public PenAxisEvent Paxis;
+
+    /// <summary>Render event data</summary>
+    [FieldOffset(0)]
+    public RenderEvent Render;
+
+    /// <summary>Drag and drop event data</summary>
+    [FieldOffset(0)]
+    public DropEvent Drop;
+
+    /// <summary>Clipboard event data</summary>
+    [FieldOffset(0)]
+    public ClipboardEvent Clipboard;
 
     /// <summary>Binds <c>padding</c>.</summary>
     [FieldOffset(0)]

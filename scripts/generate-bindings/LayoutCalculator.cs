@@ -33,7 +33,7 @@ internal sealed class LayoutCalculator
     /// <returns>The size in bytes.</returns>
     public static int SizeOf(PrimitiveType primitive, int pointerSize, int longSize) => primitive switch
     {
-        PrimitiveType.Char or PrimitiveType.SByte or PrimitiveType.Byte => 1,
+        PrimitiveType.Bool or PrimitiveType.Char or PrimitiveType.SByte or PrimitiveType.Byte => 1,
         PrimitiveType.Int16 or PrimitiveType.UInt16 => 2,
         PrimitiveType.Int32 or PrimitiveType.UInt32 or PrimitiveType.Single => 4,
         PrimitiveType.Int64 or PrimitiveType.UInt64 or PrimitiveType.Double => 8,

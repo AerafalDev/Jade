@@ -248,12 +248,14 @@ dotnet_diagnostic.CS1591.severity = none
 generated_code = false
 
 # Rules the bindings break on purpose under ADR-0006: every C function is a public 1:1 import (CA1401), enums keep
-# C's aliased constants (CA1069), and types keep their C names, such as SDL_InitFlags and SDL_Event (CA1711, CA1716).
+# C's aliased constants (CA1069), and types, members and parameters keep their C names, such as SDL_InitFlags,
+# SDL_Event, SDL_SYSTEM_CURSOR_POINTER and SDL_ReadIO's `ptr` (CA1711, CA1716, CA1720).
 [src/Jade.Interop/Generated/**.cs]
 dotnet_diagnostic.CA1401.severity = none
 dotnet_diagnostic.CA1069.severity = none
 dotnet_diagnostic.CA1711.severity = none
 dotnet_diagnostic.CA1716.severity = none
+dotnet_diagnostic.CA1720.severity = none
 
 #### Repository-specific ####
 
