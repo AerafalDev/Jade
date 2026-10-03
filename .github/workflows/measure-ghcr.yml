@@ -1,0 +1,35 @@
+name: Measure ghcr pull
+
+# Measurement only, for task 004: times pulls of public ghcr.io images of a size comparable to the Linux
+# build image, without publishing anything. Never merged.
+on:
+  push:
+    branches: [ci/measure-base]
+
+permissions:
+  contents: read
+
+jobs:
+  pull:
+    name: Pull (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, ubuntu-24.04-arm]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Docker storage
+        run: |
+          docker version --format 'Docker {{.Server.Version}}'
+          docker info --format 'Driver {{.Driver}}, {{json .DriverStatus}}'
+          command -v zstd && zstd --version
+
+      - name: Pull
+        run: |
+          for image in ghcr.io/actions/actions-runner:latest ghcr.io/open-webui/open-webui:main; do
+            start=$(date +%s%N)
+            docker pull -q "$image"
+            end=$(date +%s%N)
+            echo "$image: $(( (end - start) / 1000000 )) ms, $(docker image inspect "$image" --format '{{.Size}}') bytes unpacked"
+          done
