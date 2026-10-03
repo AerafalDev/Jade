@@ -141,7 +141,6 @@ These are snapshots for orientation. Tasks re-check them before pinning.
 | Dear ImGui | `v1.92.9b-docking` (ADR-0014) | github.com/ocornut/imgui |
 | dear_bindings | `v0.24` release for that tag | github.com/dearimgui/dear_bindings |
 | Box2D | `v3.1.1` | github.com/erincatto/box2d |
-| Box3D | `v0.1.0` (first release, 2026-06-30, MIT) | github.com/erincatto/box3d |
 | HarfBuzz | `14.5.1` | github.com/harfbuzz/harfbuzz |
 | msdfgen / msdf-atlas-gen | `v1.13` / `v1.4` | github.com/Chlumsky |
 | ClangSharp (generator) | `21.1.8.4` | nuget.org |

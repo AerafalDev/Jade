@@ -72,26 +72,26 @@ Notes for the 107 brief, collected from earlier Outcomes:
 | Task | Title | Depends on | Status |
 | --- | --- | --- | --- |
 | [301](tasks/301-imgui-survey.md) | Survey: Dear ImGui, its extensions and backends | 201 | done |
-| [302](tasks/302-physics-box2d-box3d.md) | Box2D v3 and Box3D: native and bindings | 201, 103 | todo |
+| [302](tasks/302-physics-box2d.md) | Box2D v3: native and bindings | 201, 103 | todo |
 | [303](tasks/303-text-stack.md) | FreeType + HarfBuzz + msdfgen: native, C shim, bindings | 201, 103 | todo |
 | [304](tasks/304-assets-survey.md) | Survey: asset libraries for runtime and import pipeline | 201, 003 | done |
-| [305](tasks/305-zstd-meshoptimizer.md) | zstd and meshoptimizer | 201, 103 | todo |
+| [305](tasks/305-zstd.md) | zstd | 201, 103 | todo |
 | [306](tasks/306-basisu-transcoder.md) | basis_universal transcoder | 305, 201, 103 | todo |
 | [307](tasks/307-stb-image-vorbis.md) | stb_image and Vorbis through miniaudio | 201, 103, 204 | todo |
 | [310](tasks/310-imgui-native.md) | Dear ImGui (docking), dear_bindings C API and backends in jade_native | 103, 003 | todo |
 | [311](tasks/311-imgui-bindings.md) | Dear ImGui core bindings | 310, 201 | todo |
 | [312](tasks/312-imgui-backends-sample.md) | ImGui SDL3 and WebGPU backend bindings, demo sample | 311, 202, 203, 206 | todo |
-| [313](tasks/313-implot-imguizmo.md) | ImPlot and ImGuizmo | 311 | todo |
+| [313](tasks/313-implot.md) | ImPlot | 311 | todo |
 | [314](tasks/314-imgui-widgets.md) | Small ImGui widgets and imnodes | 311 | todo |
 | [315](tasks/315-imgui-text-editor.md) | ImGuiColorTextEdit | 311 | todo |
 | [316](tasks/316-imgui-freetype.md) | imgui_freetype | 303, 310 | todo |
-| [317](tasks/317-implot3d.md) | ImPlot3D through our own C wrapper | 313 | todo |
 
 Surveys (301, 304) produce a Proposed ADR and draft briefs. The orchestrator turns them into
 implementation tasks.
 
-Deferred from 304 (ADR-0015): `jade_tools` with the basisu encoder, cgltf and ufbx (drafts D, E
-and F in 304's Outcome), until the engine phase designs the asset pipeline.
+Deferred from 304 (ADR-0015): `jade_tools` with the basisu encoder (draft E in 304's Outcome), until
+the engine phase designs the asset pipeline. cgltf and ufbx (drafts D and F) are dropped: Jade is a 2D
+engine (ADR-0018), as are Box3D, ImGuizmo, ImPlot3D (former task 317) and meshoptimizer.
 
 Deferred from 301 (ADR-0014): imgui-node-editor, until
 upstream compiles with the pinned ImGui or a fork is chosen; ImGuiFileDialog (optional, SDL3's
@@ -104,5 +104,8 @@ dialogs come first); `dcimgui_internal` for the DockBuilder API.
 | [401](tasks/401-ecs-survey.md) | Survey: ECS design from the inspirations (storage, queries, scheduling, source generators) | - | done |
 
 ADR-0017 (ECS architecture, from 401) stays Proposed until the user and the orchestrator review it
-point by point. Its draft briefs E1 to E8 become tasks only after that review, once Phase 2 is `done`
+point by point, with 2D in mind (ADR-0018). Its draft briefs E1 to E8 become tasks only after that review, once Phase 2 is `done`
 on desktop and at least one of 104 or 105 is `done`.
+
+A survey of 2D-specific libraries comes with the engine phase (ADR-0018): tilemaps, skeletal
+animation, vector graphics, geometry, atlas packing, particles, 2D lighting.
