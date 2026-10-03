@@ -12,6 +12,7 @@ back before the orchestrator writes their brief.
 | [002](tasks/002-ci-baseline.md) | CI baseline: build, test, CodeQL, Dependabot | 001 | done |
 | [003](tasks/003-coding-conventions.md) | Enforce the C# coding conventions, clean up existing code | 102, 201 | done |
 | [004](tasks/004-ci-turnaround.md) | Faster CI turnaround: skip docs-only, reuse native artifacts, cache the container | 103 | done |
+| [005](tasks/005-github-organization.md) | GitHub organization: templates, code owners, labels, settings, ruleset on main | 004 | todo |
 
 003 runs once 102 and 201 are merged, before any other task starts: 103, 202, 203, 204, 301 and
 304 list it as a dependency in their briefs.
@@ -25,7 +26,7 @@ back before the orchestrator writes their brief.
 | [103](tasks/103-native-desktop-matrix.md) | Desktop RID matrix in CI, Linux glibc baseline, artifact cache | 102, 002 | done |
 | [104](tasks/104-native-mobile.md) | Android and iOS RIDs, mobile platform glue proposal | 103 | todo |
 | [105](tasks/105-native-browser.md) | browser-wasm: Emscripten alignment with .NET, emdawnwebgpu | 103 | todo |
-| [106](tasks/106-native-packaging.md) | Jade.Native package, Jade dependency, size guard, local feed test | 103 | todo |
+| [106](tasks/106-native-packaging.md) | Jade.Native package, Jade dependency, size guard, local feed test | 103 | done |
 | 107 | Release pipeline: tag → natives → pack → publish (trusted publishing) | 106 | todo |
 
 104 and 105 can run in parallel. 106 starts with desktop RIDs; 104 and 105 each extend its
@@ -33,6 +34,11 @@ back before the orchestrator writes their brief.
 
 Notes for the 107 brief, collected from earlier Outcomes:
 
+- Pack with every RID staged and `MSBuildTreatWarningsAsErrors=true` (JADENATIVE001 then fails on a
+  missing RID), and push only `artifacts/packages/*.nupkg` plus the `Jade` `.snupkg` (106).
+- `Jade.Native` is labelled MIT, but it bundles zlib, BSD-3-Clause, Apache-2.0, MIT-0 or public
+  domain code and, on Linux, the GCC runtime under GPL-3.0 with the Runtime Library Exception.
+  Decide between an SPDX expression and a `PackageLicenseFile` (106).
 - Release notes come from `CHANGELOG.md`: the release moves `## [Unreleased]` to
   `## [x.y.z] - date`, adds the compare links, and uses that section as the GitHub release body
   (and possibly `PackageReleaseNotes`). Add the NuGet badge to the README with the first published
@@ -57,6 +63,7 @@ Notes for the 107 brief, collected from earlier Outcomes:
 | [204](tasks/204-bindings-miniaudio.md) | miniaudio bindings | 201 | todo |
 | [205](tasks/205-interop-smoke-and-aot.md) | Interop smoke tests and NativeAOT publish check | 202, 203, 204 | todo |
 | [206](tasks/206-sample-hello-triangle.md) | Sample: SDL3 window + Dawn triangle on desktop | 205 | todo |
+| 207 | Generator polish: `WGPU_*_INIT` defaults from dawn.json, XML docs from webgpu-headers' `webgpu.yml`, hexadecimal enum values (from 202) | 202 | todo |
 
 202, 203 and 204 can run in parallel once 201 is done (202 also needs 102).
 
@@ -96,5 +103,6 @@ dialogs come first); `dcimgui_internal` for the DockBuilder API.
 | --- | --- | --- | --- |
 | [401](tasks/401-ecs-survey.md) | Survey: ECS design from the inspirations (storage, queries, scheduling, source generators) | - | done |
 
-The engine's implementation tasks will be planned with the orchestrator from 401's Outcome, once
-Phase 2 is `done` on desktop and at least one of 104 or 105 is `done`.
+ADR-0017 (ECS architecture, from 401) stays Proposed until the user and the orchestrator review it
+point by point. Its draft briefs E1 to E8 become tasks only after that review, once Phase 2 is `done`
+on desktop and at least one of 104 or 105 is `done`.

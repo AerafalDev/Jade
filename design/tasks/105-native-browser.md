@@ -54,6 +54,19 @@ expected symbols.
 
 ## Pitfalls
 
+- From 202:
+  - stage emdawnwebgpu's `webgpu.h` and parse it for browser-wasm, instead of Dawn's header with
+    `__EMSCRIPTEN__` undefined;
+  - emdawnwebgpu's blocking `WaitAny` aborts unless built with ASYNCIFY (`emwgpuWaitAny` sits under
+    `#if ASYNCIFY` in `library_webgpu.js`). Decide between an ASYNCIFY build and callback modes
+    (`AllowSpontaneous`, `AllowProcessEvents`) for the web, and record it;
+  - check a callback round-trip through a callback-info struct and its typed function-pointer field;
+  - check whether a pointer to a function pointer in a signature (`SDL_GetMemoryFunctions`) fails
+    like a function pointer does; ADR-0016 only covers the latter;
+  - check that structs passed by value reach C as it expects on wasm32.
+- From 106: add browser-wasm to `JadeNativeRequiredRids` and fill the browser-wasm placeholder in
+  `src/Jade.Native/buildTransitive/Jade.Native.targets`. Everything under
+  `artifacts/native/browser-wasm/lib/` ships, JavaScript libraries included.
 - ADR-0016: function pointer parameters are `nint` in import signatures because browser-wasm does
   not parse function pointer types in P/Invoke signatures (dotnet/runtime#56145). Verify a callback
   round-trip (native code calling an `[UnmanagedCallersOnly]` method passed through such a

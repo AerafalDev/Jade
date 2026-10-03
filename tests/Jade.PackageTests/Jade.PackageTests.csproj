@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- References Jade the way a user project does: as a package, restored from artifacts/packages through the
+       nuget.config next to this file. Restoring needs those packages and their version, so the project is not in
+       Jade.slnx: scripts/test-package.cs packs them, then runs this project with dotnet run and as a NativeAOT binary. -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <PublishAot>true</PublishAot>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- The version changes with every commit (MinVer), so it comes from the command line rather than from
+         Directory.Packages.props. -->
+    <PackageReference Include="Jade" VersionOverride="$(JadePackageVersion)" />
+  </ItemGroup>
+
+  <Target Name="RequireJadePackageVersion" BeforeTargets="CollectPackageReferences">
+    <Error Condition="'$(JadePackageVersion)' == ''" Text="Set JadePackageVersion to the version packed into artifacts/packages, or run `dotnet scripts/test-package.cs`, which packs and sets it." />
+  </Target>
+
+</Project>

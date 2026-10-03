@@ -23,7 +23,10 @@ Until 1.0.0, any release may break the public API.
   and `ReadOnlySpan<byte>` for string views. `new` on a chained struct sets its `SType`. APIs that
   emdawnwebgpu lacks are marked `[UnsupportedOSPlatform("browser")]`. SPIR-V shader modules are
   bound but rejected at runtime: `jade_native` takes WGSL only.
-- The `Jade` package, which carries `Jade.Interop`. It can be packed locally; nothing is published
-  on nuget.org yet.
+- The `Jade` and `Jade.Native` packages. `Jade` carries `Jade.Interop` and depends on `Jade.Native`
+  at exactly its own version. `Jade.Native` carries `jade_native` under `runtimes/<rid>/native/` for
+  the six desktop RIDs, and `THIRD-PARTY-NOTICES.md`. Applications run with `dotnet run` and publish
+  with NativeAOT, which places `jade_native` next to the executable. Both packages can be packed
+  locally; nothing is published on nuget.org yet.
 
 [Unreleased]: https://github.com/AerafalDev/Jade/commits/main

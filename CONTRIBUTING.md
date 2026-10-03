@@ -16,7 +16,7 @@ cd Jade
 
 dotnet build -c Release                           # build the solution
 dotnet test -c Release                            # run the tests (Microsoft.Testing.Platform)
-dotnet pack -c Release -o artifacts/packages      # produce the Jade package
+dotnet pack -c Release -o artifacts/packages      # produce the Jade and Jade.Native packages
 ```
 
 Architecture, decisions and planned work live in [`design/`](design/): start with

@@ -1,0 +1,80 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageId>Jade.Native</PackageId>
+    <Description>The jade_native library of Jade for each supported runtime identifier: Dawn (WebGPU), SDL3 and miniaudio linked into one native library. Reference the Jade package, which depends on this one.</Description>
+    <PackageTags>gamedev;game-engine;webgpu;dawn;sdl3;miniaudio;native</PackageTags>
+    <!-- Packaging only (ADR-0002): the empty assembly this project compiles stays out of the package. Without it, a
+         symbols package would be empty (NU5017) and a net10.0 dependency group would match no lib/ folder (NU5128). -->
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <IncludeSymbols>false</IncludeSymbols>
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <JadeNativeDirectory>$(MSBuildThisFileDirectory)..\..\artifacts\native\</JadeNativeDirectory>
+    <!-- The RIDs a release ships. Packing without one of them warns (JADENATIVE001), which CI's
+         MSBuildTreatWarningsAsErrors turns into an error; a job that packs without natives empties the list.
+         Tasks 104 and 105 add the mobile and browser RIDs. -->
+    <JadeNativeRequiredRids>win-x64;win-arm64;linux-x64;linux-arm64;osx-x64;osx-arm64</JadeNativeRequiredRids>
+    <!-- nuget.org rejects packages over 250 MB. 240 MB in decimal units stays below that limit whether nuget.org counts
+         in decimal or binary megabytes. -->
+    <JadeNativeMaxPackageSize>240000000</JadeNativeMaxPackageSize>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Every RID staged under artifacts/native/<rid>/, whether built here or fetched from CI. Only lib/ ships:
+         include/ and metadata/ feed the binding generator, and debug symbols live in artifacts/native-symbols/. -->
+    <JadeNativeLibrary Include="$(JadeNativeDirectory)*\lib\*">
+      <Rid>$([System.IO.Path]::GetFileName($([System.IO.Path]::GetDirectoryName($([System.IO.Path]::GetDirectoryName('%(FullPath)'))))))</Rid>
+    </JadeNativeLibrary>
+    <!-- A full file path: with a folder, pack would append the RecursiveDir of the wildcard, <rid>/lib/. -->
+    <None Include="@(JadeNativeLibrary)" Pack="true" PackagePath="runtimes\%(Rid)\native\%(Filename)%(Extension)" Visible="false" />
+    <None Include="..\..\THIRD-PARTY-NOTICES.md" Pack="true" PackagePath="\" Visible="false" />
+    <None Include="buildTransitive\Jade.Native.targets" Pack="true" PackagePath="buildTransitive\" />
+  </ItemGroup>
+
+  <UsingTask TaskName="GetFileSizes" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <Files ParameterType="Microsoft.Build.Framework.ITaskItem[]" Required="true" />
+      <Sizes ParameterType="Microsoft.Build.Framework.ITaskItem[]" Output="true" />
+    </ParameterGroup>
+    <Task>
+      <!-- MSBuild property functions cannot read a file's size: System.IO.FileInfo is not on their allow list. -->
+      <Code Type="Fragment" Language="cs"><![CDATA[
+        Sizes = new ITaskItem[Files.Length];
+        for (var i = 0; i < Files.Length; i++)
+        {
+            var size = new FileInfo(Files[i].GetMetadata("FullPath")).Length;
+            Sizes[i] = new TaskItem(Files[i]);
+            Sizes[i].SetMetadata("Megabytes", (size / 1e6).ToString("F1", System.Globalization.CultureInfo.InvariantCulture));
+            Sizes[i].SetMetadata("Bytes", size.ToString(System.Globalization.CultureInfo.InvariantCulture));
+        }
+      ]]></Code>
+    </Task>
+  </UsingTask>
+
+  <Target Name="ReportJadeNativeLibraries" BeforeTargets="GenerateNuspec">
+    <ItemGroup>
+      <_JadeNativeRequiredRid Include="$(JadeNativeRequiredRids)" />
+      <_JadeNativeMissingRid Include="@(_JadeNativeRequiredRid)" Exclude="@(JadeNativeLibrary->'%(Rid)')" />
+    </ItemGroup>
+
+    <GetFileSizes Files="@(JadeNativeLibrary)">
+      <Output TaskParameter="Sizes" ItemName="_JadeNativeLibrarySize" />
+    </GetFileSizes>
+
+    <Message Importance="high" Text="Jade.Native: %(_JadeNativeLibrarySize.Rid) %(_JadeNativeLibrarySize.Filename)%(_JadeNativeLibrarySize.Extension) %(_JadeNativeLibrarySize.Megabytes) MB" Condition="'@(_JadeNativeLibrarySize)' != ''" />
+    <Warning Code="JADENATIVE001" Text="Jade.Native has no jade_native for @(_JadeNativeMissingRid, ', '). Stage them under artifacts/native/&lt;rid&gt;/ with scripts/fetch-native.cs or scripts/build-native.cs: a release ships every RID." Condition="'@(_JadeNativeMissingRid)' != ''" />
+  </Target>
+
+  <Target Name="CheckJadeNativePackageSize" AfterTargets="Pack">
+    <GetFileSizes Files="$([MSBuild]::NormalizePath('$(MSBuildProjectDirectory)', '$(PackageOutputPath)', '$(PackageId).$(PackageVersion).nupkg'))">
+      <Output TaskParameter="Sizes" ItemName="_JadeNativePackageSize" />
+    </GetFileSizes>
+
+    <Message Importance="high" Text="Jade.Native: package %(_JadeNativePackageSize.Megabytes) MB, limit $([MSBuild]::Divide($(JadeNativeMaxPackageSize), 1000000)) MB" />
+    <Error Code="JADENATIVE002" Text="%(_JadeNativePackageSize.Identity) is %(_JadeNativePackageSize.Bytes) bytes, over the $(JadeNativeMaxPackageSize)-byte limit kept below nuget.org's 250 MB. Split Jade.Native by platform family as ADR-0002 plans (design/adr/0002-package-layout.md)." Condition="%(_JadeNativePackageSize.Bytes) &gt; $(JadeNativeMaxPackageSize)" />
+  </Target>
+
+</Project>

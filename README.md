@@ -28,7 +28,8 @@ Nothing is published on nuget.org yet.
 | miniaudio bindings | Planned |
 | Android, iOS, browser (WebAssembly) | Planned |
 | Dear ImGui and extensions, Box2D and Box3D, FreeType, HarfBuzz, msdfgen, asset libraries | Planned |
-| `Jade` and `Jade.Native` on nuget.org | Planned |
+| `Jade` and `Jade.Native` packages | Packed and tested locally, with the JIT and NativeAOT |
+| Publishing on nuget.org | Planned |
 
 The [roadmap](https://github.com/AerafalDev/Jade/blob/main/design/roadmap.md) tracks every task,
 and the [changelog](https://github.com/AerafalDev/Jade/blob/main/CHANGELOG.md) what has landed.
@@ -51,7 +52,7 @@ Every built RID also gets Dawn's Null backend, which lets tests run without a GP
 | Package | Contents |
 | --- | --- |
 | `Jade` | The only package to reference: the engine (later) and the `Jade.Interop` bindings |
-| `Jade.Native` | The `jade_native` binaries for every RID, pulled in by `Jade` (planned) |
+| `Jade.Native` | The `jade_native` binaries for every RID, pulled in by `Jade` at the same version |
 
 ## Building from source
 
@@ -81,6 +82,11 @@ dotnet scripts/smoke-native.cs                                # check the staged
 
 The bindings are regenerated from the staged headers and Dawn's `dawn.json` with
 `dotnet scripts/generate-bindings.cs`.
+
+`dotnet pack -c Release -o artifacts/packages` packs `Jade` and `Jade.Native`, the latter with every
+RID staged under `artifacts/native/`. `dotnet scripts/test-package.cs` packs them, then runs a
+project that references `Jade` from that folder, with `dotnet run` and as a NativeAOT binary.
+
 See [CONTRIBUTING.md](https://github.com/AerafalDev/Jade/blob/main/CONTRIBUTING.md) for conventions,
 and [`design/`](https://github.com/AerafalDev/Jade/blob/main/design/architecture.md) for the
 architecture and its decision records.

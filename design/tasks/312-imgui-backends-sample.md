@@ -44,6 +44,8 @@ which RIDs were built locally.
 
 ## Pitfalls
 
+- From 310: `imgui_impl_wgpu.cpp` builds as Objective-C++ on macOS for its surface helper. Only CI's
+  build proves it compiles; the helper has not run anywhere.
 No multi-viewports with the WebGPU renderer; platform windows only on the `windows`,
 `cocoa` and `x11` SDL drivers.
 

@@ -16,8 +16,9 @@
     <ProjectReference Include="..\..\src\Jade.Interop\Jade.Interop.csproj" />
   </ItemGroup>
 
-  <!-- jade_native as staged for this machine by scripts/build-native.cs, until Jade.Native packages it (106).
-       Without a staged library, the tests that call it skip. -->
+  <!-- jade_native as staged for this machine by scripts/build-native.cs or scripts/fetch-native.cs. Taking it from the
+       Jade.Native package instead would mean packing before every test run; tests/Jade.PackageTests covers the
+       package. Without a staged library, the tests that call it skip. -->
   <PropertyGroup>
     <JadeNativeStage>$(MSBuildThisFileDirectory)..\..\artifacts\native\$(NETCoreSdkRuntimeIdentifier)\</JadeNativeStage>
   </PropertyGroup>

@@ -42,6 +42,13 @@ Pack, restore from `artifacts/packages`, run, AOT publish, run the AOT binary.
 
 ## Pitfalls
 
+- From 106: replace `tests/Jade.PackageTests`' hand-written import with the generated bindings, run
+  `scripts/test-package.cs` in CI on the desktop runners (after the native job or `fetch-native`),
+  and style-check `tests/Jade.PackageTests` in CI: it sits outside the solution, so the style job
+  misses it.
+- From 202: include the WebGPU bindings, generic span overloads included, in the NativeAOT publish.
+- From 310: CI lists no Windows exports. Add a listing (`dumpbin /exports` or `llvm-readobj
+  --coff-exports`, whichever the runners have) with the same unexpected-name check as Linux and macOS.
 - From 203: the export cross-check reads ELF only, so it is skipped on Windows and macOS with a
   message. Extend it to PE (DLL exports) and Mach-O (dylib exports) here, or say why not, so the
   bindings are checked against the binaries on every desktop RID.

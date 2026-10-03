@@ -55,8 +55,10 @@ scripts/                entry point scripts/<name>.cs, helpers in scripts/<name>
   smoke-native.cs       loads the staged library and checks versions and exports
   generate-bindings.cs  the binding generator (201)
   fetch-native.cs       downloads CI-built natives for managed-only work (103)
+  test-package.cs       packs, then runs tests/Jade.PackageTests from the local feed, JIT and NativeAOT (106)
 src/Jade/  src/Jade.Interop/  src/Jade.Native/
-tests/                  Jade.Interop.Tests, package and AOT smoke tests
+tests/                  Jade.Interop.Tests; Jade.PackageTests (outside the solution: restores the packed
+                        Jade from artifacts/packages, run by scripts/test-package.cs, also as NativeAOT)
 samples/                hello-triangle and later samples
 artifacts/              gitignored outputs
   native/<rid>/         lib/, include/<lib>/, metadata/ (dawn.json, versions.json, licenses)
@@ -72,7 +74,9 @@ native/packages (pinned sources + sha256)
         │  xmake, per RID, on that RID's native OS (CI matrix, 103/104/105)
         ▼
 artifacts/native/<rid>/lib/(lib)jade_native.*      + include/ + metadata/
-        │  CI artifact, cached by hash of native/**, scripts/build-native.cs and scripts/build-native/**
+        │  CI artifact. native.yml rebuilds a RID only when its inputs change (native/**, the build script
+        │  and the workflow; weekly and on manual runs too), otherwise it reuses the libraries of an
+        │  earlier run with the same inputs (004). Package caches are keyed by each RID's xmake config.
         ▼
 src/Jade.Native (pack) → Jade.Native.nupkg
 ```
@@ -84,7 +88,9 @@ CI artifacts for the other RIDs (`scripts/fetch-native.cs`).
 
 ```text
 artifacts/native/<host-rid>/include/**  +  metadata/dawn.json   (staged by the native build)
-        │  scripts/generate-bindings.cs  (libclang per target triple + dawn.json reader → model → emitter)
+        │  scripts/generate-bindings.cs  (libclang per target triple + dawn.json reader → model → emitter;
+        │  webgpu.h is parsed too and must declare exactly what dawn.json describes; dawn.json's tags give
+        │  the browser availability attributes)
         ▼
 src/Jade.Interop/Generated/<Lib>/*.g.cs   (committed; CI regenerates and fails on diff)
 tests/Jade.Interop.Tests/Generated/<Lib>/  (generated layout tests: C# size and offsets vs C, per RID)

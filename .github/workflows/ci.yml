@@ -76,8 +76,11 @@ jobs:
       - name: Test
         run: dotnet test -c Release --results-directory TestResults --report-xunit-trx --report-xunit-trx-filename test-results.trx
 
+      # This job builds no jade_native (native.yml does), so Jade.Native packs without natives and requires no RID.
+      # Bash on every OS keeps the empty property value away from PowerShell's argument parsing.
       - name: Pack
-        run: dotnet pack -c Release -o artifacts/packages
+        shell: bash
+        run: dotnet pack -c Release -o artifacts/packages -p:JadeNativeRequiredRids=
 
       - name: Upload test results
         if: always()
