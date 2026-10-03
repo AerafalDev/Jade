@@ -12,6 +12,9 @@ updates:
     open-pull-requests-limit: 10
     commit-message:
       prefix: "build(deps)"
+    # These replace Dependabot's default labels. Dependabot skips a label the repository lacks, so each one is declared
+    # in .github/labels.yml.
+    labels: ["dependencies", "type: build"]
     groups:
       nuget-minor-and-patch:
         update-types: ["minor", "patch"]
@@ -27,6 +30,7 @@ updates:
     open-pull-requests-limit: 10
     commit-message:
       prefix: "ci(deps)"
+    labels: ["dependencies", "github_actions", "type: ci"]
     groups:
       github-actions:
         patterns: ["*"]

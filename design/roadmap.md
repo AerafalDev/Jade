@@ -12,7 +12,7 @@ back before the orchestrator writes their brief.
 | [002](tasks/002-ci-baseline.md) | CI baseline: build, test, CodeQL, Dependabot | 001 | done |
 | [003](tasks/003-coding-conventions.md) | Enforce the C# coding conventions, clean up existing code | 102, 201 | done |
 | [004](tasks/004-ci-turnaround.md) | Faster CI turnaround: skip docs-only, reuse native artifacts, cache the container | 103 | done |
-| [005](tasks/005-github-organization.md) | GitHub organization: templates, code owners, labels, settings, ruleset on main | 004 | todo |
+| [005](tasks/005-github-organization.md) | GitHub organization: templates, code owners, labels, settings, ruleset on main | 004 | done |
 
 003 runs once 102 and 201 are merged, before any other task starts: 103, 202, 203, 204, 301 and
 304 list it as a dependency in their briefs.
