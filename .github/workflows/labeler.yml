@@ -1,0 +1,32 @@
+name: Labeler
+
+# Adds area and platform labels to pull requests from the paths they change (.github/labeler.yml).
+#
+# pull_request_target, because a pull_request run from a fork only gets a read-only token and cannot label. It is safe
+# here because nothing checks out or runs the pull request's code: the action lists the changed paths through the API
+# and reads its configuration from the base branch. As a consequence, a change to this file or to labeler.yml only
+# takes effect once merged. Any base branch, so that a pull request stacked on another one gets labels too.
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+# github.ref is the base branch under pull_request_target, so the group is keyed on the pull request instead.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  label:
+    name: Label
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      # Labels only: every label already exists (scripts/sync-labels.cs), so the job needs no issues: write to create one.
+      pull-requests: write
+
+    steps:
+      - name: Label from changed paths
+        uses: actions/labeler@v7

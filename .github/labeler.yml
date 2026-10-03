@@ -1,0 +1,85 @@
+# Area and platform labels that .github/workflows/labeler.yml adds to pull requests from the paths they change. It never
+# removes one, so a label set by hand stays. Type and status labels are set by hand. Every label here must be declared
+# in .github/labels.yml.
+
+"area: native":
+  - changed-files:
+      - any-glob-to-any-file:
+          - native/**
+          - scripts/build-native.cs
+          - scripts/build-native/**
+          - scripts/fetch-native.cs
+          - scripts/fetch-native/**
+          - scripts/smoke-native.cs
+          - scripts/smoke-native/**
+
+"area: bindings":
+  - changed-files:
+      - any-glob-to-any-file:
+          - src/Jade.Interop/**
+          - tests/Jade.Interop.Tests/**
+
+"area: generator":
+  - changed-files:
+      - any-glob-to-any-file:
+          - scripts/generate-bindings.cs
+          - scripts/generate-bindings/**
+
+"area: packaging":
+  - changed-files:
+      - any-glob-to-any-file:
+          - src/Jade.Native/**
+          - tests/Jade.PackageTests/**
+          - scripts/test-package.cs
+
+"area: engine":
+  - changed-files:
+      - any-glob-to-any-file:
+          - src/Jade/**
+          - tests/Jade.Tests/**
+
+"area: docs site":
+  - changed-files:
+      - any-glob-to-any-file:
+          - docs/**
+
+# Platform-specific files live in a native/<platform>/ folder, as native/linux/ does, or carry the platform suffix that
+# .NET uses for C# files (Foo.Windows.cs). Shared files, such as the buildTransitive targets, get no platform label.
+"platform: windows":
+  - changed-files:
+      - any-glob-to-any-file:
+          - native/windows/**
+          - "**/*.Windows.cs"
+
+# The glibc baseline container (ADR-0013) only builds Linux RIDs.
+"platform: linux":
+  - changed-files:
+      - any-glob-to-any-file:
+          - native/linux/**
+          - scripts/build-native/Container.cs
+          - "**/*.Linux.cs"
+
+"platform: macos":
+  - changed-files:
+      - any-glob-to-any-file:
+          - native/macos/**
+          - "**/*.OSX.cs"
+          - "**/*.macOS.cs"
+
+"platform: android":
+  - changed-files:
+      - any-glob-to-any-file:
+          - native/android/**
+          - "**/*.Android.cs"
+
+"platform: ios":
+  - changed-files:
+      - any-glob-to-any-file:
+          - native/ios/**
+          - "**/*.iOS.cs"
+
+"platform: browser":
+  - changed-files:
+      - any-glob-to-any-file:
+          - native/browser/**
+          - "**/*.Browser.cs"
