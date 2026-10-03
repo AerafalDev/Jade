@@ -44,6 +44,8 @@ Generator run, build, variance report, test run.
 
 ## Pitfalls
 
+- From 103: `ma_atomic_global_lock` is a variable, not an API, yet it leaks into the exports on Linux
+  and Windows. Do not bind it, and remove it from the export list if the package allows it.
 - From 201: miniaudio's headers include more system headers than SDL3's slice. Add the missing
   stubs to `scripts/generate-bindings/sysroot/`; the parse names the missing header.
 - ADR-0012: `ma_bool8` and `ma_bool32` are integer typedefs, not C `bool`. Keep their width.

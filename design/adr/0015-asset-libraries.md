@@ -1,6 +1,8 @@
 # ADR-0015: Asset libraries: a runtime set in jade_native, an import set in jade_tools
 
-- Status: Proposed
+- Status: Accepted (2026-10-03) for the runtime set only. `jade_tools` and the import set are
+  deferred to the engine phase, where the asset pipeline and the editor get designed; until then
+  ADR-0002 and ADR-0003 stay unchanged.
 - Date: 2026-10-03
 - Extends: ADR-0003 (a second combined library, desktop RIDs only) and ADR-0002 (one more package
   pair for it)
@@ -115,7 +117,7 @@ code cannot provide [S13].
 
 **Meshes.** meshoptimizer covers vertex cache, overdraw and vertex fetch optimization,
 simplification, meshlets, and the vertex and index codecs behind `EXT_meshopt_compression`, all
-through a C API [S14][S24]. Version 1.3 made `meshopt_generateTangents` stable, with a
+through a C API [S14]. Version 1.3 made `meshopt_generateTangents` stable, with a
 `meshopt_TangentCompatible` mode that reproduces MikkTSpace [S14]. MikkTSpace (zlib license, last
 commit 2020-03-25) is therefore not bound [S23]. The whole library is 238 KiB (M2), so it sits in
 jade_native. The runtime decodes meshopt buffers and may simplify procedural meshes or build their

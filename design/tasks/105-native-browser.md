@@ -54,6 +54,14 @@ expected symbols.
 
 ## Pitfalls
 
+- ADR-0016: function pointer parameters are `nint` in import signatures because browser-wasm does
+  not parse function pointer types in P/Invoke signatures (dotnet/runtime#56145). Verify a callback
+  round-trip (native code calling an `[UnmanagedCallersOnly]` method passed through such a
+  parameter), and check that struct fields of function pointer type are fine. Also check by-value
+  struct arguments: 143 ImGui functions take `ImVec2` and similar by value (301).
+- From 301: ImGui's WebGPU backend needs Emscripten 4.0.10 or later with emdawnwebgpu. Only 6.0.11
+  was tried, through the Docker image `emscripten/emsdk:6.0.11`, which is still on this machine and
+  can be reused.
 - P/Invokes on browser-wasm resolve at build time from the library name. Check that `jade_native`
   in `DllImport` matches the `NativeFileReference` naming rules.
 - emdawnwebgpu's async APIs depend on Emscripten options (Asyncify or JSPI?). Check what it

@@ -42,6 +42,9 @@ Pack, restore from `artifacts/packages`, run, AOT publish, run the AOT binary.
 
 ## Pitfalls
 
+- From 203: the export cross-check reads ELF only, so it is skipped on Windows and macOS with a
+  message. Extend it to PE (DLL exports) and Mach-O (dylib exports) here, or say why not, so the
+  bindings are checked against the binaries on every desktop RID.
 - Stale package cache (see 106).
 
 ## Outcome

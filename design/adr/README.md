@@ -20,7 +20,8 @@ ADRs with status `Proposed`; the orchestrator, together with the user, accepts o
 | [0012](0012-c-bool-maps-to-system-boolean.md) | C `bool` maps to `System.Boolean`; wider boolean typedefs keep their width | Accepted |
 | [0013](0013-linux-glibc-baseline.md) | Linux RIDs build in an AlmaLinux 8 container: glibc 2.28 baseline, clang 21 with gcc-toolset-15 | Accepted |
 | [0014](0014-imgui.md) | Dear ImGui docking, dear_bindings C API, native SDL3/WebGPU backends, selected extensions | Accepted |
-| [0015](0015-asset-libraries.md) | Asset libraries: runtime set in `jade_native`, import set in a desktop-only `jade_tools` | Proposed |
+| [0015](0015-asset-libraries.md) | Asset libraries: runtime set in `jade_native`, import set in a desktop-only `jade_tools` | Accepted for the runtime set; `jade_tools` deferred |
+| [0016](0016-function-pointers-in-import-signatures.md) | Function pointers are `nint` in import signatures (browser-wasm), typed in the public API | Accepted |
 
 ## Template
 
