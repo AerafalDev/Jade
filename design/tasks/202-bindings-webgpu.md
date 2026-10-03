@@ -292,6 +292,13 @@ method, a chained struct and a callback.
     layout with clang's on all 12 targets.
   - SPIR-V: bound, with a doc note on `ShaderSourceSPIRV`, `DawnShaderSourceSPIRV` and
     `InstanceFeatureName.ShaderSourceSPIRV`, all checked by the test above.
+  - FXC on Windows: CI's first run failed the device test on win-x64 with `DynamicLib.Open:
+    d3dcompiler_47.dll Windows Error: 87` from `EnsureFXC`. Dawn tries the library's and the
+    executable's directories, then the bare name with `LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR`, which
+    requires a full path (`ERROR_INVALID_PARAMETER`), so the system copy that 103 and 106 relied on
+    is never searched. The Dawn recipe now sets `DAWN_FORCE_SYSTEM_COMPONENT_LOAD=ON` on Windows,
+    which loads `d3dcompiler_47.dll` from System32 only. Dawn's comment on that option warns that
+    older Windows versions ship a compiler with bugs.
   - Tests use `CallbackMode.WaitAnyOnly` and `WaitAny` with a 30 s timeout. That needs the instance
     feature `TimedWaitAny`, and keeps callbacks on the test thread. Without a GPU, Dawn answers a
     default request with its Null adapter (`InstanceBase::EnumeratePhysicalDevices` tries every
