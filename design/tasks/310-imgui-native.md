@@ -88,9 +88,32 @@ handler. dear_bindings' release names contain the ImGui version; there is no "la
     101 of 101 passed. `dotnet format --verify-no-changes --include-generated --exclude '**/obj/**'`:
     exit 0. Script style check and `dotnet build` of `build-native` and `smoke-native`: no change, no
     warning.
-  - Not verified here: win-x64, win-arm64, osx-x64, osx-arm64 and linux-arm64 (MSVC, Xcode, the
-    Objective-C++ compile of `imgui_impl_wgpu.cpp`, the Windows and macOS link). `native.yml` builds
-    and checks them once the branch is pushed. Nothing is drawn through SDL3 or WebGPU yet (312).
+  - `native.yml` run 37132320974 on the pushed branch: linux-x64 and linux-arm64 passed. win-x64 and
+    win-arm64 failed the imgui install: the export check met unmangled functions that MSVC's CRT
+    headers define inline in every object including them (`localtime_s`, `printf`, `snprintf`,
+    `sprintf`, `sscanf`, `time`, `vsnprintf`, and `fabsf` on x64 only). osx-arm64 and osx-x64 built,
+    then failed `List exports`: macOS's bash 3.2 cannot parse its `case` inside `$( )`.
+  - Fixes, 2026-10-03, linux-x64 host build: the recipe compares only names with a C API prefix and
+    fails on a metadata function without one; `List exports` reads the names before the `$( )`.
+    - The check still fails on an API function too many or missing. With temporary edits
+      (`IMGUI_DISABLE_DEBUG_TOOLS` and `IMGUI_HAS_IMSTR` set in the macro table, plus an object
+      defining `extern "C"` `ImGui_DemoExtra` and `localtime_s`), the install failed with
+      `ImGui_DebugLog`, `ImGui_DebugLogUnformatted`, `ImGui_DebugLogV` and `ImGui_DemoExtra` "defined
+      but not in the metadata" and `ImStrv_FromCharStr` "in the metadata but not defined", and nothing
+      about `localtime_s`. With `DearBindings_` dropped from the prefixes, it failed on
+      `DearBindings_GetVersion in dear_bindings/dcimgui.json has no C API prefix`.
+    - Edits reverted: `dotnet scripts/build-native.cs` reinstalled imgui and passed,
+      `dotnet scripts/smoke-native.cs` passed every check (`dear_bindings exports: 791 of 829`), and
+      `dotnet scripts/generate-bindings.cs` changed 0 files.
+    - `List exports`: under bash 3.2.57 (Docker image `bash:3.2`) the old script fails with CI's
+      `syntax error near unexpected token ';;'` and the new one parses. On linux-x64's library and on
+      osx-arm64's from run 37132320974, the new script under bash 3.2 and 5.2 prints byte for byte what
+      the old one prints under bash 5.2, reports an injected mangled name, and fails when `nm` fails,
+      as before. `actionlint` passes.
+  - Not verified: the six RIDs in CI with these fixes (win-x64 and win-arm64 included, and the
+    macOS smoke check, which run 37132320974 never reached). The PR conflicts with `main` (README
+    Status table), so no `pull_request` run started on the pushed fixes. Nothing is drawn through SDL3
+    or WebGPU yet (312).
 - Decisions taken (and ADRs added):
   - `IM_ASSERT` stays ImGui's `assert()`; `imconfig.h` is upstream's, staged unchanged. Release
     builds define `NDEBUG`, as miniaudio's do, so assertions compile out. Recoverable API misuse still
@@ -102,8 +125,11 @@ handler. dear_bindings' release names contain the ImGui version; there is no "la
     evaluated against a table of the macros they test (`IMGUI_DISABLE_OBSOLETE_FUNCTIONS`,
     `IMGUI_IMPL_WEBGPU_BACKEND_DAWN`, `IMGUI_IMPL_WEBGPU_BACKEND_WGPU`, `IMGUI_HAS_IMSTR`,
     `IMGUI_DISABLE_DEBUG_TOOLS`, `__EMSCRIPTEN__`); another macro or form fails the install. The
-    recipe then checks that the list equals the unmangled functions defined in the compiled objects,
-    in both directions, so a wrong table entry fails the build instead of hiding a function. It
+    recipe then checks that the list equals the functions with a C API prefix (`Im` and a capital,
+    `DearBindings_`, `cImGui_`) defined in the compiled objects, in both directions, so a wrong table
+    entry fails the build instead of hiding a function. Every metadata function must carry such a
+    prefix, so none escapes the comparison. Unmangled alone would not do: MSVC's CRT headers define
+    `printf`, `time` and others as unmangled inline functions in the objects. It
     reads the object files, not the archive: xmake 3.1.1's `binutils.readsyms` and `extractlib`
     returned only `imgui.cpp.o` and `dcimgui.cpp.o` of the 12 members, the two whose names fit
     without the GNU `//` long-name table.
