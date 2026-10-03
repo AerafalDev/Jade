@@ -22,12 +22,12 @@ Nothing is published on nuget.org yet.
 
 | Area | State |
 | --- | --- |
-| `jade_native` with SDL3, miniaudio and Dawn | Built in CI for the six desktop RIDs |
+| `jade_native` with SDL3, miniaudio, Dawn and Dear ImGui (C API, SDL3, WebGPU and null backends) | Built in CI for the six desktop RIDs |
 | SDL3 bindings (`Jade.Interop.Sdl3`) | Complete public API, checked against the binary's exports |
 | WebGPU bindings from Dawn's `dawn.json` (`Jade.Interop.WebGpu`) | Complete API with Dawn's extensions, checked against the header and the binary's exports |
 | miniaudio bindings | Planned |
 | Android, iOS, browser (WebAssembly) | Planned |
-| Dear ImGui and extensions, Box2D, FreeType, HarfBuzz, msdfgen, asset libraries | Planned |
+| Dear ImGui bindings and extensions, Box2D, FreeType, HarfBuzz, msdfgen, asset libraries | Planned |
 | `Jade` and `Jade.Native` packages | Packed and tested locally, with the JIT and NativeAOT |
 | Publishing on nuget.org | Planned |
 
@@ -71,8 +71,8 @@ Download the one CI built for `main`, which needs an authenticated GitHub CLI (`
 dotnet scripts/fetch-native.cs --rid linux-x64
 ```
 
-Or build it yourself. That needs xmake 3.1.1, CMake, Ninja, clang, Python 3 and git, plus Docker for
-the Linux baseline container:
+Or build it yourself. That needs xmake 3.1.1, CMake, Ninja, clang, Python 3, git and, on Linux, unzip,
+plus Docker for the Linux baseline container:
 
 ```sh
 dotnet scripts/build-native.cs                                # host RID

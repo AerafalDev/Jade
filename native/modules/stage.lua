@@ -15,6 +15,8 @@
 -- opt.licenses  {path in the source tree = staged file name}
 -- opt.metadata  {path in the source tree = staged file name}, optional
 -- opt.defines   defines that shape the public API; whoever parses the headers must use the same
+-- opt.resources {resource name = {version, commit, license}}, optional: upstreams the package
+--               downloads with add_resources, recorded with it in versions.json
 function main(package, opt)
     import("core.base.json")
 
@@ -42,6 +44,21 @@ function main(package, opt)
         os.cp(source, path.join(stagedir, "metadata", name))
     end
 
+    local resources = {}
+    for _, name in ipairs(table.orderkeys(opt.resources or {})) do
+        local info = opt.resources[name]
+        local resource = assert(package:resource(name), "package(" .. package:name() .. "): no resource " .. name)
+        assert(info.commit and #info.commit == 40, "package(" .. package:name() .. "): full commit hash required for resource " .. name)
+        table.insert(resources, {
+            name = name,
+            version = info.version,
+            commit = info.commit,
+            url = resource.url,
+            sha256 = resource.sha256,
+            license = info.license
+        })
+    end
+
     -- Only $(version) is used in our URLs, so a plain substitution resolves them.
     local url = package:urls()[1]:gsub("%$%(version%)", package:version_str())
     json.savefile(path.join(stagedir, "upstream.json"), {
@@ -51,6 +68,7 @@ function main(package, opt)
         url = url,
         sha256 = package:sourcehash(),
         license = package:license(),
-        defines = json.mark_as_array(table.copy(opt.defines or {}))
+        defines = json.mark_as_array(table.copy(opt.defines or {})),
+        resources = json.mark_as_array(resources)
     }, {pretty = true})
 end

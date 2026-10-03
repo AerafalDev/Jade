@@ -54,10 +54,123 @@ handler. dear_bindings' release names contain the ImGui version; there is no "la
 
 ## Outcome
 
-_Filled by the task session._
-
-- Summary:
-- Verification (commands and results):
+- Summary: `jade_native` bundles Dear ImGui `v1.92.9b-docking`, built with
+  `IMGUI_DISABLE_OBSOLETE_FUNCTIONS`, the dear_bindings `v0.24` C API (`dcimgui.cpp`) and the SDL3,
+  WebGPU (`IMGUI_IMPL_WEBGPU_BACKEND_DAWN`) and null backends with their dear_bindings wrappers. They
+  come from the new package `native/packages/i/imgui`: the ImGui tarball plus the
+  `DearBindings_v0.24_ImGui_v1.92.9b-docking.zip` resource, both SHA-256 values unchanged since 301.
+  `jade_native` exports exactly the 791 functions of `dcimgui.json` and the three backend JSON files
+  whose preprocessor conditionals hold for the build (753 + 13 + 15 + 10), and stages
+  `include/imgui/` (`dcimgui.h`, the three backend headers, `imconfig.h`), `metadata/dcimgui*.json`,
+  ImGui's license, and an `imgui` entry in `versions.json` with a new `resources` list that records
+  dear_bindings. The smoke check runs ImGui frames on the null backends and compares every metadata
+  function with the exports. `native.yml`'s export listing now counts the ImGui exports and fails on
+  any name outside the bundled C APIs, such as a C++ symbol.
+- Verification (commands and results), 2026-10-03, linux-x64 only (host CachyOS, clang; container
+  clang 21.1.8 on glibc 2.28):
+  - `dotnet scripts/build-native.cs`: miniaudio, sdl3, dawn and imgui installed once each (imgui's
+    sdl3 and dawn dependencies resolve to the same builds), `libjade_native.so` 13,195 KiB.
+  - `dotnet scripts/build-native.cs --rid linux-x64 --container`: new image (Dockerfile changed), every
+    package rebuilt, 12,955 KiB, done in 403 s. On this library: highest glibc symbol `GLIBC_2.27`;
+    `nm -D --defined-only` grouped as in `native.yml`: 38 `cImGui_`, 753 `dcimgui`, 1 `jade_`,
+    1179 `ma_`, 1270 `SDL_`, 276 `wgpu`, no other name (so no C++ symbol); `strings` finds no
+    `/home/` or `/root/` path.
+  - `dotnet scripts/smoke-native.cs`: every check ok, among them `ImGui_GetVersion: 1.92.9b`,
+    `DearBindings_GetVersion: 0.24`, `ImGui frames (null backends): rendered (1 draw list(s), 150
+    vertices, 249 indices)` and `dear_bindings exports: 791 of 829`. No `imgui.ini` is left behind.
+  - The new export listing of `native.yml`, run locally with `llvm-nm` on the artifacts of `main`'s
+    native run 37093573668 (osx-arm64, osx-x64, linux-arm64) and on the linux-x64 above: no
+    unexpected name; a mangled name fed to it is reported. `actionlint` passes.
+  - `dotnet scripts/generate-bindings.cs` twice: the SHA-256 over every file under both `Generated/`
+    folders is the same before, after the first run and after the second (`5bd471ce…`), 0 files
+    changed.
+  - `dotnet build -c Release`: 0 warnings, 0 errors. `SDL_VIDEO_DRIVER=dummy dotnet test -c Release`:
+    101 of 101 passed. `dotnet format --verify-no-changes --include-generated --exclude '**/obj/**'`:
+    exit 0. Script style check and `dotnet build` of `build-native` and `smoke-native`: no change, no
+    warning.
+  - `native.yml` run 37132320974 on the pushed branch: linux-x64 and linux-arm64 passed. win-x64 and
+    win-arm64 failed the imgui install: the export check met unmangled functions that MSVC's CRT
+    headers define inline in every object including them (`localtime_s`, `printf`, `snprintf`,
+    `sprintf`, `sscanf`, `time`, `vsnprintf`, and `fabsf` on x64 only). osx-arm64 and osx-x64 built,
+    then failed `List exports`: macOS's bash 3.2 cannot parse its `case` inside `$( )`.
+  - Fixes, 2026-10-03, linux-x64 host build: the recipe compares only names with a C API prefix and
+    fails on a metadata function without one; `List exports` reads the names before the `$( )`.
+    - The check still fails on an API function too many or missing. With temporary edits
+      (`IMGUI_DISABLE_DEBUG_TOOLS` and `IMGUI_HAS_IMSTR` set in the macro table, plus an object
+      defining `extern "C"` `ImGui_DemoExtra` and `localtime_s`), the install failed with
+      `ImGui_DebugLog`, `ImGui_DebugLogUnformatted`, `ImGui_DebugLogV` and `ImGui_DemoExtra` "defined
+      but not in the metadata" and `ImStrv_FromCharStr` "in the metadata but not defined", and nothing
+      about `localtime_s`. With `DearBindings_` dropped from the prefixes, it failed on
+      `DearBindings_GetVersion in dear_bindings/dcimgui.json has no C API prefix`.
+    - Edits reverted: `dotnet scripts/build-native.cs` reinstalled imgui and passed,
+      `dotnet scripts/smoke-native.cs` passed every check (`dear_bindings exports: 791 of 829`), and
+      `dotnet scripts/generate-bindings.cs` changed 0 files.
+    - `List exports`: under bash 3.2.57 (Docker image `bash:3.2`) the old script fails with CI's
+      `syntax error near unexpected token ';;'` and the new one parses. On linux-x64's library and on
+      osx-arm64's from run 37132320974, the new script under bash 3.2 and 5.2 prints byte for byte what
+      the old one prints under bash 5.2, reports an injected mangled name, and fails when `nm` fails,
+      as before. `actionlint` passes.
+  - Not verified: the six RIDs in CI with these fixes (win-x64 and win-arm64 included, and the
+    macOS smoke check, which run 37132320974 never reached). The PR conflicts with `main` (README
+    Status table), so no `pull_request` run started on the pushed fixes. Nothing is drawn through SDL3
+    or WebGPU yet (312).
 - Decisions taken (and ADRs added):
+  - `IM_ASSERT` stays ImGui's `assert()`; `imconfig.h` is upstream's, staged unchanged. Release
+    builds define `NDEBUG`, as miniaudio's do, so assertions compile out. Recoverable API misuse still
+    goes through ImGui's error recovery: `IM_ASSERT_USER_ERROR` calls `ErrorLog` whatever `NDEBUG` is,
+    which writes to ImGui's debug log and shows a tooltip, configured by `io.ConfigErrorRecovery*`.
+    Debug builds abort, as upstream. A handler reporting to managed code, with a managed stack trace,
+    can be added later as a `jade_imgui_*` shim without changing anything else.
+  - The export list is read from the four JSON files in `on_install`, and their conditionals are
+    evaluated against a table of the macros they test (`IMGUI_DISABLE_OBSOLETE_FUNCTIONS`,
+    `IMGUI_IMPL_WEBGPU_BACKEND_DAWN`, `IMGUI_IMPL_WEBGPU_BACKEND_WGPU`, `IMGUI_HAS_IMSTR`,
+    `IMGUI_DISABLE_DEBUG_TOOLS`, `__EMSCRIPTEN__`); another macro or form fails the install. The
+    recipe then checks that the list equals the functions with a C API prefix (`Im` and a capital,
+    `DearBindings_`, `cImGui_`) defined in the compiled objects, in both directions, so a wrong table
+    entry fails the build instead of hiding a function. Every metadata function must carry such a
+    prefix, so none escapes the comparison. Unmangled alone would not do: MSVC's CRT headers define
+    `printf`, `time` and others as unmangled inline functions in the objects. It
+    reads the object files, not the archive: xmake 3.1.1's `binutils.readsyms` and `extractlib`
+    returned only `imgui.cpp.o` and `dcimgui.cpp.o` of the 12 members, the two whose names fit
+    without the GNU `//` long-name table.
+  - The package version is the tag, `1.92.9b-docking`. dear_bindings is recorded as a resource of the
+    imgui upstream: `stage.lua` takes `opt.resources`, `upstream.json` and `versions.json` gain a
+    `resources` array (empty for the other upstreams), and `build-native` has `UpstreamResource`.
+  - imgui depends on the sdl3 and dawn packages with the same `system` and `debug` settings as
+    `native/xmake.lua`'s requires, so xmake reuses those installs; only their headers are used.
+  - Default visibility (no `mode.release` rule) and compiler-default warnings, as for miniaudio; the
+    wrappers' `-Wunused-function` warnings never meet `jade_native`'s warnings-as-errors.
+  - `unzip` joins the Linux container: on Linux, xmake extracts zip archives only with unzip or 7z.
+    README and CLAUDE.md list it among the native prerequisites.
+  - `THIRD-PARTY-NOTICES.md`: Dear ImGui with Dear Bindings' generated files under its license, stb,
+    ProggyClean and ProggyForever (both embedded in `imgui_draw.cpp`). The CC BY 4.0 kanji table of
+    `imgui_draw.cpp` is not listed: it sits under `#ifndef IMGUI_DISABLE_OBSOLETE_FUNCTIONS` and is
+    not compiled.
+  - No ADR: nothing hard to reverse beyond what the brief and ADR-0014 cover.
 - Deviations from the brief:
+  - 791 exports, not 829 (790 + 13 + 16 + 10): 36 functions are obsolete API, absent with
+    `IMGUI_DISABLE_OBSOLETE_FUNCTIONS`; `ImStrv_FromCharStr` needs `IMGUI_HAS_IMSTR`; and
+    `cImGui_ImplWGPU_GetLogLevelName` exists only with the wgpu-native backend. The dcimgui functions
+    are not prefixed `cImGui_` either (only the backends are): they carry the C++ class name
+    (`ImGui_`, `ImDrawList_`, `ImFontAtlas_` and 22 more) or `DearBindings_`.
+  - The smoke check runs two frames, not one: ImGui hides a new window during its first frame while
+    it measures it, so that frame has no draw list.
+  - Outside the brief's file list: the Linux Dockerfile (unzip), the native prerequisites line of
+    CLAUDE.md and README, and `stage.lua`. Editing `stage.lua` changes every package's recipe hash, so
+    every package, Dawn included, rebuilds once, here and in CI's caches.
 - Follow-ups:
+  - xmake: `binutils.readsyms` and `extractlib` skip the GNU archive members named through the `//`
+    table (checked on linux-x64 only; BSD and MSVC archives not tried). `jade.bundle` expands `*`
+    patterns with `readsyms` on macOS and Windows: today's only package pattern, `ma_*`, sits in a
+    short-named member, but a later package with patterns and long object names would silently lose
+    exports there. Worth an upstream issue (an outward action, not taken).
+  - CI still lists no Windows exports (since 103), so the new unexpected-name check covers Linux and
+    macOS only. On Windows the `.def` holds exact names and ImGui has no `dllexport`, but a listing
+    with whichever of `dumpbin /exports` or `llvm-readobj --coff-exports` the runners have would show
+    it.
+  - 311: `ExportCheck` filters exports by prefix; dcimgui needs the `Im*_` class prefixes,
+    `DearBindings_` and `cImGui_`, and the 38 functions listed in the JSON but not exported must be
+    excluded through their conditionals. `ImWchar` is 16-bit (`IMGUI_USE_WCHAR32` is not defined), which
+    caps code points at U+FFFF; decide before binding, since it changes `ImWchar` and struct layouts.
+  - 312: `imgui_impl_wgpu.cpp`'s Objective-C++ compile on macOS is only proven by CI's build; its
+    surface helper has not run anywhere.

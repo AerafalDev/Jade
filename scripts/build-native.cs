@@ -29,6 +29,7 @@
 #:include build-native/ManifestHeader.cs
 #:include build-native/ManifestPackage.cs
 #:include build-native/Upstream.cs
+#:include build-native/UpstreamResource.cs
 #:include build-native/Versions.cs
 
 using System.Diagnostics;

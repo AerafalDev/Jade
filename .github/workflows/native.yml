@@ -271,14 +271,24 @@ jobs:
           path: ${{ runner.temp }}/container-image
           key: ${{ steps.image.outputs.cache-primary-key }}
 
+      # Counts the exports of each bundled C API (dcimgui: ImGui's, named after its C++ classes, Im*_), and
+      # fails on any other name, such as a C++ symbol. macOS runs bash 3.2, which cannot parse a case inside
+      # $( ), so the names are read first.
       - name: List exports
         if: runner.os != 'Windows' && (steps.build.outcome == 'success' || steps.reuse.outputs.build == 'false')
         shell: bash
         run: |
           case "$RUNNER_OS" in
-            Linux) nm -D --defined-only "artifacts/native/${{ matrix.rid }}/lib/libjade_native.so" | awk '{ print $3 }' ;;
-            macOS) nm -gU "artifacts/native/${{ matrix.rid }}/lib/libjade_native.dylib" | awk '{ print substr($3, 2) }' ;;
-          esac | sed -E 's/^(SDL_|ma_|wgpu|jade_).*/\1/' | sort | uniq -c
+            Linux) names=$(nm -D --defined-only "artifacts/native/${{ matrix.rid }}/lib/libjade_native.so" | awk '{ print $3 }') ;;
+            macOS) names=$(nm -gU "artifacts/native/${{ matrix.rid }}/lib/libjade_native.dylib" | awk '{ print substr($3, 2) }') ;;
+          esac
+          exports=$(sed -E 's/^(SDL_|ma_|wgpu|jade_|cImGui_).*/\1/; s/^(Im[A-Z]|DearBindings_).*/dcimgui/' <<< "$names" | sort | uniq -c)
+          echo "$exports"
+          unexpected=$(awk '{ print $2 }' <<< "$exports" | grep -vxE 'SDL_|ma_|wgpu|jade_|cImGui_|dcimgui' || true)
+          if [ -n "$unexpected" ]; then
+            echo "::error::Exported outside the bundled C APIs: ${unexpected//$'\n'/ }"
+            exit 1
+          fi
 
       # A failed package install prints only the first 17 lines of its output; xmake keeps the rest in the
       # package cache, which the runner discards.

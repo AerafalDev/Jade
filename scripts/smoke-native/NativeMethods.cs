@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 
-/// <summary>Raw imports of one function per bundled library, enough to prove the exports resolve.</summary>
+/// <summary>Raw imports of a few functions per bundled library, enough to prove the exports resolve and to run ImGui on its null backends.</summary>
 internal static unsafe class NativeMethods
 {
     /// <summary><c>SDL_GetVersion</c>: the linked SDL version as <c>major * 1000000 + minor * 1000 + micro</c>.</summary>
@@ -74,4 +74,78 @@ internal static unsafe class NativeMethods
     /// <param name="adapter">The <c>WGPUAdapter</c>.</param>
     [DllImport("jade_native")]
     public static extern void wgpuAdapterRelease(nint adapter);
+
+    /// <summary><c>ImGui_GetVersion</c>: the ImGui version compiled in.</summary>
+    /// <returns>A static UTF-8 string such as <c>1.92.9b</c>.</returns>
+    [DllImport("jade_native")]
+    public static extern byte* ImGui_GetVersion();
+
+    /// <summary><c>DearBindings_GetVersion</c>: the dear_bindings version that generated the C API.</summary>
+    /// <returns>A static UTF-8 string such as <c>0.24</c>.</returns>
+    [DllImport("jade_native")]
+    public static extern byte* DearBindings_GetVersion();
+
+    /// <summary><c>ImGui_CreateContext</c>: creates an ImGui context and makes it current.</summary>
+    /// <param name="sharedFontAtlas">An <c>ImFontAtlas</c> to share, or null for a new one.</param>
+    /// <returns>The <c>ImGuiContext</c>.</returns>
+    [DllImport("jade_native")]
+    public static extern nint ImGui_CreateContext(void* sharedFontAtlas);
+
+    /// <summary><c>ImGui_DestroyContext</c>: destroys an ImGui context.</summary>
+    /// <param name="context">The <c>ImGuiContext</c>, or null for the current one.</param>
+    [DllImport("jade_native")]
+    public static extern void ImGui_DestroyContext(nint context);
+
+    /// <summary><c>ImGui_GetIO</c>: the current context's configuration and inputs.</summary>
+    /// <returns>The context's <c>ImGuiIO</c>.</returns>
+    [DllImport("jade_native")]
+    public static extern ImGuiIO* ImGui_GetIO();
+
+    /// <summary><c>ImGui_NewFrame</c>: starts a frame.</summary>
+    [DllImport("jade_native")]
+    public static extern void ImGui_NewFrame();
+
+    /// <summary><c>ImGui_Begin</c>: begins a window.</summary>
+    /// <param name="name">The null-terminated UTF-8 window name.</param>
+    /// <param name="open">A C <c>bool</c> cleared when the window is closed, or null for no close button.</param>
+    /// <param name="flags">The <c>ImGuiWindowFlags</c>.</param>
+    /// <returns>A C <c>bool</c>: nonzero when the window's contents are visible.</returns>
+    [DllImport("jade_native")]
+    public static extern byte ImGui_Begin(byte* name, byte* open, int flags);
+
+    /// <summary><c>ImGui_TextUnformatted</c>: draws text without formatting it.</summary>
+    /// <param name="text">The null-terminated UTF-8 text.</param>
+    [DllImport("jade_native")]
+    public static extern void ImGui_TextUnformatted(byte* text);
+
+    /// <summary><c>ImGui_End</c>: ends the window that <see cref="ImGui_Begin"/> began.</summary>
+    [DllImport("jade_native")]
+    public static extern void ImGui_End();
+
+    /// <summary><c>ImGui_Render</c>: ends the frame and builds its draw data.</summary>
+    [DllImport("jade_native")]
+    public static extern void ImGui_Render();
+
+    /// <summary><c>ImGui_GetDrawData</c>: the draw data of the last <see cref="ImGui_Render"/>.</summary>
+    /// <returns>The <c>ImDrawData</c>.</returns>
+    [DllImport("jade_native")]
+    public static extern ImDrawData* ImGui_GetDrawData();
+
+    /// <summary><c>cImGui_ImplNull_Init</c>: sets up the null platform and renderer backends.</summary>
+    /// <returns>A C <c>bool</c>: nonzero on success.</returns>
+    [DllImport("jade_native")]
+    public static extern byte cImGui_ImplNull_Init();
+
+    /// <summary><c>cImGui_ImplNull_NewFrame</c>: starts a frame on the null backends (a 1920 x 1080 display).</summary>
+    [DllImport("jade_native")]
+    public static extern void cImGui_ImplNull_NewFrame();
+
+    /// <summary><c>cImGui_ImplNullRender_RenderDrawData</c>: "renders" draw data, which only marks its textures as uploaded.</summary>
+    /// <param name="drawData">The <c>ImDrawData</c>.</param>
+    [DllImport("jade_native")]
+    public static extern void cImGui_ImplNullRender_RenderDrawData(ImDrawData* drawData);
+
+    /// <summary><c>cImGui_ImplNull_Shutdown</c>: shuts the null backends down.</summary>
+    [DllImport("jade_native")]
+    public static extern void cImGui_ImplNull_Shutdown();
 }

@@ -18,7 +18,8 @@ includes("rules/bundle.lua")
 local bundled = {
     "sdl3",
     "miniaudio",
-    "dawn"
+    "dawn",
+    "imgui"
 }
 
 for _, name in ipairs(bundled) do

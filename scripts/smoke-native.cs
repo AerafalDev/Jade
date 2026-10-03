@@ -1,14 +1,17 @@
 #!/usr/bin/env dotnet
 // Smoke check of a staged jade_native: loads artifacts/native/<rid>/lib/, calls into each bundled
 // library and compares what it reports with the staged metadata and headers where it can; Dawn has
-// no version function, so it creates an instance and requests adapters instead. Runs on the RID of
-// the process only, since it has to load the library: an x64 runtime under Rosetta 2 checks osx-x64
-// on an arm64 Mac.
+// no version function, so it creates an instance and requests adapters instead. ImGui also renders
+// on its null backends, and its exports are compared with the staged dear_bindings metadata.
+// Runs on the RID of the process only, since it has to load the library: an x64 runtime under
+// Rosetta 2 checks osx-x64 on an arm64 Mac.
 //
 // Usage: dotnet scripts/smoke-native.cs [--rid <rid>]
 
 #:include smoke-native/NativeMethods.cs
 #:include smoke-native/AdapterRequest.cs
+#:include smoke-native/ImDrawData.cs
+#:include smoke-native/ImGuiIO.cs
 #:include smoke-native/WGPUAdapterInfo.cs
 #:include smoke-native/WGPURequestAdapterCallbackInfo.cs
 #:include smoke-native/WGPURequestAdapterOptions.cs
@@ -53,8 +56,11 @@ NativeLibrary.SetDllImportResolver(typeof(NativeMethods).Assembly, (name, _, _) 
 Console.WriteLine($"Loaded {Path.GetRelativePath(repositoryRoot, libraryPath)}");
 
 using var versions = JsonDocument.Parse(File.ReadAllText(Path.Combine(stageDirectory, "metadata", "versions.json")));
-string ExpectedVersion(string upstream) =>
-    versions.RootElement.GetProperty("upstreams").EnumerateArray().Single(u => u.GetProperty("name").GetString() == upstream).GetProperty("version").GetString()!;
+JsonElement Upstream(string name) =>
+    versions.RootElement.GetProperty("upstreams").EnumerateArray().Single(u => u.GetProperty("name").GetString() == name);
+string ExpectedVersion(string upstream) => Upstream(upstream).GetProperty("version").GetString()!;
+string ExpectedResourceVersion(string upstream, string resource) =>
+    Upstream(upstream).GetProperty("resources").EnumerateArray().Single(r => r.GetProperty("name").GetString() == resource).GetProperty("version").GetString()!;
 
 var header = File.ReadAllText(Path.Combine(stageDirectory, "include", "jade", "jade_native.h"));
 var expectedAbi = Regex.Match(header, @"#define JADE_NATIVE_ABI_VERSION (\d+)").Groups[1].Value;
@@ -102,9 +108,82 @@ unsafe
 
         NativeMethods.wgpuInstanceRelease(instance);
     }
+
+    // The docking branch's tags add -docking to the version ImGui reports.
+    Check("ImGui_GetVersion", Marshal.PtrToStringUTF8((nint)NativeMethods.ImGui_GetVersion())!, ExpectedVersion("imgui").Replace("-docking", "", StringComparison.Ordinal));
+    Check("DearBindings_GetVersion", Marshal.PtrToStringUTF8((nint)NativeMethods.DearBindings_GetVersion())!, ExpectedResourceVersion("imgui", "dear_bindings"));
+
+    // The null backends need neither a window nor a GPU, and their renderer marks the font texture as
+    // uploaded. A new window is hidden during its first frame, while ImGui measures it, so two frames run.
+    var context = NativeMethods.ImGui_CreateContext(null);
+    // Otherwise ImGui saves its settings to imgui.ini in the working directory.
+    NativeMethods.ImGui_GetIO()->IniFilename = null;
+    var initialized = NativeMethods.cImGui_ImplNull_Init() != 0;
+    var visible = false;
+    ImDrawData* drawData = null;
+    for (var frame = 0; frame < 2; frame++)
+    {
+        NativeMethods.cImGui_ImplNull_NewFrame();
+        NativeMethods.ImGui_NewFrame();
+        fixed (byte* title = "smoke-native"u8, text = "Hello from jade_native"u8)
+        {
+            visible = NativeMethods.ImGui_Begin(title, null, 0) != 0;
+            NativeMethods.ImGui_TextUnformatted(text);
+        }
+
+        NativeMethods.ImGui_End();
+        NativeMethods.ImGui_Render();
+        drawData = NativeMethods.ImGui_GetDrawData();
+        NativeMethods.cImGui_ImplNullRender_RenderDrawData(drawData);
+    }
+
+    Check("ImGui frames (null backends)", initialized && visible && drawData->Valid && drawData->TotalVtxCount > 0 ? "rendered" : "not rendered", "rendered",
+        $"{drawData->CmdListsSize} draw list(s), {drawData->TotalVtxCount} vertices, {drawData->TotalIdxCount} indices");
+    NativeMethods.cImGui_ImplNull_Shutdown();
+    NativeMethods.ImGui_DestroyContext(context);
+
+    // Every function of the dear_bindings metadata is exported exactly when its preprocessor conditionals
+    // hold for the defines ImGui was built with; the other macros they test are undefined on desktop.
+    var imguiDefines = Upstream("imgui").GetProperty("defines").EnumerateArray().Select(d => d.GetString()!).ToHashSet(StringComparer.Ordinal);
+    var listed = 0;
+    var expectedExports = 0;
+    var wrongExports = new List<string>();
+    foreach (var file in (string[])["dcimgui.json", "dcimgui_impl_sdl3.json", "dcimgui_impl_wgpu.json", "dcimgui_impl_null.json"])
+    {
+        using var metadata = JsonDocument.Parse(File.ReadAllText(Path.Combine(stageDirectory, "metadata", file)));
+        foreach (var function in metadata.RootElement.GetProperty("functions").EnumerateArray())
+        {
+            var name = function.GetProperty("name").GetString()!;
+            var expected = !function.TryGetProperty("conditionals", out var conditionals) || conditionals.EnumerateArray().All(c => Holds(c, imguiDefines));
+            listed++;
+            expectedExports += expected ? 1 : 0;
+            if (NativeLibrary.TryGetExport(handle, name, out _) != expected)
+            {
+                wrongExports.Add(name);
+            }
+        }
+    }
+
+    Check("dear_bindings exports", wrongExports.Count == 0 ? $"{expectedExports} of {listed}" : $"{wrongExports.Count} wrong: {string.Join(", ", wrongExports)}",
+        $"{expectedExports} of {listed}", "functions exported exactly when their conditionals hold");
 }
 
 return failures == 0 ? 0 : 1;
+
+// Evaluates one conditional of the dear_bindings metadata (its docs/MetadataFormat.md) against the build's defines.
+static bool Holds(JsonElement conditional, HashSet<string> defines)
+{
+    var expression = conditional.GetProperty("expression").GetString()!;
+    var defined = Regex.Match(expression, @"^defined\((\w+)\)$");
+    return conditional.GetProperty("condition").GetString() switch
+    {
+        "ifdef" => defines.Contains(expression),
+        "ifndef" => !defines.Contains(expression),
+        "if" when defined.Success => defines.Contains(defined.Groups[1].Value),
+        "ifnot" when defined.Success => !defines.Contains(defined.Groups[1].Value),
+        var condition => throw new InvalidOperationException($"unknown dear_bindings conditional `{condition} {expression}`"),
+    };
+}
 
 // Describes and releases the adapter of a successful request, or returns the request's message.
 static unsafe string Describe(AdapterRequest request)
