@@ -92,5 +92,9 @@ dialogs come first); `dcimgui_internal` for the DockBuilder API.
 
 ## Phase 4 and later: Engine
 
-To be planned with the orchestrator once Phase 2 is `done` on desktop and at least one of 104 or
-105 is `done`.
+| Task | Title | Depends on | Status |
+| --- | --- | --- | --- |
+| [401](tasks/401-ecs-survey.md) | Survey: ECS design from the inspirations (storage, queries, scheduling, source generators) | - | todo |
+
+The engine's implementation tasks will be planned with the orchestrator from 401's Outcome, once
+Phase 2 is `done` on desktop and at least one of 104 or 105 is `done`.
