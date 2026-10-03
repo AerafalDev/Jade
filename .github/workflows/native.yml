@@ -17,10 +17,10 @@ name: Native
 # pending. Native result sums up the jobs for that purpose.
 on:
   push:
-    branches: [main]
+    branches: [main, ci/measure-base]
     paths-ignore: ['design/**', '**.md']
   pull_request:
-    branches: [main]
+    branches: [main, ci/measure-base]
   schedule:
     - cron: "0 1 * * 1"
   workflow_dispatch:

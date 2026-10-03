@@ -5,9 +5,9 @@ name: CodeQL
 # CodeQL result sums up the jobs for that purpose.
 on:
   push:
-    branches: [main]
+    branches: [main, ci/measure-base]
   pull_request:
-    branches: [main]
+    branches: [main, ci/measure-base]
   schedule:
     - cron: "0 0 * * 1"
 

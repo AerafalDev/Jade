@@ -5,9 +5,9 @@ name: CI
 # them pending. CI result sums up the jobs for that purpose.
 on:
   push:
-    branches: [main]
+    branches: [main, ci/measure-base]
   pull_request:
-    branches: [main]
+    branches: [main, ci/measure-base]
 
 permissions:
   contents: read
