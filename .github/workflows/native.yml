@@ -108,16 +108,35 @@ jobs:
       # did not change: xmake reinstalls only what its build hash no longer finds. --prune-packages
       # drops the rest before the cache is saved. The build and xmake directories under native/ are not
       # inputs (xmake may already have written its global directory there).
-      - name: Cache xmake packages
-        uses: actions/cache@v6
+      - name: Restore xmake packages
+        id: packages
+        uses: actions/cache/restore@v6
         with:
           path: ${{ matrix.packages }}
           key: native-${{ matrix.rid }}-${{ steps.toolchain.outputs.id }}-${{ hashFiles('scripts/build-native/Rids.cs') }}-${{ hashFiles('native/**', '!native/build/**', '!native/.xmake/**', 'scripts/build-native.cs', 'scripts/build-native/**') }}
           restore-keys: native-${{ matrix.rid }}-${{ steps.toolchain.outputs.id }}-${{ hashFiles('scripts/build-native/Rids.cs') }}-
 
       - name: Build jade_native
+        id: build
         shell: bash
         run: dotnet scripts/build-native.cs --rid ${{ matrix.rid }} ${{ matrix.container && '--container' || '' }} --prune-packages
+
+      # Saved as soon as the build succeeds: a failing check later on says nothing about the packages.
+      - name: Save xmake packages
+        if: steps.build.outcome == 'success' && steps.packages.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v6
+        with:
+          path: ${{ matrix.packages }}
+          key: ${{ steps.packages.outputs.cache-primary-key }}
+
+      - name: List exports
+        if: steps.build.outcome == 'success' && runner.os != 'Windows'
+        shell: bash
+        run: |
+          case "$RUNNER_OS" in
+            Linux) nm -D --defined-only "artifacts/native/${{ matrix.rid }}/lib/libjade_native.so" | awk '{ print $3 }' ;;
+            macOS) nm -gU "artifacts/native/${{ matrix.rid }}/lib/libjade_native.dylib" | awk '{ print substr($3, 2) }' ;;
+          esac | sed -E 's/^(SDL_|ma_|wgpu|jade_).*/\1/' | sort | uniq -c
 
       # A failed package install prints only the first 17 lines of its output; xmake keeps the rest in the
       # package cache, which the runner discards.
@@ -178,7 +197,9 @@ jobs:
         env:
           SDL_VIDEO_DRIVER: dummy
 
+      # Uploaded whenever the build succeeded, so that a library failing a check can be inspected.
       - name: Upload jade_native
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
         uses: actions/upload-artifact@v7
         with:
           name: jade-native-${{ matrix.rid }}
@@ -186,6 +207,7 @@ jobs:
           if-no-files-found: error
 
       - name: Upload debug symbols
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
         uses: actions/upload-artifact@v7
         with:
           name: jade-native-symbols-${{ matrix.rid }}

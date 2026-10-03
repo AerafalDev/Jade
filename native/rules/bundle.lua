@@ -14,14 +14,17 @@
 --                   --gc-sections then drops what no export reaches. Measured on Dawn alone
 --                   (stripped): whole archive 10.0 MB, only the members the exports need
 --                   (--undefined per name) 9.4 MB, either one with --gc-sections 8.7 MB.
---   macOS, iOS      -force_load, and -exported_symbols_list (ld64 accepts wildcards; Mach-O names
---                   carry a leading underscore). -dead_strip plays the part of --gc-sections.
+--   macOS, iOS      -force_load, and -exported_symbols_list (Mach-O names carry a leading
+--                   underscore). -dead_strip plays the part of --gc-sections. Package patterns are
+--                   expanded to exact names, as for Windows: with Xcode 26's linker, `_ma_*` left
+--                   ma_version_string unexported. jade_* stays a pattern, since the shims are this
+--                   target's own objects.
 --   Windows         /WHOLEARCHIVE, and a .def file. A .def file has no wildcards, so each `*`
 --                   pattern is expanded against the defined globals of its own package's archives
---                   (xmake's binutils.readsyms reads MSVC archives), with DATA for variables. The
---                   jade_* shims export themselves through JADE_API (__declspec(dllexport)).
---                   /OPT:REF and /OPT:ICF are spelled out: /DEBUG, which writes the PDB, turns them
---                   off by default.
+--                   (xmake's binutils.readsyms reads ELF, Mach-O and MSVC archives), with DATA for
+--                   variables. The jade_* shims export themselves through JADE_API
+--                   (__declspec(dllexport)). /OPT:REF and /OPT:ICF are spelled out: /DEBUG, which
+--                   writes the PDB, turns them off by default.
 -- A static jade_native (browser-wasm, maybe iOS) exports nothing by itself; it needs the upstream
 -- archives merged into it instead (104, 105).
 rule("jade.bundle")
@@ -64,6 +67,57 @@ rule("jade.bundle")
             table.insert(bundles, bundle)
         end
 
+        -- Every package's exports as exact names: its `*` patterns are matched against the defined
+        -- globals of its own archives, and a pattern that matches nothing is an error. Each entry is
+        -- {name = <C name>, data = <not a function>}.
+        local function exact_exports()
+            import("core.base.binutils")
+
+            local underscore = target:is_plat("macosx", "iphoneos")
+            local result = {}
+            for _, bundle in ipairs(bundles) do
+                local patterns = {}
+                for _, entry in ipairs(bundle.exports) do
+                    if entry:find("*", 1, true) then
+                        table.insert(patterns, {entry = entry, pattern = "^" .. entry:gsub("%*", ".*") .. "$", matched = false})
+                    else
+                        table.insert(result, {name = entry, data = false})
+                    end
+                end
+                if #patterns > 0 then
+                    -- nm-style types: upper case is a defined global, U an undefined one.
+                    local seen = {}
+                    for _, archive in ipairs(bundle.archives) do
+                        for _, object in ipairs(binutils.readsyms(archive)) do
+                            for _, symbol in ipairs(object.symbols or {}) do
+                                local kind = symbol.type
+                                local name = symbol.name
+                                if underscore and name:startswith("_") then
+                                    name = name:sub(2)
+                                end
+                                if kind and kind:match("^[A-TV-Z]$") and not seen[name] then
+                                    for _, item in ipairs(patterns) do
+                                        if name:match(item.pattern) then
+                                            seen[name] = true
+                                            item.matched = true
+                                            table.insert(result, {name = name, data = kind ~= "T"})
+                                            break
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                    end
+                    for _, item in ipairs(patterns) do
+                        if not item.matched then
+                            raise("jade.bundle: no global symbol of package %s matches the export %s", bundle.name, item.entry)
+                        end
+                    end
+                end
+            end
+            return result
+        end
+
         -- The content goes into the file name: when the list changes, the flags change and xmake
         -- relinks.
         local function write_list(extension, lines)
@@ -98,9 +152,9 @@ rule("jade.bundle")
                 target:add("shflags", "-static-libstdc++", "-static-libgcc", {force = true})
             end
         elseif target:is_plat("macosx", "iphoneos") then
-            local lines = {}
-            for _, symbol in ipairs(exports) do
-                table.insert(lines, "_" .. symbol)
+            local lines = {"_jade_*"}
+            for _, symbol in ipairs(exact_exports()) do
+                table.insert(lines, "_" .. symbol.name)
             end
             local list = write_list(".txt", lines)
             for _, archive in ipairs(archives) do
@@ -108,44 +162,9 @@ rule("jade.bundle")
             end
             target:add("shflags", "-Wl,-exported_symbols_list," .. list, "-Wl,-dead_strip", {force = true})
         elseif target:is_plat("windows") then
-            import("core.base.binutils")
-
             local lines = {"EXPORTS"}
-            for _, bundle in ipairs(bundles) do
-                local patterns = {}
-                for _, entry in ipairs(bundle.exports) do
-                    if entry:find("*", 1, true) then
-                        table.insert(patterns, {entry = entry, pattern = "^" .. entry:gsub("%*", ".*") .. "$", matched = false})
-                    else
-                        table.insert(lines, "    " .. entry)
-                    end
-                end
-                if #patterns > 0 then
-                    -- nm-style types: upper case is a defined global, U an undefined one.
-                    local seen = {}
-                    for _, archive in ipairs(bundle.archives) do
-                        for _, object in ipairs(binutils.readsyms(archive)) do
-                            for _, symbol in ipairs(object.symbols or {}) do
-                                local kind = symbol.type
-                                if kind and kind:match("^[A-TV-Z]$") and not seen[symbol.name] then
-                                    for _, item in ipairs(patterns) do
-                                        if symbol.name:match(item.pattern) then
-                                            seen[symbol.name] = true
-                                            item.matched = true
-                                            table.insert(lines, "    " .. symbol.name .. ((kind == "T") and "" or " DATA"))
-                                            break
-                                        end
-                                    end
-                                end
-                            end
-                        end
-                    end
-                    for _, item in ipairs(patterns) do
-                        if not item.matched then
-                            raise("jade.bundle: no global symbol of package %s matches the export %s", bundle.name, item.entry)
-                        end
-                    end
-                end
+            for _, symbol in ipairs(exact_exports()) do
+                table.insert(lines, "    " .. symbol.name .. (symbol.data and " DATA" or ""))
             end
             local deffile = write_list(".def", lines)
             for _, archive in ipairs(archives) do
