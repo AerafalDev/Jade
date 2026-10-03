@@ -176,6 +176,10 @@ ImPlot3D no longer waits for cimplot3d's license. It comes through a C wrapper w
 ImPlot3D's own MIT headers (cimgui's MIT generator run by us, or a hand-written shim), as task 317.
 Unlicensed wrappers are never vendored or compiled.
 
+Also decided with the user on 2026-10-03: ImGui is built with `IMGUI_USE_WCHAR32`, so `ImWchar` is
+32-bit and covers the whole of Unicode (emoji, extended CJK). It changes `ImWchar` and struct
+layouts, so it lands in the recipe before the bindings (task 311).
+
 ## Consequences
 
 - `jade_native` grows by about 1.5 MB (core and demo; the two backends add about 32 KB of code) plus

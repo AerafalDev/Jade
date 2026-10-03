@@ -40,3 +40,5 @@ both read on 2026-10-02.
   this ADR only reasoned about `[DllImport]`. Generated imports therefore mark `bool` parameters and
   returns `[MarshalAs(UnmanagedType.U1)]`. The generated stub passes one byte and reads a return as
   `!= 0`, so the public API and the ABI are as decided. Struct fields stay plain `bool`.
+- From 202: `WGPUBool` maps to `uint`. A 4-byte wrapper reads better but is passed by
+  value in signatures, and how each ABI passes a one-field struct is unverified until 104 and 105.
