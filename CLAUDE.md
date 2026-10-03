@@ -1,6 +1,6 @@
 # Jade
 
-Jade is a cross-platform game engine for .NET 10. Work currently targets the **interop layer**: one
+Jade is a cross-platform 2D game engine for .NET 10 (ADR-0018). Work currently targets the **interop layer**: one
 native library, `jade_native`, that bundles Dawn (WebGPU), SDL3, miniaudio and, later, more C/C++
 libraries, plus public C# bindings generated over it. The engine itself is planned once the
 interop layer is green on every target.

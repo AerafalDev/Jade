@@ -7,6 +7,9 @@
 - Extends: ADR-0003 (a second combined library, desktop RIDs only) and ADR-0002 (one more package
   pair for it)
 
+Amended on 2026-10-03 by ADR-0018: Jade is a 2D engine, so meshoptimizer leaves the runtime set
+(task 305 binds zstd only), and cgltf and ufbx leave the deferred import set.
+
 ## Context
 
 Task 304 surveys the C and C++ libraries an engine asset pipeline commonly uses and picks one per

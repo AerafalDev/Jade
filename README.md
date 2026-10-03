@@ -8,7 +8,7 @@
 [![Status](https://img.shields.io/badge/status-early%20development-orange.svg)](https://github.com/AerafalDev/Jade/blob/main/design/roadmap.md)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/AerafalDev/Jade/blob/main/LICENSE)
 
-Jade is a cross-platform game engine for **.NET 10**, in early development.
+Jade is a cross-platform **2D** game engine for **.NET 10**, in early development.
 
 The current work is the **interop layer**. A single native library, `jade_native`, bundles
 [Dawn](https://github.com/google/dawn) (WebGPU), [SDL3](https://github.com/libsdl-org/SDL) and
@@ -27,7 +27,7 @@ Nothing is published on nuget.org yet.
 | WebGPU bindings from Dawn's `dawn.json` | Planned |
 | miniaudio bindings | Planned |
 | Android, iOS, browser (WebAssembly) | Planned |
-| Dear ImGui and extensions, Box2D and Box3D, FreeType, HarfBuzz, msdfgen, asset libraries | Planned |
+| Dear ImGui and extensions, Box2D, FreeType, HarfBuzz, msdfgen, asset libraries | Planned |
 | `Jade` and `Jade.Native` packages | Packed and tested locally, with the JIT and NativeAOT |
 | Publishing on nuget.org | Planned |
 
