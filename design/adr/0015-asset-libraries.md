@@ -10,6 +10,10 @@
 Amended on 2026-10-03 by ADR-0018: Jade is a 2D engine, so meshoptimizer leaves the runtime set
 (task 305 binds zstd only), and cgltf and ufbx leave the deferred import set.
 
+Amended on 2026-10-03 by ADR-0019: `jade_tools` is the tools library of ADR-0019, which also holds
+ImGui. Its rule against linking `jade_native` is replaced by ADR-0019's: it reaches what `jade_native`
+bundles through it, never through its own copy.
+
 ## Context
 
 Task 304 surveys the C and C++ libraries an engine asset pipeline commonly uses and picks one per

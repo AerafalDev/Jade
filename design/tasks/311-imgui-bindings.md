@@ -1,7 +1,7 @@
 # 311: Dear ImGui core bindings
 
-- Depends on: 310, 201
-- ADRs: 0005, 0006, 0012, 0014
+- Depends on: 108, 201
+- ADRs: 0005, 0006, 0012, 0014, 0019
 
 ## Goal
 
@@ -9,6 +9,10 @@
 JSON, with layout tests and a headless frame test.
 
 ## Context
+
+ImGui lives in `jade_tools`, not `jade_native` (ADR-0019, task 108). Its bindings import from
+`jade_tools` and go to the tools assembly that 108 created, never into `Jade.Interop`. If 108 did not
+add a per-library import name and target assembly to the generator config, add them here.
 
 Promoted from draft I2 of the 301 survey (see its Outcome for the evidence).
 

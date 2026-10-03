@@ -38,3 +38,15 @@ Facts checked on 2026-10-02:
 - Dawn extensions are available on every native RID. On the web, only what emdawnwebgpu supports is
   available. The bindings must make that difference visible (task 202).
 - There is no runtime switch between WebGPU implementations.
+
+## Notes from task 202 (2026-10-03)
+
+- On Windows, Dawn's D3D12 backend compiles shaders with FXC (`d3dcompiler_47.dll`). With
+  `DAWN_FORCE_SYSTEM_COMPONENT_LOAD=OFF`, Dawn looks next to its own library and the executable,
+  then passes the bare name with `LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR`, which Windows rejects
+  (`ERROR_INVALID_PARAMETER`): System32 is never searched. Jade builds Dawn with the option `ON` on
+  Windows, so FXC comes from System32, where Windows 10 and later carry it. jade_native ships no
+  `d3dcompiler_47.dll`; decided with the user on 2026-10-03. Revisit if FXC bugs show up on old
+  Windows builds (Dawn mentions crbug.com/399358291).
+- The Outcomes of 103 and 106 still describe a fallback to the system copy that did not exist
+  before this fix.
