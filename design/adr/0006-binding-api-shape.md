@@ -55,3 +55,13 @@ generator config.
 - Every rule is a generator feature. That is a large surface, built incrementally: core in 201,
   then one library per task.
 - Changes to generated public names are breaking changes for users once a version is released.
+
+## Notes from task 202 (2026-10-03)
+
+- WebGPU names: the static class is `Wgpu`. `WGPUBuffer` becomes `GpuBuffer` to avoid
+  `System.Buffer`, and enum values that start with a digit or contain `_` are renamed in the config
+  (for example `Dimension2D`).
+- Chained structs: `new T()` sets `Chain.SType`, and chains are built with `&value.Chain`, without
+  allocation. C's `WGPU_*_INIT` defaults are not generated yet (task 207).
+- Platform availability comes from dawn.json's tags: `[UnsupportedOSPlatform("browser")]` on what
+  emdawnwebgpu lacks or breaks, `[SupportedOSPlatform("browser")]` on web-only members.

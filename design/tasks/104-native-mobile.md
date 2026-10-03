@@ -55,6 +55,11 @@ the export list. For iOS: whatever CI provides once pushed.
 
 ## Pitfalls
 
+- From 106: add your RIDs to `JadeNativeRequiredRids` and fill the iOS placeholder in
+  `src/Jade.Native/buildTransitive/Jade.Native.targets`. Everything under `artifacts/native/<rid>/lib/`
+  ships in the package.
+- From 202: check on Apple arm64 that structs passed by value (`StringView`, callback infos, handles)
+  reach C as it expects; `WGPUBool` stays `uint` until that is known.
 - xmake's simulator selection for `iphoneos` could not be checked from Linux; check it on macOS.
 - Dawn on Android requires a minimum API level for Vulkan. Align it with what .NET for Android
   supports.

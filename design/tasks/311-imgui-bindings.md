@@ -48,6 +48,12 @@ which RIDs were built locally.
 
 ## Pitfalls
 
+- Decided with the user on 2026-10-03 (ADR-0014): `ImWchar` is 32-bit. Add `IMGUI_USE_WCHAR32` to
+  the ImGui recipe (it changes layouts, so the native build and the bindings move together), and
+  check that dear_bindings' headers honour it.
+- From 310: `ExportCheck` filters exports by prefix. dcimgui needs the `Im*_` class prefixes,
+  `DearBindings_` and `cImGui_`, and the 38 functions listed in the JSON but not exported (obsolete
+  API, `IMGUI_HAS_IMSTR`, wgpu-native-only) must be excluded through their conditionals.
 ImGui state is global and not thread-safe, so its tests share one class. Decide how
 transparent structs reached through pointers (`ImDrawList*`, `ImGuiIO*`) get instance methods;
 ADR-0006's handles are for opaque types. Default-argument helpers and `Ex` functions must not
