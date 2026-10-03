@@ -7,7 +7,7 @@ name: Labeler
 # and reads its configuration from the base branch. As a consequence, a change to this file or to labeler.yml only
 # takes effect once merged. Any base branch, so that a pull request stacked on another one gets labels too.
 on:
-  pull_request_target:
+  pull_request:
     types: [opened, synchronize, reopened]
 
 permissions:
