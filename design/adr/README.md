@@ -22,6 +22,7 @@ ADRs with status `Proposed`; the orchestrator, together with the user, accepts o
 | [0014](0014-imgui.md) | Dear ImGui docking, dear_bindings C API, native SDL3/WebGPU backends, selected extensions | Accepted |
 | [0015](0015-asset-libraries.md) | Asset libraries: runtime set in `jade_native`, import set in a desktop-only `jade_tools` | Accepted for the runtime set; `jade_tools` deferred |
 | [0016](0016-function-pointers-in-import-signatures.md) | Function pointers are `nint` in import signatures (browser-wasm), typed in the public API | Accepted |
+| [0017](0017-ecs-architecture.md) | ECS: chunked archetype storage, generated components, queries and systems, one schedule with single- and multi-threaded executors | Proposed |
 
 ## Template
 

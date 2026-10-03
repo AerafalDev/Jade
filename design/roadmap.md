@@ -94,7 +94,7 @@ dialogs come first); `dcimgui_internal` for the DockBuilder API.
 
 | Task | Title | Depends on | Status |
 | --- | --- | --- | --- |
-| [401](tasks/401-ecs-survey.md) | Survey: ECS design from the inspirations (storage, queries, scheduling, source generators) | - | todo |
+| [401](tasks/401-ecs-survey.md) | Survey: ECS design from the inspirations (storage, queries, scheduling, source generators) | - | done |
 
 The engine's implementation tasks will be planned with the orchestrator from 401's Outcome, once
 Phase 2 is `done` on desktop and at least one of 104 or 105 is `done`.
