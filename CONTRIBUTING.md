@@ -1,6 +1,6 @@
 # Contributing to Jade
 
-Thanks for taking the time to contribute! Jade is a cross-platform game engine for .NET, currently in early
+Thanks for taking the time to contribute! Jade is a cross-platform 2D game engine for .NET, currently in early
 interop work. Issues, bug reports and pull requests are all welcome.
 
 By participating you agree to abide by our [Code of Conduct](CODE_OF_CONDUCT.md).
@@ -37,8 +37,9 @@ planned, or an ADR may rule it out.
 Style is enforced by [`.editorconfig`](.editorconfig) and checked at build time; please don't fight it. The
 points that matter most here:
 
-- **C# style**: file-scoped namespaces, 4-space indentation, Allman braces, `var` when the type is apparent,
-  `_camelCase` private fields.
+- **C# style** ([ADR-0011](design/adr/0011-csharp-coding-conventions.md), the dotnet/runtime style):
+  file-scoped namespaces, 4-space indentation, Allman braces, `var` everywhere, no `this.`,
+  `_camelCase` private and internal fields, `s_camelCase` static ones, explicit accessibility.
 - **No primary constructors**: declare constructors explicitly.
 - **XML documentation**: public types and members of the libraries carry `///` docs; the build generates the
   XML doc file, so a missing comment on public API is a build error.

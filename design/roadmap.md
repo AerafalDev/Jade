@@ -28,6 +28,7 @@ back before the orchestrator writes their brief.
 | [105](tasks/105-native-browser.md) | browser-wasm: Emscripten alignment with .NET, emdawnwebgpu | 103 | todo |
 | [106](tasks/106-native-packaging.md) | Jade.Native package, Jade dependency, size guard, local feed test | 103 | done |
 | 107 | Release pipeline: tag → natives → pack → publish (trusted publishing) | 106 | todo |
+| [108](tasks/108-jade-tools-library.md) | jade_tools: move Dear ImGui out of jade_native (ADR-0019), Jade.Tools packages | 310 | todo |
 
 104 and 105 can run in parallel. 106 starts with desktop RIDs; 104 and 105 each extend its
 `buildTransitive` targets for their platforms.
@@ -79,7 +80,7 @@ Notes for the 107 brief, collected from earlier Outcomes:
 | [306](tasks/306-basisu-transcoder.md) | basis_universal transcoder | 305, 201, 103 | todo |
 | [307](tasks/307-stb-image-vorbis.md) | stb_image and Vorbis through miniaudio | 201, 103, 204 | todo |
 | [310](tasks/310-imgui-native.md) | Dear ImGui (docking), dear_bindings C API and backends in jade_native | 103, 003 | todo |
-| [311](tasks/311-imgui-bindings.md) | Dear ImGui core bindings | 310, 201 | todo |
+| [311](tasks/311-imgui-bindings.md) | Dear ImGui core bindings | 108, 201 | todo |
 | [312](tasks/312-imgui-backends-sample.md) | ImGui SDL3 and WebGPU backend bindings, demo sample | 311, 202, 203, 206 | todo |
 | [313](tasks/313-implot.md) | ImPlot | 311 | todo |
 | [314](tasks/314-imgui-widgets.md) | Small ImGui widgets and imnodes | 311 | todo |

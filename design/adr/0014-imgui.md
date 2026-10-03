@@ -183,6 +183,9 @@ layouts, so it lands in the recipe before the bindings (task 311).
 Amended again on 2026-10-03 by ADR-0018: Jade is a 2D engine, so ImGuizmo and ImPlot3D are out of
 the plan (task 317 is dropped, task 313 binds ImPlot only).
 
+Amended on 2026-10-03 by ADR-0019: ImGui, its extensions and its backends live in `jade_tools`, a
+second native library for tools, which reaches SDL3 and Dawn through `jade_native` (task 108).
+
 ## Consequences
 
 - `jade_native` grows by about 1.5 MB (core and demo; the two backends add about 32 KB of code) plus

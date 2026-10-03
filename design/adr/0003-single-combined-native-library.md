@@ -1,6 +1,6 @@
 # ADR-0003: One combined native library per RID
 
-- Status: Accepted
+- Status: Accepted; amended by ADR-0019 (a second library, `jade_tools`, for tools)
 - Date: 2026-10-02
 
 ## Context

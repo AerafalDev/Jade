@@ -8,7 +8,7 @@ ADRs with status `Proposed`; the orchestrator, together with the user, accepts o
 | --- | --- | --- |
 | [0001](0001-webgpu-backend-dawn.md) | Dawn on every native RID, emdawnwebgpu on the web | Accepted |
 | [0002](0002-package-layout.md) | `Jade` references `Jade.Native`; Jade.Interop is packed into `Jade` | Accepted |
-| [0003](0003-single-combined-native-library.md) | One combined `jade_native` library per RID | Accepted |
+| [0003](0003-single-combined-native-library.md) | One combined `jade_native` library per RID | Accepted, amended by 0019 |
 | [0004](0004-native-build-with-xmake.md) | xmake drives the native build, with our own pinned packages | Accepted |
 | [0005](0005-in-house-binding-generator.md) | In-house binding generator in `scripts/generate-bindings/` | Accepted |
 | [0006](0006-binding-api-shape.md) | .NET-style public bindings, methods on handles, span overloads | Accepted, C `bool` amended by 0012 |
@@ -24,6 +24,7 @@ ADRs with status `Proposed`; the orchestrator, together with the user, accepts o
 | [0016](0016-function-pointers-in-import-signatures.md) | Function pointers are `nint` in import signatures (browser-wasm), typed in the public API | Accepted |
 | [0017](0017-ecs-architecture.md) | ECS: chunked archetype storage, generated components, queries and systems, one schedule with single- and multi-threaded executors | Proposed |
 | [0018](0018-2d-engine.md) | Jade is a 2D engine: Box3D, ImGuizmo, ImPlot3D, meshoptimizer, cgltf and ufbx leave the plan | Accepted |
+| [0019](0019-runtime-and-tools-native-libraries.md) | Two native libraries: `jade_native` for the runtime, `jade_tools` for tools (ImGui, import-time libraries) | Accepted |
 
 ## Template
 
