@@ -12,7 +12,21 @@
     <!-- Private: Jade.Interop is not a package of its own, so it must not show up as a nuspec dependency.
          AddInteropToPackage ships its assembly inside this package instead (ADR-0002). -->
     <ProjectReference Include="..\Jade.Interop\Jade.Interop.csproj" PrivateAssets="all" />
+    <!-- Only makes Jade.Native a dependency of the Jade package. Its assembly is empty and never packed; restore skips
+         a reference with ReferenceOutputAssembly="false", so Private="false" keeps it out of the output and of
+         AddInteropToPackage instead. -->
+    <ProjectReference Include="..\Jade.Native\Jade.Native.csproj" Private="false" />
   </ItemGroup>
+
+  <!-- Pack writes a project reference as a minimum version, [x.y.z, ). Jade only works with the natives of its own
+       build, so the dependency is pinned to that exact version (ADR-0002). -->
+  <Target Name="PinJadeNativeVersion" AfterTargets="_GetProjectReferenceVersions">
+    <ItemGroup>
+      <_ProjectReferencesWithVersions Condition="'%(Filename)' == 'Jade.Native'">
+        <ProjectVersion>[%(ProjectVersion)]</ProjectVersion>
+      </_ProjectReferencesWithVersions>
+    </ItemGroup>
+  </Target>
 
   <!-- Pack runs this target outside of a build, where reference resolution skips related files;
        BuildOnlySettings turns that back on so Jade.Interop's .xml and .pdb come along with its .dll. -->

@@ -25,7 +25,7 @@ back before the orchestrator writes their brief.
 | [103](tasks/103-native-desktop-matrix.md) | Desktop RID matrix in CI, Linux glibc baseline, artifact cache | 102, 002 | done |
 | [104](tasks/104-native-mobile.md) | Android and iOS RIDs, mobile platform glue proposal | 103 | todo |
 | [105](tasks/105-native-browser.md) | browser-wasm: Emscripten alignment with .NET, emdawnwebgpu | 103 | todo |
-| [106](tasks/106-native-packaging.md) | Jade.Native package, Jade dependency, size guard, local feed test | 103 | todo |
+| [106](tasks/106-native-packaging.md) | Jade.Native package, Jade dependency, size guard, local feed test | 103 | done |
 | 107 | Release pipeline: tag → natives → pack → publish (trusted publishing) | 106 | todo |
 
 104 and 105 can run in parallel. 106 starts with desktop RIDs; 104 and 105 each extend its
