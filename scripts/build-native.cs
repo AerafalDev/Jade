@@ -130,7 +130,8 @@ try
 {
     // --require=y: xmake re-resolves packages only when the project files change, not when a recipe
     // under native/packages/ does. Forcing it lets a recipe edit (new hash, new options) take effect.
-    Xmake.Run(nativeDirectory, ["f", "-p", target.Platform, "-a", target.Architecture, "-m", config, $"--toolchain={target.Toolchain}", "-o", buildDirectory, "--require=y", "-y", .. runtimes, .. target.ExtraArguments]);
+    List<string> toolchain = target.Toolchain is null ? [] : [$"--toolchain={target.Toolchain}"];
+    Xmake.Run(nativeDirectory, ["f", "-p", target.Platform, "-a", target.Architecture, "-m", config, .. toolchain, "-o", buildDirectory, "--require=y", "-y", .. runtimes, .. target.ExtraArguments]);
     Xmake.Run(nativeDirectory, ["build", "-y", "jade_native"]);
 
     if (!File.Exists(manifestPath))

@@ -18,8 +18,11 @@ internal static class Rids
         ["win-arm64"] = new XmakeTarget("windows", "arm64", "msvc", verified: false),
         ["linux-x64"] = new XmakeTarget("linux", "x86_64", "clang", verified: true),
         ["linux-arm64"] = new XmakeTarget("linux", "arm64", "clang", verified: false),
-        ["osx-x64"] = new XmakeTarget("macosx", "x86_64", "xcode", verified: false, MacOSMinimumVersion),
-        ["osx-arm64"] = new XmakeTarget("macosx", "arm64", "xcode", verified: false, MacOSMinimumVersion),
+        // No --toolchain: xcode is the platform's default anyway, and packages inherit an explicit one.
+        // xmake does not count xcode as a host toolchain, so it would configure every CMake package as a
+        // cross build, without the SDK's frameworks on the search path.
+        ["osx-x64"] = new XmakeTarget("macosx", "x86_64", toolchain: null, verified: false, MacOSMinimumVersion),
+        ["osx-arm64"] = new XmakeTarget("macosx", "arm64", toolchain: null, verified: false, MacOSMinimumVersion),
         ["android-arm64"] = new XmakeTarget("android", "arm64-v8a", "ndk", verified: false),
         ["android-x64"] = new XmakeTarget("android", "x86_64", "ndk", verified: false),
         ["ios-arm64"] = new XmakeTarget("iphoneos", "arm64", "xcode", verified: false),

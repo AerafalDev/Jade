@@ -51,13 +51,9 @@ package("sdl3")
             -- loaded at runtime, so jade_native never links against them.
             "-DSDL_DEPS_SHARED=ON"
         }
-        -- The compiler flags already carry both, but CMake's own checks read the variables. Since
-        -- CMake 4, nothing sets the SDK by default, and find_library() then misses its frameworks.
-        if package:is_plat("macosx") then
-            table.insert(configs, "-DCMAKE_OSX_SYSROOT=" .. os.iorun("xcrun --sdk macosx --show-sdk-path"):trim())
-            if get_config("target_minver") then
-                table.insert(configs, "-DCMAKE_OSX_DEPLOYMENT_TARGET=" .. get_config("target_minver"))
-            end
+        -- The compiler flags already carry it, but CMake's own checks read the variable.
+        if package:is_plat("macosx") and get_config("target_minver") then
+            table.insert(configs, "-DCMAKE_OSX_DEPLOYMENT_TARGET=" .. get_config("target_minver"))
         end
         import("package.tools.cmake").install(package, configs)
 
