@@ -59,7 +59,7 @@ Notes for the 107 brief, collected from earlier Outcomes:
 
 | Task | Title | Depends on | Status |
 | --- | --- | --- | --- |
-| [301](tasks/301-imgui-survey.md) | Survey: Dear ImGui, its extensions and backends | 201 | todo |
+| [301](tasks/301-imgui-survey.md) | Survey: Dear ImGui, its extensions and backends | 201 | done |
 | [302](tasks/302-physics-box2d-box3d.md) | Box2D v3 and Box3D: native and bindings | 201, 103 | todo |
 | [303](tasks/303-text-stack.md) | FreeType + HarfBuzz + msdfgen: native, C shim, bindings | 201, 103 | todo |
 | [304](tasks/304-assets-survey.md) | Survey: asset libraries for runtime and import pipeline | 201 | todo |
