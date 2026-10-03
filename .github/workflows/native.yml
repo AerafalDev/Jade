@@ -1,15 +1,28 @@
 name: Native
 
-# Builds jade_native for every desktop RID, each on its own OS (ADR-0004), and uploads one artifact per
-# RID in the artifacts/native/<rid>/ layout, plus its debug symbols. scripts/fetch-native.cs downloads
-# them from the latest successful run on main. Changes to design documents and Markdown alone skip it.
+# Builds jade_native for every desktop RID, each on its own OS (ADR-0004), checks it, and uploads one artifact
+# per RID in the artifacts/native/<rid>/ layout, plus its debug symbols. scripts/fetch-native.cs downloads them
+# from the latest successful run on main.
+#
+# A build takes minutes even with every package cached, and most changes leave the native inputs alone:
+# native/, the build script and this file. So each job first looks for an earlier run that built and
+# smoke-checked its RID from the same inputs, downloads those libraries instead of building them, and runs
+# every check on them as on a new build. A pull request reuses runs of any branch of this repository, never of
+# a fork. A push only reuses runs of its own branch, so that main's package cache, which pull requests restore,
+# gets each new set of inputs built once. Scheduled and manual runs always build, so that a change in the
+# runner images or toolchains shows up even when no native input changes.
+#
+# A pull request that only touches design/ and Markdown files skips the jobs. The workflow itself always runs
+# on pull requests, so that its checks still report if they become required: a path filter would leave them
+# pending. Native result sums up the jobs for that purpose.
 on:
   push:
     branches: [main]
     paths-ignore: ['design/**', '**.md']
   pull_request:
     branches: [main]
-    paths-ignore: ['design/**', '**.md']
+  schedule:
+    - cron: "0 1 * * 1"
   workflow_dispatch:
 
 permissions:
@@ -20,8 +33,42 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  changes:
+    name: Changes
+    runs-on: ubuntu-latest
+    outputs:
+      code: ${{ steps.classify.outputs.code }}
+
+    steps:
+      - name: Checkout
+        if: github.event_name == 'pull_request'
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
+
+      # A pull request is checked out as its merge commit, whose first parent is the base branch: the diff is
+      # what merging would change. --no-renames also lists the old path of a moved file.
+      - name: Classify the changes
+        id: classify
+        shell: bash
+        run: |
+          code=true
+          if [ "$GITHUB_EVENT_NAME" = pull_request ]; then
+            files=$(git diff --no-renames --name-only HEAD^1 HEAD)
+            changed=$(awk '!/^design\// && !/\.md$/' <<< "$files")
+            printf 'Changed files that need the checks:\n%s\n' "${changed:-none}"
+            [ -n "$changed" ] || code=false
+          fi
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+
   build:
     name: jade_native (${{ matrix.rid }})
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
+    permissions:
+      # Lists and downloads the artifacts of earlier runs.
+      actions: read
+      contents: read
     strategy:
       fail-fast: false
       matrix:
@@ -46,12 +93,16 @@ jobs:
           - rid: win-arm64
             os: windows-11-arm
             packages: native/build/xmake/.xmake/packages
-          # Intel macOS still has hosted runners, so osx-x64 builds natively instead of cross-compiling.
+          # osx-x64 cross-compiles on Apple silicon, where builds take half as long as on the Intel runners
+          # (task 004). Its smoke check loads it into an x64 .NET under Rosetta 2, which the image installs.
           - rid: osx-x64
-            os: macos-26-intel
+            os: macos-26
+            architecture: x86_64
             packages: native/build/xmake/.xmake/packages
+            rosetta: true
           - rid: osx-arm64
             os: macos-26
+            architecture: arm64
             packages: native/build/xmake/.xmake/packages
             bindings: true
     runs-on: ${{ matrix.os }}
@@ -71,21 +122,73 @@ jobs:
         with:
           global-json-file: global.json
 
-      - name: Setup xmake
-        if: ${{ !matrix.container }}
-        uses: xmake-io/github-action-setup-xmake@v1
-        with:
-          xmake-version: '3.1.1'
-
       # Scripts must run on every desktop OS (ADR-0008); the style job only compiles them on Linux.
       - name: Build scripts
         shell: bash
         run: for script in scripts/*.cs; do dotnet build "$script"; done
 
-      # xmake's package build hash ignores the compiler version, so the cache key carries it. The
-      # container's toolchain is pinned in native/linux/Dockerfile, which the key already hashes.
-      - name: Identify the toolchain
+      # Git object IDs of the committed inputs: they change exactly when one of their files does.
+      - name: Identify the native inputs
+        id: inputs
+        shell: bash
+        run: |
+          inputs=$(git ls-tree HEAD -- native scripts/build-native.cs scripts/build-native .github/workflows/native.yml)
+          echo "$inputs"
+          echo "id=$(sha256sum <<< "$inputs" | cut -c 1-16)" >> "$GITHUB_OUTPUT"
+
+      # Each job that smoke-checked its RID uploads a marker named after the inputs, which points back to its
+      # run. A failed lookup or download falls back to building.
+      - name: Reuse libraries built from the same inputs
+        id: reuse
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RID: ${{ matrix.rid }}
+          MARKER: native-inputs-${{ matrix.rid }}-${{ steps.inputs.outputs.id }}
+        run: |
+          case "$GITHUB_EVENT_NAME" in
+            pull_request) runs='true' ;;
+            push) runs=".workflow_run.head_branch == \"$GITHUB_REF_NAME\"" ;;
+            *) runs= ;;
+          esac
+          found=
+          if [ -n "$runs" ]; then
+            filter="map(select((.expired | not) and .workflow_run.head_repository_id == $GITHUB_REPOSITORY_ID and $runs)) | max_by(.created_at) | .workflow_run // empty | \"\(.id) \(.head_branch) \(.head_sha)\""
+            found=$(gh api "repos/$GH_REPO/actions/artifacts?name=$MARKER&per_page=100" --jq ".artifacts | $filter") \
+              || echo "::warning::Cannot list the artifacts of earlier runs."
+          fi
+          build=true
+          if [ -z "$found" ]; then
+            echo "Building $RID: no usable earlier run built it from these inputs ($MARKER), or a $GITHUB_EVENT_NAME run always builds."
+          else
+            read -r run branch commit <<< "$found"
+            echo "Reusing $RID from run $run ($branch, $commit), built from the same native inputs."
+            if gh run download "$run" --name "jade-native-$RID" --dir "artifacts/native/$RID" &&
+               gh run download "$run" --name "jade-native-symbols-$RID" --dir "artifacts/native-symbols/$RID"; then
+              build=false
+            else
+              echo "::warning::Cannot download $RID from run $run: building it instead."
+              rm -rf "artifacts/native/$RID" "artifacts/native-symbols/$RID"
+            fi
+          fi
+          echo "build=$build" >> "$GITHUB_OUTPUT"
+
+      # setup-xmake builds xmake from source on macOS: 1.5 minutes on Apple silicon, up to 6 on Intel.
+      - name: Setup xmake
+        if: steps.reuse.outputs.build == 'true' && !matrix.container
+        uses: xmake-io/github-action-setup-xmake@v1
+        with:
+          xmake-version: '3.1.1'
+          actions-cache-folder: native/build/setup-xmake
+
+      # xmake's package build hash ignores the compiler version and flags such as --target_minver, so the
+      # cache key carries both. The container's toolchain is pinned in native/linux/Dockerfile, which the key
+      # already hashes. The RID's own xmake configuration, rather than the hash of Rids.cs, keeps an edit
+      # there from invalidating the other RIDs' packages.
+      - name: Identify the toolchain and configuration
         id: toolchain
+        if: steps.reuse.outputs.build == 'true'
         shell: bash
         run: |
           case "$RUNNER_OS" in
@@ -103,21 +206,44 @@ jobs:
               ;;
           esac
           echo "id=$id" | tee -a "$GITHUB_OUTPUT"
+          config=$(dotnet scripts/build-native.cs --rid ${{ matrix.rid }} --print-config | tr -d '\r')
+          echo "xmake configuration: $config"
+          echo "config=$(sha256sum <<< "$config" | cut -c 1-16)" >> "$GITHUB_OUTPUT"
 
-      # Restoring an older cache of the same toolchain and RID mapping keeps every package whose recipe
-      # did not change: xmake reinstalls only what its build hash no longer finds. --prune-packages
-      # drops the rest before the cache is saved. The build and xmake directories under native/ are not
-      # inputs (xmake may already have written its global directory there).
+      # Restoring an older cache of the same toolchain and RID configuration keeps every package whose recipe
+      # did not change: xmake reinstalls only what its build hash no longer finds. --prune-packages drops the
+      # rest before the cache is saved. The build and xmake directories under native/ are not inputs (xmake
+      # may already have written its global directory there).
       - name: Restore xmake packages
         id: packages
+        if: steps.reuse.outputs.build == 'true'
         uses: actions/cache/restore@v6
         with:
           path: ${{ matrix.packages }}
-          key: native-${{ matrix.rid }}-${{ steps.toolchain.outputs.id }}-${{ hashFiles('scripts/build-native/Rids.cs') }}-${{ hashFiles('native/**', '!native/build/**', '!native/.xmake/**', 'scripts/build-native.cs', 'scripts/build-native/**') }}
-          restore-keys: native-${{ matrix.rid }}-${{ steps.toolchain.outputs.id }}-${{ hashFiles('scripts/build-native/Rids.cs') }}-
+          key: native-${{ matrix.rid }}-${{ steps.toolchain.outputs.id }}-${{ steps.toolchain.outputs.config }}-${{ hashFiles('native/**', '!native/build/**', '!native/.xmake/**', 'scripts/build-native.cs', 'scripts/build-native/**') }}
+          restore-keys: native-${{ matrix.rid }}-${{ steps.toolchain.outputs.id }}-${{ steps.toolchain.outputs.config }}-
+
+      # build-native.cs only builds the image (about 3 minutes) when none has its tag, which hashes the
+      # Dockerfile, global.json's SDK version and the platform. The key covers the same inputs.
+      - name: Restore the container image
+        id: image
+        if: steps.reuse.outputs.build == 'true' && matrix.container
+        uses: actions/cache/restore@v6
+        with:
+          path: ${{ runner.temp }}/container-image
+          key: container-image-${{ matrix.rid }}-${{ hashFiles('native/linux/Dockerfile', 'global.json', 'scripts/build-native/Container.cs') }}
+
+      # Streamed, so that the 3 GB image is never also written to disk as a tar file.
+      - name: Load the container image
+        if: steps.image.outputs.cache-hit == 'true'
+        shell: bash
+        run: |
+          zstd -dc "$RUNNER_TEMP/container-image/image.tar.zst" | docker load
+          rm -r "$RUNNER_TEMP/container-image"
 
       - name: Build jade_native
         id: build
+        if: steps.reuse.outputs.build == 'true'
         shell: bash
         run: dotnet scripts/build-native.cs --rid ${{ matrix.rid }} ${{ matrix.container && '--container' || '' }} --prune-packages
 
@@ -129,8 +255,23 @@ jobs:
           path: ${{ matrix.packages }}
           key: ${{ steps.packages.outputs.cache-primary-key }}
 
+      - name: Export the container image
+        id: export-image
+        if: steps.build.outcome == 'success' && matrix.container && steps.image.outputs.cache-hit != 'true'
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/container-image"
+          docker save "$(docker image ls jade-native-build --format '{{.Repository}}:{{.Tag}}')" | zstd -T0 -o "$RUNNER_TEMP/container-image/image.tar.zst"
+
+      - name: Save the container image
+        if: steps.export-image.outcome == 'success'
+        uses: actions/cache/save@v6
+        with:
+          path: ${{ runner.temp }}/container-image
+          key: ${{ steps.image.outputs.cache-primary-key }}
+
       - name: List exports
-        if: steps.build.outcome == 'success' && runner.os != 'Windows'
+        if: runner.os != 'Windows' && (steps.build.outcome == 'success' || steps.reuse.outputs.build == 'false')
         shell: bash
         run: |
           case "$RUNNER_OS" in
@@ -141,7 +282,7 @@ jobs:
       # A failed package install prints only the first 17 lines of its output; xmake keeps the rest in the
       # package cache, which the runner discards.
       - name: Show xmake package install logs
-        if: failure()
+        if: failure() && steps.build.outcome == 'failure'
         shell: bash
         run: |
           find native/build -path '*/installdir.failed/logs/*.txt' | while read -r log; do
@@ -151,7 +292,7 @@ jobs:
           done
 
       - name: Upload xmake package install logs
-        if: failure()
+        if: failure() && steps.build.outcome == 'failure'
         uses: actions/upload-artifact@v7
         with:
           name: xmake-install-logs-${{ matrix.rid }}
@@ -167,16 +308,64 @@ jobs:
           echo "Highest glibc symbol version: $highest (baseline GLIBC_2.28)"
           test "$(printf '%s\n' "$highest" GLIBC_2.28 | sort -V | tail -n 1)" = GLIBC_2.28
 
-      - name: Check the macOS deployment target
+      # The runner's architecture no longer implies the library's once osx-x64 cross-compiles.
+      - name: Check the macOS architecture and deployment target
         if: runner.os == 'macOS'
         shell: bash
         run: |
-          minos=$(otool -l "artifacts/native/${{ matrix.rid }}/lib/libjade_native.dylib" | awk '/LC_BUILD_VERSION/ { found = 1 } found && $1 == "minos" { print $2; exit }')
+          library="artifacts/native/${{ matrix.rid }}/lib/libjade_native.dylib"
+          architectures=$(lipo -archs "$library")
+          echo "Architectures: $architectures (expected ${{ matrix.architecture }})"
+          minos=$(otool -l "$library" | awk '/LC_BUILD_VERSION/ { found = 1 } found && $1 == "minos" { print $2; exit }')
           echo "Deployment target: $minos (expected 12.0)"
+          test "$architectures" = ${{ matrix.architecture }}
           test "$minos" = 12.0
 
+      # The x64 build of the runtime the arm64 SDK runs the scripts on.
+      - name: Install the x64 .NET runtime
+        if: matrix.rosetta
+        shell: bash
+        run: |
+          version=$(dotnet --list-runtimes | awk '$1 == "Microsoft.NETCore.App" { version = $2 } END { print version }')
+          curl -fsSLo "$RUNNER_TEMP/dotnet-install.sh" https://dot.net/v1/dotnet-install.sh
+          bash "$RUNNER_TEMP/dotnet-install.sh" --runtime dotnet --version "$version" --architecture x64 --install-dir "$RUNNER_TEMP/dotnet-x64"
+
       - name: Smoke check
-        run: dotnet scripts/smoke-native.cs
+        shell: bash
+        run: |
+          if [ "${{ matrix.rosetta }}" = true ]; then
+            dotnet build scripts/smoke-native.cs --output "$RUNNER_TEMP/smoke-native"
+            "$RUNNER_TEMP/dotnet-x64/dotnet" "$RUNNER_TEMP/smoke-native/smoke-native.dll" --rid ${{ matrix.rid }}
+          else
+            dotnet scripts/smoke-native.cs
+          fi
+
+      # Uploaded whenever there is a library, so that one failing a check can be inspected. A reused library
+      # is uploaded again, so that every run carries the libraries it checked.
+      - name: Upload jade_native
+        if: ${{ !cancelled() && (steps.build.outcome == 'success' || steps.reuse.outputs.build == 'false') }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: jade-native-${{ matrix.rid }}
+          path: artifacts/native/${{ matrix.rid }}/
+          if-no-files-found: error
+
+      - name: Upload debug symbols
+        if: ${{ !cancelled() && (steps.build.outcome == 'success' || steps.reuse.outputs.build == 'false') }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: jade-native-symbols-${{ matrix.rid }}
+          path: artifacts/native-symbols/${{ matrix.rid }}/
+          if-no-files-found: error
+
+      # Only once the library passed the checks above. The bindings and tests below exercise the managed side,
+      # which a later commit can fix without touching the native inputs.
+      - name: Mark the native inputs as built
+        uses: actions/upload-artifact@v7
+        with:
+          name: native-inputs-${{ matrix.rid }}-${{ steps.inputs.outputs.id }}
+          path: artifacts/native/${{ matrix.rid }}/metadata/versions.json
+          if-no-files-found: error
 
       # The generator reads the headers just staged; the generated files must not depend on the host.
       - name: Regenerate bindings
@@ -197,19 +386,18 @@ jobs:
         env:
           SDL_VIDEO_DRIVER: dummy
 
-      # Uploaded whenever the build succeeded, so that a library failing a check can be inspected.
-      - name: Upload jade_native
-        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
-        uses: actions/upload-artifact@v7
-        with:
-          name: jade-native-${{ matrix.rid }}
-          path: artifacts/native/${{ matrix.rid }}/
-          if-no-files-found: error
+  # The one check to require: the matrix job above is skipped as a whole for docs-only pull requests, and its
+  # names change with the matrix.
+  result:
+    name: Native result
+    needs: [changes, build]
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
 
-      - name: Upload debug symbols
-        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
-        uses: actions/upload-artifact@v7
-        with:
-          name: jade-native-symbols-${{ matrix.rid }}
-          path: artifacts/native-symbols/${{ matrix.rid }}/
-          if-no-files-found: error
+    steps:
+      - name: Check the jobs
+        env:
+          RESULTS: ${{ join(needs.*.result, ' ') }}
+        run: |
+          echo "Jobs: $RESULTS"
+          case " $RESULTS " in *" failure "* | *" cancelled "*) exit 1 ;; esac

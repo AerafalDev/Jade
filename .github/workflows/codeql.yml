@@ -1,5 +1,8 @@
 name: CodeQL
 
+# A pull request that only touches design/ and Markdown files skips the analysis. The workflow itself always
+# runs, so that its checks still report if they become required: a path filter would leave them pending.
+# CodeQL result sums up the jobs for that purpose.
 on:
   push:
     branches: [main]
@@ -16,8 +19,38 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  changes:
+    name: Changes
+    runs-on: ubuntu-latest
+    outputs:
+      code: ${{ steps.classify.outputs.code }}
+
+    steps:
+      - name: Checkout
+        if: github.event_name == 'pull_request'
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
+
+      # A pull request is checked out as its merge commit, whose first parent is the base branch: the diff is
+      # what merging would change. --no-renames also lists the old path of a moved file.
+      - name: Classify the changes
+        id: classify
+        shell: bash
+        run: |
+          code=true
+          if [ "$GITHUB_EVENT_NAME" = pull_request ]; then
+            files=$(git diff --no-renames --name-only HEAD^1 HEAD)
+            changed=$(awk '!/^design\// && !/\.md$/' <<< "$files")
+            printf 'Changed files that need the analysis:\n%s\n' "${changed:-none}"
+            [ -n "$changed" ] || code=false
+          fi
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+
   analyze:
     name: Analyze (${{ matrix.language }})
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
     runs-on: ubuntu-latest
     permissions:
       actions: read
@@ -57,3 +90,19 @@ jobs:
         uses: github/codeql-action/analyze@v4
         with:
           category: /language:${{ matrix.language }}
+
+  # The one check to require: the matrix job above is skipped as a whole for docs-only pull requests, and its
+  # names change with the matrix.
+  result:
+    name: CodeQL result
+    needs: [changes, analyze]
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check the jobs
+        env:
+          RESULTS: ${{ join(needs.*.result, ' ') }}
+        run: |
+          echo "Jobs: $RESULTS"
+          case " $RESULTS " in *" failure "* | *" cancelled "*) exit 1 ;; esac
