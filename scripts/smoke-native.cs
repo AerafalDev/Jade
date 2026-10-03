@@ -1,8 +1,9 @@
 #!/usr/bin/env dotnet
 // Smoke check of a staged jade_native: loads artifacts/native/<rid>/lib/, calls into each bundled
 // library and compares what it reports with the staged metadata and headers where it can; Dawn has
-// no version function, so it creates an instance and requests adapters instead. Runs on the host
-// RID only, since it has to load the library.
+// no version function, so it creates an instance and requests adapters instead. Runs on the RID of
+// the process only, since it has to load the library: an x64 runtime under Rosetta 2 checks osx-x64
+// on an arm64 Mac.
 //
 // Usage: dotnet scripts/smoke-native.cs [--rid <rid>]
 
@@ -21,17 +22,18 @@ using System.Text.RegularExpressions;
 
 [assembly: DisableRuntimeMarshalling]
 
-var hostRid = $"{(OperatingSystem.IsWindows() ? "win" : OperatingSystem.IsMacOS() ? "osx" : "linux")}-{RuntimeInformation.OSArchitecture.ToString().ToLowerInvariant()}";
-var rid = args is ["--rid", var value] ? value : args.Length == 0 ? hostRid : null;
+// The process's architecture, not the machine's: under Rosetta 2, OSArchitecture reports arm64.
+var processRid = $"{(OperatingSystem.IsWindows() ? "win" : OperatingSystem.IsMacOS() ? "osx" : "linux")}-{RuntimeInformation.ProcessArchitecture.ToString().ToLowerInvariant()}";
+var rid = args is ["--rid", var value] ? value : args.Length == 0 ? processRid : null;
 if (rid is null)
 {
     Console.Error.WriteLine("Usage: dotnet scripts/smoke-native.cs [--rid <rid>]");
     return 2;
 }
 
-if (rid != hostRid)
+if (rid != processRid)
 {
-    Console.Error.WriteLine($"error: {rid} cannot be loaded on this host ({hostRid}).");
+    Console.Error.WriteLine($"error: {rid} cannot be loaded by this process ({processRid}).");
     return 2;
 }
 

@@ -11,8 +11,10 @@
 // --container builds a Linux RID inside the container of native/linux/Dockerfile, on the glibc
 // baseline of ADR-0013, as CI does. --prune-packages then uninstalls the package builds that no
 // xmake project uses any more (xmake require --clean); CI runs it before caching the packages.
+// --print-config prints the RID's xmake configuration and builds nothing: xmake's package build
+// hash leaves part of it out, so CI keys each RID's package cache on it.
 //
-// Usage: dotnet scripts/build-native.cs [--rid <rid>] [--config release|debug] [--container] [--prune-packages]
+// Usage: dotnet scripts/build-native.cs [--rid <rid>] [--config release|debug] [--container] [--prune-packages] [--print-config]
 
 #:include build-native/XmakeTarget.cs
 #:include build-native/Rids.cs
@@ -31,12 +33,13 @@
 
 using System.Diagnostics;
 
-const string Usage = "Usage: dotnet scripts/build-native.cs [--rid <rid>] [--config release|debug] [--container] [--prune-packages]";
+const string Usage = "Usage: dotnet scripts/build-native.cs [--rid <rid>] [--config release|debug] [--container] [--prune-packages] [--print-config]";
 
 string? rid = null;
 var config = "release";
 var container = false;
 var prunePackages = false;
+var printConfig = false;
 for (var i = 0; i < args.Length; i++)
 {
     switch (args[i])
@@ -55,6 +58,10 @@ for (var i = 0; i < args.Length; i++)
 
         case "--prune-packages":
             prunePackages = true;
+            break;
+
+        case "--print-config":
+            printConfig = true;
             break;
 
         case "-h" or "--help":
@@ -88,6 +95,19 @@ if (container && target.Platform != "linux")
     return 2;
 }
 
+// The static CRT on Windows (ADR-0003). It reaches the packages too: xmake passes the project's
+// runtimes to every package it requires, and to CMake as CMAKE_MSVC_RUNTIME_LIBRARY.
+List<string> runtimes = target.Platform == "windows" ? [config == "debug" ? "--runtimes=MTd" : "--runtimes=MT"] : [];
+List<string> toolchain = target.Toolchain is null ? [] : [$"--toolchain={target.Toolchain}"];
+
+// Everything the RID is configured with except the build directory, which no package build depends on.
+List<string> configuration = ["-p", target.Platform, "-a", target.Architecture, "-m", config, .. toolchain, .. runtimes, .. target.ExtraArguments];
+if (printConfig)
+{
+    Console.WriteLine(string.Join(' ', configuration));
+    return 0;
+}
+
 if (!target.Verified)
 {
     Console.Error.WriteLine($"warning: the xmake mapping for {rid} has not been verified yet, see design/roadmap.md.");
@@ -115,10 +135,6 @@ var buildDirectory = Path.Combine(nativeDirectory, "build", rid);
 var stageDirectory = Path.Combine(repositoryRoot, "artifacts", "native", rid);
 var symbolsDirectory = Path.Combine(repositoryRoot, "artifacts", "native-symbols", rid);
 
-// The static CRT on Windows (ADR-0003). It reaches the packages too: xmake passes the project's
-// runtimes to every package it requires, and to CMake as CMAKE_MSVC_RUNTIME_LIBRARY.
-List<string> runtimes = target.Platform == "windows" ? [config == "debug" ? "--runtimes=MTd" : "--runtimes=MT"] : [];
-
 // Rewritten by every build, even an up-to-date one; deleting it first means a stale manifest is never staged.
 var manifestPath = Path.Combine(buildDirectory, target.Platform, target.Architecture, config, "jade_native.manifest.json");
 if (File.Exists(manifestPath))
@@ -130,8 +146,7 @@ try
 {
     // --require=y: xmake re-resolves packages only when the project files change, not when a recipe
     // under native/packages/ does. Forcing it lets a recipe edit (new hash, new options) take effect.
-    List<string> toolchain = target.Toolchain is null ? [] : [$"--toolchain={target.Toolchain}"];
-    Xmake.Run(nativeDirectory, ["f", "-p", target.Platform, "-a", target.Architecture, "-m", config, .. toolchain, "-o", buildDirectory, "--require=y", "-y", .. runtimes, .. target.ExtraArguments]);
+    Xmake.Run(nativeDirectory, ["f", .. configuration, "-o", buildDirectory, "--require=y", "-y"]);
     Xmake.Run(nativeDirectory, ["build", "-y", "jade_native"]);
 
     if (!File.Exists(manifestPath))

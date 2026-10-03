@@ -163,7 +163,7 @@ lands.
 | Build the managed solution | `dotnet build -c Release` | 001 |
 | Run the tests (Microsoft.Testing.Platform) | `dotnet test -c Release` | 001 |
 | Pack the `Jade` package | `dotnet pack -c Release -o artifacts/packages` | 001 |
-| Build jade_native and stage it into `artifacts/native/<rid>/`, symbols into `artifacts/native-symbols/<rid>/` (RID defaults to the host) | `dotnet scripts/build-native.cs [--rid <rid>] [--config release\|debug] [--container] [--prune-packages]` | 101, 103 |
+| Build jade_native and stage it into `artifacts/native/<rid>/`, symbols into `artifacts/native-symbols/<rid>/` (RID defaults to the host); `--print-config` only prints the RID's xmake configuration | `dotnet scripts/build-native.cs [--rid <rid>] [--config release\|debug] [--container] [--prune-packages] [--print-config]` | 101, 103, 004 |
 | Build a Linux RID in the glibc baseline container, as CI does | `dotnet scripts/build-native.cs --rid linux-x64 --container` | 103 |
 | Download CI's jade_native (latest successful `native.yml` run on main) into `artifacts/native/<rid>/` | `dotnet scripts/fetch-native.cs [--rid <rid>]... [--branch <branch>] [--run <run-id>]` | 103 |
 | Smoke-check the staged jade_native of the host RID | `dotnet scripts/smoke-native.cs [--rid <rid>]` | 101 |
