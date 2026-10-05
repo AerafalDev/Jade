@@ -1,0 +1,52 @@
+# Labels applied to pull requests from the paths they change. Label names come from labels.yml.
+
+documentation:
+  - changed-files:
+      - any-glob-to-all-files: ['docs/**', '**/*.md']
+
+'area: engine':
+  - changed-files:
+      - any-glob-to-any-file: ['src/Jade/**']
+
+'area: generator':
+  - changed-files:
+      - any-glob-to-any-file: ['scripts/binding-generator.cs', 'scripts/binding-generator/**']
+
+'area: interop':
+  - changed-files:
+      - any-glob-to-any-file:
+          - src/Jade.Wgpu/**
+          - src/Jade.Sdl/**
+          - src/Jade.MiniAudio/**
+          - src/Jade.Emscripten/**
+
+'area: native':
+  - changed-files:
+      - any-glob-to-any-file:
+          - build/**
+          - native/**
+          - scripts/build-native.cs
+          - scripts/fetch-native.cs
+
+'area: roslyn':
+  - changed-files:
+      - any-glob-to-any-file: ['src/Jade.SourceGenerators/**', 'src/Jade.Analyzers/**']
+
+'area: build':
+  - changed-files:
+      - any-glob-to-any-file:
+          - global.json
+          - Jade.slnx
+          - Directory.Build.props
+          - Directory.Build.targets
+          - Directory.Packages.props
+          - .editorconfig
+          - '**/*.csproj'
+
+'area: ci':
+  - changed-files:
+      - any-glob-to-any-file: ['.github/**']
+
+'area: samples':
+  - changed-files:
+      - any-glob-to-any-file: ['samples/**']

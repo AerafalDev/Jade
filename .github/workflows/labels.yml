@@ -1,0 +1,63 @@
+name: Labels
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/labels.yml
+      - .github/workflows/labels.yml
+  pull_request:
+    paths:
+      - .github/labels.yml
+      - .github/workflows/labels.yml
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  sync:
+    name: sync
+    runs-on: ubuntu-slim
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      issues: write # repository labels are managed through the issues permission
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      # Pull requests only print the changes, so a labels.yml edit is checked before it lands.
+      DRY_RUN: ${{ github.event_name == 'pull_request' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Sync labels
+        shell: bash
+        run: |
+          set -euo pipefail
+          wanted=$(yq -o=json '.' .github/labels.yml)
+          current=$(gh label list --limit 1000 --json name,color,description)
+
+          while IFS=$'\t' read -r name color description; do
+            existing=$(jq -r --arg name "$name" '.[] | select(.name == $name) | .color + "\t" + .description' <<<"$current")
+            if [ -z "$existing" ]; then
+              echo "create: $name"
+            elif [ "$existing" != "$color"$'\t'"$description" ]; then
+              echo "update: $name"
+            else
+              continue
+            fi
+            [ "$DRY_RUN" = true ] || gh label create "$name" --color "$color" --description "$description" --force
+          done < <(jq -r '.[] | [.name, .color, .description // ""] | @tsv' <<<"$wanted")
+
+          while IFS= read -r name; do
+            if ! jq -e --arg name "$name" 'any(.[]; .name == $name)' <<<"$wanted" >/dev/null; then
+              echo "delete: $name"
+              [ "$DRY_RUN" = true ] || gh label delete "$name" --yes
+            fi
+          done < <(jq -r '.[].name' <<<"$current")
