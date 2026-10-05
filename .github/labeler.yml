@@ -14,11 +14,7 @@ documentation:
 
 'area: interop':
   - changed-files:
-      - any-glob-to-any-file:
-          - src/Jade.Wgpu/**
-          - src/Jade.Sdl/**
-          - src/Jade.MiniAudio/**
-          - src/Jade.Emscripten/**
+      - any-glob-to-any-file: ['interop/**']
 
 'area: native':
   - changed-files:

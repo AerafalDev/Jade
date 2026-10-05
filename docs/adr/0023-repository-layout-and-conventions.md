@@ -1,29 +1,22 @@
-# 0020. Repository layout and content conventions
+# 0023. Repository layout and content conventions
 
-- Status: Superseded by [0023](0023-repository-layout-and-conventions.md)
+- Status: Accepted
 - Date: 2026-10-05
 
 ## Context
 
-[0014](0014-repository-layout-and-conventions.md) put the xmake package definitions, the C shims
-and `versions.json` in `native/`, and the `Jade.Native.*` packaging projects in `src/`. While
-scaffolding the solution, the maintainer chose to group the three packaging projects in a
-`native/` directory of their own, next to `src/`, and to move the native build definitions to
-`build/`. This record restates the whole layout so that it can be read on its own, and supersedes
-0014.
+[0020](0020-repository-layout-and-conventions.md) put the generated interop projects
+(`Jade.Wgpu`, `Jade.Sdl`, `Jade.MiniAudio`, `Jade.Emscripten`) in `src/`, next to the engine and the
+Roslyn components. The maintainer chose to give them a top-level `interop/` directory, as `native/`
+already does for the packaging projects: the interop projects are mostly generated code, written by
+the binding generator rather than by hand, and they map one to one to the native packages. This
+record restates the whole layout so that it can be read on its own, and supersedes 0020.
 
-Verified on 2026-10-05 with SDK `11.0.100-rc.1.26425.128`, with a throwaway file-based app in
-`scripts/`:
-
-- File-based apps import the repository's `Directory.Build.props`, `Directory.Build.targets` and
-  `Directory.Packages.props` (`DirectoryBuildPropsPath` and `DirectoryPackagesPropsPath` point to
-  the root files), build into `artifacts/`, and set `FileBasedProgram` to `true` and
-  `MSBuildProjectName` to the file name (`probe.cs`). `PublishAot` is `true` by default.
-- With central package management, `#:package Name@Version` fails with NU1008; `#:package Name`
-  takes its version from `Directory.Packages.props`.
-
-Verified the same day with xmake 3.1.1: a project whose `xmake.lua` sits in `build/` writes its
-cache to `build/.xmake/` and its outputs to `build/build/`.
+Verified on 2026-10-05 with SDK `11.0.100-rc.1.26425.128`: no MSBuild file depends on the location
+of the interop projects (`Directory.Build.props` and `Directory.Build.targets` only use project
+properties, and the package README is found from the root), so moving them only changes
+`Jade.slnx`, the project references of `Jade` and the labeler paths. Build with warnings as errors,
+tests, pack with package validation and the format check pass after the move.
 
 ## Decision
 
@@ -35,6 +28,8 @@ docs/
   roadmap.md
   adr/                       one decision per file
   assets/                    social preview image, package icon
+interop/                     generated interop projects
+  Jade.Wgpu/  Jade.Sdl/  Jade.MiniAudio/  Jade.Emscripten/
 native/                      packaging projects: runtimes/ + buildTransitive/
   Jade.Native.Wgpu/  Jade.Native.Sdl/  Jade.Native.MiniAudio/
 scripts/                     .NET file-based apps
@@ -47,7 +42,6 @@ src/
   Jade/
   Jade.SourceGenerators/
   Jade.Analyzers/
-  Jade.Wgpu/  Jade.Sdl/  Jade.MiniAudio/  Jade.Emscripten/      generated interop
 samples/                     Desktop, Android, iOS, Browser
 tests/                       one test project per tested assembly
   Jade.Tests/
@@ -60,11 +54,11 @@ Directory.Packages.props  .editorconfig
 - The paths `native/versions.json` and `native/` (xmake package definitions and C shims) used in
   [0004](0004-webgpu-via-dawn.md), [0006](0006-miniaudio-for-audio.md),
   [0007](0007-in-house-binding-generator.md), [0010](0010-native-builds-with-xmake.md),
-  [0012](0012-supported-targets.md) and [0013](0013-browser-native-toolchain.md) now mean
+  [0012](0012-supported-targets.md) and [0013](0013-browser-native-toolchain.md) mean
   `build/versions.json` and `build/`. Those records are not rewritten
   ([0001](0001-record-architecture-decisions.md)).
-- `Jade.slnx` has one solution folder per top-level directory that holds projects (`native`,
-  `src`, `tests`, later `samples`).
+- `Jade.slnx` has one solution folder per top-level directory that holds projects (`interop`,
+  `native`, `src`, `tests`, later `samples`).
 - Repository scripts are .NET file-based apps in `scripts/`. They inherit the repository's MSBuild
   and package settings: `#:package` directives carry no version.
 - `Jade.SourceGenerators` and `Jade.Analyzers` exist from the start.
@@ -78,6 +72,10 @@ Directory.Packages.props  .editorconfig
 
 ## Consequences
 
+- `src/` holds the hand-written engine and its Roslyn components; `interop/` holds the generated
+  bindings and their hand-written idiomatic layers; `native/` ships the natives built from `build/`.
+- The package README stays in `src/README.md` and is shipped by every package, interop packages
+  included.
 - Native build inputs (`build/`) and the packages that ship their outputs (`native/`) are separate:
   the first is read by `scripts/build-native.cs` and CI, the second only by `dotnet pack`.
   `.gitignore` ignores `.xmake/` and `/build/build/`, never a bare `build/` pattern, which would
