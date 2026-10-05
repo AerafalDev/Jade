@@ -11,8 +11,8 @@ Status: `done`, `next`, `planned`.
 | # | Task | Depends on | Status |
 | --- | --- | --- | --- |
 | 1 | Project charter and GitHub repository | none | done |
-| 2 | Solution scaffolding | 1 | next |
-| 3 | CI baseline and deferred GitHub settings | 2 | planned |
+| 2 | Solution scaffolding | 1 | done |
+| 3 | CI baseline and deferred GitHub settings | 2 | next |
 | 4 | Pin native dependencies and minimum OS versions | 1 | planned |
 | 5 | Binding generator design | 4 | planned |
 | 6 | Native build for the host platform | 2, 4 | planned |
@@ -39,23 +39,21 @@ Status: `done`, `next`, `planned`.
 the GitHub repository with the settings of the first phase of
 [0017](adr/0017-github-repository-baseline.md).
 
-### 2. Solution scaffolding
+### 2. Solution scaffolding (done, 2026-10-05)
 
-- `global.json` pinning the .NET 11 RC SDK, `Directory.Build.props`, `Directory.Build.targets`,
-  `Directory.Packages.props` (central package management, transitive pinning, lock files, audit),
-  `.editorconfig`, `Jade.slnx`.
-- Empty projects for everything under `src/`, wired as described in
-  [0015](adr/0015-build-and-packaging-conventions.md), with `PublicAPI.*.txt` files and NuGet
-  metadata ([0002](adr/0002-license-and-public-identity.md)).
-- A first test project on Microsoft.Testing.Platform. **Decision to take: the test framework**
-  (ADR).
-- The package icon.
-- Done when `dotnet build`, `dotnet test` and `dotnet pack` succeed with `TreatWarningsAsErrors`
-  and package validation enabled.
+`global.json` (exact RC 1 SDK, MTP test runner), `Directory.Build.props`,
+`Directory.Build.targets`, `Directory.Packages.props`, `.editorconfig`, `Jade.slnx`; empty projects
+in `src/` and `native/`; `tests/Jade.Tests`; the package README and icon. Decisions:
+[0018](adr/0018-test-framework.md) (MSTest),
+[0019](adr/0019-browser-and-roslyn-component-targeting.md) (browser and Roslyn component
+targeting), [0020](adr/0020-repository-layout-and-conventions.md) (layout with `native/` and
+`build/`, supersedes 0014), [0021](adr/0021-build-and-packaging-conventions.md) (no lock files,
+supersedes 0015).
 
 ### 3. CI baseline and deferred GitHub settings
 
-- Build and test workflow on Linux, Windows and macOS; format check; NuGet locked mode.
+- Build, test and pack workflow on Linux, Windows and macOS with the commands of `CLAUDE.md`;
+  format check; SDK installed from `global.json`.
 - CodeQL (C#, GitHub Actions), OpenSSF Scorecard, `dependabot.yml` (`nuget`, `github-actions`),
   label synchronization from `.github/labels.yml`, labeler, issue and PR templates, `CODEOWNERS`,
   `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`.
@@ -69,7 +67,7 @@ the GitHub repository with the settings of the first phase of
 
 ### 4. Pin native dependencies and minimum OS versions
 
-- `native/versions.json`: Dawn commit, SDL3 and miniaudio versions, emsdk (must match the workload,
+- `build/versions.json`: Dawn commit, SDL3 and miniaudio versions, emsdk (must match the workload,
   [0013](adr/0013-browser-native-toolchain.md)), Android NDK, and the other toolchain versions.
 - Minimum OS versions derived from Dawn's actual requirements. **Decision to take** (ADR).
 - `THIRD-PARTY-NOTICES.md` written from the license files of the pinned sources.
@@ -86,9 +84,9 @@ the GitHub repository with the settings of the first phase of
 
 ### 6. Native build for the host platform
 
-- xmake package definitions in `native/` (Dawn and SDL3 through CMake, miniaudio and its shim),
+- xmake package definitions in `build/` (Dawn and SDL3 through CMake, miniaudio and its shim),
   `scripts/build-native.cs`, starting with `linux-x64`.
-- Done when `build-native.cs` produces the three libraries from `native/versions.json` on a clean
+- Done when `build-native.cs` produces the three libraries from `build/versions.json` on a clean
   machine.
 
 ### 7. Generator: WebGPU raw layer
@@ -115,7 +113,7 @@ the GitHub repository with the settings of the first phase of
 - Native builds on a runner matrix for every RID of [0012](adr/0012-supported-targets.md): old glibc
   baseline, universal macOS and iOS simulator binaries, Android NDK, emsdk archives; artifacts with
   provenance attestations; `scripts/fetch-native.cs`; CodeQL C/C++ for the shims; a check that the
-  workload's Emscripten version matches `native/versions.json`.
+  workload's Emscripten version matches `build/versions.json`.
 - **Decision to take: native build frequency and caching.**
 - Done when a workflow run produces attested artifacts for every RID and `fetch-native.cs`
   retrieves them.
@@ -173,7 +171,6 @@ the GitHub repository with the settings of the first phase of
 
 | Decision | Task |
 | --- | --- |
-| Test framework (on Microsoft.Testing.Platform) | 2 |
 | CI runners and caching | 3, 10 |
 | Minimum OS versions | 4 |
 | Generator IR and mapping rules, chained structs, descriptors | 5 |

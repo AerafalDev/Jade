@@ -18,7 +18,11 @@ Important or hard-to-reverse decisions are recorded here, one per file, as descr
 | [0011](0011-native-package-layout.md) | Layout of the Jade.Native packages | Accepted |
 | [0012](0012-supported-targets.md) | Supported targets | Accepted |
 | [0013](0013-browser-native-toolchain.md) | Browser natives prebuilt with the workload's Emscripten version | Accepted |
-| [0014](0014-repository-layout-and-conventions.md) | Repository layout and content conventions | Accepted |
-| [0015](0015-build-and-packaging-conventions.md) | Build and packaging conventions | Accepted |
+| [0014](0014-repository-layout-and-conventions.md) | Repository layout and content conventions | Superseded by [0020](0020-repository-layout-and-conventions.md) |
+| [0015](0015-build-and-packaging-conventions.md) | Build and packaging conventions | Superseded by [0021](0021-build-and-packaging-conventions.md) |
 | [0016](0016-public-api-conventions.md) | Public API conventions | Accepted |
 | [0017](0017-github-repository-baseline.md) | GitHub repository settings and supply-chain baseline | Accepted |
+| [0018](0018-test-framework.md) | MSTest as the test framework | Accepted |
+| [0019](0019-browser-and-roslyn-component-targeting.md) | Targeting of the browser interop project and the Roslyn components | Accepted |
+| [0020](0020-repository-layout-and-conventions.md) | Repository layout and content conventions | Accepted |
+| [0021](0021-build-and-packaging-conventions.md) | Build and packaging conventions | Accepted |

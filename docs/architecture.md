@@ -50,23 +50,25 @@ The mapping rules are in [0009](adr/0009-interop-mapping-conventions.md); the pu
 
 | Project | Target | Role |
 | --- | --- | --- |
-| `Jade` | .NET 11 | The engine. Ships the Roslyn components in `analyzers/dotnet/cs`. |
-| `Jade.SourceGenerators` | `netstandard2.0` | Source generators for engine users. |
-| `Jade.Analyzers` | `netstandard2.0` | Analyzers for engine users. |
+| `Jade` | .NET 11 | The engine. References the interop projects and ships the Roslyn components in `analyzers/dotnet/cs`. |
+| `Jade.SourceGenerators` | `netstandard2.0`, C# 15 | Source generators for engine users; not a package. |
+| `Jade.Analyzers` | `netstandard2.0`, C# 15 | Analyzers for engine users; not a package. |
 | `Jade.Wgpu` | .NET 11 | WebGPU interop, generated from `dawn.json`. |
 | `Jade.Sdl` | .NET 11 | SDL3 interop, generated from the C headers. |
 | `Jade.MiniAudio` | .NET 11 | miniaudio interop, generated from the C headers. |
-| `Jade.Emscripten` | .NET 11, browser | Emscripten runtime interop, `[SupportedOSPlatform("browser")]`. |
-| `Jade.Native.Wgpu`, `Jade.Native.Sdl`, `Jade.Native.MiniAudio` | packaging only | Native binaries for every RID ([0011](adr/0011-native-package-layout.md)). |
+| `Jade.Emscripten` | .NET 11, no RID | Emscripten runtime interop, `[SupportedOSPlatform("browser")]` ([0019](adr/0019-browser-and-roslyn-component-targeting.md)). |
+| `Jade.Native.Wgpu`, `Jade.Native.Sdl`, `Jade.Native.MiniAudio` (in `native/`) | packaging only | Native binaries for every RID ([0011](adr/0011-native-package-layout.md)). |
+| `Jade.Tests` (in `tests/`) | .NET 11 | MSTest on Microsoft.Testing.Platform ([0018](adr/0018-test-framework.md)). |
 
-Build and packaging conventions are in [0015](adr/0015-build-and-packaging-conventions.md); the
-repository layout in [0014](adr/0014-repository-layout-and-conventions.md).
+Every .NET 11 library is AOT-compatible and every package that ships an assembly tracks its public
+API. Build and packaging conventions are in [0021](adr/0021-build-and-packaging-conventions.md);
+the repository layout in [0020](adr/0020-repository-layout-and-conventions.md).
 
 ## Binding generation
 
 ```mermaid
 flowchart LR
-    versions["native/versions.json"] --> gen
+    versions["build/versions.json"] --> gen
     dawn["dawn.json<br/>(pinned Dawn commit)"] --> gen
     headers["SDL3 and miniaudio headers<br/>parsed by libclang via ClangSharp"] --> gen
     config["Per-library annotation<br/>configuration"] --> gen
@@ -86,20 +88,22 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    versions["native/versions.json"] --> xmake["xmake package definitions<br/>(native/)"]
+    versions["build/versions.json"] --> xmake["xmake package definitions<br/>(build/)"]
     xmake -->|Dawn, SDL3| cmake["CMake"]
     xmake -->|miniaudio, shims| cc["C compiler"]
     cmake --> bins["Per-RID binaries"]
     cc --> bins
     bins --> ci["CI artifacts<br/>+ provenance attestations"]
     ci --> fetch["scripts/fetch-native.cs<br/>(local work)"]
-    ci --> pkgs["Jade.Native.* packages"]
+    ci --> pkgs["Jade.Native.* packages<br/>(native/)"]
     local["scripts/build-native.cs"] --> xmake
 ```
 
 - All natives are compiled by us, for every target ([0010](adr/0010-native-builds-with-xmake.md)).
-- `native/versions.json` is the single source of pinned versions, read by the scripts, the
-  generator and CI.
+- `build/versions.json` is the single source of pinned versions, read by the scripts, the
+  generator and CI. The xmake package definitions and the C shims live in `build/`; the
+  `Jade.Native.*` packaging projects live in `native/`
+  ([0020](adr/0020-repository-layout-and-conventions.md)).
 - Package layout ([0011](adr/0011-native-package-layout.md)):
 
 | Target | Location in the package |
@@ -113,7 +117,7 @@ flowchart LR
 
 Supported RIDs are listed in [0012](adr/0012-supported-targets.md). Managed code is AnyCPU; RIDs
 concern only the natives and sample publication. Minimum OS versions are derived from Dawn's
-requirements and pinned in `native/versions.json` (not decided yet).
+requirements and pinned in `build/versions.json` (not decided yet).
 
 ### Desktop
 
@@ -155,6 +159,9 @@ Details and verification in [0013](adr/0013-browser-native-toolchain.md).
   interop and the natives end to end.
 - Public API changes are tracked by the PublicApiAnalyzers files; packages pass package
   validation.
+- Tests use MSTest on Microsoft.Testing.Platform. Native AOT, Android, iOS and browser test runs
+  follow MSTest's documented paths ([0018](adr/0018-test-framework.md)); `Jade.Tests` checks the
+  build conventions of the shipped assemblies.
 
 ## Repository and supply chain
 
@@ -163,7 +170,9 @@ GitHub settings, security features and their phasing are described in
 
 ## Current state
 
-As of 2026-10-05 the repository contains documentation only: this document, the decision records,
-the roadmap, `README.md`, `LICENSE`, `SECURITY.md` and the label definitions. No project, script,
-native build or workflow exists yet. The ordered list of next tasks is in the
-[roadmap](roadmap.md).
+As of 2026-10-05 the solution is scaffolded: `global.json`, the `Directory.*` files,
+`.editorconfig` and `Jade.slnx`, every project of the table above without code, the package README
+and icon, and `Jade.Tests`. Build, tests and pack pass with warnings as errors and package
+validation. The `Jade.Native.*` packages contain no native file yet. No script, generator, native
+build (`build/` does not exist yet), sample or workflow exists. The ordered list of next tasks is
+in the [roadmap](roadmap.md).

@@ -1,6 +1,6 @@
 # 0014. Repository layout and content conventions
 
-- Status: Accepted
+- Status: Superseded by [0020](0020-repository-layout-and-conventions.md)
 - Date: 2026-10-05
 
 ## Context
