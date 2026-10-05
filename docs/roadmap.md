@@ -59,7 +59,11 @@ the GitHub repository with the settings of the first phase of
 - CodeQL (C#, GitHub Actions), OpenSSF Scorecard, `dependabot.yml` (`nuget`, `github-actions`),
   label synchronization from `.github/labels.yml`, labeler, issue and PR templates, `CODEOWNERS`,
   `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`.
-- Required checks added to the `main` ruleset; CI, CodeQL and Scorecard badges in the README.
+- Required checks added to the `main` ruleset, declaring
+  `require_extra_approval_for_unattributed_changes` explicitly; check whether Dependabot pull
+  requests are affected by that rule (third-party reports say app-opened pull requests wait for a
+  human approval; GitHub's documentation only mentions Copilot). CI, CodeQL and Scorecard badges
+  in the README.
 - **Decision to take: CI details** (runners, caching).
 - Done when every workflow is green on a pull request and the ruleset requires its checks.
 
