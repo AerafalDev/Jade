@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net11.0</TargetFramework>
+    <IsPackable>true</IsPackable>
+    <Description>Cross-platform 2D game engine for .NET, targeting desktop, mobile and the web.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../Jade.Wgpu/Jade.Wgpu.csproj" />
+    <ProjectReference Include="../Jade.Sdl/Jade.Sdl.csproj" />
+    <ProjectReference Include="../Jade.MiniAudio/Jade.MiniAudio.csproj" />
+    <ProjectReference Include="../Jade.Emscripten/Jade.Emscripten.csproj" />
+    <ProjectReference Include="../Jade.SourceGenerators/Jade.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
+    <ProjectReference Include="../Jade.Analyzers/Jade.Analyzers.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" PrivateAssets="all" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);AddRoslynComponentsToPackage</TargetsForTfmSpecificContentInPackage>
+  </PropertyGroup>
+
+  <Target Name="AddRoslynComponentsToPackage">
+    <MSBuild Projects="@(ProjectReference->WithMetadataValue('OutputItemType', 'Analyzer'))" Targets="GetTargetPath" RemoveProperties="TargetFramework;RuntimeIdentifier">
+      <Output TaskParameter="TargetOutputs" ItemName="_RoslynComponentAssembly" />
+    </MSBuild>
+    <ItemGroup>
+      <TfmSpecificPackageFile Include="@(_RoslynComponentAssembly)" PackagePath="analyzers/dotnet/cs" />
+    </ItemGroup>
+  </Target>
+
+</Project>

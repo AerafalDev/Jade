@@ -1,0 +1,19 @@
+<Solution>
+  <Folder Name="/native/">
+    <Project Path="native/Jade.Native.MiniAudio/Jade.Native.MiniAudio.csproj" />
+    <Project Path="native/Jade.Native.Sdl/Jade.Native.Sdl.csproj" />
+    <Project Path="native/Jade.Native.Wgpu/Jade.Native.Wgpu.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/Jade.Analyzers/Jade.Analyzers.csproj" />
+    <Project Path="src/Jade.Emscripten/Jade.Emscripten.csproj" />
+    <Project Path="src/Jade.MiniAudio/Jade.MiniAudio.csproj" />
+    <Project Path="src/Jade.Sdl/Jade.Sdl.csproj" />
+    <Project Path="src/Jade.SourceGenerators/Jade.SourceGenerators.csproj" />
+    <Project Path="src/Jade.Wgpu/Jade.Wgpu.csproj" />
+    <Project Path="src/Jade/Jade.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Jade.Tests/Jade.Tests.csproj" />
+  </Folder>
+</Solution>

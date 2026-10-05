@@ -8,7 +8,7 @@ TestResults/
 
 # Native builds (a bare build/ pattern would also hide NuGet build/ folders)
 .xmake/
-/native/build/
+/build/build/
 
 # Editors and OS
 .vs/
