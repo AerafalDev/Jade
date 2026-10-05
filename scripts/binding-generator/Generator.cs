@@ -11,7 +11,8 @@ namespace Jade.BindingGenerator;
 
 /// <summary>
 /// Entry point of the binding generator: loads the inputs of every generated interop library,
-/// reports what they contain, builds their intermediate representation and writes their raw layer.
+/// reports what they contain, builds their intermediate representation and writes their raw layer
+/// and their layout tests.
 /// </summary>
 internal static class Generator
 {
@@ -58,11 +59,22 @@ internal static class Generator
                     { Headers: { } headers } => ClangModelBuilder.Build(configuration.Dependency, headers, configuration.Clang!, configuration.Exclude),
                     _ => throw new InvalidDataException($"{library.Project} has no loaded input."),
                 };
-                var projected = RawProjection.Project(model, library.Project, configuration);
-                var update = GeneratedDirectory.Update(library.GeneratedDirectory, RawLayerEmitter.Emit(projected));
-                var directory = Path.GetRelativePath(layout.Root, library.GeneratedDirectory).Replace('\\', '/');
+                var names = new DotNetNames(configuration.Names, configuration.Words);
+                var projected = RawProjection.Project(model, library.Project, configuration, names);
+                var layoutHeaders = configuration.Clang is { } clang ? LayoutHeaders.FromClang(clang) : LayoutHeaders.FromHeader(DawnModelBuilder.Header);
+                var layouts = LayoutProjection.Project(model, projected, names, layoutHeaders);
 
-                await OutputReport.WriteAsync(output, directory, model, projected, update, cancellationToken).ConfigureAwait(false);
+                // The layout tests name members too, so the exceptions are only all used once both are projected.
+                names.CheckAllUsed();
+
+                var update = GeneratedDirectory.Update(library.GeneratedDirectory, RawLayerEmitter.Emit(projected));
+                var testDirectory = layout.GetTestGeneratedDirectory(library.Project);
+                var testUpdate = GeneratedDirectory.Update(testDirectory, [LayoutTestEmitter.EmitTests(layouts)]);
+                var nativeSource = Path.Combine(layout.LayoutSourceDirectory, $"{layouts.Name}.g.c");
+                var nativeWritten = GeneratedDirectory.WriteFile(nativeSource, LayoutTestEmitter.EmitNativeSource(layouts, RepositoryLayout.LayoutSourcePath));
+
+                await OutputReport.WriteAsync(output, layout.GetRelativePath(library.GeneratedDirectory), model, projected, update, cancellationToken).ConfigureAwait(false);
+                await OutputReport.WriteLayoutsAsync(output, layouts, layout.GetRelativePath(testDirectory), testUpdate, layout.GetRelativePath(nativeSource), nativeWritten, cancellationToken).ConfigureAwait(false);
             }
 
             return SuccessExitCode;

@@ -15,7 +15,7 @@ internal sealed class ApiModel
     /// <param name="typedefs">The typedefs the API declares itself.</param>
     /// <param name="enums">The enums and sets of flags.</param>
     /// <param name="handles">The opaque handles.</param>
-    /// <param name="structures">The structures.</param>
+    /// <param name="structures">The structures, those mapped to a .NET type included.</param>
     /// <param name="functionPointers">The function pointer types.</param>
     /// <param name="functions">The exported functions.</param>
     /// <param name="skipped">The declarations of the inputs that the model leaves out.</param>
@@ -34,12 +34,15 @@ internal sealed class ApiModel
         Typedefs = Sort(typedefs);
         Enums = Sort(enums);
         Handles = Sort(handles);
-        Structures = Sort(structures);
+        var sortedStructures = Sort(structures);
+
+        Structures = [.. sortedStructures.Where(static structure => structure.DotNetType is null)];
+        MappedStructures = [.. sortedStructures.Where(static structure => structure.DotNetType is not null)];
         FunctionPointers = Sort(functionPointers);
         Functions = Sort(functions);
         Skipped = [.. skipped.OrderBy(static declaration => declaration.Name, StringComparer.Ordinal)];
 
-        IEnumerable<Declaration> all = [.. Constants, .. Typedefs, .. Enums, .. Handles, .. Structures, .. FunctionPointers, .. Functions];
+        IEnumerable<Declaration> all = [.. Constants, .. Typedefs, .. Enums, .. Handles, .. sortedStructures, .. FunctionPointers, .. Functions];
 
         foreach (var declaration in all)
         {
@@ -62,8 +65,11 @@ internal sealed class ApiModel
     /// <summary>Gets the opaque handles.</summary>
     public IReadOnlyList<HandleDeclaration> Handles { get; }
 
-    /// <summary>Gets the structures.</summary>
+    /// <summary>Gets the structures that the bindings declare.</summary>
     public IReadOnlyList<StructureDeclaration> Structures { get; }
+
+    /// <summary>Gets the structures that the configuration maps to a .NET type, which only the layout tests use (ADR 0036).</summary>
+    public IReadOnlyList<StructureDeclaration> MappedStructures { get; }
 
     /// <summary>Gets the function pointer types.</summary>
     public IReadOnlyList<FunctionPointerDeclaration> FunctionPointers { get; }

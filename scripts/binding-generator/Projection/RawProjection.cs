@@ -114,14 +114,18 @@ internal sealed class RawProjection
     /// <summary>Projects a library's model onto its raw layer.</summary>
     /// <param name="model">The model of the library's API.</param>
     /// <param name="namespace">The namespace of the library, its project name.</param>
-    /// <param name="configuration">The library configuration, which gives the native library name and the naming exceptions.</param>
+    /// <param name="configuration">The library configuration, which gives the native library name.</param>
+    /// <param name="names">
+    /// The naming rules with the configuration's exceptions, which the caller checks are all used
+    /// once the layout tests are projected too.
+    /// </param>
     /// <returns>The raw layer.</returns>
-    /// <exception cref="InvalidDataException">The configuration lacks the library name or has unused exceptions, or two names collide.</exception>
-    public static ProjectedLibrary Project(ApiModel model, string @namespace, LibraryConfiguration configuration)
+    /// <exception cref="InvalidDataException">The configuration lacks the library name, or two names collide.</exception>
+    public static ProjectedLibrary Project(ApiModel model, string @namespace, LibraryConfiguration configuration, DotNetNames names)
     {
         var library = configuration.Library ?? throw new InvalidDataException($"The configuration of {@namespace} has no 'library', the name its functions are imported from.");
 
-        return new RawProjection(model, new DotNetNames(configuration.Names, configuration.Words)).Project(@namespace, library);
+        return new RawProjection(model, names).Project(@namespace, library);
     }
 
     /// <summary>Projects the model.</summary>
@@ -162,7 +166,6 @@ internal sealed class RawProjection
         var functions = _model.Functions.Select(ProjectFunction).ToList();
 
         CheckUnique("member", NativeMethodsClass, constants.Select(static constant => constant.Name).Concat(functions.Select(static function => function.Name)).Append("LibraryName"), StringComparer.Ordinal);
-        _names.CheckAllUsed();
 
         return new ProjectedLibrary(@namespace, library, projectedTypes, constants, functions);
     }
@@ -562,7 +565,7 @@ internal sealed class RawProjection
     /// <param name="names">The names.</param>
     /// <param name="comparer">The comparison: type names must also differ in more than case, since they name files.</param>
     /// <exception cref="InvalidDataException">Two names collide.</exception>
-    private static void CheckUnique(string kind, string scope, IEnumerable<string> names, StringComparer comparer)
+    public static void CheckUnique(string kind, string scope, IEnumerable<string> names, StringComparer comparer)
     {
         var duplicates = names.GroupBy(static name => name, comparer).Where(static group => group.Count() > 1).Select(static group => group.Key).ToList();
 

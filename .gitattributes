@@ -4,6 +4,7 @@
 
 *.cs     diff=csharp
 *.g.cs   linguist-generated=true
+*.g.c    linguist-generated=true
 
 *.sh     text eol=lf
 *.cmd    text eol=crlf

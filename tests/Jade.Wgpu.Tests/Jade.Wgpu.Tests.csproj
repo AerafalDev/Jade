@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <None Include="$(ArtifactsPath)/native/bin/$(NETCoreSdkPortableRuntimeIdentifier)/*" Link="%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" Visible="false" />
+    <None Include="$(ArtifactsPath)/native/test/$(NETCoreSdkPortableRuntimeIdentifier)/*" Link="%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" Visible="false" />
   </ItemGroup>
 
 </Project>

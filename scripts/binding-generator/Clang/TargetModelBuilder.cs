@@ -214,7 +214,24 @@ internal sealed class TargetModelBuilder
     /// <param name="header">The header that declares it.</param>
     private void AddRecord(RecordDecl record, string header)
     {
-        if (GetTagName(record) is not { } name || _configuration.Types.ContainsKey(name) || IsKnown(name) || IsExcluded(name))
+        if (GetTagName(record) is not { } name || IsKnown(name))
+        {
+            return;
+        }
+
+        // A record mapped to a .NET type is collected for the layout tests only, which check the
+        // .NET type against it; a record mapped to a C type has nothing to check.
+        if (_configuration.Types.TryGetValue(name, out var mapped))
+        {
+            if (IsDotNetType(mapped) && record.Definition is { } mappedDefinition)
+            {
+                AddStructure(name, _names.GetWords(name), mappedDefinition, header, GetCTypeName(record, name), position: null, mapped);
+            }
+
+            return;
+        }
+
+        if (IsExcluded(name))
         {
             return;
         }
@@ -225,7 +242,7 @@ internal sealed class TargetModelBuilder
             return;
         }
 
-        AddStructure(name, _names.GetWords(name), definition, header);
+        AddStructure(name, _names.GetWords(name), definition, header, GetCTypeName(record, name), position: null, dotNetType: null);
     }
 
     /// <summary>Adds a structure or a union with its members, after the anonymous records they use.</summary>
@@ -233,7 +250,10 @@ internal sealed class TargetModelBuilder
     /// <param name="words">The words of the name.</param>
     /// <param name="definition">The definition of the record.</param>
     /// <param name="header">The header that declares it.</param>
-    private void AddStructure(string cName, IReadOnlyList<string> words, RecordDecl definition, string header)
+    /// <param name="cTypeName">How C code names the type, or <see langword="null"/> for an anonymous record held by another.</param>
+    /// <param name="position">Where an anonymous record lies in its parent, or <see langword="null"/> for a named one.</param>
+    /// <param name="dotNetType">The .NET type the configuration maps the record to, or <see langword="null"/>.</param>
+    private void AddStructure(string cName, IReadOnlyList<string> words, RecordDecl definition, string header, string? cTypeName, RecordPosition? position, string? dotNetType)
     {
         var members = new List<StructureMember>();
 
@@ -249,7 +269,7 @@ internal sealed class TargetModelBuilder
             }
 
             var memberWords = _names.GetMemberWords(field.Name);
-            var anonymous = new AnonymousRecordName($"{cName}_{field.Name}", [.. words, .. memberWords], header);
+            var anonymous = new AnonymousRecordName($"{cName}_{field.Name}", [.. words, .. memberWords], header, new RecordPosition(cName, field.Name));
 
             members.Add(new StructureMember
             {
@@ -271,6 +291,9 @@ internal sealed class TargetModelBuilder
             Availability = _target.Platform,
             Members = members,
             IsUnion = definition.IsUnion,
+            CTypeName = cTypeName,
+            Position = position,
+            DotNetType = dotNetType,
         });
     }
 
@@ -490,7 +513,7 @@ internal sealed class TargetModelBuilder
     /// <returns>The type reference.</returns>
     private static TypeReference MapConfiguredType(string mapped)
     {
-        return mapped.Contains('.', StringComparison.Ordinal)
+        return IsDotNetType(mapped)
             ? new DotNetTypeReference(mapped)
             : mapped.EndsWith('*', StringComparison.Ordinal)
                 ? new PointerTypeReference(new BuiltinTypeReference(mapped[..^1].TrimEnd()), IsConst: false)
@@ -523,7 +546,7 @@ internal sealed class TargetModelBuilder
 
         if (!IsKnown(anonymous.CName))
         {
-            AddStructure(anonymous.CName, anonymous.Words, record.Definition ?? record, anonymous.Header);
+            AddStructure(anonymous.CName, anonymous.Words, record.Definition ?? record, anonymous.Header, cTypeName: null, anonymous.Position, dotNetType: null);
         }
 
         return new NamedTypeReference(anonymous.CName);
@@ -596,6 +619,27 @@ internal sealed class TargetModelBuilder
         return _builtinSpellings.TryGetValue(builtin.Kind, out var spelling)
             ? spelling
             : throw new InvalidDataException($"{_target.Triple}: '{referrer}' uses the builtin type '{builtin.AsString}', which the bindings do not reproduce: exclude it.");
+    }
+
+    /// <summary>Tells whether the configuration maps a C type to a .NET type, by its full name, rather than to a C type.</summary>
+    /// <param name="mapped">The mapping of the configuration's <c>types</c>.</param>
+    /// <returns><see langword="true"/> for a .NET type such as <c>System.Numerics.Vector3</c>.</returns>
+    private static bool IsDotNetType(string mapped)
+    {
+        return mapped.Contains('.', StringComparison.Ordinal);
+    }
+
+    /// <summary>Gets how C code names a record: <c>struct</c> or <c>union</c> and its tag, or the typedef of a record without tag.</summary>
+    /// <param name="record">The record.</param>
+    /// <param name="name">Its name, from <see cref="GetTagName"/>.</param>
+    /// <returns>The C type name, valid whether or not a typedef repeats the tag.</returns>
+    /// <remarks>
+    /// libclang names a record without tag after its typedef, as in <c>typedef struct { … } ma_vec3f;</c>,
+    /// where <c>struct ma_vec3f</c> would name another, undeclared type.
+    /// </remarks>
+    private static string GetCTypeName(RecordDecl record, string name)
+    {
+        return record.TypedefNameForAnonDecl is not null ? name : $"{(record.IsUnion ? "union" : "struct")} {name}";
     }
 
     /// <summary>Gets the name of a structure, union or enum: its tag, or the typedef that names it when it is anonymous.</summary>

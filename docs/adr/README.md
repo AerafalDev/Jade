@@ -40,3 +40,4 @@ Important or hard-to-reverse decisions are recorded here, one per file, as descr
 | [0033](0033-c-header-raw-layer-generation.md) | SDL3 and miniaudio raw layer generation from their C headers | Accepted |
 | [0034](0034-raw-layer-with-dotnet-names.md) | Raw interop layer with .NET names in a `Raw` namespace | Accepted |
 | [0035](0035-emscripten-interop-generation.md) | Emscripten interop generated from its C headers | Accepted |
+| [0036](0036-generated-layout-tests.md) | Generated layout tests and layout libraries | Accepted |
