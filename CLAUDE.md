@@ -67,10 +67,11 @@ tools are out of scope for now.
 | Generator | In-house file-based app; `dawn.json` and libclang (ClangSharp, parser only); output committed and checked by CI | [0007](docs/adr/0007-in-house-binding-generator.md) |
 | Interop layers | Raw blittable layer plus idiomatic layer | [0008](docs/adr/0008-two-layer-interop.md) |
 | Interop mapping | `LibraryImport`, `CLong`/`nuint`, `InlineArray`, unions at offset 0, function-pointer callbacks, handles, descriptors, layout tests | [0009](docs/adr/0009-interop-mapping-conventions.md) |
-| Natives | Built by us with xmake (CMake for Dawn and SDL3); `build/versions.json` is the single source of versions | [0010](docs/adr/0010-native-builds-with-xmake.md), [0023](docs/adr/0023-repository-layout-and-conventions.md) |
+| Natives | Built by us with xmake (CMake for Dawn and SDL3); `build/versions.json` is the single source of versions, each citing its source | [0010](docs/adr/0010-native-builds-with-xmake.md), [0023](docs/adr/0023-repository-layout-and-conventions.md) |
 | Native packages | `runtimes/{rid}/native`; `buildTransitive/` for iOS and the browser | [0011](docs/adr/0011-native-package-layout.md) |
 | Targets | 12 RIDs, universal macOS and iOS simulator binaries, old glibc; adding a RID needs an ADR | [0012](docs/adr/0012-supported-targets.md) |
-| Browser | Natives built with the workload's exact Emscripten version; no `--use-port`; non-blocking main loop | [0013](docs/adr/0013-browser-native-toolchain.md) |
+| Minimum OS | Windows 10 1607, glibc 2.28, macOS 14.0, iOS 14.0, Android API 26, a browser with WebGPU; raising one supersedes the ADR | [0024](docs/adr/0024-minimum-os-versions.md) |
+| Browser | Natives built with the `wasm-tools` workload's own Emscripten toolchain, no standalone emsdk; rebuilt at every SDK change; no `--use-port`; non-blocking main loop | [0025](docs/adr/0025-browser-natives-with-workload-emscripten.md) |
 | Repository | Layout (`src/` engine and Roslyn components, `interop/` generated interop projects, `native/` packaging projects, `build/` native builds), file-based scripts inheriting the MSBuild settings, `Generated/*.g.cs`, English only, no comments in MSBuild files | [0023](docs/adr/0023-repository-layout-and-conventions.md) |
 | Build | Analysis, AOT compatibility, central packages without lock files, exact SDK pin, package validation, public API tracking, Microsoft.Testing.Platform | [0021](docs/adr/0021-build-and-packaging-conventions.md) |
 | Tests | MSTest on Microsoft.Testing.Platform, plain packages under central management; `internal sealed` test classes with `DiscoverInternals` | [0018](docs/adr/0018-test-framework.md) |
@@ -85,6 +86,9 @@ Open decisions and the order of the next tasks are in the [roadmap](docs/roadmap
 - MSBuild files (`.csproj`, `.props`, `.targets`) and `Jade.slnx` contain no comments.
 - Repository scripts are .NET file-based apps in `scripts/` and start with a `#!` line.
 - Generated code goes to `Generated/*.g.cs` in each interop project and is never edited by hand.
+- `build/versions.json`: every entry has a `source` saying where its value was verified, and
+  dependencies are pinned to full commit hashes; `Jade.Tests` checks both. `THIRD-PARTY-NOTICES.md`
+  follows it.
 - Assembly- and module-level attributes go in `Properties/AssemblyInfo.cs`, never in
   `AssemblyAttribute` items.
 - Interop rules: [0009](docs/adr/0009-interop-mapping-conventions.md). Public API rules:
@@ -104,7 +108,8 @@ Re-check these at every SDK or dependency update.
 
 | Fact | How it was verified | Date |
 | --- | --- | --- |
-| The `wasm-tools` workload of SDK `11.0.100-rc.1.26425.128` uses Emscripten 6.0.2 | `microsoft.net.workload.emscripten.current` manifest references `Microsoft.NET.Runtime.Emscripten.6.0.2.*` packs | 2026-10-05 |
+| The `wasm-tools` workload of SDK `11.0.100-rc.1.26425.128` ships packs named `Microsoft.NET.Runtime.Emscripten.6.0.2.*`, but their `emcc` reports 6.0.3: it is built from the `dotnet/emscripten` fork (upstream 6.0.2 plus about 40 commits toward 6.0.3) with clang `23.1.0-rc2` from `dotnet-llvm-project`; no upstream emsdk equals it | manifest; `emcc --version` and `clang --version` of the installed packs; `src/emsdk/eng/Version.Details.xml` of the VMR tag `v11.0.100-rc.1.26425.128`; GitHub compare with upstream tags | 2026-10-05 |
+| The workload's `emcc` runs outside MSBuild with an `EM_CONFIG` pointing at the Sdk pack's `tools/bin` and the Node pack; the pack ships `emcmake` and `Emscripten.cmake` | ran `emcc --version` on Linux | 2026-10-05 |
 | Default `LangVersion` for `net11.0` is 15.0 | `Roslyn/Microsoft.CSharp.Core.targets` of SDK `11.0.100-rc.1.26425.128` | 2026-10-05 |
 | File-based apps support `#:include` without preview flags | ran a two-file app with SDK `11.0.100-rc.1.26425.128` | 2026-10-05 |
 | CA2266 warns when a file-based entry point does not start with `#!` | same run | 2026-10-05 |
@@ -121,6 +126,9 @@ Re-check these at every SDK or dependency update.
 | xmake 3.1.1 writes `.xmake/` and `build/` next to `xmake.lua` (so `build/.xmake/` and `build/build/` here) | throwaway xmake project | 2026-10-05 |
 | The CI runner images (`ubuntu-24.04`, `windows-2025`, `macos-26`) preinstall .NET SDKs up to 10.0 only; `actions/setup-dotnet` 6.0.0 installs the exact `global.json` version for prerelease SDKs, and its `cache` input requires `packages.lock.json` | `actions/runner-images` READMEs; `setup-dotnet` README at `v6.0.0` | 2026-10-05 |
 | `dotnet format --verify-no-changes` run from the root finds `Jade.slnx` and exits with code 2 on a whitespace violation; `dotnet format --help` without a workspace fails in RC 1 (missing `dotnet-format.dll` path) | injected violation in a test file | 2026-10-05 |
+| .NET 11 RC 1 build floors: Android API 24, iOS 13.0, macOS 14.0; `supported-os.md` lists Windows 10 1607 (E), glibc 2.27 (x64, arm64), and RHEL 8 and Ubuntu 22.04 as the oldest of their distributions | VMR `src/runtime/Directory.Build.props`, `dotnet/macios` `Make.config` (rc1 tag), the Android workload targets, `dotnet/core` `release-notes/11.0/supported-os.md` | 2026-10-05 |
+| The .NET for Android workload `37.0.0-rc.1.2257` uses NDK r28c (`28.2.13676358`) | `Configuration.props` of `dotnet/android` at that tag | 2026-10-05 |
+| Dawn publishes `vYYYYMMDD.HHMMSS` releases (binaries, Emdawnwebgpu, tested emsdk version) on the `google/dawn` mirror only; `dawn.googlesource.com` has no such tags | `gh api` releases; `git ls-remote` on both | 2026-10-05 |
 | CodeQL officially supports C# up to 14 and .NET up to 10, so C# 15 code is analyzed outside its supported range | `docs/codeql/reusables/supported-versions-compilers.rst` in `github/codeql` | 2026-10-05 |
 | OpenSSF Scorecard's Pinned-Dependencies check counts `dotnet restore` without `--locked-mode` as an unpinned dependency | `checks/raw/shell_download_validate.go` in `ossf/scorecard` | 2026-10-05 |
 | Dependabot's NuGet updater supports `.slnx` and central package management, and installs the `global.json` SDK with `dotnet-install --version` | `nuget/` in `dependabot/dependabot-core` | 2026-10-05 |

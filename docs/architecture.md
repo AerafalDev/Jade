@@ -104,6 +104,9 @@ flowchart LR
   generator and CI. The xmake package definitions and the C shims live in `build/`; the
   `Jade.Native.*` packaging projects live in `native/`
   ([0023](adr/0023-repository-layout-and-conventions.md)).
+- `THIRD-PARTY-NOTICES.md` reproduces the licenses of every third-party component compiled into
+  the natives, from the license files of the pinned sources
+  ([0002](adr/0002-license-and-public-identity.md)); it changes with `build/versions.json`.
 - Package layout ([0011](adr/0011-native-package-layout.md)):
 
 | Target | Location in the package |
@@ -113,17 +116,46 @@ flowchart LR
 | iOS | `buildTransitive/` adds a `NativeReference` to an xcframework |
 | Browser | `buildTransitive/` adds `NativeFileReference` items for the static archives and passes the Emdawnwebgpu JavaScript library to `emcc` |
 
+### `build/versions.json`
+
+A JSON object with three groups. JSON has no comments, so every entry carries a `source` that says
+where its value was verified (release, tag, manifest or ADR); `Jade.Tests` fails when an entry has
+no `source` or a dependency has no full commit hash.
+
+| Group | Entries | Fields |
+| --- | --- | --- |
+| `dependencies` | `dawn`, `sdl`, `miniaudio` | `repository`, `tag`, `version` (when upstream has one), `commit` (40 hexadecimal characters), `license` (SPDX expression), `source` |
+| `toolchains` | `emscripten`, `androidNdk`, `xmake`, `cmake` | `version` and tool-specific fields: `provider` and `packVersion` for Emscripten, which comes from the SDK's `wasm-tools` workload ([0025](adr/0025-browser-natives-with-workload-emscripten.md)); `revision` for the NDK; `source` |
+| `minimumOs` | one object | `windows`, `linuxGlibc`, `macos`, `ios`, `androidApiLevel`, `source` ([0024](adr/0024-minimum-os-versions.md)) |
+
+Dawn is pinned to one of its GitHub releases (`vYYYYMMDD.HHMMSS` tags on the `google/dawn`
+mirror), which also publish the Emdawnwebgpu package of the same commit. The third-party sources
+that Dawn builds (Abseil, SPIRV-Tools, Vulkan headers and others) are pinned by Dawn's own `DEPS`
+file at that commit.
+
 ## Targets
 
 Supported RIDs are listed in [0012](adr/0012-supported-targets.md). Managed code is AnyCPU; RIDs
-concern only the natives and sample publication. Minimum OS versions are derived from Dawn's
-requirements and pinned in `build/versions.json` (not decided yet).
+concern only the natives and sample publication. Minimum OS versions are the highest hard floors
+of Dawn, SDL3, miniaudio and .NET 11 ([0024](adr/0024-minimum-os-versions.md)), pinned in
+`build/versions.json` and used as the compile targets of the natives:
+
+| Family | Minimum |
+| --- | --- |
+| Windows | Windows 10 version 1607 (build 14393) |
+| Linux | glibc 2.28 |
+| macOS | 14.0 |
+| iOS | 14.0 |
+| Android | API 26 (Android 8.0) |
+| Browser | a browser that exposes WebGPU |
+
+A core WebGPU adapter also needs a Vulkan 1.1, D3D12 or Metal 2.3 driver; Dawn rates its iOS
+support "best effort" and its Android support "work in progress".
 
 ### Desktop
 
 - macOS binaries are universal (arm64 and x64 merged with `lipo`).
-- Linux binaries are built against an old glibc baseline to run on as many distributions as
-  possible.
+- Linux binaries are built against glibc 2.28 to run on as many distributions as possible.
 
 ### Android
 
@@ -140,11 +172,13 @@ requirements and pinned in `build/versions.json` (not decided yet).
 
 ### Browser
 
-Details and verification in [0013](adr/0013-browser-native-toolchain.md).
+Details and verification in [0025](adr/0025-browser-natives-with-workload-emscripten.md).
 
-- Native archives are built with exactly the Emscripten version of the SDK's `wasm-tools` workload
-  (6.0.2 for SDK `11.0.100-rc.1`), with a standalone emsdk, since the workload's Emscripten cache
-  is read-only and `--use-port` cannot run during `dotnet build`.
+- Native archives are built with the Emscripten toolchain of the SDK's own `wasm-tools` workload,
+  called outside `dotnet build`, because no upstream emsdk equals it: for SDK `11.0.100-rc.1` the
+  packs are named 6.0.2, their `emcc` reports 6.0.3, and they are built from .NET's forks of
+  Emscripten and LLVM. Archives are rebuilt whenever the SDK changes. `--use-port` cannot run
+  during `dotnet build`, since the workload's Emscripten cache is read-only.
 - Archives are named after the imported module (`SDL3.a`, not `libSDL3.a`).
 - wasm32 has 4-byte pointers and `size_t`.
 - The main loop never blocks; it is driven by `requestAnimationFrame`. WebGPU initialization is
@@ -195,5 +229,7 @@ As of 2026-10-05 the solution is scaffolded: `global.json`, the `Directory.*` fi
 and icon, and `Jade.Tests`. Build, tests and pack pass with warnings as errors and package
 validation. The `Jade.Native.*` packages contain no native file yet. The CI baseline is in place:
 the workflows above, Dependabot, issue and pull request templates, `CODEOWNERS`,
-`CONTRIBUTING.md` and `CODE_OF_CONDUCT.md`. No script, generator, native build (`build/` does not
-exist yet) or sample exists. The ordered list of next tasks is in the [roadmap](roadmap.md).
+`CONTRIBUTING.md` and `CODE_OF_CONDUCT.md`. The native dependencies, toolchains and minimum OS
+versions are pinned in `build/versions.json`, and `THIRD-PARTY-NOTICES.md` covers the pinned
+sources. No script, generator, native build definition or sample exists yet. The ordered list of
+next tasks is in the [roadmap](roadmap.md).

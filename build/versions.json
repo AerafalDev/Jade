@@ -1,0 +1,56 @@
+{
+  "dependencies": {
+    "dawn": {
+      "repository": "https://github.com/google/dawn",
+      "tag": "v20261002.154047",
+      "commit": "b1236a9bb4a47f1262bc3acb253bb1c2181e90dd",
+      "license": "BSD-3-Clause",
+      "source": "GitHub release v20261002.154047 of google/dawn (published 2026-10-03, newest on 2026-10-05); the tag points at this commit. google/dawn mirrors https://dawn.googlesource.com/dawn, which does not carry the release tags. Emdawnwebgpu comes from the same commit (ADR 0004)."
+    },
+    "sdl": {
+      "repository": "https://github.com/libsdl-org/SDL",
+      "tag": "release-3.4.18",
+      "version": "3.4.18",
+      "commit": "829a65d769d935c4852f8159e964312c0957260a",
+      "license": "Zlib",
+      "source": "GitHub release release-3.4.18 of libsdl-org/SDL (published 2026-10-02, newest stable on 2026-10-05); the tag points at this commit."
+    },
+    "miniaudio": {
+      "repository": "https://github.com/mackron/miniaudio",
+      "tag": "0.11.25",
+      "version": "0.11.25",
+      "commit": "9634bedb5b5a2ca38c1ee7108a9358a4e233f14d",
+      "license": "Unlicense OR MIT-0",
+      "source": "GitHub release 0.11.25 of mackron/miniaudio (published 2026-03-03, newest on 2026-10-05); the tag points at this commit."
+    }
+  },
+  "toolchains": {
+    "emscripten": {
+      "provider": "wasm-tools workload of the SDK pinned in global.json",
+      "version": "6.0.3",
+      "packVersion": "6.0.2",
+      "source": "SDK 11.0.100-rc.1.26425.128: the microsoft.net.workload.emscripten.current manifest references the Microsoft.NET.Runtime.Emscripten.6.0.2.* packs (11.0.0-rc.1.26425.128), whose emcc --version prints 6.0.3 (ADR 0025)."
+    },
+    "androidNdk": {
+      "version": "r28c",
+      "revision": "28.2.13676358",
+      "source": "NDK of the .NET for Android workload of the pinned SDK (_XAAndroidNdkRelease 28c in Configuration.props of dotnet/android 37.0.0-rc.1.2257) and ndkVersion of SDL3's android-project at release-3.4.18; revision from the r28c release of android/ndk."
+    },
+    "xmake": {
+      "version": "3.1.1",
+      "source": "GitHub release v3.1.1 of xmake-io/xmake (published 2026-08-27, newest on 2026-10-05)."
+    },
+    "cmake": {
+      "version": "4.4.4",
+      "source": "GitHub release v4.4.4 of Kitware/CMake (published 2026-10-02, newest on 2026-10-05). Dawn requires 3.22 or later and SDL3 declares the policy range 3.16...4.4, at their pinned commits."
+    }
+  },
+  "minimumOs": {
+    "windows": "10.0.14393",
+    "linuxGlibc": "2.28",
+    "macos": "14.0",
+    "ios": "14.0",
+    "androidApiLevel": 26,
+    "source": "ADR 0024 (docs/adr/0024-minimum-os-versions.md)."
+  }
+}

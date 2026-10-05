@@ -14,8 +14,10 @@ issues as described in [SECURITY.md](SECURITY.md), never in a public issue.
 - The .NET SDK version pinned in [`global.json`](global.json), exactly: `rollForward` is
   `disable`, so any other SDK version fails. The pin also fixes the browser workload's Emscripten
   version and the analyzer set ([0021](docs/adr/0021-build-and-packaging-conventions.md)).
-- No workload is needed for the managed build. The native toolchains (xmake, CMake, Emscripten,
-  Android NDK) are only needed for native work and will be documented with it.
+- No workload is needed for the managed build. The native toolchains (xmake, CMake, the Android
+  NDK, and the SDK's `wasm-tools` workload for the browser) are only needed for native work; their
+  versions are pinned in [`build/versions.json`](build/versions.json) and their setup will be
+  documented with the native build.
 
 ## Build and test
 
