@@ -293,14 +293,13 @@ Details and verification in [0025](adr/0025-browser-natives-with-workload-emscri
 ## Repository and supply chain
 
 GitHub settings, security features and their phasing are described in
-[0017](adr/0017-github-repository-baseline.md); runners and caching in
+[0037](adr/0037-github-repository-baseline.md); runners and caching in
 [0022](adr/0022-ci-runners-and-caching.md).
 
 | Workflow | Trigger | Role |
 | --- | --- | --- |
 | `ci.yml` | pull requests, pushes to `main` | `format` (`dotnet format --verify-no-changes`), then restore, build with warnings as errors, test, pack with package validation, build the binding generator with warnings as errors and check the regenerated bindings on `build (linux)`, `build (windows)` and `build (macos)` |
 | `codeql.yml` | pull requests, pushes to `main`, weekly | CodeQL for C# (traced build with the pinned SDK) and GitHub Actions |
-| `scorecard.yml` | pushes to `main`, weekly | OpenSSF Scorecard, published for the README badge and uploaded to code scanning |
 | `labels.yml` | changes to `.github/labels.yml` | Synchronizes the repository labels with `gh`; dry run on pull requests |
 | `labeler.yml` | pull requests (`pull_request_target`) | Applies the area labels of `.github/labeler.yml` from the changed paths |
 

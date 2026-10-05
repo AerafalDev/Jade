@@ -1,13 +1,28 @@
-# 0017. GitHub repository settings and supply-chain baseline
+# 0037. GitHub repository settings and supply-chain baseline
 
-- Status: Superseded by [0037](0037-github-repository-baseline.md)
+- Status: Accepted
 - Date: 2026-10-05
 
 ## Context
 
-Jade is a public repository that will publish native binaries and NuGet packages. Its settings
-and workflows are part of the supply chain and must be secure by default. Some settings depend on
-CI workflows that do not exist yet, so they are applied in two phases.
+[0017](0017-github-repository-baseline.md) set the repository settings and the supply-chain
+baseline of this public repository, which will publish native binaries and NuGet packages, and
+applied them in two phases. Among them was an OpenSSF Scorecard workflow, published for a README
+badge and uploaded to code scanning. The maintainer chose to drop it: with a single maintainer, the
+checks that expect reviews by a second person keep the score low, and the rest of what it measures
+is either enforced by this baseline already or a practice the project does not adopt. This record
+restates the whole baseline without Scorecard, so that it can be read on its own, and supersedes
+0017.
+
+Verified on 2026-10-05:
+
+- The `main` ruleset (id `24485772`) requires `format`, `build (linux)`, `build (windows)`,
+  `build (macos)`, `analyze (csharp)` and `analyze (actions)`; Scorecard's `analysis` job is not
+  among them (`gh api`).
+- `scorecard.yml` ran on pushes to `main` and weekly, never on pull requests. Its 18 analyses left
+  9 open code scanning alerts, one per failing check: Branch-Protection, CI-Tests,
+  CII-Best-Practices, Code-Review, Fuzzing, Maintained, Pinned-Dependencies, SAST and
+  Security-Policy (`gh api`).
 
 ## Decision
 
@@ -24,8 +39,8 @@ CI workflows that do not exist yet, so they are applied in two phases.
 - Labels are defined in `.github/labels.yml` and synchronized from it.
 - The social preview image is kept in `docs/assets/`. The REST API has no endpoint to upload it, so
   it is uploaded by hand in the repository settings.
-- README badges: CI, CodeQL, OpenSSF Scorecard, license and .NET version; a NuGet badge is added
-  at the first publication.
+- README badges: CI, CodeQL, license and .NET version; a NuGet badge is added at the first
+  publication.
 
 ### Security
 
@@ -41,30 +56,33 @@ CI workflows that do not exist yet, so they are applied in two phases.
   declares its permissions explicitly; actions are pinned to a full commit SHA, enforced by the
   repository's "require SHA pinning" Actions setting and kept up to date by Dependabot.
 - Provenance attestations for native binaries and published packages.
-- An OpenSSF Scorecard workflow.
+- No OpenSSF Scorecard workflow.
 
 ### Phasing
 
 | Phase | Settings |
 | --- | --- |
 | Repository creation | Repository, description, topics, merge settings, wiki/projects, labels (one-off sync), private vulnerability reporting, Dependabot alerts and security updates, secret scanning and push protection, Actions permissions and SHA pinning, ruleset without required checks, license and .NET badges |
-| CI setup | `dependabot.yml`, CodeQL, required checks in the ruleset, Scorecard, attestations, label synchronization workflow, labeler, CI/CodeQL/Scorecard badges |
-
-`dependabot.yml` waits for the CI phase because there is nothing to update before the first
-projects and workflows exist.
+| CI setup | `dependabot.yml`, CodeQL, required checks in the ruleset, attestations, label synchronization workflow, labeler, CI and CodeQL badges |
 
 ## Consequences
 
 - Every change to `main` goes through a pull request, including the maintainer's own changes.
 - The repository settings live outside git; this record and `CLAUDE.md` describe them, and any
   change to them is made with `gh` and recorded here.
-- OpenSSF Scorecard checks that expect reviews by a second person score low while the project has
-  a single maintainer.
+- No external score is published for the repository. The rules of this baseline (pinned actions,
+  explicit token permissions, the ruleset, Dependabot, CodeQL) stay enforced by the settings and
+  workflows above.
+- The badge URL of the Scorecard API keeps serving the last published score; nothing links to it
+  any more.
+- [0022](0022-ci-runners-and-caching.md) still names Scorecard among the jobs on `ubuntu-24.04`;
+  that rule has no workflow left to apply to, and 0022 is not rewritten
+  ([0001](0001-record-architecture-decisions.md)).
 
 ## Applied settings
 
-Changes to the repository settings, as the consequences above require. The decision itself is
-unchanged.
+Changes to the repository settings, as the consequences above require. Entries before this
+record's date were made under 0017.
 
 - 2026-10-05, repository creation phase: applied as listed above. The ruleset API also enabled
   `require_extra_approval_for_unattributed_changes` on the `main` ruleset by default. It stays
@@ -80,3 +98,13 @@ unchanged.
   [0022](0022-ci-runners-and-caching.md). Two items of this phase wait for something to apply to:
   provenance attestations come with the native binaries (task 10) and the packages (task 19), and
   CodeQL for C/C++ with the first C shim (task 10).
+- 2026-10-05, this record: `scorecard.yml` and the README's Scorecard badge are removed, and the
+  9 open Scorecard alerts are dismissed as "won't fix" with a comment that points here. The ruleset
+  is unchanged.
+
+## Alternatives considered
+
+- **Keeping Scorecard**: an external, comparable score and a weekly re-check of the settings, at
+  the cost of a workflow whose low review score says nothing while the project has one maintainer.
+- **Keeping the workflow without publishing**: results in code scanning only, still for a score
+  the project does not act on.

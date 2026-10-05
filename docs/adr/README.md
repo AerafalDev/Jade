@@ -21,7 +21,7 @@ Important or hard-to-reverse decisions are recorded here, one per file, as descr
 | [0014](0014-repository-layout-and-conventions.md) | Repository layout and content conventions | Superseded by [0020](0020-repository-layout-and-conventions.md) |
 | [0015](0015-build-and-packaging-conventions.md) | Build and packaging conventions | Superseded by [0021](0021-build-and-packaging-conventions.md) |
 | [0016](0016-public-api-conventions.md) | Public API conventions | Accepted |
-| [0017](0017-github-repository-baseline.md) | GitHub repository settings and supply-chain baseline | Accepted |
+| [0017](0017-github-repository-baseline.md) | GitHub repository settings and supply-chain baseline | Superseded by [0037](0037-github-repository-baseline.md) |
 | [0018](0018-test-framework.md) | MSTest as the test framework | Accepted |
 | [0019](0019-browser-and-roslyn-component-targeting.md) | Targeting of the browser interop project and the Roslyn components | Accepted |
 | [0020](0020-repository-layout-and-conventions.md) | Repository layout and content conventions | Superseded by [0023](0023-repository-layout-and-conventions.md) |
@@ -41,3 +41,4 @@ Important or hard-to-reverse decisions are recorded here, one per file, as descr
 | [0034](0034-raw-layer-with-dotnet-names.md) | Raw interop layer with .NET names in a `Raw` namespace | Accepted |
 | [0035](0035-emscripten-interop-generation.md) | Emscripten interop generated from its C headers | Accepted |
 | [0036](0036-generated-layout-tests.md) | Generated layout tests and layout libraries | Accepted |
+| [0037](0037-github-repository-baseline.md) | GitHub repository settings and supply-chain baseline | Accepted |
