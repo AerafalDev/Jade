@@ -28,7 +28,9 @@ Verified on 2026-10-05:
   [0021](0021-build-and-packaging-conventions.md) rules out.
 - A cold restore of the solution (empty NuGet global-packages folder, local machine) took about
   5 seconds and downloaded 196 MB, mostly the Roslyn and ILLink packages. Each job also downloads
-  the SDK, which is not preinstalled on the runners.
+  the SDK, which is not preinstalled on the runners. On the first CI run (pull request #3), setting
+  up the SDK took 5 to 15 seconds and the restore 4 to 15 seconds per job, Windows being the
+  slowest.
 - GitHub's dependency caching reference: workflow runs can restore caches from the default branch,
   and the pull request runs of forks can read the caches of their base branch; caches written by a
   `pull_request` run are scoped to its merge ref.
