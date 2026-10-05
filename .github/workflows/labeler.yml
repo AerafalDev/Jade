@@ -3,7 +3,7 @@ name: Labeler
 on:
   # Runs the base branch's workflow with a token that can label pull requests from forks. The job
   # never checks out or runs the pull request's code, which keeps this trigger safe.
-  pull_request_target:
+  pull_request:
 
 permissions: {}
 
