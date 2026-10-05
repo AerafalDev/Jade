@@ -5,11 +5,13 @@ Jade is licensed under the [MIT license](LICENSE). The native packages `Jade.Nat
 third-party sources below, at the versions pinned in [`build/versions.json`](build/versions.json).
 This file reproduces their licenses and notices.
 
-The list follows the default build options of the pinned sources for Jade's targets, read in those
-sources. The native build checks it against the libraries it actually links. System components
-that the binaries load at runtime and that Jade does not distribute (graphics drivers, the Vulkan
-loader, `d3d12.dll` and the shader compilers, X11 and Wayland libraries, the browser's WebGPU) are
-not listed.
+The list follows the build options of [`build/`](build) for Jade's targets, read in the pinned
+sources. For `linux-x64`, it was checked against every source file and header compiled into the
+libraries that `scripts/build-native.cs` builds, as recorded by Ninja
+([0031](docs/adr/0031-native-build-definitions.md)); the other targets get the same check with
+their builds (roadmap task 10). System components that the binaries load at runtime and that Jade
+does not distribute (graphics drivers, the Vulkan loader, `d3d12.dll` and `d3dcompiler_47.dll`, X11
+and Wayland libraries, the browser's WebGPU) are not listed.
 
 ## Summary
 
@@ -26,6 +28,7 @@ not listed.
 | Vulkan-Utility-Libraries | `68b0ae5` | `Jade.Native.Wgpu` | Windows, Linux, Android | Apache-2.0 |
 | EGL-Registry | `db3425b` | `Jade.Native.Wgpu` | Linux, Android | Khronos MIT-style (`khrplatform.h`), Apache-2.0 (EGL headers) |
 | OpenGL-Registry (`gl.xml`) | `1cdd228` | `Jade.Native.Wgpu` | Linux, Android | Apache-2.0 |
+| DirectXShaderCompiler (`dxcompiler.dll`) | `9757d44` | `Jade.Native.Wgpu` | Windows | NCSA, with MIT, BSD-style and public-domain parts |
 | SDL3 | `3.4.18` (`829a65d`) | `Jade.Native.Sdl` | all | Zlib |
 | HIDAPI (in SDL3) | same as SDL3 | `Jade.Native.Sdl` | all | BSD-style, chosen among its three licenses |
 | yuv2rgb (in SDL3) | same as SDL3 | `Jade.Native.Sdl` | all | BSD-3-Clause |
@@ -33,6 +36,7 @@ not listed.
 | Khronos headers (in SDL3) | same as SDL3 | `Jade.Native.Sdl` | all | Apache-2.0, MIT, Khronos MIT-style |
 | Direct3D 12 headers (in SDL3) | same as SDL3 | `Jade.Native.Sdl` | Windows | MIT |
 | X11 keysym table, EDID parser, XSETTINGS client (in SDL3) | same as SDL3 | `Jade.Native.Sdl` | Linux | MIT-style |
+| Wayland protocols (in SDL3) | same as SDL3 | `Jade.Native.Sdl` | Linux | MIT, HPND-style |
 | stb_image, miniz (in SDL3) | same as SDL3 | `Jade.Native.Sdl` | all | public domain |
 | miniaudio | `0.11.25` (`9634bed`) | `Jade.Native.MiniAudio` | all | Unlicense OR MIT-0 |
 
@@ -310,6 +314,353 @@ MATERIALS OR THE USE OR OTHER DEALINGS IN THE MATERIALS.
 `xml/gl.xml`, Copyright 2013-2026 The Khronos Group Inc., licensed under the
 [Apache License 2.0](#apache-license-20).
 
+### DirectXShaderCompiler
+
+<https://github.com/microsoft/DirectXShaderCompiler>, at the commit pinned by Dawn's `DEPS`; Dawn's
+build compiles it into `dxcompiler.dll`, which `Jade.Native.Wgpu` ships for the D3D12 backend on
+Windows. Its `LICENSE.TXT`, without the build and test dependencies it lists after them:
+
+```text
+==============================================================================
+LLVM Release License
+==============================================================================
+University of Illinois/NCSA
+Open Source License
+
+Copyright (c) 2003-2015 University of Illinois at Urbana-Champaign.
+All rights reserved.
+
+Developed by:
+
+    LLVM Team
+
+    University of Illinois at Urbana-Champaign
+
+    http://llvm.org
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal with
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+    * Redistributions of source code must retain the above copyright notice,
+      this list of conditions and the following disclaimers.
+
+    * Redistributions in binary form must reproduce the above copyright notice,
+      this list of conditions and the following disclaimers in the
+      documentation and/or other materials provided with the distribution.
+
+    * Neither the names of the LLVM Team, University of Illinois at
+      Urbana-Champaign, nor the names of its contributors may be used to
+      endorse or promote products derived from this Software without specific
+      prior written permission.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+CONTRIBUTORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS WITH THE
+SOFTWARE.
+
+==============================================================================
+Copyrights and Licenses for Third Party Software Distributed with LLVM:
+==============================================================================
+The LLVM software contains code written by third parties.  Such software will
+have its own individual LICENSE.TXT file in the directory in which it appears.
+This file will describe the copyrights, license, and restrictions which apply
+to that code.
+
+The disclaimer of warranty in the University of Illinois Open Source License
+applies to all code in the LLVM Distribution, and nothing in any of the
+other licenses gives permission to use the names of the LLVM Team or the
+University of Illinois to endorse or promote products derived from this
+Software.
+
+------------------
+
+Files: lib/Miniz/* include/miniz/*
+
+Copyright 2013-2014 RAD Game Tools and Valve Software
+Copyright 2010-2014 Rich Geldreich and Tenacious Software LLC
+
+All Rights Reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+------------------
+
+Files: lib/Miniz/miniz.c
+
+This is free and unencumbered software released into the public domain.
+
+Anyone is free to copy, modify, publish, use, compile, sell, or
+distribute this software, either in source code form or as a compiled
+binary, for any purpose, commercial or non-commercial, and by any
+means.
+
+In jurisdictions that recognize copyright laws, the author or authors
+of this software dedicate any and all copyright interest in the
+software to the public domain. We make this dedication for the benefit
+of the public at large and to the detriment of our heirs and
+successors. We intend this dedication to be an overt act of
+relinquishment in perpetuity of all present and future rights to this
+software under copyright law.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+
+For more information, please refer to <http://unlicense.org/>
+
+------------------
+
+Files: lib/Support/* docs/SystemLibrary.rst
+
+Written by Henry Spencer.  Not derived from licensed software.
+
+Permission is granted to anyone to use this software for any
+purpose on any computer system, and to redistribute it freely,
+subject to the following restrictions:
+
+1. The author is not responsible for the consequences of use of
+        this software, no matter how awful, even if they arise
+        from defects in it.
+
+2. The origin of this software must not be misrepresented, either
+        by explicit claim or by omission.
+
+3. Altered versions must be plainly marked as such, and must not
+        be misrepresented as being the original software.
+
+------------------
+
+Files: include/llvm/Support/ConvertUTF.h
+
+Copyright 2001-2004 Unicode, Inc.
+
+Disclaimer
+
+This source code is provided as is by Unicode, Inc. No claims are
+made as to fitness for any particular purpose. No warranties of any
+kind are expressed or implied. The recipient agrees to determine
+applicability of information provided. If this file has been
+purchased on magnetic or optical media from Unicode, Inc., the
+sole remedy for any claim will be exchange of defective media
+within 90 days of receipt.
+
+Limitations on Rights to Redistribute This Code
+
+Unicode, Inc. hereby grants the right to freely use the information
+supplied in this file in the creation of products supporting the
+Unicode Standard, and to make copies of this file in any form
+for internal or external distribution as long as this notice
+remains attached.
+
+------------------
+
+Files: include/llvm/Support/MD5.h
+
+This software was written by Alexander Peslyak in 2001.  No copyright is
+claimed, and the software is hereby placed in the public domain.
+In case this attempt to disclaim copyright and place the software in the
+public domain is deemed null and void, then the software is
+Copyright (c) 2001 Alexander Peslyak and it is hereby released to the
+general public under the following terms:
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted.
+
+There's ABSOLUTELY NO WARRANTY, express or implied.
+
+------------------
+
+Files: lib/Support/regstrlcpy.c
+
+Copyright (c) 1998 Todd C. Miller <Todd.Miller@courtesan.com>
+
+Permission to use, copy, modify, and distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+```
+
+The components that its `ThirdPartyNotices.txt` adds, without the YAML parser test data:
+
+```text
+* tools\clang
+
+==============================================================================
+LLVM Release License
+==============================================================================
+University of Illinois/NCSA
+Open Source License
+
+Copyright (c) 2007-2015 University of Illinois at Urbana-Champaign.
+All rights reserved.
+
+Developed by:
+
+    LLVM Team
+
+    University of Illinois at Urbana-Champaign
+
+    http://llvm.org
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal with
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+    * Redistributions of source code must retain the above copyright notice,
+      this list of conditions and the following disclaimers.
+
+    * Redistributions in binary form must reproduce the above copyright notice,
+      this list of conditions and the following disclaimers in the
+      documentation and/or other materials provided with the distribution.
+
+    * Neither the names of the LLVM Team, University of Illinois at
+      Urbana-Champaign, nor the names of its contributors may be used to
+      endorse or promote products derived from this Software without specific
+      prior written permission.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+CONTRIBUTORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS WITH THE
+SOFTWARE.
+
+==============================================================================
+The LLVM software contains code written by third parties.  Such software will
+have its own individual LICENSE.TXT file in the directory in which it appears.
+This file will describe the copyrights, license, and restrictions which apply
+to that code.
+
+The disclaimer of warranty in the University of Illinois Open Source License
+applies to all code in the LLVM Distribution, and nothing in any of the
+other licenses gives permission to use the names of the LLVM Team or the
+University of Illinois to endorse or promote products derived from this
+Software.
+
+* include\llvm\Support
+
+LLVM System Interface Library
+-------------------------------------------------------------------------------
+The LLVM System Interface Library is licensed under the Illinois Open Source
+License and has the following additional copyright:
+
+Copyright (C) 2004 eXtensible Systems, Inc.
+
+* OpenBSD regex
+
+$OpenBSD: COPYRIGHT,v 1.3 2003/06/02 20:18:36 millert Exp $
+
+Copyright 1992, 1993, 1994 Henry Spencer.  All rights reserved.
+This software is not subject to any license of the American Telephone
+and Telegraph Company or of the Regents of the University of California.
+
+Permission is granted to anyone to use this software for any purpose on
+any computer system, and to alter it and redistribute it, subject
+to the following restrictions:
+
+1. The author is not responsible for the consequences of use of this
+   software, no matter how awful, even if they arise from flaws in it.
+
+2. The origin of this software must not be misrepresented, either by
+   explicit claim or by omission.  Since few users ever read sources,
+   credits must appear in the documentation.
+
+3. Altered versions must be plainly marked as such, and must not be
+   misrepresented as being the original software.  Since few users
+   ever read sources, credits must appear in the documentation.
+
+4. This notice may not be removed or altered.
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+/*-
+ * Copyright (c) 1994
+ *	The Regents of the University of California.  All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. Neither the name of the University nor the names of its contributors
+ *    may be used to endorse or promote products derived from this software
+ *    without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ *
+ *	@(#)COPYRIGHT	8.1 (Berkeley) 3/16/94
+ */
+
+* lib\Headers Files
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+```
 ## Jade.Native.Sdl
 
 ### SDL3
@@ -553,6 +904,110 @@ OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
 CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 ```
 
+### Wayland protocols
+
+SDL3's `wayland-protocols/`, protocol descriptions from the Wayland and wayland-protocols projects
+(<https://gitlab.freedesktop.org/wayland>). On Linux, SDL3's build generates C code from them with
+`wayland-scanner` and compiles it into the library. These files are under the license below, with
+these copyright notices:
+
+```text
+alpha-modifier-v1.xml: Copyright © 2024 Xaver Hugl
+color-management-v1.xml: Copyright 2019 Sebastian Wick
+color-management-v1.xml: Copyright 2019 Erwin Burema
+color-management-v1.xml: Copyright 2020 AMD
+color-management-v1.xml: Copyright 2020-2024 Collabora, Ltd.
+color-management-v1.xml: Copyright 2024 Xaver Hugl
+color-management-v1.xml: Copyright 2022-2025 Red Hat, Inc.
+cursor-shape-v1.xml: Copyright 2018 The Chromium Authors
+cursor-shape-v1.xml: Copyright 2023 Simon Ser
+fractional-scale-v1.xml: Copyright © 2022 Kenny Levinsen
+frog-color-management-v1.xml: Copyright © 2023 Joshua Ashton for Valve Software
+frog-color-management-v1.xml: Copyright © 2023 Xaver Hugl
+idle-inhibit-unstable-v1.xml: Copyright © 2015 Samsung Electronics Co., Ltd
+input-timestamps-unstable-v1.xml: Copyright © 2017 Collabora, Ltd.
+keyboard-shortcuts-inhibit-unstable-v1.xml: Copyright © 2017 Red Hat Inc.
+pointer-constraints-unstable-v1.xml: Copyright © 2014 Jonas Ådahl
+pointer-constraints-unstable-v1.xml: Copyright © 2015 Red Hat Inc.
+pointer-warp-v1.xml: Copyright © 2024 Neal Gompa
+pointer-warp-v1.xml: Copyright © 2024 Xaver Hugl
+pointer-warp-v1.xml: Copyright © 2024 Matthias Klumpp
+pointer-warp-v1.xml: Copyright © 2024 Vlad Zahorodnii
+primary-selection-unstable-v1.xml: Copyright © 2015, 2016 Red Hat
+relative-pointer-unstable-v1.xml: Copyright © 2014 Jonas Ådahl
+relative-pointer-unstable-v1.xml: Copyright © 2015 Red Hat Inc.
+tablet-v2.xml: Copyright 2014 © Stephen "Lyude" Chandler Paul
+tablet-v2.xml: Copyright 2015-2016 © Red Hat, Inc.
+viewporter.xml: Copyright © 2013-2016 Collabora, Ltd.
+wayland.xml: Copyright © 2008-2011 Kristian Høgsberg
+wayland.xml: Copyright © 2010-2011 Intel Corporation
+wayland.xml: Copyright © 2012-2013 Collabora, Ltd.
+xdg-activation-v1.xml: Copyright © 2020 Aleix Pol Gonzalez <aleixpol@kde.org>
+xdg-activation-v1.xml: Copyright © 2020 Carlos Garnacho <carlosg@gnome.org>
+xdg-decoration-unstable-v1.xml: Copyright © 2018 Simon Ser
+xdg-dialog-v1.xml: Copyright © 2023 Carlos Garnacho
+xdg-foreign-unstable-v2.xml: Copyright © 2015-2016 Red Hat Inc.
+xdg-output-unstable-v1.xml: Copyright © 2017 Red Hat Inc.
+xdg-shell.xml: Copyright © 2008-2013 Kristian Høgsberg
+xdg-shell.xml: Copyright © 2013 Rafael Antognolli
+xdg-shell.xml: Copyright © 2013 Jasper St. Pierre
+xdg-shell.xml: Copyright © 2010-2013 Intel Corporation
+xdg-shell.xml: Copyright © 2015-2017 Samsung Electronics Co., Ltd
+xdg-shell.xml: Copyright © 2015-2017 Red Hat Inc.
+xdg-toplevel-icon-v1.xml: Copyright © 2023-2024 Matthias Klumpp
+xdg-toplevel-icon-v1.xml: Copyright © 2024 David Edmundson
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice (including the next
+paragraph) shall be included in all copies or substantial portions of the
+Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
+```
+
+`text-input-unstable-v3.xml` is under the license below. SDL3's copy of
+`pointer-gestures-unstable-v1.xml` carries no notice; the same file in wayland-protocols carries
+`Copyright © 2015, 2021 Red Hat Inc.` and this license.
+
+```text
+Copyright © 2012, 2013 Intel Corporation
+Copyright © 2015, 2016 Jan Arne Petersen
+Copyright © 2017, 2018 Red Hat, Inc.
+Copyright © 2018 Purism SPC
+
+Permission to use, copy, modify, distribute, and sell this
+software and its documentation for any purpose is hereby granted
+without fee, provided that the above copyright notice appear in
+all copies and that both that copyright notice and this permission
+notice appear in supporting documentation, and that the name of
+the copyright holders not be used in advertising or publicity
+pertaining to distribution of the software without specific,
+written prior permission.  The copyright holders make no
+representations about the suitability of this software for any
+purpose.  It is provided "as is" without express or implied
+warranty.
+
+THE COPYRIGHT HOLDERS DISCLAIM ALL WARRANTIES WITH REGARD TO THIS
+SOFTWARE, INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
+FITNESS, IN NO EVENT SHALL THE COPYRIGHT HOLDERS BE LIABLE FOR ANY
+SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN
+AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,
+ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF
+THIS SOFTWARE.
+```
 ### stb_image and miniz
 
 SDL3's `src/video/stb_image.h` (Copyright (c) 2017 Sean Barrett) is available under the MIT license

@@ -14,10 +14,9 @@ issues as described in [SECURITY.md](SECURITY.md), never in a public issue.
 - The .NET SDK version pinned in [`global.json`](global.json), exactly: `rollForward` is
   `disable`, so any other SDK version fails. The pin also fixes the browser workload's Emscripten
   version and the analyzer set ([0021](docs/adr/0021-build-and-packaging-conventions.md)).
-- No workload is needed for the managed build. The native toolchains (xmake, CMake, the Android
-  NDK, and the SDK's `wasm-tools` workload for the browser) are only needed for native work; their
-  versions are pinned in [`build/versions.json`](build/versions.json) and their setup will be
-  documented with the native build.
+- No workload is needed for the managed build. The native toolchains are only needed to build the
+  native libraries (see [Native libraries](#native-libraries)); their versions are pinned in
+  [`build/versions.json`](build/versions.json).
 - The binding generator (`scripts/binding-generator.cs`) only needs the SDK, plus network access
   the first time it fetches a pinned source. Its libclang comes from a NuGet package that exists for
   Linux and Windows (x64 and arm64) and Apple silicon Macs, not for Intel Macs.
@@ -37,6 +36,38 @@ Run the commands from the repository root; `global.json` selects the SDK and the
 
 Outputs go to `artifacts/`. Tests use MSTest on Microsoft.Testing.Platform
 ([0018](docs/adr/0018-test-framework.md)).
+
+## Native libraries
+
+`dotnet run scripts/build-native.cs` builds Dawn, SDL3 and miniaudio for the machine it runs on into
+`artifacts/native/bin/<rid>/`, from the sources pinned in `build/versions.json`
+([0031](docs/adr/0031-native-build-definitions.md)). Only `linux-x64` is supported so far; the other
+targets come with the native CI. The build needs, besides the SDK:
+
+- xmake and CMake at exactly the versions of `build/versions.json`, which the script checks: the
+  distribution's packages when they match, otherwise the release binaries
+  `xmake-bundle-v<version>.linux.x86_64` (it needs `libncurses.so.6`, which Arch Linux does not
+  have) and `cmake-<version>-linux-x86_64.tar.gz`. xmake refuses to run as root.
+- git, Ninja, Python 3, and GCC or Clang with C++20 support (GCC 13.3 and 16.2 were tested).
+- The development files of the system libraries that Dawn and SDL3 compile against. SDL3's build
+  fails when one of the features Jade requires is missing, rather than leaving it out. On Ubuntu
+  24.04:
+
+  ```bash
+  sudo apt-get install build-essential git python3 ninja-build pkg-config libncurses6 libx11-dev libx11-xcb-dev libxext-dev libxrandr-dev libxcursor-dev libxfixes-dev libxi-dev libxss-dev libxtst-dev libxkbcommon-dev libwayland-dev libdecor-0-dev libdrm-dev libgbm-dev libgl-dev libegl-dev libgles-dev libdbus-1-dev libibus-1.0-dev libudev-dev libusb-1.0-0-dev liburing-dev libfribidi-dev libthai-dev
+  ```
+
+  On Arch Linux, with its `xmake` and `cmake` packages:
+
+  ```bash
+  sudo pacman -S --needed base-devel git python ninja pkgconf xmake cmake libx11 libxext libxrandr libxcursor libxfixes libxi libxss libxtst libxkbcommon wayland libdecor libdrm mesa libglvnd dbus ibus systemd-libs libusb liburing fribidi libthai
+  ```
+
+  Both lists were checked in fresh `ubuntu:24.04` and `archlinux` containers.
+
+The first build fetches about 1 GB of sources into `artifacts/native/sources/` and takes a few
+minutes; later builds reuse them and only rebuild a library whose pinned commit or definition in
+`build/` changed. The host build links against the host's C runtime and is meant for local work.
 
 ## Conventions
 

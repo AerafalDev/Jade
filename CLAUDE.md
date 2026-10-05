@@ -72,6 +72,8 @@ tools are out of scope for now.
 | Raw layer | Internal with C names; types identical in both layers are public; handles expose their `nint` | [0028](docs/adr/0028-internal-raw-interop-layer.md) |
 | Descriptors and chains | Value structures shared and pinned, `ref struct` descriptor mirrors, element mirrors with `ReadOnlyMemory<T>`, stack-based arena for nested data, `IChainedExtension<TSelf, TRoot>` generic overloads | [0029](docs/adr/0029-descriptors-and-chained-structs.md) |
 | Natives | Built by us with xmake (CMake for Dawn and SDL3); `build/versions.json` is the single source of versions, each citing its source | [0010](docs/adr/0010-native-builds-with-xmake.md), [0023](docs/adr/0023-repository-layout-and-conventions.md) |
+| Native build | `build/xmake.lua` with one definition per dependency; `scripts/build-native.cs` checks the pinned xmake and CMake, fetches sources with git at the pinned commits (Dawn's `DEPS` entries listed in `build/dawn/deps.json`), runs xmake isolated under `artifacts/native/`; SDL3 without audio and with a required feature list per platform; `MA_API` and Apple `MA_NO_RUNTIME_LINKING` only; upstream library names | [0031](docs/adr/0031-native-build-definitions.md) |
+| D3D12 compilers | DXC built by Dawn and shipped as `dxcompiler.dll`; `d3dcompiler_47.dll` is the system's, never redistributed | [0030](docs/adr/0030-d3d12-shader-compilers.md) |
 | Native packages | `runtimes/{rid}/native`; `buildTransitive/` for iOS and the browser | [0011](docs/adr/0011-native-package-layout.md) |
 | Targets | 12 RIDs, universal macOS and iOS simulator binaries, old glibc; adding a RID needs an ADR | [0012](docs/adr/0012-supported-targets.md) |
 | Minimum OS | Windows 10 1607, glibc 2.28, macOS 14.0, iOS 14.0, Android API 26, a browser with WebGPU; raising one supersedes the ADR | [0024](docs/adr/0024-minimum-os-versions.md) |
@@ -93,6 +95,9 @@ Open decisions and the order of the next tasks are in the [roadmap](docs/roadmap
 - The binding generator is `scripts/binding-generator.cs`; its code is in
   `scripts/binding-generator/`, one type per file in a folder per concern, each type and member
   with an XML comment. Each generated interop project has a `bindings.json`.
+- The native build is `scripts/build-native.cs`, with its code in `scripts/build-native/` under the
+  same rules. Each dependency's xmake definition is in `build/<dependency>/`; a change to it or to
+  its pinned commit rebuilds that package.
 - `build/versions.json`: every entry has a `source` saying where its value was verified, and
   dependencies are pinned to full commit hashes; `Jade.Tests` checks both. `THIRD-PARTY-NOTICES.md`
   follows it.
@@ -148,6 +153,12 @@ Re-check these at every SDK or dependency update.
 | libclang 21.1.8 with `-nostdinc -ffreestanding` and the generator's headers parses SDL3 and miniaudio for the 12 RID triples without a diagnostic; it defines the `TARGET_OS_*` macros for Apple triples | `dotnet run scripts/binding-generator.cs` | 2026-10-05 |
 | `ReadOnlySpan<T>` rejects a `ref struct` element type (CS9244; CS9358 for a collection expression); a public interface can declare an `internal static abstract` member that uses internal types | throwaway apps with SDK `11.0.100-rc.1.26425.128` | 2026-10-05 |
 | PublicApiAnalyzers analyzes and reports on generated code, and tracks `[Experimental]` APIs | `DeclarePublicApiAnalyzer.cs` and `DeclarePublicApiAnalyzer.Impl.cs` in `dotnet/roslyn` main | 2026-10-05 |
+| xmake 3.1.1: `add_requires` takes a system package first (`sdl` resolved to the system SDL 1.2 through pkg-config) unless `system = false`; an installed package is reused while its configs are unchanged, even when its sources or definition changed | `core/package/package.lua` in `/usr/share/xmake`; prototype builds of `build/` | 2026-10-05 |
+| xmake 3.1.1 links shared libraries with the C++ driver (a C library then needs `libstdc++.so.6`), adds no optimization flag to a target without `set_optimize` or a mode rule, and `os.cp` to a missing directory writes a file of that name | `toolchains/gcc/xmake.lua`, `rules/mode/xmake.lua`; `readelf -d` of the outputs | 2026-10-05 |
+| xmake refuses to run as root without `--root` or `XMAKE_ROOT=y`; `xmake-bundle-v3.1.1.linux.x86_64` needs `libncurses.so.6` | `core/main.lua`; `ubuntu:24.04` container | 2026-10-05 |
+| Dawn reads its commit with `git rev-parse` for the key of its device cache (empty outside a git checkout); `DAWN_FETCH_DEPENDENCIES` clones 19 fixed `DEPS` entries and ignores git failures; its C++20 module check accepts GCC 13, which CMake cannot scan | `generator/dawn_version_generator.py`, `tools/fetch_dawn_dependencies.py`, `src/cmake/DawnCompilerChecks.cmake` at `b1236a9`; GCC 13.3 build | 2026-10-05 |
+| SDL3's CMake build silently drops a feature whose development files are missing; with `SDL_AUDIO=OFF` it also skips the PipeWire check (no PipeWire camera) | `cmake/sdlchecks.cmake` and `CMakeLists.txt` at `release-3.4.18`; build without `ibus` headers | 2026-10-05 |
+| DirectXShaderCompiler `9757d44` (Dawn's `DEPS`) signs DXIL with its open-source validator inside `dxcompiler`; Dawn never loads `dxil.dll` | `tools/clang/tools/dxcvalidator/dxcvalidator.cpp`; search of Dawn's `src/` | 2026-10-05 |
 
 ## GitHub repository state
 
@@ -192,9 +203,13 @@ Run from the repository root; `global.json` selects the SDK and the test runner.
 | Run a script | `dotnet run scripts/<name>.cs` |
 | Build the binding generator as CI will (not in `Jade.slnx`) | `dotnet build scripts/binding-generator.cs -c Release -p:TreatWarningsAsErrors=true` |
 | Load the binding generator's pinned inputs | `dotnet run scripts/binding-generator.cs` |
+| Build the native build script with warnings as errors (not in `Jade.slnx`) | `dotnet build scripts/build-native.cs -c Release -p:TreatWarningsAsErrors=true` |
+| Build the natives for the host (`linux-x64` only; prerequisites in `CONTRIBUTING.md`) | `dotnet run scripts/build-native.cs` |
 
 - Outputs go to `artifacts/` (`bin/`, `obj/`, `package/release/`, `test/`); the binding generator
-  caches the pinned sources in `artifacts/binding-generator/sources/`.
+  caches the pinned sources in `artifacts/binding-generator/sources/`. The native build writes to
+  `artifacts/native/`: `sources/` (git checkouts), `xmake/` (xmake's global directory), `obj/<rid>/`
+  and `bin/<rid>/` (the libraries).
 - SDK RC 1 bug: `dotnet test` with a relative project path can fail to load the project
   (dotnet/sdk#56196); pass an absolute path or run it from the root without a path.
 - New projects go into `Jade.slnx` with `dotnet sln Jade.slnx add --include-references false

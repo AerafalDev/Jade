@@ -15,8 +15,8 @@ Status: `done`, `next`, `planned`.
 | 3 | CI baseline and deferred GitHub settings | 2 | done |
 | 4 | Pin native dependencies and minimum OS versions | 1 | done |
 | 5 | Binding generator design | 4 | done |
-| 6 | Native build for the host platform | 2, 4 | next |
-| 7 | Generator: WebGPU raw layer | 2, 5, 6 | planned |
+| 6 | Native build for the host platform | 2, 4 | done |
+| 7 | Generator: WebGPU raw layer | 2, 5, 6 | next |
 | 8 | Generator: SDL3 and miniaudio raw layers | 5, 6 | planned |
 | 9 | Generated layout tests on the host | 6, 7, 8 | planned |
 | 10 | Native CI matrix for every RID | 3, 6 | planned |
@@ -91,19 +91,19 @@ per-platform availability, multi-triple parsing, configuration format, `MA_*` de
 [0029](adr/0029-descriptors-and-chained-structs.md) (descriptor classification, stack-based arena,
 generic chained extensions).
 
-### 6. Native build for the host platform
+### 6. Native build for the host platform (done, 2026-10-05)
 
-- xmake package definitions in `build/` (Dawn and SDL3 through CMake, miniaudio and its shim),
-  `scripts/build-native.cs`, starting with `linux-x64`.
-- Dawn's CMake build needs Python 3 and fetches its dependencies from its `DEPS` file
-  (`DAWN_FETCH_DEPENDENCIES`). Decide whether the D3D12 backend uses a built DXC
-  (`DAWN_USE_BUILT_DXC`) and whether `d3dcompiler_47.dll` is redistributed; anything shipped joins
-  `THIRD-PARTY-NOTICES.md`.
-- Check `THIRD-PARTY-NOTICES.md` against the libraries actually linked.
-- Choose the `MA_*` defines and write them in `build/miniaudio/config.h`, which the build
-  force-includes like the generator ([0026](adr/0026-binding-generator-pipeline.md)).
-- Done when `build-native.cs` produces the three libraries from `build/versions.json` on a clean
-  machine.
+`build/xmake.lua` with the definitions of `build/dawn/` (Dawn's monolithic `webgpu_dawn` through
+CMake, and `deps.json`, the `DEPS` entries its build needs), `build/sdl/` (SDL3 through CMake, with
+the features each platform must have) and `build/miniaudio/` (miniaudio and the shim that allocates
+the opaque structures, `config.h` with the `MA_*` defines); `scripts/build-native.cs` and
+`scripts/build-native/`, which check the pinned xmake and CMake, fetch the sources with git at the
+pinned commits, run xmake and check the libraries of `artifacts/native/bin/linux-x64/`. Verified in
+fresh `ubuntu:24.04` and `archlinux` containers. `THIRD-PARTY-NOTICES.md` was checked against the
+files compiled into the `linux-x64` libraries and gained SDL3's Wayland protocols and, for
+Windows, DirectXShaderCompiler. Decisions: [0030](adr/0030-d3d12-shader-compilers.md) (DXC built
+and shipped, FXC from the system) and [0031](adr/0031-native-build-definitions.md) (build
+definitions, sources, SDL3 features, `MA_*` defines, outputs).
 
 ### 7. Generator: WebGPU raw layer
 
@@ -114,7 +114,8 @@ generic chained extensions).
   rest of the raw layer internal.
 - CI builds the generator with warnings as errors and checks the regeneration; `Jade.slnx` does not
   contain the file-based script.
-- The smoke test needs the host's Dawn library, hence the dependency on task 6.
+- The smoke test loads the host's Dawn library from `artifacts/native/bin/<rid>/`, built by
+  `scripts/build-native.cs`.
 - Done when the generated code builds, regeneration produces no diff, and a smoke test creates a
   WebGPU instance on the host.
 
@@ -125,6 +126,11 @@ generic chained extensions).
 - Merge the per-triple parses into platform availability; macro evaluation by clang; the set of SDL3
   headers beyond `SDL3/SDL.h` (`SDL_main.h` for mobile entry points, for instance); skipped
   constructs listed in the output ([0027](adr/0027-interop-mapping-rules.md)).
+- Bind the shim of `build/miniaudio/jade_miniaudio.h`, which lives in the repository rather than in
+  the fetched sources, and extend its allocators to every structure the generator makes opaque
+  ([0031](adr/0031-native-build-definitions.md)).
+- SDL3 is built without its audio subsystem, whose functions only return errors: decide whether
+  `SDL_audio.h` is bound at all.
 - Done when the generated code builds, regeneration produces no diff, and smoke tests initialize
   SDL3 video and a miniaudio context on the host.
 
@@ -145,6 +151,12 @@ generic chained extensions).
   Emscripten versions match `build/versions.json`.
 - Validate Emdawnwebgpu with the workload's Emscripten (Dawn tests it with emsdk 5.0.6), and the
   use of the workload's toolchain outside MSBuild.
+- Extend `build/` and `build-native.cs` to every RID ([0031](adr/0031-native-build-definitions.md)):
+  SDL3 feature lists per platform, the built DXC and its `DEPS` entry on Windows
+  ([0030](adr/0030-d3d12-shader-compilers.md)), `MA_NO_RUNTIME_LINKING` and Objective-C for
+  miniaudio on Apple platforms, the glibc 2.28 environment and how the C++ runtime is linked; xmake
+  must not run as root in containers. Check `THIRD-PARTY-NOTICES.md` against the files compiled
+  for each target, as done for `linux-x64`.
 - **Decision to take: native build runners (including Linux and Windows arm64), frequency and
   caching** ([0022](adr/0022-ci-runners-and-caching.md) covers the managed CI only).
 - Done when a workflow run produces attested artifacts for every RID and `fetch-native.cs`

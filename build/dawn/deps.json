@@ -1,0 +1,13 @@
+{
+  "paths": [
+    "third_party/abseil-cpp",
+    "third_party/jinja2",
+    "third_party/markupsafe",
+    "third_party/spirv-headers/src",
+    "third_party/spirv-tools/src",
+    "third_party/vulkan-headers/src",
+    "third_party/vulkan-utility-libraries/src",
+    "third_party/EGL-Registry/src",
+    "third_party/OpenGL-Registry/src"
+  ]
+}
