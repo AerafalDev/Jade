@@ -65,6 +65,7 @@ The mapping rules are in [0009](adr/0009-interop-mapping-conventions.md) and
 | `Jade.Emscripten` (in `interop/`) | .NET 11, no RID | Emscripten runtime interop, `[SupportedOSPlatform("browser")]` ([0019](adr/0019-browser-and-roslyn-component-targeting.md)). |
 | `Jade.Native.Wgpu`, `Jade.Native.Sdl`, `Jade.Native.MiniAudio` (in `native/`) | packaging only | Native binaries for every RID ([0011](adr/0011-native-package-layout.md)). |
 | `Jade.Tests` (in `tests/`) | .NET 11 | MSTest on Microsoft.Testing.Platform ([0018](adr/0018-test-framework.md)). |
+| `Jade.Wgpu.Tests` (in `tests/`) | .NET 11 | Tests of the `Jade.Wgpu` raw layer and smoke tests against the host's natives ([0032](adr/0032-webgpu-raw-layer-generation.md)). |
 
 Every .NET 11 library is AOT-compatible and every package that ships an assembly tracks its public
 API. Build and packaging conventions are in [0021](adr/0021-build-and-packaging-conventions.md);
@@ -88,8 +89,8 @@ flowchart LR
 
 - The generator is a .NET file-based app, `scripts/binding-generator.cs`, split with `#:include`
   into `scripts/binding-generator/` ([0007](adr/0007-in-house-binding-generator.md)): one folder per
-  concern (`Configuration/`, `Sources/`, `Targets/`, `Dawn/`, `Clang/`, `Reporting/`), one type per
-  file, an XML comment on every type and member.
+  concern (`Configuration/`, `Sources/`, `Targets/`, `Dawn/`, `Clang/`, `Model/`, `Projection/`,
+  `Emission/`, `Reporting/`), one type per file, an XML comment on every type and member.
 - Pipeline, intermediate representation, header parsing and configuration format:
   [0026](adr/0026-binding-generator-pipeline.md). Inputs are fetched from GitHub at the commits of
   `build/versions.json` and cached under `artifacts/`. Each declaration of the intermediate
@@ -99,16 +100,30 @@ flowchart LR
 - C headers are parsed by the libclang of the pinned ClangSharp package, with `-nostdinc` and the
   generator's own C runtime headers (`scripts/binding-generator/include/`), so the result depends
   only on the pinned inputs. libclang is only a parser; all C# is emitted by our code.
-- `interop/<project>/bindings.json` selects the front-end and the inputs of each generated library;
-  roadmap tasks 7 and 8 add its annotations. The `MA_*` defines live in `build/miniaudio/config.h`,
-  which the native build and the generator both force-include.
+- `interop/<project>/bindings.json` selects the front-end and the inputs of each generated library,
+  the name its functions are imported from (`library`), the declarations it leaves out with the
+  reason (`exclude`) and the exceptions to the naming rules (`names`, `words`)
+  ([0032](adr/0032-webgpu-raw-layer-generation.md)); roadmap task 8 adds the annotations of the C
+  header libraries. The `MA_*` defines live in `build/miniaudio/config.h`, which the native build and
+  the generator both force-include.
 - Mapping rules: [0009](adr/0009-interop-mapping-conventions.md) and
   [0027](adr/0027-interop-mapping-rules.md). The raw layer is internal and keeps the C names
   ([0028](adr/0028-internal-raw-interop-layer.md)); descriptors and chained structures follow
   [0029](adr/0029-descriptors-and-chained-structs.md).
-- The output is committed. CI regenerates it and fails on any diff, which requires a deterministic
-  generator; the check is added with the first emitter (roadmap task 7).
-- Today the generator loads the inputs and reports what they contain; it emits no C# yet.
+- The output is committed. The CI `build` jobs build the generator with warnings as errors,
+  regenerate the bindings on Linux, Windows and macOS, and fail on any diff, which requires a
+  deterministic generator.
+- The `dawn.json` front-end builds the intermediate representation of `webgpu.h` as Dawn's `api.h`
+  template renders it: the chain, userdata and reference counting members it adds, the tag offsets
+  of enum values, and the defaults of the `WGPU_*_INIT` macros
+  ([0032](adr/0032-webgpu-raw-layer-generation.md)). The raw emitter writes `Jade.Wgpu`'s raw layer,
+  one file per type: public enums, flags, handles, `Bool32` and value structures with .NET names;
+  internal structures, constants and functions (in `NativeMethods`) with their C names. Each
+  structure's parameterless constructor applies its `*_INIT` macro. The generated public
+  declarations are listed in `PublicAPI.Unshipped.txt` through the analyzer's fix.
+- The C header front-end still only loads and reports; its model and emission are roadmap task 8.
+- Native libraries are imported with `LibraryImport` and searched in the assembly's directory and
+  the safe Windows directories (`DefaultDllImportSearchPaths`).
 
 ## Native build and distribution
 
@@ -234,7 +249,10 @@ Details and verification in [0025](adr/0025-browser-natives-with-workload-emscri
   [Repository and supply chain](#repository-and-supply-chain)).
 - Generated layout tests compare C `sizeof`/`offsetof` with the C# layout on every target,
   WebAssembly included.
-- CI regenerates the bindings and fails if the committed code differs.
+- CI regenerates the bindings on every host and fails if the committed code differs.
+- Each interop assembly's test project checks its raw layer and runs smoke tests against the
+  host's natives from `artifacts/native/bin/<rid>/`; they are skipped where the natives are not
+  built (`Jade.Wgpu.Tests` today).
 - One sample per platform family (`samples/Desktop`, `Android`, `iOS`, `Browser`) validates the
   interop and the natives end to end.
 - Public API changes are tracked by the PublicApiAnalyzers files; packages pass package
@@ -251,7 +269,7 @@ GitHub settings, security features and their phasing are described in
 
 | Workflow | Trigger | Role |
 | --- | --- | --- |
-| `ci.yml` | pull requests, pushes to `main` | `format` (`dotnet format --verify-no-changes`), then restore, build with warnings as errors, test and pack with package validation on `build (linux)`, `build (windows)` and `build (macos)` |
+| `ci.yml` | pull requests, pushes to `main` | `format` (`dotnet format --verify-no-changes`), then restore, build with warnings as errors, test, pack with package validation, build the binding generator with warnings as errors and check the regenerated bindings on `build (linux)`, `build (windows)` and `build (macos)` |
 | `codeql.yml` | pull requests, pushes to `main`, weekly | CodeQL for C# (traced build with the pinned SDK) and GitHub Actions |
 | `scorecard.yml` | pushes to `main`, weekly | OpenSSF Scorecard, published for the README badge and uploaded to code scanning |
 | `labels.yml` | changes to `.github/labels.yml` | Synchronizes the repository labels with `gh`; dry run on pull requests |
@@ -274,8 +292,10 @@ validation. The `Jade.Native.*` packages contain no native file yet. The CI base
 the workflows above, Dependabot, issue and pull request templates, `CODEOWNERS`,
 `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md`. The native dependencies, toolchains and minimum OS
 versions are pinned in `build/versions.json`, and `THIRD-PARTY-NOTICES.md` covers the pinned
-sources. The binding generator's skeleton fetches and loads the pinned inputs (`dawn.json`, and
-the SDL3 and miniaudio headers parsed for every RID) without emitting C# yet.
+sources. The binding generator fetches and loads the pinned inputs (`dawn.json`, and the SDL3 and
+miniaudio headers parsed for every RID) and generates the raw layer of `Jade.Wgpu` (296 files,
+276 functions); `Jade.Wgpu.Tests` creates a WebGPU instance and requests an adapter on the host
+through it. The SDL3 and miniaudio raw layers and every idiomatic layer are still to come.
 `scripts/build-native.cs` builds Dawn, SDL3 and miniaudio for `linux-x64` from the definitions of
 `build/`; the other RIDs, CI artifacts and packaging come later. No sample exists yet. The ordered
 list of next tasks is in the [roadmap](roadmap.md).

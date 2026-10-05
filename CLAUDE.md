@@ -71,6 +71,7 @@ tools are out of scope for now.
 | Mapping rules | .NET names without C prefixes, typedefs mapped by name, dedicated integer booleans, macros evaluated by clang, no variadic or inline functions, platform attributes from availability, XML comments on generated members | [0027](docs/adr/0027-interop-mapping-rules.md) |
 | Raw layer | Internal with C names; types identical in both layers are public; handles expose their `nint` | [0028](docs/adr/0028-internal-raw-interop-layer.md) |
 | Descriptors and chains | Value structures shared and pinned, `ref struct` descriptor mirrors, element mirrors with `ReadOnlyMemory<T>`, stack-based arena for nested data, `IChainedExtension<TSelf, TRoot>` generic overloads | [0029](docs/adr/0029-descriptors-and-chained-structs.md) |
+| WebGPU raw layer | IR in `Model/`, Dawn front-end reproducing `api.h` (added members, enum offsets, `*_INIT` defaults); `library`/`exclude`/`names`/`words` in `bindings.json`; public enums, flags, handles, `Bool32`, value structures, internal rest in `NativeMethods`; parameterless constructors apply `*_INIT`; `[StructLayout(Sequential)]`; `DefaultDllImportSearchPaths(AssemblyDirectory \| SafeDirectories)` with CA5393 suppressed on `NativeMethods`; PublicAPI files through the analyzer's fix; regeneration checked by the CI `build` jobs; `tests/Jade.Wgpu.Tests` | [0032](docs/adr/0032-webgpu-raw-layer-generation.md) |
 | Natives | Built by us with xmake (CMake for Dawn and SDL3); `build/versions.json` is the single source of versions, each citing its source | [0010](docs/adr/0010-native-builds-with-xmake.md), [0023](docs/adr/0023-repository-layout-and-conventions.md) |
 | Native build | `build/xmake.lua` with one definition per dependency; `scripts/build-native.cs` checks the pinned xmake and CMake, fetches sources with git at the pinned commits (Dawn's `DEPS` entries listed in `build/dawn/deps.json`), runs xmake isolated under `artifacts/native/`; SDL3 without audio and with a required feature list per platform; `MA_API` and Apple `MA_NO_RUNTIME_LINKING` only; upstream library names | [0031](docs/adr/0031-native-build-definitions.md) |
 | D3D12 compilers | DXC built by Dawn and shipped as `dxcompiler.dll`; `d3dcompiler_47.dll` is the system's, never redistributed | [0030](docs/adr/0030-d3d12-shader-compilers.md) |
@@ -98,6 +99,12 @@ Open decisions and the order of the next tasks are in the [roadmap](docs/roadmap
 - The native build is `scripts/build-native.cs`, with its code in `scripts/build-native/` under the
   same rules. Each dependency's xmake definition is in `build/<dependency>/`; a change to it or to
   its pinned commit rebuilds that package.
+- After a regeneration that changes public declarations, update `PublicAPI.Unshipped.txt` with the
+  analyzer's fix (see Commands) and remove by hand the lines RS0017 reports; never write generated
+  declarations into it by hand.
+- Each generated interop project has a test project `tests/<project>.Tests` with
+  `InternalsVisibleTo`; its smoke tests use the host's natives copied from `artifacts/native/bin/`
+  and are skipped (`Assert.Inconclusive`) when they are not built.
 - `build/versions.json`: every entry has a `source` saying where its value was verified, and
   dependencies are pinned to full commit hashes; `Jade.Tests` checks both. `THIRD-PARTY-NOTICES.md`
   follows it.
@@ -156,6 +163,13 @@ Re-check these at every SDK or dependency update.
 | xmake 3.1.1: `add_requires` takes a system package first (`sdl` resolved to the system SDL 1.2 through pkg-config) unless `system = false`; an installed package is reused while its configs are unchanged, even when its sources or definition changed | `core/package/package.lua` in `/usr/share/xmake`; prototype builds of `build/` | 2026-10-05 |
 | xmake 3.1.1 links shared libraries with the C++ driver (a C library then needs `libstdc++.so.6`), adds no optimization flag to a target without `set_optimize` or a mode rule, and `os.cp` to a missing directory writes a file of that name | `toolchains/gcc/xmake.lua`, `rules/mode/xmake.lua`; `readelf -d` of the outputs | 2026-10-05 |
 | xmake refuses to run as root without `--root` or `XMAKE_ROOT=y`; `xmake-bundle-v3.1.1.linux.x86_64` needs `libncurses.so.6` | `core/main.lua`; `ubuntu:24.04` container | 2026-10-05 |
+| Dawn renders `include/dawn/webgpu.h` with the tags `dawn`, `emscripten`, `native`, `deprecated` and its proc table with `dawn`, `native`, `deprecated`; they differ by the Emscripten canvas source, its `SType` value and `WGPUINTERNAL_HAVE_EMDAWNWEBGPU_HEADER`, no function; `libwebgpu_dawn.so` exports exactly the header's 276 functions | `generator/dawn_json_generator.py` at `b1236a9`; headers rendered with its `--targets headers,emdawnwebgpu_headers`; `nm -D` | 2026-10-05 |
+| Roslyn reports no CS0649/CS0169 for fields of a type with `[StructLayout]` | `SourceAssemblySymbol.GetUnusedFieldWarnings` in `dotnet/roslyn` main; build of `Jade.Wgpu` | 2026-10-05 |
+| CA5392 is reported per P/Invoke and CA5393 counts `AssemblyDirectory` as unsafe; the host's `NATIVE_DLL_SEARCH_DIRECTORIES` lists only the `deps.json` native asset directories; on Linux a NativeAOT app finds a library beside it with `AssemblyDirectory`, not with `SafeDirectories` | CA5393 docs; `COREHOST_TRACE` of `Jade.Wgpu.Tests`; throwaway NativeAOT apps | 2026-10-05 |
+| `dotnet format analyzers --diagnostics RS0016 --include-generated` applies the PublicApiAnalyzers fix to generated files (skipped without `--include-generated`); RS0017 gets no fix | runs on `interop/Jade.Wgpu` | 2026-10-05 |
+| Microsoft.Testing.Platform exits with 8 when every test is skipped, 0 when some pass and the rest are skipped | `dotnet test` of `Jade.Wgpu.Tests` with and without the natives | 2026-10-05 |
+| C# 15 collection expression arguments (`[with(StringComparer.Ordinal)]`) compile with the pinned SDK, and IDE0028 asks for them; under `latest-all`, IDE0010 and IDE0072 want every enum member listed even with a default arm | throwaway app; build of `scripts/binding-generator.cs` | 2026-10-05 |
+| `dotnet run <app>.cs -c Release --no-build` runs a file-based app built before | `scripts/binding-generator.cs` | 2026-10-05 |
 | Dawn reads its commit with `git rev-parse` for the key of its device cache (empty outside a git checkout); `DAWN_FETCH_DEPENDENCIES` clones 19 fixed `DEPS` entries and ignores git failures; its C++20 module check accepts GCC 13, which CMake cannot scan | `generator/dawn_version_generator.py`, `tools/fetch_dawn_dependencies.py`, `src/cmake/DawnCompilerChecks.cmake` at `b1236a9`; GCC 13.3 build | 2026-10-05 |
 | SDL3's CMake build silently drops a feature whose development files are missing; with `SDL_AUDIO=OFF` it also skips the PipeWire check (no PipeWire camera) | `cmake/sdlchecks.cmake` and `CMakeLists.txt` at `release-3.4.18`; build without `ibus` headers | 2026-10-05 |
 | DirectXShaderCompiler `9757d44` (Dawn's `DEPS`) signs DXIL with its open-source validator inside `dxcompiler`; Dawn never loads `dxil.dll` | `tools/clang/tools/dxcvalidator/dxcvalidator.cpp`; search of Dawn's `src/` | 2026-10-05 |
@@ -202,7 +216,8 @@ Run from the repository root; `global.json` selects the SDK and the test runner.
 | Pack (with package validation) | `dotnet pack -c Release -p:TreatWarningsAsErrors=true -p:ContinuousIntegrationBuild=true` |
 | Run a script | `dotnet run scripts/<name>.cs` |
 | Build the binding generator as CI will (not in `Jade.slnx`) | `dotnet build scripts/binding-generator.cs -c Release -p:TreatWarningsAsErrors=true` |
-| Load the binding generator's pinned inputs | `dotnet run scripts/binding-generator.cs` |
+| Regenerate the bindings (CI fails on any diff) | `dotnet run scripts/binding-generator.cs` |
+| Declare generated public APIs in `PublicAPI.Unshipped.txt` | `dotnet format analyzers interop/<project>/<project>.csproj --diagnostics RS0016 --severity info --include-generated` |
 | Build the native build script with warnings as errors (not in `Jade.slnx`) | `dotnet build scripts/build-native.cs -c Release -p:TreatWarningsAsErrors=true` |
 | Build the natives for the host (`linux-x64` only; prerequisites in `CONTRIBUTING.md`) | `dotnet run scripts/build-native.cs` |
 

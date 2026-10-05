@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.Text.Json.Serialization;
 
 namespace Jade.BindingGenerator.Configuration;
@@ -24,6 +25,31 @@ internal sealed record LibraryConfiguration
 
     /// <summary>Gets the headers to parse, for the C header front-end.</summary>
     public ClangConfiguration? Clang { get; init; }
+
+    /// <summary>
+    /// Gets the name the functions are imported from, as <c>LibraryImport</c> resolves it on every
+    /// platform: <c>webgpu_dawn</c> loads <c>libwebgpu_dawn.so</c> on Linux and
+    /// <c>webgpu_dawn.dll</c> on Windows.
+    /// </summary>
+    public string? Library { get; init; }
+
+    /// <summary>
+    /// Gets the declarations left out of the bindings, by C name, each with the reason, which the
+    /// generator reports.
+    /// </summary>
+    public IReadOnlyDictionary<string, string> Exclude { get; init; } = FrozenDictionary<string, string>.Empty;
+
+    /// <summary>
+    /// Gets the .NET names that replace the ones the naming rules give, by C name: a declaration's
+    /// name, an enum value's name, or <c>Structure.member</c> for a member (ADR 0027).
+    /// </summary>
+    public IReadOnlyDictionary<string, string> Names { get; init; } = FrozenDictionary<string, string>.Empty;
+
+    /// <summary>
+    /// Gets the casing of the words that the naming rules get wrong, by word, such as <c>Id</c> for
+    /// <c>ID</c>, which is an abbreviation rather than an acronym (ADR 0027).
+    /// </summary>
+    public IReadOnlyDictionary<string, string> Words { get; init; } = FrozenDictionary<string, string>.Empty;
 
     /// <summary>Reads and validates a library configuration.</summary>
     /// <param name="path">The path of the <c>bindings.json</c> file.</param>

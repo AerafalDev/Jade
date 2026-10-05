@@ -32,10 +32,13 @@ Run the commands from the repository root; `global.json` selects the SDK and the
 | Test | `dotnet test -c Release` |
 | Check formatting | `dotnet format --verify-no-changes` |
 | Pack, with package validation | `dotnet pack -c Release -p:TreatWarningsAsErrors=true -p:ContinuousIntegrationBuild=true` |
-| Run the binding generator | `dotnet run scripts/binding-generator.cs` |
+| Regenerate the bindings | `dotnet run scripts/binding-generator.cs` |
+| Declare generated public APIs | `dotnet format analyzers interop/<project>/<project>.csproj --diagnostics RS0016 --severity info --include-generated` |
 
 Outputs go to `artifacts/`. Tests use MSTest on Microsoft.Testing.Platform
-([0018](docs/adr/0018-test-framework.md)).
+([0018](docs/adr/0018-test-framework.md)). The smoke tests of the interop projects
+(`tests/Jade.Wgpu.Tests`) call the native libraries of `artifacts/native/bin/<rid>/`, built as
+described below; without them they are reported as skipped.
 
 ## Native libraries
 
@@ -79,7 +82,10 @@ minutes; later builds reuse them and only rebuild a library whose pinned commit 
 - Public API changes go into the project's `PublicAPI.Unshipped.txt`; the analyzers report any
   change that is missing from it.
 - Generated code lives in `Generated/*.g.cs` and is never edited by hand: change the generator or
-  its configuration and regenerate.
+  its configuration (`bindings.json`) and regenerate. CI regenerates the bindings and fails on any
+  difference. When the public declarations change, run the command above to declare them, and
+  remove the lines the build reports as RS0017
+  ([0032](docs/adr/0032-webgpu-raw-layer-generation.md)).
 - MSBuild files and `Jade.slnx` contain no comments; assembly- and module-level attributes go in
   `Properties/AssemblyInfo.cs`.
 - Package versions live only in `Directory.Packages.props` (central package management, exact

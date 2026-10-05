@@ -77,3 +77,15 @@ jobs:
 
       - name: Pack
         run: dotnet pack -c Release --no-build -p:TreatWarningsAsErrors=true -p:ContinuousIntegrationBuild=true
+
+      # The generator is a file-based app outside Jade.slnx. Regenerating on every runner checks
+      # that the committed bindings are current and that the output does not depend on the host.
+      - name: Build the binding generator
+        run: dotnet build scripts/binding-generator.cs -c Release -p:TreatWarningsAsErrors=true
+
+      - name: Check the generated bindings
+        shell: bash
+        run: |
+          dotnet run scripts/binding-generator.cs -c Release --no-build
+          git add --intent-to-add -- interop
+          git diff --exit-code --stat -- interop

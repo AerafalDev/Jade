@@ -1,5 +1,8 @@
 using Jade.BindingGenerator.Clang;
 using Jade.BindingGenerator.Configuration;
+using Jade.BindingGenerator.Dawn;
+using Jade.BindingGenerator.Emission;
+using Jade.BindingGenerator.Projection;
 using Jade.BindingGenerator.Reporting;
 using Jade.BindingGenerator.Sources;
 using Jade.BindingGenerator.Targets;
@@ -7,12 +10,13 @@ using Jade.BindingGenerator.Targets;
 namespace Jade.BindingGenerator;
 
 /// <summary>
-/// Entry point of the binding generator: loads the inputs of every generated interop library and
-/// reports what they contain.
+/// Entry point of the binding generator: loads the inputs of every generated interop library,
+/// reports what they contain, and writes the raw layer of the libraries whose front-end builds an
+/// intermediate representation.
 /// </summary>
 /// <remarks>
-/// The intermediate representation, the annotations, the projection and the emitters of ADR 0026
-/// are built on top of the loaded inputs by roadmap tasks 7 and 8.
+/// The <c>dawn.json</c> front-end builds one (roadmap task 7); the C header front-end only loads
+/// and reports until roadmap task 8.
 /// </remarks>
 internal static class Generator
 {
@@ -51,6 +55,16 @@ internal static class Generator
                 var loaded = await loader.LoadAsync(library, cancellationToken).ConfigureAwait(false);
 
                 await InputReport.WriteAsync(output, loaded, cancellationToken).ConfigureAwait(false);
+
+                if (loaded.Dawn is { } api)
+                {
+                    var model = DawnModelBuilder.Build(api, loaded.Configuration.Exclude);
+                    var projected = RawProjection.Project(model, library.Project, loaded.Configuration);
+                    var update = GeneratedDirectory.Update(library.GeneratedDirectory, RawLayerEmitter.Emit(projected));
+                    var directory = Path.GetRelativePath(layout.Root, library.GeneratedDirectory).Replace('\\', '/');
+
+                    await OutputReport.WriteAsync(output, directory, model, projected, update, cancellationToken).ConfigureAwait(false);
+                }
             }
 
             return SuccessExitCode;

@@ -7,6 +7,9 @@
 #:include binding-generator/Clang/*.cs
 #:include binding-generator/Configuration/*.cs
 #:include binding-generator/Dawn/*.cs
+#:include binding-generator/Emission/*.cs
+#:include binding-generator/Model/*.cs
+#:include binding-generator/Projection/*.cs
 #:include binding-generator/Reporting/*.cs
 #:include binding-generator/Sources/*.cs
 #:include binding-generator/Targets/*.cs
