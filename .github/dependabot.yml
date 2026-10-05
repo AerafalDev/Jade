@@ -1,0 +1,33 @@
+version: 2
+
+updates:
+  - package-ecosystem: nuget
+    directory: /
+    schedule:
+      interval: weekly
+    # Leaves a week for a compromised or broken release to be noticed; security updates ignore it.
+    cooldown:
+      default-days: 7
+    groups:
+      nuget:
+        patterns: ['*']
+        update-types: [minor, patch]
+    labels: [dependencies, 'area: build']
+    commit-message:
+      prefix: build
+      include: scope
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    groups:
+      github-actions:
+        patterns: ['*']
+        update-types: [minor, patch]
+    labels: [dependencies, 'area: ci']
+    commit-message:
+      prefix: ci
+      include: scope
