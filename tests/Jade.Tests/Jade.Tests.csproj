@@ -16,4 +16,8 @@
     <ProjectReference Include="../../src/Jade/Jade.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="../../build/versions.json" Link="versions.json" CopyToOutputDirectory="PreserveNewest" Visible="false" />
+  </ItemGroup>
+
 </Project>

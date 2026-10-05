@@ -17,7 +17,7 @@ Important or hard-to-reverse decisions are recorded here, one per file, as descr
 | [0010](0010-native-builds-with-xmake.md) | Native libraries built by us with xmake | Accepted |
 | [0011](0011-native-package-layout.md) | Layout of the Jade.Native packages | Accepted |
 | [0012](0012-supported-targets.md) | Supported targets | Accepted |
-| [0013](0013-browser-native-toolchain.md) | Browser natives prebuilt with the workload's Emscripten version | Accepted |
+| [0013](0013-browser-native-toolchain.md) | Browser natives prebuilt with the workload's Emscripten version | Superseded by [0025](0025-browser-natives-with-workload-emscripten.md) |
 | [0014](0014-repository-layout-and-conventions.md) | Repository layout and content conventions | Superseded by [0020](0020-repository-layout-and-conventions.md) |
 | [0015](0015-build-and-packaging-conventions.md) | Build and packaging conventions | Superseded by [0021](0021-build-and-packaging-conventions.md) |
 | [0016](0016-public-api-conventions.md) | Public API conventions | Accepted |
@@ -28,3 +28,5 @@ Important or hard-to-reverse decisions are recorded here, one per file, as descr
 | [0021](0021-build-and-packaging-conventions.md) | Build and packaging conventions | Accepted |
 | [0022](0022-ci-runners-and-caching.md) | CI runners and caching | Accepted |
 | [0023](0023-repository-layout-and-conventions.md) | Repository layout and content conventions | Accepted |
+| [0024](0024-minimum-os-versions.md) | Minimum operating system versions | Accepted |
+| [0025](0025-browser-natives-with-workload-emscripten.md) | Browser natives built with the .NET workload's Emscripten toolchain | Accepted |

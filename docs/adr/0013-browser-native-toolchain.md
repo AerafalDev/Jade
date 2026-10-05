@@ -1,6 +1,6 @@
 # 0013. Browser natives prebuilt with the workload's Emscripten version
 
-- Status: Accepted
+- Status: Superseded by [0025](0025-browser-natives-with-workload-emscripten.md)
 - Date: 2026-10-05
 
 ## Context

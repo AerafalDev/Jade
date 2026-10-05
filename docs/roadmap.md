@@ -13,8 +13,8 @@ Status: `done`, `next`, `planned`.
 | 1 | Project charter and GitHub repository | none | done |
 | 2 | Solution scaffolding | 1 | done |
 | 3 | CI baseline and deferred GitHub settings | 2 | done |
-| 4 | Pin native dependencies and minimum OS versions | 1 | next |
-| 5 | Binding generator design | 4 | planned |
+| 4 | Pin native dependencies and minimum OS versions | 1 | done |
+| 5 | Binding generator design | 4 | next |
 | 6 | Native build for the host platform | 2, 4 | planned |
 | 7 | Generator: WebGPU raw layer | 2, 5 | planned |
 | 8 | Generator: SDL3 and miniaudio raw layers | 5, 6 | planned |
@@ -64,13 +64,17 @@ unattributed pull requests only concerns Copilot and has no effect with zero req
 [0022](adr/0022-ci-runners-and-caching.md) (pinned GitHub-hosted runners, no cache). Attestations
 and CodeQL for C/C++ move to tasks 10 and 19, when there is something to apply them to.
 
-### 4. Pin native dependencies and minimum OS versions
+### 4. Pin native dependencies and minimum OS versions (done, 2026-10-05)
 
-- `build/versions.json`: Dawn commit, SDL3 and miniaudio versions, emsdk (must match the workload,
-  [0013](adr/0013-browser-native-toolchain.md)), Android NDK, and the other toolchain versions.
-- Minimum OS versions derived from Dawn's actual requirements. **Decision to take** (ADR).
-- `THIRD-PARTY-NOTICES.md` written from the license files of the pinned sources.
-- Done when every version is pinned with its source and the ADR is accepted.
+`build/versions.json` (format in the [architecture](architecture.md#buildversionsjson)): Dawn
+`v20261002.154047`, SDL3 3.4.18, miniaudio 0.11.25, the workload's Emscripten (6.0.3, packs named
+6.0.2), Android NDK r28c, xmake 3.1.1, CMake 4.4.4 and the minimum OS versions, each with its
+source; `Jade.Tests` checks the sources and commit hashes. `THIRD-PARTY-NOTICES.md` from the
+license files of the pinned sources, Dawn's `DEPS` dependencies included. Decisions:
+[0024](adr/0024-minimum-os-versions.md) (Windows 10 1607, glibc 2.28, macOS 14.0, iOS 14.0,
+Android API 26, a browser with WebGPU) and
+[0025](adr/0025-browser-natives-with-workload-emscripten.md) (browser archives built with the
+workload's own Emscripten toolchain, since no upstream emsdk equals it; supersedes 0013).
 
 ### 5. Binding generator design
 
@@ -85,6 +89,11 @@ and CodeQL for C/C++ move to tasks 10 and 19, when there is something to apply t
 
 - xmake package definitions in `build/` (Dawn and SDL3 through CMake, miniaudio and its shim),
   `scripts/build-native.cs`, starting with `linux-x64`.
+- Dawn's CMake build needs Python 3 and fetches its dependencies from its `DEPS` file
+  (`DAWN_FETCH_DEPENDENCIES`). Decide whether the D3D12 backend uses a built DXC
+  (`DAWN_USE_BUILT_DXC`) and whether `d3dcompiler_47.dll` is redistributed; anything shipped joins
+  `THIRD-PARTY-NOTICES.md`.
+- Check `THIRD-PARTY-NOTICES.md` against the libraries actually linked.
 - Done when `build-native.cs` produces the three libraries from `build/versions.json` on a clean
   machine.
 
@@ -109,10 +118,15 @@ and CodeQL for C/C++ move to tasks 10 and 19, when there is something to apply t
 
 ### 10. Native CI matrix for every RID
 
-- Native builds on a runner matrix for every RID of [0012](adr/0012-supported-targets.md): old glibc
-  baseline, universal macOS and iOS simulator binaries, Android NDK, emsdk archives; artifacts with
-  provenance attestations; `scripts/fetch-native.cs`; CodeQL C/C++ for the shims; a check that the
-  workload's Emscripten version matches `build/versions.json`.
+- Native builds on a runner matrix for every RID of [0012](adr/0012-supported-targets.md), at the
+  minimum OS versions of [0024](adr/0024-minimum-os-versions.md): a glibc 2.28 environment (Dawn
+  uses the `manylinux_2_28` images), universal macOS and iOS simulator binaries, Android NDK,
+  browser archives built with the workload's Emscripten toolchain
+  ([0025](adr/0025-browser-natives-with-workload-emscripten.md)); artifacts with provenance
+  attestations; `scripts/fetch-native.cs`; CodeQL C/C++ for the shims; a check that the workload's
+  Emscripten versions match `build/versions.json`.
+- Validate Emdawnwebgpu with the workload's Emscripten (Dawn tests it with emsdk 5.0.6), and the
+  use of the workload's toolchain outside MSBuild.
 - **Decision to take: native build runners (including Linux and Windows arm64), frequency and
   caching** ([0022](adr/0022-ci-runners-and-caching.md) covers the managed CI only).
 - Done when a workflow run produces attested artifacts for every RID and `fetch-native.cs`
@@ -122,6 +136,8 @@ and CodeQL for C/C++ move to tasks 10 and 19, when there is something to apply t
 
 - `runtimes/{rid}/native`, `runtimes/osx/native`, `buildTransitive/` targets for iOS and the
   browser ([0011](adr/0011-native-package-layout.md)).
+- How the packages surface the minimum OS versions of [0024](adr/0024-minimum-os-versions.md),
+  which are above .NET 11's floors on iOS and Android.
 - Done when the packages pass package validation and contain every RID.
 
 ### 12. WebGPU idiomatic layer
@@ -166,12 +182,12 @@ and CodeQL for C/C++ move to tasks 10 and 19, when there is something to apply t
   attestations, `CHANGELOG.md` format.
 - Final check of the package IDs before the first publication (see
   [0004](adr/0004-webgpu-via-dawn.md)); NuGet badge in the README.
+- Supported OS list in the README, from [0024](adr/0024-minimum-os-versions.md).
 
 ## Open decisions
 
 | Decision | Task |
 | --- | --- |
-| Minimum OS versions | 4 |
 | Generator IR and mapping rules, chained structs, descriptors | 5 |
 | Raw layer visibility | 5 |
 | Native build runners, frequency and caching; emulator tests | 10, 16 |
