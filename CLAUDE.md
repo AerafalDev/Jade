@@ -74,6 +74,7 @@ tools are out of scope for now.
 | WebGPU raw layer | IR in `Model/`, Dawn front-end reproducing `api.h` (added members, enum offsets, `*_INIT` defaults); `library`/`exclude`/`names`/`words` in `bindings.json`; public enums, flags, handles, `Bool32`, value structures, internal rest in `NativeMethods`; parameterless constructors apply `*_INIT`; `[StructLayout(Sequential)]`; `DefaultDllImportSearchPaths(AssemblyDirectory \| SafeDirectories)` with CA5393 suppressed on `NativeMethods`; PublicAPI files through the analyzer's fix; regeneration checked by the CI `build` jobs; `tests/Jade.Wgpu.Tests` | [0032](docs/adr/0032-webgpu-raw-layer-generation.md) |
 | C header raw layers | Each target's parse merged into availability; divergences fail unless `opaque` or `exclude`; layouts checked against clang's; macros evaluated by clang into `enums` and `constants`; `types` mapped by name (`ma_vec3f` to `Vector3`, `wchar_t` to `void`); C `bool` with `MarshalAs(U1)` in imports; unions, one `InlineArray` per array member, one `NativeMethods` file per header; SDL3 from `SDL.h` and `SDL_main.h` without `SDL_audio.h`; every opaque miniaudio type allocated by the shim (`opaqueAllocators`) | [0033](docs/adr/0033-c-header-raw-layer-generation.md) |
 | Emscripten interop | Generated from its C headers through the same front-end; header source and targets decided by roadmap task 20 | [0035](docs/adr/0035-emscripten-interop-generation.md) |
+| Layout tests | Size and alignment of every generated structure (unions, anonymous records, mapped .NET types included), size and offset of every member and of the first element of arrays; C side generated into `build/layout/<name>.g.c`, built by xmake into test-only `jade_<name>_layout` libraries (group `layout`, `artifacts/native/test/<rid>/`) that export one table function; C# side generated into `tests/<project>.Tests/Generated/LayoutTests.g.cs`, one test listing every difference, inconclusive without the library | [0036](docs/adr/0036-generated-layout-tests.md) |
 | Natives | Built by us with xmake (CMake for Dawn and SDL3); `build/versions.json` is the single source of versions, each citing its source | [0010](docs/adr/0010-native-builds-with-xmake.md), [0023](docs/adr/0023-repository-layout-and-conventions.md) |
 | Native build | `build/xmake.lua` with one definition per dependency; `scripts/build-native.cs` checks the pinned xmake and CMake, fetches sources with git at the pinned commits (Dawn's `DEPS` entries listed in `build/dawn/deps.json`), runs xmake isolated under `artifacts/native/`; SDL3 without audio and with a required feature list per platform; `MA_API` and Apple `MA_NO_RUNTIME_LINKING` only; upstream library names | [0031](docs/adr/0031-native-build-definitions.md) |
 | D3D12 compilers | DXC built by Dawn and shipped as `dxcompiler.dll`; `d3dcompiler_47.dll` is the system's, never redistributed | [0030](docs/adr/0030-d3d12-shader-compilers.md) |
@@ -95,7 +96,10 @@ Open decisions and the order of the next tasks are in the [roadmap](docs/roadmap
 - MSBuild files (`.csproj`, `.props`, `.targets`) and `Jade.slnx` contain no comments.
 - Repository scripts are .NET file-based apps in `scripts/` and start with a `#!` line.
 - Generated code goes to `Generated/*.g.cs` (public types) and `Generated/Raw/*.g.cs` (internal
-  declarations, namespace `Jade.<Library>.Raw`) in each interop project and is never edited by hand.
+  declarations, namespace `Jade.<Library>.Raw`) in each interop project, to
+  `tests/<project>.Tests/Generated/LayoutTests.g.cs` and to `build/layout/<name>.g.c` (the layout
+  tests), and is never edited by hand. `build/layout/jade_layout.h` and `build/layout/xmake.lua`
+  are hand-written.
 - The binding generator is `scripts/binding-generator.cs`; its code is in
   `scripts/binding-generator/`, one type per file in a folder per concern, each type and member
   with an XML comment. Each generated interop project has a `bindings.json`.
@@ -107,9 +111,10 @@ Open decisions and the order of the next tasks are in the [roadmap](docs/roadmap
   declarations into it by hand.
 - Each generated interop project has a test project `tests/<project>.Tests` with
   `InternalsVisibleTo`; its export and smoke tests use the host's natives copied from
-  `artifacts/native/bin/` and are skipped (`Assert.Inconclusive`) when they are not built. After a
-  change to `build/` (the miniaudio shim, for instance), rebuild the natives: the export tests fail
-  on a stale library.
+  `artifacts/native/bin/`, its layout tests the layout libraries copied from
+  `artifacts/native/test/`, and they are skipped (`Assert.Inconclusive`) when those are not built.
+  After a change to `build/` (the miniaudio shim, for instance) or a regeneration, rebuild the
+  natives: the export and layout tests fail on a stale library.
 - `build/versions.json`: every entry has a `source` saying where its value was verified, and
   dependencies are pinned to full commit hashes; `Jade.Tests` checks both. `THIRD-PARTY-NOTICES.md`
   follows it.
@@ -185,6 +190,13 @@ Re-check these at every SDK or dependency update.
 | C# looks up the enclosing namespaces before the using directives: in `Jade.Wgpu.Raw`, `Buffer` names `Jade.Wgpu.Buffer`; in `Jade.Sdl.Tests`, `Environment` names `Jade.Sdl.Environment` | builds of the interop and test projects | 2026-10-05 |
 | MSTEST0025 reports `Assert.AreEqual` between two compile-time constants as an always-failing assertion | build of `Jade.Sdl.Tests` (MSTest.Analyzers 4.4.1) | 2026-10-05 |
 | `System.Numerics.Vector3` receives an `ma_vec3f` (three `float`) returned by value on `linux-x64` | `Jade.MiniAudio.Tests` | 2026-10-05 |
+| C17 `offsetof` accepts nested designators (`in.u.d`, `arr[0].y`) and their differences in a static initializer; `_Alignof` takes a type name only | GCC 16.2.1 and clang 23.1.1 with `-std=c17 -Wpedantic -Werror` | 2026-10-05 |
+| libclang names a record without tag after its typedef (`typedef struct { … } ma_vec3f;`): `TypedefNameForAnonDecl` is set and `IsAnonymous` is false, and `struct ma_vec3f` would name another type | generator output and GCC build of `build/layout/miniaudio.g.c` | 2026-10-05 |
+| Dawn installs `include/webgpu/webgpu.h`, which includes the generated `include/dawn/webgpu.h`, in its package | `src/dawn/CMakeLists.txt` (`dawn_headers`) at `b1236a9`; the installed package | 2026-10-05 |
+| xmake 3.1.1 builds and installs only the default targets without a target name, and `--group` selects a group's targets whether default or not; `add_packages(name, {links = {}})` replaces the package's links; `add_shflags("-Wl,--as-needed")` lands after the packages' `-l` flags and does not drop them | `get_targets` in `modules/private/action/utils.lua`, `_get_from_packages` in `core/project/target.lua`; `xmake build -v` | 2026-10-05 |
+| The native build's xmake build directory ends up outside the repository: `xmake.conf` stores `--builddir` as `../artifacts/native/obj/<rid>/build`, which resolves from the repository root to its parent's `artifacts/` (not fixed yet) | `artifacts/native/obj/linux-x64/config/.xmake/linux/x86_64/xmake.conf`; `find` | 2026-10-05 |
+| In a C# local, address differences give the offset and size of any member (pointers, function pointers, inline arrays, `&value.Array[0]`), and a sequential `struct { byte; T; }` places an unmanaged `T` at its alignment (1, 8, 8 and 4 for `byte`, `long`, `nint`, `Vector3`) | throwaway app, CoreCLR on `linux-x64` | 2026-10-05 |
+| `Marshal.OffsetOf` gives the offset of the marshalled layout, which need not be the managed one | its documentation | 2026-10-05 |
 
 ## GitHub repository state
 
@@ -231,12 +243,13 @@ Run from the repository root; `global.json` selects the SDK and the test runner.
 | Regenerate the bindings (CI fails on any diff) | `dotnet run scripts/binding-generator.cs` |
 | Declare generated public APIs in `PublicAPI.Unshipped.txt` | `dotnet format analyzers interop/<project>/<project>.csproj --diagnostics RS0016 --severity info --include-generated` |
 | Build the native build script with warnings as errors (not in `Jade.slnx`) | `dotnet build scripts/build-native.cs -c Release -p:TreatWarningsAsErrors=true` |
-| Build the natives for the host (`linux-x64` only; prerequisites in `CONTRIBUTING.md`) | `dotnet run scripts/build-native.cs` |
+| Build the natives and the layout libraries for the host (`linux-x64` only; prerequisites in `CONTRIBUTING.md`) | `dotnet run scripts/build-native.cs` |
 
 - Outputs go to `artifacts/` (`bin/`, `obj/`, `package/release/`, `test/`); the binding generator
   caches the pinned sources in `artifacts/binding-generator/sources/`. The native build writes to
-  `artifacts/native/`: `sources/` (git checkouts), `xmake/` (xmake's global directory), `obj/<rid>/`
-  and `bin/<rid>/` (the libraries).
+  `artifacts/native/`: `sources/` (git checkouts), `xmake/` (xmake's global directory), `obj/<rid>/`,
+  `bin/<rid>/` (the libraries) and `test/<rid>/` (the layout libraries, never packaged); xmake's
+  build directory currently lands outside the repository (see the verified facts).
 - SDK RC 1 bug: `dotnet test` with a relative project path can fail to load the project
   (dotnet/sdk#56196); pass an absolute path or run it from the root without a path.
 - New projects go into `Jade.slnx` with `dotnet sln Jade.slnx add --include-references false

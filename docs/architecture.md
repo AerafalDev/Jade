@@ -66,7 +66,7 @@ The mapping rules are in [0009](adr/0009-interop-mapping-conventions.md) and
 | `Jade.Emscripten` (in `interop/`) | .NET 11, no RID | Emscripten runtime interop, `[SupportedOSPlatform("browser")]` ([0019](adr/0019-browser-and-roslyn-component-targeting.md)). |
 | `Jade.Native.Wgpu`, `Jade.Native.Sdl`, `Jade.Native.MiniAudio` (in `native/`) | packaging only | Native binaries for every RID ([0011](adr/0011-native-package-layout.md)). |
 | `Jade.Tests` (in `tests/`) | .NET 11 | MSTest on Microsoft.Testing.Platform ([0018](adr/0018-test-framework.md)). |
-| `Jade.Wgpu.Tests`, `Jade.Sdl.Tests`, `Jade.MiniAudio.Tests` (in `tests/`) | .NET 11 | Tests of each raw layer, and export and smoke tests against the host's natives ([0032](adr/0032-webgpu-raw-layer-generation.md), [0033](adr/0033-c-header-raw-layer-generation.md)). |
+| `Jade.Wgpu.Tests`, `Jade.Sdl.Tests`, `Jade.MiniAudio.Tests` (in `tests/`) | .NET 11 | Tests of each raw layer, generated layout tests, and export and smoke tests against the host's natives ([0032](adr/0032-webgpu-raw-layer-generation.md), [0033](adr/0033-c-header-raw-layer-generation.md), [0036](adr/0036-generated-layout-tests.md)). |
 
 Every .NET 11 library is AOT-compatible and every package that ships an assembly tracks its public
 API. Build and packaging conventions are in [0021](adr/0021-build-and-packaging-conventions.md);
@@ -137,6 +137,15 @@ flowchart LR
   which allocates every opaque type.
 - Native libraries are imported with `LibraryImport` and searched in the assembly's directory and
   the safe Windows directories (`DefaultDllImportSearchPaths`).
+- The layout tests ([0036](adr/0036-generated-layout-tests.md)) come from the same projection. For
+  each interop library the generator writes `build/layout/<name>.g.c`, which includes what the
+  generator parsed and reports, in a table that one exported function returns, the size and
+  alignment of every generated structure and the size and offset of every member as the C compiler
+  sees them; and `tests/<project>.Tests/Generated/LayoutTests.g.cs`, which measures the C# layout
+  of the same structures and fails with every difference. Unions, anonymous records (reached
+  through the member designators from the record that holds them), the first element of array
+  members and the structures mapped to .NET types (`ma_vec3f` and `System.Numerics.Vector3`) are
+  compared; each record only on the platforms it is available on.
 
 ## Native build and distribution
 
@@ -156,12 +165,16 @@ flowchart LR
 - All natives are compiled by us, for every target ([0010](adr/0010-native-builds-with-xmake.md)).
 - `build/xmake.lua` is the xmake project: Dawn (`build/dawn/`) and SDL3 (`build/sdl/`) are xmake
   packages built through their CMake builds, miniaudio and its shim (`build/miniaudio/`) an xmake
-  target ([0031](adr/0031-native-build-definitions.md)).
+  target ([0031](adr/0031-native-build-definitions.md)). `build/layout/` holds the test-only layout
+  libraries, one per interop library, compiled from the generated sources with the pinned headers
+  (Dawn's from its installed package); they are in the xmake group `layout` and are never default
+  targets ([0036](adr/0036-generated-layout-tests.md)).
 - `scripts/build-native.cs` builds the host's runtime identifier (`linux-x64` only, until roadmap
   task 10). It checks that xmake and CMake are at their pinned versions, fetches each dependency
   with git at its pinned commit into `artifacts/native/sources/`, with the entries of Dawn's `DEPS`
   that `build/dawn/deps.json` lists, runs xmake with its state under `artifacts/native/`, and loads
-  the libraries of `artifacts/native/bin/<rid>/` to check their exports.
+  the libraries of `artifacts/native/bin/<rid>/` to check their exports. It installs the layout
+  libraries apart, into `artifacts/native/test/<rid>/`, which only the test projects copy.
 - Dawn is its monolithic shared library `webgpu_dawn` with Dawn's default backends for the
   platform; on Windows it also ships the `dxcompiler.dll` it builds, and FXC comes from the system
   ([0030](adr/0030-d3d12-shader-compilers.md)). SDL3 is built without its audio subsystem, and the
@@ -260,9 +273,12 @@ Details and verification in [0025](adr/0025-browser-natives-with-workload-emscri
 - Every pull request is built, tested and packed on Linux, Windows and macOS with warnings as
   errors, its formatting is checked, and CodeQL analyzes it (see
   [Repository and supply chain](#repository-and-supply-chain)).
-- Generated layout tests compare C `sizeof`/`offsetof` with the C# layout on every target,
-  WebAssembly included.
-- CI regenerates the bindings on every host and fails if the committed code differs.
+- Generated layout tests compare the size, alignment and member offsets and sizes of every
+  generated structure with what the C compiler gives them, through the layout libraries built with
+  the natives ([0036](adr/0036-generated-layout-tests.md)); they run on the host today and will run
+  on every target, WebAssembly included (roadmap task 18).
+- CI regenerates the bindings and the layout tests on every host and fails if the committed code
+  differs.
 - Each interop assembly's test project checks its raw layer, checks that the host's library
   exports every function imported for its platform, and runs smoke tests against the host's
   natives from `artifacts/native/bin/<rid>/`; they are skipped where the natives are not built.
@@ -310,8 +326,10 @@ miniaudio headers parsed for every RID) and generates the raw layers of `Jade.Wg
 276 functions), `Jade.Sdl` (350 files, 1,177 functions) and `Jade.MiniAudio` (292 files, 955
 functions). On the host, `Jade.Wgpu.Tests` creates a WebGPU instance and requests an adapter,
 `Jade.Sdl.Tests` initializes SDL3 video and creates a window, and `Jade.MiniAudio.Tests`
-initializes a miniaudio context. The idiomatic layers and `Jade.Emscripten`, which will be generated
+initializes a miniaudio context; the generated layout tests of the three libraries match the C
+compiler's layouts of the 526 compared structures. The idiomatic layers and `Jade.Emscripten`, which will be generated
 too ([0035](adr/0035-emscripten-interop-generation.md)), are still to come.
 `scripts/build-native.cs` builds Dawn, SDL3 and miniaudio for `linux-x64` from the definitions of
-`build/`; the other RIDs, CI artifacts and packaging come later. No sample exists yet. The ordered
+`build/`, and the layout libraries of the tests; the other RIDs, CI artifacts and packaging come
+later. No sample exists yet. The ordered
 list of next tasks is in the [roadmap](roadmap.md).

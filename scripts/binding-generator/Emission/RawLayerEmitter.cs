@@ -20,7 +20,7 @@ internal static class RawLayerEmitter
     private const string ToolVersion = "1.0.0";
 
     /// <summary>The attribute that every generated type carries (ADR 0009).</summary>
-    private const string GeneratedCodeAttribute = $"[global::System.CodeDom.Compiler.GeneratedCode(\"{Tool}\", \"{ToolVersion}\")]";
+    public const string GeneratedCodeAttribute = $"[global::System.CodeDom.Compiler.GeneratedCode(\"{Tool}\", \"{ToolVersion}\")]";
 
     /// <summary>
     /// The attribute of a C <c>bool</c> parameter or result: the runtime passes <c>bool</c> as one byte

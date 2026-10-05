@@ -7,16 +7,16 @@ namespace Jade.NativeBuild.Build;
 /// <summary>Checks the installed libraries of a target and reports them.</summary>
 internal static class OutputCheck
 {
-    /// <summary>Checks that the output directory holds exactly the expected libraries, loadable and with their exports.</summary>
-    /// <param name="directory">The output directory of the target.</param>
-    /// <param name="target">The target, which is the host: its libraries are loaded into this process.</param>
+    /// <summary>Checks that an output directory holds exactly the expected libraries, loadable and with their exports.</summary>
+    /// <param name="directory">The output directory.</param>
+    /// <param name="libraries">The libraries of the host's target, which are loaded into this process.</param>
     /// <param name="output">Receives one line per library, with its size and SHA-256.</param>
     /// <param name="cancellationToken">Cancels the hashing and the report.</param>
     /// <returns>A task that completes when every library is checked.</returns>
     /// <exception cref="InvalidDataException">A library is missing, unexpected, not loadable or lacks an export.</exception>
-    public static async Task VerifyAsync(string directory, NativeTarget target, TextWriter output, CancellationToken cancellationToken)
+    public static async Task VerifyAsync(string directory, IReadOnlyList<ExpectedLibrary> libraries, TextWriter output, CancellationToken cancellationToken)
     {
-        var expected = target.Libraries.Select(static library => library.FileName).ToHashSet(StringComparer.Ordinal);
+        var expected = libraries.Select(static library => library.FileName).ToHashSet(StringComparer.Ordinal);
         var unexpected = Directory.EnumerateFileSystemEntries(directory)
             .Select(static entry => Path.GetFileName(entry))
             .Where(name => !expected.Contains(name))
@@ -28,7 +28,7 @@ internal static class OutputCheck
             throw new InvalidDataException($"'{directory}' contains unexpected files: {string.Join(", ", unexpected)}.");
         }
 
-        foreach (var library in target.Libraries)
+        foreach (var library in libraries)
         {
             var path = Path.Combine(directory, library.FileName);
 

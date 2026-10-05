@@ -58,6 +58,14 @@ internal sealed class BuildLayout
         return Path.Combine(NativeArtifactsDirectory, "bin", runtimeIdentifier);
     }
 
+    /// <summary>Gets the directory of the libraries that only the tests load, built for a runtime identifier (ADR 0036).</summary>
+    /// <param name="runtimeIdentifier">The runtime identifier, such as <c>linux-x64</c>.</param>
+    /// <returns>The directory that holds the layout libraries, apart from the libraries the packages ship.</returns>
+    public string GetTestOutputDirectory(string runtimeIdentifier)
+    {
+        return Path.Combine(NativeArtifactsDirectory, "test", runtimeIdentifier);
+    }
+
     /// <summary>Locates the repository from the directory of the entry-point script.</summary>
     /// <param name="scriptDirectory">The directory of <c>build-native.cs</c>, as the SDK reports it.</param>
     /// <returns>The layout of the repository that contains the script.</returns>

@@ -38,15 +38,18 @@ Run the commands from the repository root; `global.json` selects the SDK and the
 Outputs go to `artifacts/`. Tests use MSTest on Microsoft.Testing.Platform
 ([0018](docs/adr/0018-test-framework.md)). The export and smoke tests of the interop projects
 (`tests/Jade.Wgpu.Tests`, `tests/Jade.Sdl.Tests`, `tests/Jade.MiniAudio.Tests`) call the native
-libraries of `artifacts/native/bin/<rid>/`, built as described below; without them they are
-reported as skipped. Rebuild the natives after changing `build/`: the export tests fail on a stale
-library.
+libraries of `artifacts/native/bin/<rid>/`, and their generated layout tests the layout libraries
+of `artifacts/native/test/<rid>/` ([0036](docs/adr/0036-generated-layout-tests.md)), all built as
+described below; without them they are reported as skipped. Rebuild the natives after changing
+`build/` or regenerating: the export tests fail on a stale library, and the layout tests on a stale
+layout library.
 
 ## Native libraries
 
 `dotnet run scripts/build-native.cs` builds Dawn, SDL3 and miniaudio for the machine it runs on into
 `artifacts/native/bin/<rid>/`, from the sources pinned in `build/versions.json`
-([0031](docs/adr/0031-native-build-definitions.md)). Only `linux-x64` is supported so far; the other
+([0031](docs/adr/0031-native-build-definitions.md)), and the layout libraries of the tests into
+`artifacts/native/test/<rid>/`. Only `linux-x64` is supported so far; the other
 targets come with the native CI. The build needs, besides the SDK:
 
 - xmake and CMake at exactly the versions of `build/versions.json`, which the script checks: the
@@ -83,9 +86,10 @@ minutes; later builds reuse them and only rebuild a library whose pinned commit 
 - Comments explain why (invariants, constraints, pitfalls), not what the code does.
 - Public API changes go into the project's `PublicAPI.Unshipped.txt`; the analyzers report any
   change that is missing from it.
-- Generated code lives in `Generated/*.g.cs` and is never edited by hand: change the generator or
-  its configuration (`bindings.json`) and regenerate. CI regenerates the bindings and fails on any
-  difference. When the public declarations change, run the command above to declare them, and
+- Generated code lives in `Generated/*.g.cs` of the interop and test projects, and in
+  `build/layout/*.g.c`, and is never edited by hand: change the generator or its configuration
+  (`bindings.json`) and regenerate. CI regenerates the bindings and the layout tests and fails on
+  any difference. When the public declarations change, run the command above to declare them, and
   remove the lines the build reports as RS0017
   ([0032](docs/adr/0032-webgpu-raw-layer-generation.md)).
 - MSBuild files and `Jade.slnx` contain no comments; assembly- and module-level attributes go in

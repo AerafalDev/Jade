@@ -14,15 +14,19 @@ internal sealed class XmakeProject(BuildLayout layout, NativeTarget target)
     /// </summary>
     private static readonly string[] _ignoredVariables = ["CFLAGS", "CXXFLAGS", "CPPFLAGS", "LDFLAGS", "CMAKE_GENERATOR", "CMAKE_TOOLCHAIN_FILE"];
 
-    /// <summary>Configures, builds and installs the libraries of the target.</summary>
+    /// <summary>The xmake group of the layout libraries, which are not default targets (<c>build/layout/xmake.lua</c>).</summary>
+    private const string TestGroup = "layout";
+
+    /// <summary>Configures, builds and installs the libraries of the target, and the libraries of the tests.</summary>
     /// <param name="options">The project options (<c>--name=value</c>) of <c>build/xmake.lua</c>.</param>
     /// <param name="cancellationToken">Stops xmake.</param>
-    /// <returns>The directory the libraries are installed to.</returns>
+    /// <returns>The directories the libraries and the test libraries are installed to.</returns>
     /// <exception cref="CommandFailedException">xmake fails.</exception>
-    public async Task<string> BuildAsync(IReadOnlyList<string> options, CancellationToken cancellationToken)
+    public async Task<(string Output, string TestOutput)> BuildAsync(IReadOnlyList<string> options, CancellationToken cancellationToken)
     {
         var objectDirectory = layout.GetObjectDirectory(target.RuntimeIdentifier);
         var outputDirectory = layout.GetOutputDirectory(target.RuntimeIdentifier);
+        var testOutputDirectory = layout.GetTestOutputDirectory(target.RuntimeIdentifier);
         var environment = CreateEnvironment(objectDirectory);
         string[] project = ["--project=" + layout.XmakeProjectDirectory];
 
@@ -45,16 +49,27 @@ internal sealed class XmakeProject(BuildLayout layout, NativeTarget target)
             cancellationToken).ConfigureAwait(false);
 
         await RunAsync(["build", .. project, "--yes"], environment, cancellationToken).ConfigureAwait(false);
+        await RunAsync(["build", .. project, "--group=" + TestGroup, "--yes"], environment, cancellationToken).ConfigureAwait(false);
 
-        // Files left by a previous build would end up in the packages.
-        if (Directory.Exists(outputDirectory))
-        {
-            Directory.Delete(outputDirectory, recursive: true);
-        }
+        // Files left by a previous build would end up in the packages, or be loaded by the tests.
+        DeleteDirectory(outputDirectory);
+        DeleteDirectory(testOutputDirectory);
 
+        // Without a group, xmake installs the default targets only, which leaves the test libraries out of the packages.
         await RunAsync(["install", .. project, "--installdir=" + outputDirectory, "--yes"], environment, cancellationToken).ConfigureAwait(false);
+        await RunAsync(["install", .. project, "--group=" + TestGroup, "--installdir=" + testOutputDirectory, "--yes"], environment, cancellationToken).ConfigureAwait(false);
 
-        return outputDirectory;
+        return (outputDirectory, testOutputDirectory);
+    }
+
+    /// <summary>Deletes a directory and its content if it exists.</summary>
+    /// <param name="path">The directory.</param>
+    private static void DeleteDirectory(string path)
+    {
+        if (Directory.Exists(path))
+        {
+            Directory.Delete(path, recursive: true);
+        }
     }
 
     /// <summary>Runs xmake.</summary>

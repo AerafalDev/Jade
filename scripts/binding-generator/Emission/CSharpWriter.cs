@@ -2,7 +2,7 @@ using System.Text;
 
 namespace Jade.BindingGenerator.Emission;
 
-/// <summary>Builds C# source text with four-space indentation and LF line endings, whatever the host.</summary>
+/// <summary>Builds C# or C source text with four-space indentation and LF line endings, whatever the host.</summary>
 internal sealed class CSharpWriter
 {
     /// <summary>One level of indentation.</summary>

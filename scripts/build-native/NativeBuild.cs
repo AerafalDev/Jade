@@ -6,7 +6,10 @@ using Jade.NativeBuild.Tools;
 
 namespace Jade.NativeBuild;
 
-/// <summary>Entry point of the native build: builds Dawn, SDL3 and miniaudio for the host from <c>build/versions.json</c>.</summary>
+/// <summary>
+/// Entry point of the native build: builds Dawn, SDL3 and miniaudio for the host from
+/// <c>build/versions.json</c>, and the layout libraries of the tests (ADR 0036).
+/// </summary>
 internal static class NativeBuild
 {
     /// <summary>The exit code of a build that completed.</summary>
@@ -57,10 +60,12 @@ internal static class NativeBuild
                 options.Add($"--{package}_key={key}");
             }
 
-            var outputDirectory = await new XmakeProject(layout, target).BuildAsync(options, cancellationToken).ConfigureAwait(false);
+            var (outputDirectory, testOutputDirectory) = await new XmakeProject(layout, target).BuildAsync(options, cancellationToken).ConfigureAwait(false);
 
             await output.WriteLineAsync($"Built {target.RuntimeIdentifier} into {outputDirectory}:".AsMemory(), cancellationToken).ConfigureAwait(false);
-            await OutputCheck.VerifyAsync(outputDirectory, target, output, cancellationToken).ConfigureAwait(false);
+            await OutputCheck.VerifyAsync(outputDirectory, target.Libraries, output, cancellationToken).ConfigureAwait(false);
+            await output.WriteLineAsync($"Built the test libraries of {target.RuntimeIdentifier} into {testOutputDirectory}:".AsMemory(), cancellationToken).ConfigureAwait(false);
+            await OutputCheck.VerifyAsync(testOutputDirectory, target.TestLibraries, output, cancellationToken).ConfigureAwait(false);
 
             return SuccessExitCode;
         }

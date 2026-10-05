@@ -35,4 +35,23 @@ internal static class OutputReport
             await writer.WriteLineAsync(line.AsMemory(), cancellationToken).ConfigureAwait(false);
         }
     }
+
+    /// <summary>Writes the report of one library's layout tests (ADR 0036).</summary>
+    /// <param name="writer">The writer to report to.</param>
+    /// <param name="layouts">The projected layout tests.</param>
+    /// <param name="testDirectory">The directory of the generated C# tests, relative to the repository root.</param>
+    /// <param name="testUpdate">What the update of that directory changed.</param>
+    /// <param name="nativeSource">The generated C source, relative to the repository root.</param>
+    /// <param name="nativeWritten">Whether the C source was written because it was new or differed.</param>
+    /// <param name="cancellationToken">Cancels the write.</param>
+    /// <returns>A task that completes when the report is written.</returns>
+    public static async Task WriteLayoutsAsync(TextWriter writer, ProjectedLayouts layouts, string testDirectory, GeneratedDirectoryUpdate testUpdate, string nativeSource, bool nativeWritten, CancellationToken cancellationToken)
+    {
+        var members = layouts.Records.Sum(static record => record.Members.Count);
+        var line = string.Create(
+            CultureInfo.InvariantCulture,
+            $"  layout tests: {layouts.Records.Count} structures, {members} members; {testDirectory} ({testUpdate.Written} written, {testUpdate.Deleted} deleted), {nativeSource} ({(nativeWritten ? "written" : "unchanged")})");
+
+        await writer.WriteLineAsync(line.AsMemory(), cancellationToken).ConfigureAwait(false);
+    }
 }

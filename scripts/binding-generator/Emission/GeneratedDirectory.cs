@@ -43,22 +43,28 @@ internal static class GeneratedDirectory
             }
         }
 
-        var written = 0;
-
-        foreach (var file in files)
-        {
-            var path = Path.Combine(directory, file.Name);
-            var content = _encoding.GetBytes(file.Content);
-
-            _ = Directory.CreateDirectory(Path.GetDirectoryName(path)!);
-
-            if (!File.Exists(path) || !File.ReadAllBytes(path).AsSpan().SequenceEqual(content))
-            {
-                File.WriteAllBytes(path, content);
-                written++;
-            }
-        }
+        var written = files.Count(file => WriteFile(Path.Combine(directory, file.Name), file.Content));
 
         return new GeneratedDirectoryUpdate(files.Count, written, deleted);
+    }
+
+    /// <summary>Writes a generated file unless it already has this content, so that its timestamp does not trigger rebuilds.</summary>
+    /// <param name="path">The path of the file.</param>
+    /// <param name="content">The content, with LF line endings.</param>
+    /// <returns><see langword="true"/> when the file was new or differed and was written.</returns>
+    public static bool WriteFile(string path, string content)
+    {
+        var bytes = _encoding.GetBytes(content);
+
+        _ = Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+
+        if (File.Exists(path) && File.ReadAllBytes(path).AsSpan().SequenceEqual(bytes))
+        {
+            return false;
+        }
+
+        File.WriteAllBytes(path, bytes);
+
+        return true;
     }
 }

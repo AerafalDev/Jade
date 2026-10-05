@@ -14,6 +14,14 @@ namespace Jade.BindingGenerator.Dawn;
 /// </remarks>
 internal sealed class DawnModelBuilder
 {
+    /// <summary>
+    /// The header that declares the API in C, as an <c>#include</c> writes it: Dawn's build
+    /// generates <c>dawn/webgpu.h</c> from <c>api.h</c> and installs it with
+    /// <c>webgpu/webgpu.h</c>, which includes it (<c>dawn_headers</c> in <c>src/dawn/CMakeLists.txt</c>).
+    /// The layout tests compile against it (ADR 0036).
+    /// </summary>
+    public const string Header = "webgpu/webgpu.h";
+
     /// <summary>The canonical name of the enum that identifies chained structures.</summary>
     private const string StructureTypeEnumName = "s type";
 
@@ -222,6 +230,7 @@ internal sealed class DawnModelBuilder
             CName = ChainedStructCName,
             Words = ["chained", "struct"],
             Availability = Platforms.All,
+            CTypeName = ChainedStructCName,
             Members =
             [
                 new StructureMember
@@ -462,6 +471,7 @@ internal sealed class DawnModelBuilder
             Words = DawnNames.GetWords(name),
             Availability = availability,
             Members = members,
+            CTypeName = cName,
             InitializerCName = DawnNames.GetInitializerName(_prefix, name),
             IsOutput = entry.Out || extensible == ChainDirection.Out || chained == ChainDirection.Out,
             IsCallbackInfo = isCallbackInfo,

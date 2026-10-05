@@ -28,6 +28,33 @@ internal sealed class RepositoryLayout
     /// <summary>Gets the directory of the interop projects.</summary>
     public string InteropDirectory => Path.Combine(Root, "interop");
 
+    /// <summary>Gets the directory of the C sources of the layout libraries, relative to the repository root with <c>/</c> separators (ADR 0036).</summary>
+    public static string LayoutSourcePath => "build/layout";
+
+    /// <summary>Gets the directory of the C sources of the layout libraries, which the native build compiles (ADR 0036).</summary>
+    public string LayoutSourceDirectory => Path.Combine(Root, LayoutSourcePath);
+
+    /// <summary>Gets the directory that receives the generated tests of an interop project, <c>Generated/</c> in its test project.</summary>
+    /// <param name="project">The interop project, such as <c>Jade.Sdl</c>.</param>
+    /// <returns>The directory, in <c>tests/&lt;project&gt;.Tests/</c>.</returns>
+    /// <exception cref="InvalidDataException">The interop project has no test project.</exception>
+    public string GetTestGeneratedDirectory(string project)
+    {
+        var testProject = Path.Combine(Root, "tests", $"{project}.Tests");
+
+        return Directory.Exists(testProject)
+            ? Path.Combine(testProject, "Generated")
+            : throw new InvalidDataException($"{project} has no test project in '{testProject}', which receives its layout tests.");
+    }
+
+    /// <summary>Gets the path of a file or directory relative to the repository root, as the reports show it.</summary>
+    /// <param name="path">The absolute path.</param>
+    /// <returns>The relative path, with <c>/</c> separators on every host.</returns>
+    public string GetRelativePath(string path)
+    {
+        return Path.GetRelativePath(Root, path).Replace('\\', '/');
+    }
+
     /// <summary>Locates the repository from the directory of the entry-point script.</summary>
     /// <param name="scriptDirectory">The directory of <c>binding-generator.cs</c>, as the SDK reports it.</param>
     /// <returns>The layout of the repository that contains the script.</returns>

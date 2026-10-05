@@ -18,8 +18,8 @@ Status: `done`, `next`, `planned`.
 | 6 | Native build for the host platform | 2, 4 | done |
 | 7 | Generator: WebGPU raw layer | 2, 5, 6 | done |
 | 8 | Generator: SDL3 and miniaudio raw layers | 5, 6 | done |
-| 9 | Generated layout tests on the host | 6, 7, 8 | next |
-| 10 | Native CI matrix for every RID | 3, 6 | planned |
+| 9 | Generated layout tests on the host | 6, 7, 8 | done |
+| 10 | Native CI matrix for every RID | 3, 6 | next |
 | 11 | `Jade.Native.*` packaging | 10 | planned |
 | 12 | WebGPU idiomatic layer | 7 | planned |
 | 13 | SDL3 and miniaudio idiomatic layers | 8 | planned |
@@ -144,15 +144,22 @@ miniaudio opaque types), [0034](adr/0034-raw-layer-with-dotnet-names.md) (raw la
 supersedes 0028) and [0035](adr/0035-emscripten-interop-generation.md) (`Jade.Emscripten` will be
 generated, roadmap task 20).
 
-### 9. Generated layout tests on the host
+### 9. Generated layout tests on the host (done, 2026-10-05)
 
-- `sizeof`/`offsetof` comparison between C and C# for every generated struct
-  ([0009](adr/0009-interop-mapping-conventions.md)), in each interop assembly's test project; the
-  layout emitter maps C names to C# names from the projection
-  ([0032](adr/0032-webgpu-raw-layer-generation.md), [0034](adr/0034-raw-layer-with-dotnet-names.md)).
-- Cover what task 8 added: unions, inline arrays, anonymous records, and the C types mapped to .NET
-  types (`ma_vec3f` and `System.Numerics.Vector3`); opaque types have no managed layout to compare.
-- Done when the tests pass on the host and fail when a layout is deliberately broken.
+The generator writes, for each interop library, `build/layout/<name>.g.c`, which reports the size
+and alignment of every generated structure and the size and offset of every member as the C
+compiler sees them, and `tests/<project>.Tests/Generated/LayoutTests.g.cs`, which measures the C#
+layout and compares: 195 structures for `Jade.Wgpu`, 125 for `Jade.Sdl`, 205 and `ma_vec3f` (as
+`System.Numerics.Vector3`) for `Jade.MiniAudio`, unions, anonymous records and the first element of
+every array member included. The intermediate representation records how C names each record and
+where an anonymous one lies in its parent, and keeps the members of structures mapped to .NET
+types. `build/layout/xmake.lua` builds the sources into test-only libraries
+(`jade_<name>_layout`, xmake group `layout`), which `scripts/build-native.cs` installs into
+`artifacts/native/test/<rid>/`; the test projects copy them. The tests pass on `linux-x64` and fail,
+listing every difference, when a C# field type, a field order, an inline array length or a mapped
+.NET type is wrong. The CI regeneration check covers `build/layout/` and `tests/`. Decision:
+[0036](adr/0036-generated-layout-tests.md) (what is compared, the generated C source, the layout
+libraries, how the tests load them).
 
 ### 10. Native CI matrix for every RID
 
@@ -165,6 +172,9 @@ generated, roadmap task 20).
   Emscripten versions match `build/versions.json`.
 - Validate Emdawnwebgpu with the workload's Emscripten (Dawn tests it with emsdk 5.0.6), and the
   use of the workload's toolchain outside MSBuild.
+- Build the layout libraries of [0036](adr/0036-generated-layout-tests.md) for every RID too, as
+  test-only artifacts (static archives for iOS and the browser; MSVC needs C11 or later for
+  `_Alignof`).
 - Extend `build/` and `build-native.cs` to every RID ([0031](adr/0031-native-build-definitions.md)):
   SDL3 feature lists per platform, the built DXC and its `DEPS` entry on Windows
   ([0030](adr/0030-d3d12-shader-compilers.md)), `MA_NO_RUNTIME_LINKING` and Objective-C for
@@ -234,6 +244,12 @@ generated, roadmap task 20).
 
 ### 18. Layout tests on every target in CI
 
+- Run the generated tests of [0036](adr/0036-generated-layout-tests.md) with each target's layout
+  libraries. **Decision to take:** how the tests reach `jade_<name>_layout` where the layout
+  library is a static archive linked into the test application (iOS, browser) rather than a file
+  `NativeLibrary.TryLoad` finds.
+- Verify the C# measurements (the generic alignment probe, address differences) under NativeAOT,
+  Mono on iOS and Android, and Mono WebAssembly.
 - Done when the generated layout tests pass on every RID family, WebAssembly included.
 
 ### 19. NuGet publication
@@ -264,6 +280,7 @@ generated, roadmap task 20).
 | Output structures and extensions of nested chain roots | 12 |
 | Names that collide with framework types; SDL3 GPU and renderer APIs; miniaudio `_w` functions | 12, 13 |
 | Source of Emscripten's headers and per-library targets | 20 |
+| How the layout tests reach statically linked layout libraries | 18 |
 | `required` members, public constants, the `Buffer` name | 12 |
 | Native build runners, frequency and caching; emulator tests | 10, 16 |
 | Package versioning and release workflow | 19 |

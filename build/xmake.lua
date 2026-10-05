@@ -1,4 +1,5 @@
--- Native libraries of the Jade.Native.* packages (docs/adr/0010, docs/adr/0031).
+-- Native libraries of the Jade.Native.* packages (docs/adr/0010, docs/adr/0031), and the layout
+-- libraries that only the tests load (docs/adr/0036).
 --
 -- scripts/build-native.cs fetches the sources at the commits pinned in build/versions.json and
 -- configures this project with their locations; running xmake by hand needs the same options.
@@ -34,4 +35,4 @@ for _, name in ipairs({"dawn", "sdl"}) do
     option_end()
 end
 
-includes("dawn", "sdl", "miniaudio")
+includes("dawn", "sdl", "miniaudio", "layout")
