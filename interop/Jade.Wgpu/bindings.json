@@ -1,0 +1,7 @@
+{
+  "dependency": "dawn",
+  "sources": [
+    "src/dawn/dawn.json"
+  ],
+  "dawnJson": "src/dawn/dawn.json"
+}

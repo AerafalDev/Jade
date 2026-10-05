@@ -67,6 +67,10 @@ tools are out of scope for now.
 | Generator | In-house file-based app; `dawn.json` and libclang (ClangSharp, parser only); output committed and checked by CI | [0007](docs/adr/0007-in-house-binding-generator.md) |
 | Interop layers | Raw blittable layer plus idiomatic layer | [0008](docs/adr/0008-two-layer-interop.md) |
 | Interop mapping | `LibraryImport`, `CLong`/`nuint`, `InlineArray`, unions at offset 0, function-pointer callbacks, handles, descriptors, layout tests | [0009](docs/adr/0009-interop-mapping-conventions.md) |
+| Generator pipeline | Inputs fetched at the pinned commits, `dawn.json` and clang front-ends, one intermediate representation with per-platform availability, annotations from `interop/<project>/bindings.json`, then projection and emitters; C headers parsed for the 12 RID triples with the ClangSharp package's libclang, `-nostdinc` and the generator's own C runtime headers; `MA_*` defines in `build/miniaudio/config.h` | [0026](docs/adr/0026-binding-generator-pipeline.md) |
+| Mapping rules | .NET names without C prefixes, typedefs mapped by name, dedicated integer booleans, macros evaluated by clang, no variadic or inline functions, platform attributes from availability, XML comments on generated members | [0027](docs/adr/0027-interop-mapping-rules.md) |
+| Raw layer | Internal with C names; types identical in both layers are public; handles expose their `nint` | [0028](docs/adr/0028-internal-raw-interop-layer.md) |
+| Descriptors and chains | Value structures shared and pinned, `ref struct` descriptor mirrors, element mirrors with `ReadOnlyMemory<T>`, stack-based arena for nested data, `IChainedExtension<TSelf, TRoot>` generic overloads | [0029](docs/adr/0029-descriptors-and-chained-structs.md) |
 | Natives | Built by us with xmake (CMake for Dawn and SDL3); `build/versions.json` is the single source of versions, each citing its source | [0010](docs/adr/0010-native-builds-with-xmake.md), [0023](docs/adr/0023-repository-layout-and-conventions.md) |
 | Native packages | `runtimes/{rid}/native`; `buildTransitive/` for iOS and the browser | [0011](docs/adr/0011-native-package-layout.md) |
 | Targets | 12 RIDs, universal macOS and iOS simulator binaries, old glibc; adding a RID needs an ADR | [0012](docs/adr/0012-supported-targets.md) |
@@ -86,6 +90,9 @@ Open decisions and the order of the next tasks are in the [roadmap](docs/roadmap
 - MSBuild files (`.csproj`, `.props`, `.targets`) and `Jade.slnx` contain no comments.
 - Repository scripts are .NET file-based apps in `scripts/` and start with a `#!` line.
 - Generated code goes to `Generated/*.g.cs` in each interop project and is never edited by hand.
+- The binding generator is `scripts/binding-generator.cs`; its code is in
+  `scripts/binding-generator/`, one type per file in a folder per concern, each type and member
+  with an XML comment. Each generated interop project has a `bindings.json`.
 - `build/versions.json`: every entry has a `source` saying where its value was verified, and
   dependencies are pinned to full commit hashes; `Jade.Tests` checks both. `THIRD-PARTY-NOTICES.md`
   follows it.
@@ -133,6 +140,14 @@ Re-check these at every SDK or dependency update.
 | OpenSSF Scorecard's Pinned-Dependencies check counts `dotnet restore` without `--locked-mode` as an unpinned dependency | `checks/raw/shell_download_validate.go` in `ossf/scorecard` | 2026-10-05 |
 | Dependabot's NuGet updater supports `.slnx` and central package management, and installs the `global.json` SDK with `dotnet-install --version` | `nuget/` in `dependabot/dependabot-core` | 2026-10-05 |
 | The ruleset's extra approval for unattributed pull requests only applies to pull requests Copilot opens under its own identity and has no effect with zero required approvals | GitHub docs, "Available rules for rulesets" | 2026-10-05 |
+| ClangSharp 21.1.8.4 depends on `libClang` 21.1.8 and `libClangSharp` 21.1.8.2; `libClang` picks a runtime package through `runtime.json` for `linux-x64`, `linux-arm64`, `osx-arm64`, `win-x64` and `win-arm64` only, and that package holds `libclang.so` without clang's builtin headers | nuspecs and package content on nuget.org | 2026-10-05 |
+| A file-based app restores RID-specific runtime packages only with a runtime identifier: `#:property UseCurrentRuntimeIdentifier=true` sets it to `NETCoreSdkPortableRuntimeIdentifier`, and `PublishAot` stays `true` | `Microsoft.NET.RuntimeIdentifierInference.targets`; `dotnet build scripts/binding-generator.cs -getProperty:RuntimeIdentifier` | 2026-10-05 |
+| `#:include` accepts globs (`binding-generator/*.cs`), which do not match subfolders, and `AppContext.GetData("EntryPointFileDirectoryPath")` gives a file-based app its script directory | throwaway apps and `scripts/binding-generator.cs` | 2026-10-05 |
+| `dotnet package add <id> --version <v> --file <app>.cs` adds `#:package <id>` and the `PackageVersion`, but rewrites `Directory.Packages.props` without its blank lines and final newline | adding ClangSharp to the generator | 2026-10-05 |
+| `dotnet format` does not restore the `#:package` references of a file-based app (CS0246), so a script's formatting is checked by its build (`EnforceCodeStyleInBuild`, IDE0055) | `dotnet format scripts/binding-generator.cs --verify-no-changes` | 2026-10-05 |
+| libclang 21.1.8 with `-nostdinc -ffreestanding` and the generator's headers parses SDL3 and miniaudio for the 12 RID triples without a diagnostic; it defines the `TARGET_OS_*` macros for Apple triples | `dotnet run scripts/binding-generator.cs` | 2026-10-05 |
+| `ReadOnlySpan<T>` rejects a `ref struct` element type (CS9244; CS9358 for a collection expression); a public interface can declare an `internal static abstract` member that uses internal types | throwaway apps with SDK `11.0.100-rc.1.26425.128` | 2026-10-05 |
+| PublicApiAnalyzers analyzes and reports on generated code, and tracks `[Experimental]` APIs | `DeclarePublicApiAnalyzer.cs` and `DeclarePublicApiAnalyzer.Impl.cs` in `dotnet/roslyn` main | 2026-10-05 |
 
 ## GitHub repository state
 
@@ -175,8 +190,11 @@ Run from the repository root; `global.json` selects the SDK and the test runner.
 | Check formatting | `dotnet format --verify-no-changes` |
 | Pack (with package validation) | `dotnet pack -c Release -p:TreatWarningsAsErrors=true -p:ContinuousIntegrationBuild=true` |
 | Run a script | `dotnet run scripts/<name>.cs` |
+| Build the binding generator as CI will (not in `Jade.slnx`) | `dotnet build scripts/binding-generator.cs -c Release -p:TreatWarningsAsErrors=true` |
+| Load the binding generator's pinned inputs | `dotnet run scripts/binding-generator.cs` |
 
-- Outputs go to `artifacts/` (`bin/`, `obj/`, `package/release/`, `test/`).
+- Outputs go to `artifacts/` (`bin/`, `obj/`, `package/release/`, `test/`); the binding generator
+  caches the pinned sources in `artifacts/binding-generator/sources/`.
 - SDK RC 1 bug: `dotnet test` with a relative project path can fail to load the project
   (dotnet/sdk#56196); pass an absolute path or run it from the root without a path.
 - New projects go into `Jade.slnx` with `dotnet sln Jade.slnx add --include-references false

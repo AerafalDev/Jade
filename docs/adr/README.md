@@ -30,3 +30,7 @@ Important or hard-to-reverse decisions are recorded here, one per file, as descr
 | [0023](0023-repository-layout-and-conventions.md) | Repository layout and content conventions | Accepted |
 | [0024](0024-minimum-os-versions.md) | Minimum operating system versions | Accepted |
 | [0025](0025-browser-natives-with-workload-emscripten.md) | Browser natives built with the .NET workload's Emscripten toolchain | Accepted |
+| [0026](0026-binding-generator-pipeline.md) | Binding generator pipeline and intermediate representation | Accepted |
+| [0027](0027-interop-mapping-rules.md) | Remaining interop mapping rules | Accepted |
+| [0028](0028-internal-raw-interop-layer.md) | Internal raw interop layer | Accepted |
+| [0029](0029-descriptors-and-chained-structs.md) | Descriptors and chained structures in the idiomatic layer | Accepted |
