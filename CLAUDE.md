@@ -76,6 +76,7 @@ tools are out of scope for now.
 | Tests | MSTest on Microsoft.Testing.Platform, plain packages under central management; `internal sealed` test classes with `DiscoverInternals` | [0018](docs/adr/0018-test-framework.md) |
 | Public API | `params ReadOnlySpan<T>`, UTF-8 plus `string` overloads, extension members, platform attributes, feature switches | [0016](docs/adr/0016-public-api-conventions.md) |
 | GitHub | Squash only, ruleset on `main`, secret scanning, Dependabot, CodeQL, Scorecard, SHA-pinned actions | [0017](docs/adr/0017-github-repository-baseline.md) |
+| CI | GitHub-hosted standard runners with pinned images (`ubuntu-24.04`, `windows-2025`, `macos-26`; `ubuntu-slim` for API-only jobs), check names without runner labels, no cache | [0022](docs/adr/0022-ci-runners-and-caching.md) |
 
 Open decisions and the order of the next tasks are in the [roadmap](docs/roadmap.md).
 
@@ -92,6 +93,10 @@ Open decisions and the order of the next tasks are in the [roadmap](docs/roadmap
 - Public texts (repository description, README introduction, NuGet descriptions and tags) never
   name Dawn, WebGPU, SDL3 or miniaudio; only `CONTRIBUTING.md`, `docs/` and
   `THIRD-PARTY-NOTICES.md` do.
+- Workflows set `permissions: {}` at the top and explicit permissions per job, check out with
+  `persist-credentials: false`, and pin every action to a full commit SHA followed by its version
+  in a comment (`# v7.0.1`), taken from the action's release, never from memory. Renaming a
+  required job means updating the ruleset in the same pull request.
 
 ## Verified toolchain facts
 
@@ -114,31 +119,41 @@ Re-check these at every SDK or dependency update.
 | No MSBuild property exists for `SkipLocalsInit`; it is `[module: SkipLocalsInit]` | search of the SDK's `.props`/`.targets` | 2026-10-05 |
 | A packaging project without build output fails to pack a symbol package (NU5017) | `dotnet pack` of `Jade.Native.*` with `IncludeSymbols` | 2026-10-05 |
 | xmake 3.1.1 writes `.xmake/` and `build/` next to `xmake.lua` (so `build/.xmake/` and `build/build/` here) | throwaway xmake project | 2026-10-05 |
+| The CI runner images (`ubuntu-24.04`, `windows-2025`, `macos-26`) preinstall .NET SDKs up to 10.0 only; `actions/setup-dotnet` 6.0.0 installs the exact `global.json` version for prerelease SDKs, and its `cache` input requires `packages.lock.json` | `actions/runner-images` READMEs; `setup-dotnet` README at `v6.0.0` | 2026-10-05 |
+| `dotnet format --verify-no-changes` run from the root finds `Jade.slnx` and exits with code 2 on a whitespace violation; `dotnet format --help` without a workspace fails in RC 1 (missing `dotnet-format.dll` path) | injected violation in a test file | 2026-10-05 |
+| CodeQL officially supports C# up to 14 and .NET up to 10, so C# 15 code is analyzed outside its supported range | `docs/codeql/reusables/supported-versions-compilers.rst` in `github/codeql` | 2026-10-05 |
+| OpenSSF Scorecard's Pinned-Dependencies check counts `dotnet restore` without `--locked-mode` as an unpinned dependency | `checks/raw/shell_download_validate.go` in `ossf/scorecard` | 2026-10-05 |
+| Dependabot's NuGet updater supports `.slnx` and central package management, and installs the `global.json` SDK with `dotnet-install --version` | `nuget/` in `dependabot/dependabot-core` | 2026-10-05 |
+| The ruleset's extra approval for unattributed pull requests only applies to pull requests Copilot opens under its own identity and has no effect with zero required approvals | GitHub docs, "Available rules for rulesets" | 2026-10-05 |
 
 ## GitHub repository state
 
-Applied on 2026-10-05 (first phase of [0017](docs/adr/0017-github-repository-baseline.md)):
+Applied on 2026-10-05 (both phases of [0017](docs/adr/0017-github-repository-baseline.md), which
+records every settings change):
 
 - Public repository `AerafalDev/Jade`, default branch `main`, description and topics set, no
   homepage yet.
 - Squash merge only (subject: PR title, body: blank), "update branch" enabled, head branches
   deleted after merge, auto-merge disabled; wiki, projects and discussions disabled.
-- Labels synchronized once from `.github/labels.yml` with `gh`.
+- Labels synchronized from `.github/labels.yml` by the `labels.yml` workflow on every change to
+  `main` (dry run on pull requests).
 - Private vulnerability reporting, Dependabot alerts and security updates, secret scanning and
-  push protection enabled.
+  push protection enabled; Dependabot version updates from `.github/dependabot.yml`.
 - Actions: default `GITHUB_TOKEN` read-only and unable to approve pull requests; full-SHA pinning
-  required.
-- Ruleset `main` on the default branch, no bypass: pull request required (0 approvals, squash
-  only), no deletion, no force push, linear history.
+  required; all actions allowed.
+- Ruleset `main` (id `24485772`) on the default branch, no bypass: pull request required
+  (0 approvals, squash only), no deletion, no force push, linear history, required status checks
+  `format`, `build (linux)`, `build (windows)`, `build (macos)`, `analyze (csharp)` and
+  `analyze (actions)` from GitHub Actions (app id `15368`), branch up to date with `main`.
 - The ruleset API turned on `require_extra_approval_for_unattributed_changes` by default: a pull
   request opened by Copilot under its own identity needs one extra approval from someone with
-  write access. It stays enabled. Declare it explicitly in every ruleset update, since an omitted
-  value is reset to `true`.
+  write access. It stays enabled; with zero required approvals it has no effect, Dependabot pull
+  requests included. Declare it explicitly in every ruleset update, since an omitted value is
+  reset to `true`. A ruleset update is a `PUT` of the whole ruleset with `gh api`.
 
-Pending, for the CI setup task (roadmap task 3): `dependabot.yml`, CodeQL, required checks in the
-ruleset, OpenSSF Scorecard, attestations, label synchronization workflow, labeler, CI/CodeQL/
-Scorecard badges. The social preview image (`docs/assets/social-preview.jpg`) is uploaded by hand
-in the repository settings; the REST API has no endpoint for it.
+Pending: provenance attestations (tasks 10 and 19) and CodeQL for C/C++ (task 10). The social
+preview image (`docs/assets/social-preview.jpg`) is uploaded by hand in the repository settings;
+the REST API has no endpoint for it.
 
 ## Commands
 
@@ -149,6 +164,7 @@ Run from the repository root; `global.json` selects the SDK and the test runner.
 | Restore | `dotnet restore` |
 | Build as CI does | `dotnet build -c Release -p:TreatWarningsAsErrors=true -p:ContinuousIntegrationBuild=true` |
 | Test (MSTest on MTP) | `dotnet test -c Release` |
+| Check formatting | `dotnet format --verify-no-changes` |
 | Pack (with package validation) | `dotnet pack -c Release -p:TreatWarningsAsErrors=true -p:ContinuousIntegrationBuild=true` |
 | Run a script | `dotnet run scripts/<name>.cs` |
 

@@ -1,0 +1,63 @@
+name: Bug report
+description: Something does not work as documented or as expected.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not report security vulnerabilities here: follow [SECURITY.md](https://github.com/AerafalDev/Jade/blob/main/SECURITY.md) instead.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What happens, and what did you expect instead?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: The steps, or the smallest code or project, that reproduce the problem.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: platforms
+    attributes:
+      label: Platforms
+      description: Where does it happen?
+      multiple: true
+      options:
+        - Windows
+        - Linux
+        - macOS
+        - Android
+        - iOS
+        - Browser (WebAssembly)
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: OS version and architecture, browser if relevant, and the output of `dotnet --version`.
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Jade version
+      description: The package version, or the commit you built from.
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Error messages, stack traces or build output.
+      render: text

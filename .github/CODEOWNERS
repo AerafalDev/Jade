@@ -1,0 +1,3 @@
+# Requests the maintainer's review on every pull request. The ruleset does not require code owner
+# approval while the project has a single maintainer.
+* @AerafalDev

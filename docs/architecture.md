@@ -152,6 +152,9 @@ Details and verification in [0013](adr/0013-browser-native-toolchain.md).
 
 ## Verification strategy
 
+- Every pull request is built, tested and packed on Linux, Windows and macOS with warnings as
+  errors, its formatting is checked, and CodeQL analyzes it (see
+  [Repository and supply chain](#repository-and-supply-chain)).
 - Generated layout tests compare C `sizeof`/`offsetof` with the C# layout on every target,
   WebAssembly included.
 - CI regenerates the bindings and fails if the committed code differs.
@@ -166,13 +169,31 @@ Details and verification in [0013](adr/0013-browser-native-toolchain.md).
 ## Repository and supply chain
 
 GitHub settings, security features and their phasing are described in
-[0017](adr/0017-github-repository-baseline.md).
+[0017](adr/0017-github-repository-baseline.md); runners and caching in
+[0022](adr/0022-ci-runners-and-caching.md).
+
+| Workflow | Trigger | Role |
+| --- | --- | --- |
+| `ci.yml` | pull requests, pushes to `main` | `format` (`dotnet format --verify-no-changes`), then restore, build with warnings as errors, test and pack with package validation on `build (linux)`, `build (windows)` and `build (macos)` |
+| `codeql.yml` | pull requests, pushes to `main`, weekly | CodeQL for C# (traced build with the pinned SDK) and GitHub Actions |
+| `scorecard.yml` | pushes to `main`, weekly | OpenSSF Scorecard, published for the README badge and uploaded to code scanning |
+| `labels.yml` | changes to `.github/labels.yml` | Synchronizes the repository labels with `gh`; dry run on pull requests |
+| `labeler.yml` | pull requests (`pull_request_target`) | Applies the area labels of `.github/labeler.yml` from the changed paths |
+
+- The `main` ruleset requires `format`, the three `build` checks and the two CodeQL `analyze`
+  checks, on a branch up to date with `main`.
+- Every workflow sets `permissions: {}` at the top and grants each job only what it needs; every
+  action is pinned to a full commit SHA with its version in a comment, and Dependabot updates them
+  weekly, with the NuGet packages, after a seven-day cooldown.
+- Jobs run on pinned GitHub-hosted images (`ubuntu-24.04`, `windows-2025`, `macos-26`, and
+  `ubuntu-slim` for API-only jobs) and use no cache.
 
 ## Current state
 
 As of 2026-10-05 the solution is scaffolded: `global.json`, the `Directory.*` files,
 `.editorconfig` and `Jade.slnx`, every project of the table above without code, the package README
 and icon, and `Jade.Tests`. Build, tests and pack pass with warnings as errors and package
-validation. The `Jade.Native.*` packages contain no native file yet. No script, generator, native
-build (`build/` does not exist yet), sample or workflow exists. The ordered list of next tasks is
-in the [roadmap](roadmap.md).
+validation. The `Jade.Native.*` packages contain no native file yet. The CI baseline is in place:
+the workflows above, Dependabot, issue and pull request templates, `CODEOWNERS`,
+`CONTRIBUTING.md` and `CODE_OF_CONDUCT.md`. No script, generator, native build (`build/` does not
+exist yet) or sample exists. The ordered list of next tasks is in the [roadmap](roadmap.md).

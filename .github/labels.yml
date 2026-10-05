@@ -1,85 +1,86 @@
 # Source of truth for the repository labels. Labels missing from this file are removed on sync.
+# Colors are quoted: a YAML 1.2 parser reads an all-digit color such as 008672 as a number.
 
 - name: bug
-  color: d73a4a
+  color: "d73a4a"
   description: Something isn't working
 - name: enhancement
-  color: a2eeef
+  color: "a2eeef"
   description: New feature or request
 - name: documentation
-  color: 0075ca
+  color: "0075ca"
   description: Documentation only
 - name: performance
-  color: fbca04
+  color: "fbca04"
   description: Performance improvement or regression
 - name: breaking-change
-  color: b60205
+  color: "b60205"
   description: Incompatible change to the public API or behavior
 - name: security
-  color: ee0701
+  color: "ee0701"
   description: Security issue or hardening
 - name: dependencies
-  color: 0366d6
+  color: "0366d6"
   description: Dependency update
 - name: question
-  color: d876e3
+  color: "d876e3"
   description: Further information is requested
 - name: good first issue
-  color: 7057ff
+  color: "7057ff"
   description: Good for newcomers
 - name: help wanted
-  color: 008672
+  color: "008672"
   description: Extra attention is needed
 - name: duplicate
-  color: cfd3d7
+  color: "cfd3d7"
   description: This issue or pull request already exists
 - name: invalid
-  color: e4e669
+  color: "e4e669"
   description: This doesn't seem right
 - name: wontfix
-  color: ffffff
+  color: "ffffff"
   description: This will not be worked on
 
 - name: "area: engine"
-  color: c5def5
+  color: "c5def5"
   description: Engine library
 - name: "area: generator"
-  color: c5def5
+  color: "c5def5"
   description: Binding generator
 - name: "area: interop"
-  color: c5def5
+  color: "c5def5"
   description: Generated interop layers
 - name: "area: native"
-  color: c5def5
+  color: "c5def5"
   description: Native builds, C shims and native packages
 - name: "area: roslyn"
-  color: c5def5
+  color: "c5def5"
   description: Source generators and analyzers
 - name: "area: build"
-  color: c5def5
+  color: "c5def5"
   description: MSBuild, SDK and packaging
 - name: "area: ci"
-  color: c5def5
+  color: "c5def5"
   description: Workflows and repository automation
 - name: "area: samples"
-  color: c5def5
+  color: "c5def5"
   description: Platform samples
 
 - name: "platform: windows"
-  color: fef2c0
+  color: "fef2c0"
   description: Windows specific
 - name: "platform: linux"
-  color: fef2c0
+  color: "fef2c0"
   description: Linux specific
 - name: "platform: macos"
-  color: fef2c0
+  color: "fef2c0"
   description: macOS specific
 - name: "platform: android"
-  color: fef2c0
+  color: "fef2c0"
   description: Android specific
 - name: "platform: ios"
-  color: fef2c0
+  color: "fef2c0"
   description: iOS specific
 - name: "platform: browser"
-  color: fef2c0
+  color: "fef2c0"
   description: Browser (WebAssembly) specific

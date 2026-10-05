@@ -1,5 +1,8 @@
 # Jade
 
+[![CI](https://github.com/AerafalDev/Jade/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/AerafalDev/Jade/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/AerafalDev/Jade/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/AerafalDev/Jade/actions/workflows/codeql.yml)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/AerafalDev/Jade/badge)](https://scorecard.dev/viewer/?uri=github.com/AerafalDev/Jade)
 [![License](https://img.shields.io/github/license/AerafalDev/Jade)](LICENSE)
 [![.NET](https://img.shields.io/badge/.NET-11-512BD4)](https://dotnet.microsoft.com/)
 
@@ -21,6 +24,11 @@ and the web.
 - [Architecture](docs/architecture.md)
 - [Roadmap](docs/roadmap.md)
 - [Decision records](docs/adr/README.md)
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md). Everyone taking part follows the
+[code of conduct](CODE_OF_CONDUCT.md).
 
 ## Security
 

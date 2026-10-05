@@ -1,0 +1,20 @@
+name: Labeler
+
+on:
+  # Runs the base branch's workflow with a token that can label pull requests from forks. The job
+  # never checks out or runs the pull request's code, which keeps this trigger safe.
+  pull_request_target:
+
+permissions: {}
+
+jobs:
+  label:
+    name: label
+    runs-on: ubuntu-slim
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: write # add labels to pull requests
+    steps:
+      - name: Label
+        uses: actions/labeler@bf12e9b00b37c5c0ca2b87b79b2daf7891dbda13 # v7.0.0
