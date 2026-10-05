@@ -9,17 +9,20 @@
 baseline of this public repository, which will publish native binaries and NuGet packages, and
 applied them in two phases. Among them was an OpenSSF Scorecard workflow, published for a README
 badge and uploaded to code scanning. The maintainer chose to drop it: with a single maintainer, the
-checks that expect reviews by a second person keep the score low, and the workflow only measures
-rules that the settings and workflows of this baseline already enforce. This record restates the
-whole baseline without Scorecard, so that it can be read on its own, and supersedes 0017.
+checks that expect reviews by a second person keep the score low, and the rest of what it measures
+is either enforced by this baseline already or a practice the project does not adopt. This record
+restates the whole baseline without Scorecard, so that it can be read on its own, and supersedes
+0017.
 
 Verified on 2026-10-05:
 
 - The `main` ruleset (id `24485772`) requires `format`, `build (linux)`, `build (windows)`,
   `build (macos)`, `analyze (csharp)` and `analyze (actions)`; Scorecard's `analysis` job is not
   among them (`gh api`).
-- `scorecard.yml` ran on pushes to `main` and weekly, never on pull requests, and its results
-  hold 9 open code scanning alerts from 18 analyses of the `Scorecard` tool (`gh api`).
+- `scorecard.yml` ran on pushes to `main` and weekly, never on pull requests. Its 18 analyses left
+  9 open code scanning alerts, one per failing check: Branch-Protection, CI-Tests,
+  CII-Best-Practices, Code-Review, Fuzzing, Maintained, Pinned-Dependencies, SAST and
+  Security-Policy (`gh api`).
 
 ## Decision
 
@@ -70,8 +73,8 @@ Verified on 2026-10-05:
 - No external score is published for the repository. The rules of this baseline (pinned actions,
   explicit token permissions, the ruleset, Dependabot, CodeQL) stay enforced by the settings and
   workflows above.
-- The Scorecard results already uploaded stay in code scanning until they are dismissed or their
-  analyses deleted, and the badge URL of the Scorecard API keeps serving the last published score.
+- The badge URL of the Scorecard API keeps serving the last published score; nothing links to it
+  any more.
 - [0022](0022-ci-runners-and-caching.md) still names Scorecard among the jobs on `ubuntu-24.04`;
   that rule has no workflow left to apply to, and 0022 is not rewritten
   ([0001](0001-record-architecture-decisions.md)).
@@ -95,8 +98,9 @@ record's date were made under 0017.
   [0022](0022-ci-runners-and-caching.md). Two items of this phase wait for something to apply to:
   provenance attestations come with the native binaries (task 10) and the packages (task 19), and
   CodeQL for C/C++ with the first C shim (task 10).
-- 2026-10-05, this record: `scorecard.yml` and the README's Scorecard badge are removed. The
-  ruleset is unchanged.
+- 2026-10-05, this record: `scorecard.yml` and the README's Scorecard badge are removed, and the
+  9 open Scorecard alerts are dismissed as "won't fix" with a comment that points here. The ruleset
+  is unchanged.
 
 ## Alternatives considered
 
