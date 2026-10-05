@@ -1,0 +1,14 @@
+{
+  "dependency": "sdl",
+  "sources": [
+    "include/"
+  ],
+  "clang": {
+    "headers": [
+      "SDL3/SDL.h"
+    ],
+    "includeDirectories": [
+      "include"
+    ]
+  }
+}

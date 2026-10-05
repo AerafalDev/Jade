@@ -14,9 +14,9 @@ Status: `done`, `next`, `planned`.
 | 2 | Solution scaffolding | 1 | done |
 | 3 | CI baseline and deferred GitHub settings | 2 | done |
 | 4 | Pin native dependencies and minimum OS versions | 1 | done |
-| 5 | Binding generator design | 4 | next |
-| 6 | Native build for the host platform | 2, 4 | planned |
-| 7 | Generator: WebGPU raw layer | 2, 5 | planned |
+| 5 | Binding generator design | 4 | done |
+| 6 | Native build for the host platform | 2, 4 | next |
+| 7 | Generator: WebGPU raw layer | 2, 5, 6 | planned |
 | 8 | Generator: SDL3 and miniaudio raw layers | 5, 6 | planned |
 | 9 | Generated layout tests on the host | 6, 7, 8 | planned |
 | 10 | Native CI matrix for every RID | 3, 6 | planned |
@@ -76,14 +76,20 @@ Android API 26, a browser with WebGPU) and
 [0025](adr/0025-browser-natives-with-workload-emscripten.md) (browser archives built with the
 workload's own Emscripten toolchain, since no upstream emsdk equals it; supersedes 0013).
 
-### 5. Binding generator design
+### 5. Binding generator design (done, 2026-10-05)
 
-- **Decisions to take** (ADR): the generator's intermediate representation and mapping rules,
-  chained structs, descriptor handling (ref struct mirrors copied into an arena on cold paths,
-  `fixed` without copy on hot paths), and the visibility of the raw layer (public sub-namespace or
-  internal).
-- Annotation configuration format, shared `MA_*` defines.
-- Done when the ADR is accepted and the generator's skeleton runs on the pinned inputs.
+`scripts/binding-generator.cs` and `scripts/binding-generator/`: fetches the pinned sources into
+`artifacts/binding-generator/sources/`, reads `dawn.json` into a strict typed model with its native
+and browser variants, and parses the SDL3 and miniaudio headers with the libclang of ClangSharp
+21.1.8.4 for the 12 RID triples, using its own C runtime headers; it reports what it loaded and
+emits no C# yet. `interop/Jade.Wgpu`, `interop/Jade.Sdl` and `interop/Jade.MiniAudio` have a
+`bindings.json`; `build/miniaudio/config.h` holds the `MA_*` defines (none yet). Decisions:
+[0026](adr/0026-binding-generator-pipeline.md) (pipeline, intermediate representation with
+per-platform availability, multi-triple parsing, configuration format, `MA_*` defines),
+[0027](adr/0027-interop-mapping-rules.md) (remaining mapping rules),
+[0028](adr/0028-internal-raw-interop-layer.md) (internal raw layer with C names) and
+[0029](adr/0029-descriptors-and-chained-structs.md) (descriptor classification, stack-based arena,
+generic chained extensions).
 
 ### 6. Native build for the host platform
 
@@ -94,12 +100,21 @@ workload's own Emscripten toolchain, since no upstream emsdk equals it; supersed
   (`DAWN_USE_BUILT_DXC`) and whether `d3dcompiler_47.dll` is redistributed; anything shipped joins
   `THIRD-PARTY-NOTICES.md`.
 - Check `THIRD-PARTY-NOTICES.md` against the libraries actually linked.
+- Choose the `MA_*` defines and write them in `build/miniaudio/config.h`, which the build
+  force-includes like the generator ([0026](adr/0026-binding-generator-pipeline.md)).
 - Done when `build-native.cs` produces the three libraries from `build/versions.json` on a clean
   machine.
 
 ### 7. Generator: WebGPU raw layer
 
 - Raw layer of `Jade.Wgpu` generated from `dawn.json`, deterministic, with a regeneration check.
+- The intermediate representation, the projection and the raw emitter of
+  [0026](adr/0026-binding-generator-pipeline.md) to
+  [0029](adr/0029-descriptors-and-chained-structs.md); the value structures of 0029 are public, the
+  rest of the raw layer internal.
+- CI builds the generator with warnings as errors and checks the regeneration; `Jade.slnx` does not
+  contain the file-based script.
+- The smoke test needs the host's Dawn library, hence the dependency on task 6.
 - Done when the generated code builds, regeneration produces no diff, and a smoke test creates a
   WebGPU instance on the host.
 
@@ -107,6 +122,9 @@ workload's own Emscripten toolchain, since no upstream emsdk equals it; supersed
 
 - Raw layers of `Jade.Sdl` and `Jade.MiniAudio` from the headers through ClangSharp, with their
   annotation configurations.
+- Merge the per-triple parses into platform availability; macro evaluation by clang; the set of SDL3
+  headers beyond `SDL3/SDL.h` (`SDL_main.h` for mobile entry points, for instance); skipped
+  constructs listed in the output ([0027](adr/0027-interop-mapping-rules.md)).
 - Done when the generated code builds, regeneration produces no diff, and smoke tests initialize
   SDL3 video and a miniaudio context on the host.
 
@@ -144,6 +162,10 @@ workload's own Emscripten toolchain, since no upstream emsdk equals it; supersed
 
 - Handles, descriptors, chained structs, `Task`-based asynchronous operations with
   `ProcessEvents`, UTF-8 and `string` overloads.
+- Descriptor mirrors, the arena and generic chained extensions of
+  [0029](adr/0029-descriptors-and-chained-structs.md). **Decisions to take:** how output structures
+  freed by `FreeMembers` are exposed, and how extensions of nested roots (array elements, limits)
+  are passed.
 - Done when the desktop smoke test clears a surface through the idiomatic API only.
 
 ### 13. SDL3 and miniaudio idiomatic layers
@@ -188,8 +210,7 @@ workload's own Emscripten toolchain, since no upstream emsdk equals it; supersed
 
 | Decision | Task |
 | --- | --- |
-| Generator IR and mapping rules, chained structs, descriptors | 5 |
-| Raw layer visibility | 5 |
+| Output structures and extensions of nested chain roots | 12 |
 | Native build runners, frequency and caching; emulator tests | 10, 16 |
 | Package versioning and release workflow | 19 |
 

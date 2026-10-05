@@ -39,11 +39,17 @@ Each interop project has two layers ([0008](adr/0008-two-layer-interop.md)):
 
 - a **raw layer**, a strictly blittable image of the C API under
   `[assembly: DisableRuntimeMarshalling]`, with no runtime code generation, so it runs under JIT,
-  NativeAOT, iOS AOT and Mono WebAssembly;
+  NativeAOT, iOS AOT and Mono WebAssembly. It is internal and keeps the C names; the types that are
+  identical in both layers (enums, flags, handles, structures without pointers) are public
+  ([0028](adr/0028-internal-raw-interop-layer.md));
 - an **idiomatic layer** on top: spans, `in`/`ref`/`out`, unmanaged function pointers, methods on
-  the type they operate on, `Task`-based asynchronous WebGPU operations.
+  the type they operate on, `Task`-based asynchronous WebGPU operations. Descriptors are
+  `ref struct` mirrors lowered without copy where possible and through a stack-based arena
+  otherwise, and chained structures are typed generic extensions
+  ([0029](adr/0029-descriptors-and-chained-structs.md)).
 
-The mapping rules are in [0009](adr/0009-interop-mapping-conventions.md); the public API rules in
+The mapping rules are in [0009](adr/0009-interop-mapping-conventions.md) and
+[0027](adr/0027-interop-mapping-rules.md); the public API rules in
 [0016](adr/0016-public-api-conventions.md).
 
 ## Projects
@@ -68,21 +74,41 @@ the repository layout in [0023](adr/0023-repository-layout-and-conventions.md).
 
 ```mermaid
 flowchart LR
-    versions["build/versions.json"] --> gen
-    dawn["dawn.json<br/>(pinned Dawn commit)"] --> gen
-    headers["SDL3 and miniaudio headers<br/>parsed by libclang via ClangSharp"] --> gen
-    config["Per-library annotation<br/>configuration"] --> gen
-    gen["scripts/binding-generator.cs<br/>(file-based app)"] --> out["interop/Jade.*/Generated/*.g.cs<br/>(committed)"]
-    gen --> layout["Generated layout tests<br/>sizeof / offsetof"]
+    versions["build/versions.json"] --> fetch
+    fetch["Sources at the pinned commits<br/>(artifacts/binding-generator/sources)"] --> dawnfe
+    fetch --> clangfe
+    dawnfe["dawn.json front-end<br/>(native and browser variants)"] --> ir
+    clangfe["C header front-end<br/>libclang, one parse per RID triple"] --> ir
+    ir["Intermediate representation<br/>(availability per platform)"] --> ann
+    config["interop/Jade.*/bindings.json"] --> ann
+    ann["Annotations and validation"] --> proj["Projection<br/>(mapping rules)"]
+    proj --> out["interop/Jade.*/Generated/*.g.cs<br/>(committed)"]
+    proj --> layout["Generated layout tests<br/>sizeof / offsetof"]
 ```
 
-- The generator is a .NET file-based app split with `#:include`
-  ([0007](adr/0007-in-house-binding-generator.md)).
-- libclang is only a parser; all C# is emitted by our code.
+- The generator is a .NET file-based app, `scripts/binding-generator.cs`, split with `#:include`
+  into `scripts/binding-generator/` ([0007](adr/0007-in-house-binding-generator.md)): one folder per
+  concern (`Configuration/`, `Sources/`, `Targets/`, `Dawn/`, `Clang/`, `Reporting/`), one type per
+  file, an XML comment on every type and member.
+- Pipeline, intermediate representation, header parsing and configuration format:
+  [0026](adr/0026-binding-generator-pipeline.md). Inputs are fetched from GitHub at the commits of
+  `build/versions.json` and cached under `artifacts/`. Each declaration of the intermediate
+  representation carries the platforms it exists on: `dawn.json` tags give Dawn's native header and
+  Emdawnwebgpu's browser header, and C headers are parsed for the triple of every RID of
+  [0012](adr/0012-supported-targets.md).
+- C headers are parsed by the libclang of the pinned ClangSharp package, with `-nostdinc` and the
+  generator's own C runtime headers (`scripts/binding-generator/include/`), so the result depends
+  only on the pinned inputs. libclang is only a parser; all C# is emitted by our code.
+- `interop/<project>/bindings.json` selects the front-end and the inputs of each generated library;
+  roadmap tasks 7 and 8 add its annotations. The `MA_*` defines live in `build/miniaudio/config.h`,
+  which the native build and the generator both force-include.
+- Mapping rules: [0009](adr/0009-interop-mapping-conventions.md) and
+  [0027](adr/0027-interop-mapping-rules.md). The raw layer is internal and keeps the C names
+  ([0028](adr/0028-internal-raw-interop-layer.md)); descriptors and chained structures follow
+  [0029](adr/0029-descriptors-and-chained-structs.md).
 - The output is committed. CI regenerates it and fails on any diff, which requires a deterministic
-  generator.
-- The generator's intermediate representation and the remaining mapping rules are open (see the
-  [roadmap](roadmap.md)).
+  generator; the check is added with the first emitter (roadmap task 7).
+- Today the generator loads the inputs and reports what they contain; it emits no C# yet.
 
 ## Native build and distribution
 
@@ -231,5 +257,6 @@ validation. The `Jade.Native.*` packages contain no native file yet. The CI base
 the workflows above, Dependabot, issue and pull request templates, `CODEOWNERS`,
 `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md`. The native dependencies, toolchains and minimum OS
 versions are pinned in `build/versions.json`, and `THIRD-PARTY-NOTICES.md` covers the pinned
-sources. No script, generator, native build definition or sample exists yet. The ordered list of
-next tasks is in the [roadmap](roadmap.md).
+sources. The binding generator's skeleton fetches and loads the pinned inputs (`dawn.json`, and
+the SDL3 and miniaudio headers parsed for every RID) without emitting C# yet. No native build
+definition or sample exists yet. The ordered list of next tasks is in the [roadmap](roadmap.md).

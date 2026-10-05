@@ -1,0 +1,17 @@
+{
+  "dependency": "miniaudio",
+  "sources": [
+    "miniaudio.h"
+  ],
+  "clang": {
+    "headers": [
+      "miniaudio.h"
+    ],
+    "includeDirectories": [
+      "."
+    ],
+    "forcedIncludes": [
+      "build/miniaudio/config.h"
+    ]
+  }
+}

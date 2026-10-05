@@ -18,6 +18,9 @@ issues as described in [SECURITY.md](SECURITY.md), never in a public issue.
   NDK, and the SDK's `wasm-tools` workload for the browser) are only needed for native work; their
   versions are pinned in [`build/versions.json`](build/versions.json) and their setup will be
   documented with the native build.
+- The binding generator (`scripts/binding-generator.cs`) only needs the SDK, plus network access
+  the first time it fetches a pinned source. Its libclang comes from a NuGet package that exists for
+  Linux and Windows (x64 and arm64) and Apple silicon Macs, not for Intel Macs.
 
 ## Build and test
 
@@ -30,6 +33,7 @@ Run the commands from the repository root; `global.json` selects the SDK and the
 | Test | `dotnet test -c Release` |
 | Check formatting | `dotnet format --verify-no-changes` |
 | Pack, with package validation | `dotnet pack -c Release -p:TreatWarningsAsErrors=true -p:ContinuousIntegrationBuild=true` |
+| Run the binding generator | `dotnet run scripts/binding-generator.cs` |
 
 Outputs go to `artifacts/`. Tests use MSTest on Microsoft.Testing.Platform
 ([0018](docs/adr/0018-test-framework.md)).
