@@ -12,8 +12,8 @@ Status: `done`, `next`, `planned`.
 | --- | --- | --- | --- |
 | 1 | Project charter and GitHub repository | none | done |
 | 2 | Solution scaffolding | 1 | done |
-| 3 | CI baseline and deferred GitHub settings | 2 | next |
-| 4 | Pin native dependencies and minimum OS versions | 1 | planned |
+| 3 | CI baseline and deferred GitHub settings | 2 | done |
+| 4 | Pin native dependencies and minimum OS versions | 1 | next |
 | 5 | Binding generator design | 4 | planned |
 | 6 | Native build for the host platform | 2, 4 | planned |
 | 7 | Generator: WebGPU raw layer | 2, 5 | planned |
@@ -50,20 +50,18 @@ targeting), [0020](adr/0020-repository-layout-and-conventions.md) (layout with `
 `build/`, supersedes 0014), [0021](adr/0021-build-and-packaging-conventions.md) (no lock files,
 supersedes 0015).
 
-### 3. CI baseline and deferred GitHub settings
+### 3. CI baseline and deferred GitHub settings (done, 2026-10-05)
 
-- Build, test and pack workflow on Linux, Windows and macOS with the commands of `CLAUDE.md`;
-  format check; SDK installed from `global.json`.
-- CodeQL (C#, GitHub Actions), OpenSSF Scorecard, `dependabot.yml` (`nuget`, `github-actions`),
-  label synchronization from `.github/labels.yml`, labeler, issue and PR templates, `CODEOWNERS`,
-  `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`.
-- Required checks added to the `main` ruleset, declaring
-  `require_extra_approval_for_unattributed_changes` explicitly; check whether Dependabot pull
-  requests are affected by that rule (third-party reports say app-opened pull requests wait for a
-  human approval; GitHub's documentation only mentions Copilot). CI, CodeQL and Scorecard badges
-  in the README.
-- **Decision to take: CI details** (runners, caching).
-- Done when every workflow is green on a pull request and the ruleset requires its checks.
+Workflows `ci.yml` (format check, then build, test and pack on Linux, Windows and macOS),
+`codeql.yml` (C#, GitHub Actions), `scorecard.yml`, `labels.yml` and `labeler.yml`;
+`dependabot.yml` (`nuget`, `github-actions`, grouped minor and patch updates, seven-day cooldown);
+issue forms, pull request template, `CODEOWNERS`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`
+(Contributor Covenant 3.0 by reference) and the CI, CodeQL and Scorecard badges. The `main`
+ruleset requires the six CI and CodeQL checks on an up-to-date branch; the extra approval for
+unattributed pull requests only concerns Copilot and has no effect with zero required approvals
+([0017](adr/0017-github-repository-baseline.md)). Decision:
+[0022](adr/0022-ci-runners-and-caching.md) (pinned GitHub-hosted runners, no cache). Attestations
+and CodeQL for C/C++ move to tasks 10 and 19, when there is something to apply them to.
 
 ### 4. Pin native dependencies and minimum OS versions
 
@@ -114,7 +112,8 @@ supersedes 0015).
   baseline, universal macOS and iOS simulator binaries, Android NDK, emsdk archives; artifacts with
   provenance attestations; `scripts/fetch-native.cs`; CodeQL C/C++ for the shims; a check that the
   workload's Emscripten version matches `build/versions.json`.
-- **Decision to take: native build frequency and caching.**
+- **Decision to take: native build runners (including Linux and Windows arm64), frequency and
+  caching** ([0022](adr/0022-ci-runners-and-caching.md) covers the managed CI only).
 - Done when a workflow run produces attested artifacts for every RID and `fetch-native.cs`
   retrieves them.
 
@@ -171,11 +170,10 @@ supersedes 0015).
 
 | Decision | Task |
 | --- | --- |
-| CI runners and caching | 3, 10 |
 | Minimum OS versions | 4 |
 | Generator IR and mapping rules, chained structs, descriptors | 5 |
 | Raw layer visibility | 5 |
-| Native build frequency, emulator tests | 10, 16 |
+| Native build runners, frequency and caching; emulator tests | 10, 16 |
 | Package versioning and release workflow | 19 |
 
 ## Later milestones

@@ -60,3 +60,23 @@ projects and workflows exist.
   change to them is made with `gh` and recorded here.
 - OpenSSF Scorecard checks that expect reviews by a second person score low while the project has
   a single maintainer.
+
+## Applied settings
+
+Changes to the repository settings, as the consequences above require. The decision itself is
+unchanged.
+
+- 2026-10-05, repository creation phase: applied as listed above. The ruleset API also enabled
+  `require_extra_approval_for_unattributed_changes` on the `main` ruleset by default. It stays
+  enabled and is declared explicitly in every ruleset update, since an omitted value is reset to
+  `true`. GitHub's documentation ("Available rules for rulesets") limits it to pull requests that
+  Copilot opens under its own identity and states that it has no effect when the ruleset requires
+  zero approvals, so Dependabot pull requests are not affected.
+- 2026-10-05, CI setup phase (roadmap task 3): `dependabot.yml`, the CI, CodeQL (C#, GitHub
+  Actions), Scorecard, label synchronization and labeler workflows, and the README badges. The
+  `main` ruleset requires the status checks `format`, `build (linux)`, `build (windows)`,
+  `build (macos)`, `analyze (csharp)` and `analyze (actions)`, reported by GitHub Actions, on a
+  branch that is up to date with `main`. Runners and caching are decided in
+  [0022](0022-ci-runners-and-caching.md). Two items of this phase wait for something to apply to:
+  provenance attestations come with the native binaries (task 10) and the packages (task 19), and
+  CodeQL for C/C++ with the first C shim (task 10).

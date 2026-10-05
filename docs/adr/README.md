@@ -26,3 +26,4 @@ Important or hard-to-reverse decisions are recorded here, one per file, as descr
 | [0019](0019-browser-and-roslyn-component-targeting.md) | Targeting of the browser interop project and the Roslyn components | Accepted |
 | [0020](0020-repository-layout-and-conventions.md) | Repository layout and content conventions | Accepted |
 | [0021](0021-build-and-packaging-conventions.md) | Build and packaging conventions | Accepted |
+| [0022](0022-ci-runners-and-caching.md) | CI runners and caching | Accepted |
