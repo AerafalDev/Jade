@@ -51,7 +51,7 @@ tools are out of scope for now.
   `style`).
 - Push, open or merge pull requests, and create tags or releases only when the maintainer asks.
 - Repository settings live outside git. They are changed with `gh` and recorded in
-  [0017](docs/adr/0017-github-repository-baseline.md) and in the section below.
+  [0037](docs/adr/0037-github-repository-baseline.md) and in the section below.
 
 ## Decisions in force
 
@@ -86,7 +86,7 @@ tools are out of scope for now.
 | Build | Analysis, AOT compatibility, central packages without lock files, exact SDK pin, package validation, public API tracking, Microsoft.Testing.Platform | [0021](docs/adr/0021-build-and-packaging-conventions.md) |
 | Tests | MSTest on Microsoft.Testing.Platform, plain packages under central management; `internal sealed` test classes with `DiscoverInternals` | [0018](docs/adr/0018-test-framework.md) |
 | Public API | `params ReadOnlySpan<T>`, UTF-8 plus `string` overloads, extension members, platform attributes, feature switches | [0016](docs/adr/0016-public-api-conventions.md) |
-| GitHub | Squash only, ruleset on `main`, secret scanning, Dependabot, CodeQL, Scorecard, SHA-pinned actions | [0017](docs/adr/0017-github-repository-baseline.md) |
+| GitHub | Squash only, ruleset on `main`, secret scanning, Dependabot, CodeQL, SHA-pinned actions, no Scorecard | [0037](docs/adr/0037-github-repository-baseline.md) |
 | CI | GitHub-hosted standard runners with pinned images (`ubuntu-24.04`, `windows-2025`, `macos-26`; `ubuntu-slim` for API-only jobs), check names without runner labels, no cache | [0022](docs/adr/0022-ci-runners-and-caching.md) |
 
 Open decisions and the order of the next tasks are in the [roadmap](docs/roadmap.md).
@@ -159,7 +159,6 @@ Re-check these at every SDK or dependency update.
 | The .NET for Android workload `37.0.0-rc.1.2257` uses NDK r28c (`28.2.13676358`) | `Configuration.props` of `dotnet/android` at that tag | 2026-10-05 |
 | Dawn publishes `vYYYYMMDD.HHMMSS` releases (binaries, Emdawnwebgpu, tested emsdk version) on the `google/dawn` mirror only; `dawn.googlesource.com` has no such tags | `gh api` releases; `git ls-remote` on both | 2026-10-05 |
 | CodeQL officially supports C# up to 14 and .NET up to 10, so C# 15 code is analyzed outside its supported range | `docs/codeql/reusables/supported-versions-compilers.rst` in `github/codeql` | 2026-10-05 |
-| OpenSSF Scorecard's Pinned-Dependencies check counts `dotnet restore` without `--locked-mode` as an unpinned dependency | `checks/raw/shell_download_validate.go` in `ossf/scorecard` | 2026-10-05 |
 | Dependabot's NuGet updater supports `.slnx` and central package management, and installs the `global.json` SDK with `dotnet-install --version` | `nuget/` in `dependabot/dependabot-core` | 2026-10-05 |
 | The ruleset's extra approval for unattributed pull requests only applies to pull requests Copilot opens under its own identity and has no effect with zero required approvals | GitHub docs, "Available rules for rulesets" | 2026-10-05 |
 | ClangSharp 21.1.8.4 depends on `libClang` 21.1.8 and `libClangSharp` 21.1.8.2; `libClang` picks a runtime package through `runtime.json` for `linux-x64`, `linux-arm64`, `osx-arm64`, `win-x64` and `win-arm64` only, and that package holds `libclang.so` without clang's builtin headers | nuspecs and package content on nuget.org | 2026-10-05 |
@@ -200,8 +199,8 @@ Re-check these at every SDK or dependency update.
 
 ## GitHub repository state
 
-Applied on 2026-10-05 (both phases of [0017](docs/adr/0017-github-repository-baseline.md), which
-records every settings change):
+Applied on 2026-10-05 (both phases of [0017](docs/adr/0017-github-repository-baseline.md), restated
+by [0037](docs/adr/0037-github-repository-baseline.md), which records every settings change):
 
 - Public repository `AerafalDev/Jade`, default branch `main`, description and topics set, no
   homepage yet.
