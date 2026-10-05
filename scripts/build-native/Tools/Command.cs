@@ -13,12 +13,13 @@ internal static class Command
     /// The environment variables to change, or <see langword="null"/>; a <see langword="null"/> value
     /// removes the variable.
     /// </param>
+    /// <param name="workingDirectory">The directory the tool runs in, or <see langword="null"/> for the current one.</param>
     /// <param name="cancellationToken">Stops the tool and its child processes.</param>
     /// <returns>A task that completes when the tool exits successfully.</returns>
     /// <exception cref="CommandFailedException">The tool cannot be started or exits with a non-zero code.</exception>
-    public static async Task RunAsync(string program, IReadOnlyList<string> arguments, IReadOnlyDictionary<string, string?>? environment, CancellationToken cancellationToken)
+    public static async Task RunAsync(string program, IReadOnlyList<string> arguments, IReadOnlyDictionary<string, string?>? environment, string? workingDirectory, CancellationToken cancellationToken)
     {
-        using var process = Start(program, arguments, environment, redirectOutput: false);
+        using var process = Start(program, arguments, environment, workingDirectory, redirectOutput: false);
 
         await WaitAsync(process, program, arguments, cancellationToken).ConfigureAwait(false);
     }
@@ -26,12 +27,13 @@ internal static class Command
     /// <summary>Runs a tool and returns what it writes to its standard output.</summary>
     /// <param name="program">The program to run, found through <c>PATH</c>.</param>
     /// <param name="arguments">The arguments, passed as they are without shell quoting.</param>
+    /// <param name="environment">The environment variables to change, or <see langword="null"/>.</param>
     /// <param name="cancellationToken">Stops the tool and its child processes.</param>
     /// <returns>The standard output of the tool.</returns>
     /// <exception cref="CommandFailedException">The tool cannot be started or exits with a non-zero code.</exception>
-    public static async Task<string> ReadAsync(string program, IReadOnlyList<string> arguments, CancellationToken cancellationToken)
+    public static async Task<string> ReadAsync(string program, IReadOnlyList<string> arguments, IReadOnlyDictionary<string, string?>? environment, CancellationToken cancellationToken)
     {
-        using var process = Start(program, arguments, environment: null, redirectOutput: true);
+        using var process = Start(program, arguments, environment, workingDirectory: null, redirectOutput: true);
 
         // The output is read before waiting for the exit: a tool that fills the pipe would
         // otherwise never exit.
@@ -46,15 +48,17 @@ internal static class Command
     /// <param name="program">The program to run.</param>
     /// <param name="arguments">The arguments.</param>
     /// <param name="environment">The environment variables to change, or <see langword="null"/>.</param>
+    /// <param name="workingDirectory">The directory the program runs in, or <see langword="null"/> for the current one.</param>
     /// <param name="redirectOutput">Whether the standard output is captured instead of written to the console.</param>
     /// <returns>The started process.</returns>
     /// <exception cref="CommandFailedException">The program cannot be started.</exception>
-    private static Process Start(string program, IReadOnlyList<string> arguments, IReadOnlyDictionary<string, string?>? environment, bool redirectOutput)
+    private static Process Start(string program, IReadOnlyList<string> arguments, IReadOnlyDictionary<string, string?>? environment, string? workingDirectory, bool redirectOutput)
     {
         var startInfo = new ProcessStartInfo(program)
         {
             UseShellExecute = false,
             RedirectStandardOutput = redirectOutput,
+            WorkingDirectory = workingDirectory ?? string.Empty,
         };
 
         foreach (var argument in arguments)

@@ -1,10 +1,9 @@
+using System.Text.Json.Serialization;
+
 namespace Jade.NativeBuild.Configuration;
 
-/// <summary>The groups of <c>build/versions.json</c> that the native build reads.</summary>
-/// <remarks>
-/// The minimum OS versions are not read: the host build targets the machine it runs on, and they
-/// become compile targets with the builds for every runtime identifier (roadmap task 10).
-/// </remarks>
+/// <summary>The groups of <c>build/versions.json</c>.</summary>
+[JsonUnmappedMemberHandling(JsonUnmappedMemberHandling.Disallow)]
 internal sealed record PinnedVersions
 {
     /// <summary>Gets the native dependencies, by their key in the file.</summary>
@@ -12,6 +11,9 @@ internal sealed record PinnedVersions
 
     /// <summary>Gets the pinned build tools.</summary>
     public required PinnedToolchains Toolchains { get; init; }
+
+    /// <summary>Gets the minimum OS versions, which the builds use as compile targets.</summary>
+    public required MinimumOsVersions MinimumOs { get; init; }
 
     /// <summary>Reads <c>build/versions.json</c>.</summary>
     /// <param name="path">The path of the file.</param>

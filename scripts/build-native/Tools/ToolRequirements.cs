@@ -10,9 +10,9 @@ internal static partial class ToolRequirements
     /// <remarks>
     /// Their output does not depend on their version the way it depends on the pinned xmake and
     /// CMake: git fetches by commit hash, Ninja runs the commands CMake writes, and Python 3 runs
-    /// Dawn's code generators.
+    /// Dawn's code generators and Emscripten. Windows installs Python 3 as <c>python</c>.
     /// </remarks>
-    private static readonly string[] _unpinnedTools = ["git", "ninja", "python3"];
+    private static readonly string[] _unpinnedTools = ["git", "ninja", OperatingSystem.IsWindows() ? "python" : "python3"];
 
     /// <summary>Checks that xmake and CMake are at the pinned versions and that the other tools are installed.</summary>
     /// <param name="toolchains">The tools pinned in <c>build/versions.json</c>.</param>
@@ -27,7 +27,7 @@ internal static partial class ToolRequirements
 
         foreach (var tool in _unpinnedTools)
         {
-            _ = await Command.ReadAsync(tool, ["--version"], cancellationToken).ConfigureAwait(false);
+            _ = await Command.ReadAsync(tool, ["--version"], environment: null, cancellationToken).ConfigureAwait(false);
         }
     }
 
@@ -40,7 +40,7 @@ internal static partial class ToolRequirements
     /// <exception cref="InvalidDataException">The tool reports another version, or none.</exception>
     private static async Task CheckVersionAsync(string tool, Regex pattern, string expected, CancellationToken cancellationToken)
     {
-        var output = await Command.ReadAsync(tool, ["--version"], cancellationToken).ConfigureAwait(false);
+        var output = await Command.ReadAsync(tool, ["--version"], environment: null, cancellationToken).ConfigureAwait(false);
         var match = pattern.Match(output);
 
         if (!match.Success)

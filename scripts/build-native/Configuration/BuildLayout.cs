@@ -31,6 +31,9 @@ internal sealed class BuildLayout
     /// <summary>Gets the directory where the pinned sources are cached.</summary>
     public string SourceCacheDirectory => Path.Combine(NativeArtifactsDirectory, "sources");
 
+    /// <summary>Gets the directory where <c>--install-tools</c> installs the pinned xmake and CMake.</summary>
+    public string ToolsDirectory => Path.Combine(NativeArtifactsDirectory, "tools");
+
     /// <summary>Gets the directory that replaces xmake's global directory (<c>~/.xmake</c>).</summary>
     public string XmakeGlobalDirectory => Path.Combine(NativeArtifactsDirectory, "xmake");
 

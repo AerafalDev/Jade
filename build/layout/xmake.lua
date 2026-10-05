@@ -7,7 +7,9 @@
 
 local function layout_library(name)
     target("jade_" .. name .. "_layout")
-        set_kind("shared")
+        -- A static archive where the shipped libraries are static too (iOS, browser), so that
+        -- the tests reach it the way the application reaches the natives.
+        set_kind(jade_library_kind())
         set_default(false)
         set_group("layout")
         -- The C standard the binding generator parses the headers with.
@@ -16,15 +18,20 @@ local function layout_library(name)
         set_symbols("hidden")
         add_files(name .. ".g.c")
 
-        if is_plat("linux") then
+        if is_plat("linux", "android") then
             -- xmake links shared libraries with the C++ driver, and a layout library calls nothing:
-            -- it must not depend on libstdc++.
+            -- it must not depend on the C++ runtime.
             add_shflags("-Wl,--as-needed", {force = true})
         end
 
         on_install(function (target)
             os.mkdir(target:installdir())
-            os.cp(target:targetfile(), target:installdir())
+            if target:is_plat("wasm") then
+                -- Named after the module, as the shipped archives are (docs/adr/0025).
+                os.cp(target:targetfile(), path.join(target:installdir(), target:name() .. ".a"))
+            else
+                os.cp(target:targetfile(), target:installdir())
+            end
         end)
 end
 
@@ -41,4 +48,8 @@ target_end()
 
 layout_library("miniaudio")
     add_includedirs(get_config("miniaudio_source"))
+    -- miniaudio.h includes windows.h, as the library itself does with the same define.
+    if is_plat("windows") then
+        add_defines("_WIN32_WINNT=" .. get_config("win32_winnt"), "WINVER=" .. get_config("win32_winnt"))
+    end
 target_end()
