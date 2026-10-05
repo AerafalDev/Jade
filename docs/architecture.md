@@ -50,19 +50,19 @@ The mapping rules are in [0009](adr/0009-interop-mapping-conventions.md); the pu
 
 | Project | Target | Role |
 | --- | --- | --- |
-| `Jade` | .NET 11 | The engine. References the interop projects and ships the Roslyn components in `analyzers/dotnet/cs`. |
-| `Jade.SourceGenerators` | `netstandard2.0`, C# 15 | Source generators for engine users; not a package. |
-| `Jade.Analyzers` | `netstandard2.0`, C# 15 | Analyzers for engine users; not a package. |
-| `Jade.Wgpu` | .NET 11 | WebGPU interop, generated from `dawn.json`. |
-| `Jade.Sdl` | .NET 11 | SDL3 interop, generated from the C headers. |
-| `Jade.MiniAudio` | .NET 11 | miniaudio interop, generated from the C headers. |
-| `Jade.Emscripten` | .NET 11, no RID | Emscripten runtime interop, `[SupportedOSPlatform("browser")]` ([0019](adr/0019-browser-and-roslyn-component-targeting.md)). |
+| `Jade` (in `src/`) | .NET 11 | The engine. References the interop projects and ships the Roslyn components in `analyzers/dotnet/cs`. |
+| `Jade.SourceGenerators` (in `src/`) | `netstandard2.0`, C# 15 | Source generators for engine users; not a package. |
+| `Jade.Analyzers` (in `src/`) | `netstandard2.0`, C# 15 | Analyzers for engine users; not a package. |
+| `Jade.Wgpu` (in `interop/`) | .NET 11 | WebGPU interop, generated from `dawn.json`. |
+| `Jade.Sdl` (in `interop/`) | .NET 11 | SDL3 interop, generated from the C headers. |
+| `Jade.MiniAudio` (in `interop/`) | .NET 11 | miniaudio interop, generated from the C headers. |
+| `Jade.Emscripten` (in `interop/`) | .NET 11, no RID | Emscripten runtime interop, `[SupportedOSPlatform("browser")]` ([0019](adr/0019-browser-and-roslyn-component-targeting.md)). |
 | `Jade.Native.Wgpu`, `Jade.Native.Sdl`, `Jade.Native.MiniAudio` (in `native/`) | packaging only | Native binaries for every RID ([0011](adr/0011-native-package-layout.md)). |
 | `Jade.Tests` (in `tests/`) | .NET 11 | MSTest on Microsoft.Testing.Platform ([0018](adr/0018-test-framework.md)). |
 
 Every .NET 11 library is AOT-compatible and every package that ships an assembly tracks its public
 API. Build and packaging conventions are in [0021](adr/0021-build-and-packaging-conventions.md);
-the repository layout in [0020](adr/0020-repository-layout-and-conventions.md).
+the repository layout in [0023](adr/0023-repository-layout-and-conventions.md).
 
 ## Binding generation
 
@@ -72,7 +72,7 @@ flowchart LR
     dawn["dawn.json<br/>(pinned Dawn commit)"] --> gen
     headers["SDL3 and miniaudio headers<br/>parsed by libclang via ClangSharp"] --> gen
     config["Per-library annotation<br/>configuration"] --> gen
-    gen["scripts/binding-generator.cs<br/>(file-based app)"] --> out["src/Jade.*/Generated/*.g.cs<br/>(committed)"]
+    gen["scripts/binding-generator.cs<br/>(file-based app)"] --> out["interop/Jade.*/Generated/*.g.cs<br/>(committed)"]
     gen --> layout["Generated layout tests<br/>sizeof / offsetof"]
 ```
 
@@ -103,7 +103,7 @@ flowchart LR
 - `build/versions.json` is the single source of pinned versions, read by the scripts, the
   generator and CI. The xmake package definitions and the C shims live in `build/`; the
   `Jade.Native.*` packaging projects live in `native/`
-  ([0020](adr/0020-repository-layout-and-conventions.md)).
+  ([0023](adr/0023-repository-layout-and-conventions.md)).
 - Package layout ([0011](adr/0011-native-package-layout.md)):
 
 | Target | Location in the package |

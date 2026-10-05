@@ -48,7 +48,7 @@ Outputs go to `artifacts/`. Tests use MSTest on Microsoft.Testing.Platform
 - Package versions live only in `Directory.Packages.props` (central package management, exact
   versions). Dependabot proposes updates weekly.
 - Repository scripts are .NET file-based apps in `scripts/`.
-- The repository layout is described in [0020](docs/adr/0020-repository-layout-and-conventions.md),
+- The repository layout is described in [0023](docs/adr/0023-repository-layout-and-conventions.md),
   the interop rules in [0009](docs/adr/0009-interop-mapping-conventions.md) and the public API rules
   in [0016](docs/adr/0016-public-api-conventions.md).
 - Important or hard-to-reverse decisions are recorded as decision records in

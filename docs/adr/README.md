@@ -24,6 +24,7 @@ Important or hard-to-reverse decisions are recorded here, one per file, as descr
 | [0017](0017-github-repository-baseline.md) | GitHub repository settings and supply-chain baseline | Accepted |
 | [0018](0018-test-framework.md) | MSTest as the test framework | Accepted |
 | [0019](0019-browser-and-roslyn-component-targeting.md) | Targeting of the browser interop project and the Roslyn components | Accepted |
-| [0020](0020-repository-layout-and-conventions.md) | Repository layout and content conventions | Accepted |
+| [0020](0020-repository-layout-and-conventions.md) | Repository layout and content conventions | Superseded by [0023](0023-repository-layout-and-conventions.md) |
 | [0021](0021-build-and-packaging-conventions.md) | Build and packaging conventions | Accepted |
 | [0022](0022-ci-runners-and-caching.md) | CI runners and caching | Accepted |
+| [0023](0023-repository-layout-and-conventions.md) | Repository layout and content conventions | Accepted |

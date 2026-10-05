@@ -48,7 +48,8 @@ in `src/` and `native/`; `tests/Jade.Tests`; the package README and icon. Decisi
 [0019](adr/0019-browser-and-roslyn-component-targeting.md) (browser and Roslyn component
 targeting), [0020](adr/0020-repository-layout-and-conventions.md) (layout with `native/` and
 `build/`, supersedes 0014), [0021](adr/0021-build-and-packaging-conventions.md) (no lock files,
-supersedes 0015).
+supersedes 0015). The interop projects later moved from `src/` to `interop/`
+([0023](adr/0023-repository-layout-and-conventions.md), supersedes 0020).
 
 ### 3. CI baseline and deferred GitHub settings (done, 2026-10-05)
 

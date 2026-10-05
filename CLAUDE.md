@@ -67,11 +67,11 @@ tools are out of scope for now.
 | Generator | In-house file-based app; `dawn.json` and libclang (ClangSharp, parser only); output committed and checked by CI | [0007](docs/adr/0007-in-house-binding-generator.md) |
 | Interop layers | Raw blittable layer plus idiomatic layer | [0008](docs/adr/0008-two-layer-interop.md) |
 | Interop mapping | `LibraryImport`, `CLong`/`nuint`, `InlineArray`, unions at offset 0, function-pointer callbacks, handles, descriptors, layout tests | [0009](docs/adr/0009-interop-mapping-conventions.md) |
-| Natives | Built by us with xmake (CMake for Dawn and SDL3); `build/versions.json` is the single source of versions | [0010](docs/adr/0010-native-builds-with-xmake.md), [0020](docs/adr/0020-repository-layout-and-conventions.md) |
+| Natives | Built by us with xmake (CMake for Dawn and SDL3); `build/versions.json` is the single source of versions | [0010](docs/adr/0010-native-builds-with-xmake.md), [0023](docs/adr/0023-repository-layout-and-conventions.md) |
 | Native packages | `runtimes/{rid}/native`; `buildTransitive/` for iOS and the browser | [0011](docs/adr/0011-native-package-layout.md) |
 | Targets | 12 RIDs, universal macOS and iOS simulator binaries, old glibc; adding a RID needs an ADR | [0012](docs/adr/0012-supported-targets.md) |
 | Browser | Natives built with the workload's exact Emscripten version; no `--use-port`; non-blocking main loop | [0013](docs/adr/0013-browser-native-toolchain.md) |
-| Repository | Layout (`src/`, `native/` packaging projects, `build/` native builds), file-based scripts inheriting the MSBuild settings, `Generated/*.g.cs`, English only, no comments in MSBuild files | [0020](docs/adr/0020-repository-layout-and-conventions.md) |
+| Repository | Layout (`src/` engine and Roslyn components, `interop/` generated interop projects, `native/` packaging projects, `build/` native builds), file-based scripts inheriting the MSBuild settings, `Generated/*.g.cs`, English only, no comments in MSBuild files | [0023](docs/adr/0023-repository-layout-and-conventions.md) |
 | Build | Analysis, AOT compatibility, central packages without lock files, exact SDK pin, package validation, public API tracking, Microsoft.Testing.Platform | [0021](docs/adr/0021-build-and-packaging-conventions.md) |
 | Tests | MSTest on Microsoft.Testing.Platform, plain packages under central management; `internal sealed` test classes with `DiscoverInternals` | [0018](docs/adr/0018-test-framework.md) |
 | Public API | `params ReadOnlySpan<T>`, UTF-8 plus `string` overloads, extension members, platform attributes, feature switches | [0016](docs/adr/0016-public-api-conventions.md) |
