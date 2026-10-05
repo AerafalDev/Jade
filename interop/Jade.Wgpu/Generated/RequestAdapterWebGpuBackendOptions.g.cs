@@ -13,11 +13,11 @@ namespace Jade.Wgpu;
 public partial struct RequestAdapterWebGpuBackendOptions
 {
     /// <summary>Maps <c>WGPURequestAdapterWebGPUBackendOptions.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Initializes a new instance of the <see cref="RequestAdapterWebGpuBackendOptions"/> struct with the defaults of <c>WGPU_REQUEST_ADAPTER_WEBGPU_BACKEND_OPTIONS_INIT</c>.</summary>
     public RequestAdapterWebGpuBackendOptions()
     {
-        Chain.sType = SType.RequestAdapterWebGpuBackendOptions;
+        Chain.SType = SType.RequestAdapterWebGpuBackendOptions;
     }
 }

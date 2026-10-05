@@ -1,1 +1,872 @@
 #nullable enable
+Jade.MiniAudio.AAudioAllowedCapturePolicy
+Jade.MiniAudio.AAudioAllowedCapturePolicy.ByAll = 1 -> Jade.MiniAudio.AAudioAllowedCapturePolicy
+Jade.MiniAudio.AAudioAllowedCapturePolicy.ByNone = 3 -> Jade.MiniAudio.AAudioAllowedCapturePolicy
+Jade.MiniAudio.AAudioAllowedCapturePolicy.BySystem = 2 -> Jade.MiniAudio.AAudioAllowedCapturePolicy
+Jade.MiniAudio.AAudioAllowedCapturePolicy.Default = 0 -> Jade.MiniAudio.AAudioAllowedCapturePolicy
+Jade.MiniAudio.AAudioContentType
+Jade.MiniAudio.AAudioContentType.Default = 0 -> Jade.MiniAudio.AAudioContentType
+Jade.MiniAudio.AAudioContentType.Movie = 3 -> Jade.MiniAudio.AAudioContentType
+Jade.MiniAudio.AAudioContentType.Music = 2 -> Jade.MiniAudio.AAudioContentType
+Jade.MiniAudio.AAudioContentType.Sonification = 4 -> Jade.MiniAudio.AAudioContentType
+Jade.MiniAudio.AAudioContentType.Speech = 1 -> Jade.MiniAudio.AAudioContentType
+Jade.MiniAudio.AAudioInputPreset
+Jade.MiniAudio.AAudioInputPreset.Camcorder = 2 -> Jade.MiniAudio.AAudioInputPreset
+Jade.MiniAudio.AAudioInputPreset.Default = 0 -> Jade.MiniAudio.AAudioInputPreset
+Jade.MiniAudio.AAudioInputPreset.Generic = 1 -> Jade.MiniAudio.AAudioInputPreset
+Jade.MiniAudio.AAudioInputPreset.Unprocessed = 5 -> Jade.MiniAudio.AAudioInputPreset
+Jade.MiniAudio.AAudioInputPreset.VoiceCommunication = 4 -> Jade.MiniAudio.AAudioInputPreset
+Jade.MiniAudio.AAudioInputPreset.VoicePerformance = 6 -> Jade.MiniAudio.AAudioInputPreset
+Jade.MiniAudio.AAudioInputPreset.VoiceRecognition = 3 -> Jade.MiniAudio.AAudioInputPreset
+Jade.MiniAudio.AAudioUsage
+Jade.MiniAudio.AAudioUsage.Alarm = 4 -> Jade.MiniAudio.AAudioUsage
+Jade.MiniAudio.AAudioUsage.Announcement = 16 -> Jade.MiniAudio.AAudioUsage
+Jade.MiniAudio.AAudioUsage.AssistanceAccessibility = 8 -> Jade.MiniAudio.AAudioUsage
+Jade.MiniAudio.AAudioUsage.AssistanceNavigationGuidance = 9 -> Jade.MiniAudio.AAudioUsage
+Jade.MiniAudio.AAudioUsage.AssistanceSonification = 10 -> Jade.MiniAudio.AAudioUsage
+Jade.MiniAudio.AAudioUsage.Assitant = 12 -> Jade.MiniAudio.AAudioUsage
+Jade.MiniAudio.AAudioUsage.Default = 0 -> Jade.MiniAudio.AAudioUsage
+Jade.MiniAudio.AAudioUsage.Emergency = 13 -> Jade.MiniAudio.AAudioUsage
+Jade.MiniAudio.AAudioUsage.Game = 11 -> Jade.MiniAudio.AAudioUsage
+Jade.MiniAudio.AAudioUsage.Media = 1 -> Jade.MiniAudio.AAudioUsage
+Jade.MiniAudio.AAudioUsage.Notification = 5 -> Jade.MiniAudio.AAudioUsage
+Jade.MiniAudio.AAudioUsage.NotificationEvent = 7 -> Jade.MiniAudio.AAudioUsage
+Jade.MiniAudio.AAudioUsage.NotificationRingtone = 6 -> Jade.MiniAudio.AAudioUsage
+Jade.MiniAudio.AAudioUsage.Safety = 14 -> Jade.MiniAudio.AAudioUsage
+Jade.MiniAudio.AAudioUsage.VehicleStatus = 15 -> Jade.MiniAudio.AAudioUsage
+Jade.MiniAudio.AAudioUsage.VoiceCommunication = 2 -> Jade.MiniAudio.AAudioUsage
+Jade.MiniAudio.AAudioUsage.VoiceCommunicationSignalling = 3 -> Jade.MiniAudio.AAudioUsage
+Jade.MiniAudio.AsyncNotificationEvent
+Jade.MiniAudio.AsyncNotificationEvent.AsyncNotificationEvent() -> void
+Jade.MiniAudio.AsyncNotificationEvent.AsyncNotificationEvent(nint handle) -> void
+Jade.MiniAudio.AsyncNotificationEvent.Equals(Jade.MiniAudio.AsyncNotificationEvent other) -> bool
+Jade.MiniAudio.AsyncNotificationEvent.Handle.get -> nint
+Jade.MiniAudio.AtomicBool32
+Jade.MiniAudio.AtomicBool32.AtomicBool32() -> void
+Jade.MiniAudio.AtomicBool32.Value -> Jade.MiniAudio.Bool32
+Jade.MiniAudio.AtomicDeviceState
+Jade.MiniAudio.AtomicDeviceState.AtomicDeviceState() -> void
+Jade.MiniAudio.AtomicDeviceState.Value -> Jade.MiniAudio.DeviceState
+Jade.MiniAudio.AtomicFloat
+Jade.MiniAudio.AtomicFloat.AtomicFloat() -> void
+Jade.MiniAudio.AtomicFloat.Value -> float
+Jade.MiniAudio.AtomicInt32
+Jade.MiniAudio.AtomicInt32.AtomicInt32() -> void
+Jade.MiniAudio.AtomicInt32.Value -> int
+Jade.MiniAudio.AtomicUint32
+Jade.MiniAudio.AtomicUint32.AtomicUint32() -> void
+Jade.MiniAudio.AtomicUint32.Value -> uint
+Jade.MiniAudio.AtomicUint64
+Jade.MiniAudio.AtomicUint64.AtomicUint64() -> void
+Jade.MiniAudio.AtomicUint64.Value -> ulong
+Jade.MiniAudio.AtomicVec3f
+Jade.MiniAudio.AtomicVec3f.AtomicVec3f() -> void
+Jade.MiniAudio.AtomicVec3f.Lock -> uint
+Jade.MiniAudio.AtomicVec3f.V -> System.Numerics.Vector3
+Jade.MiniAudio.AttenuationModel
+Jade.MiniAudio.AttenuationModel.Exponential = 3 -> Jade.MiniAudio.AttenuationModel
+Jade.MiniAudio.AttenuationModel.Inverse = 1 -> Jade.MiniAudio.AttenuationModel
+Jade.MiniAudio.AttenuationModel.Linear = 2 -> Jade.MiniAudio.AttenuationModel
+Jade.MiniAudio.AttenuationModel.None = 0 -> Jade.MiniAudio.AttenuationModel
+Jade.MiniAudio.Backend
+Jade.MiniAudio.Backend.AAudio = 10 -> Jade.MiniAudio.Backend
+Jade.MiniAudio.Backend.Alsa = 8 -> Jade.MiniAudio.Backend
+Jade.MiniAudio.Backend.Audio4 = 5 -> Jade.MiniAudio.Backend
+Jade.MiniAudio.Backend.CoreAudio = 3 -> Jade.MiniAudio.Backend
+Jade.MiniAudio.Backend.Custom = 13 -> Jade.MiniAudio.Backend
+Jade.MiniAudio.Backend.DSound = 1 -> Jade.MiniAudio.Backend
+Jade.MiniAudio.Backend.Jack = 9 -> Jade.MiniAudio.Backend
+Jade.MiniAudio.Backend.Null = 14 -> Jade.MiniAudio.Backend
+Jade.MiniAudio.Backend.OpenSL = 11 -> Jade.MiniAudio.Backend
+Jade.MiniAudio.Backend.Oss = 6 -> Jade.MiniAudio.Backend
+Jade.MiniAudio.Backend.Pulseaudio = 7 -> Jade.MiniAudio.Backend
+Jade.MiniAudio.Backend.Sndio = 4 -> Jade.MiniAudio.Backend
+Jade.MiniAudio.Backend.Wasapi = 0 -> Jade.MiniAudio.Backend
+Jade.MiniAudio.Backend.WebAudio = 12 -> Jade.MiniAudio.Backend
+Jade.MiniAudio.Backend.Winmm = 2 -> Jade.MiniAudio.Backend
+Jade.MiniAudio.BiquadCoefficient
+Jade.MiniAudio.BiquadCoefficient.BiquadCoefficient() -> void
+Jade.MiniAudio.BiquadCoefficient.F32 -> float
+Jade.MiniAudio.BiquadCoefficient.S32 -> int
+Jade.MiniAudio.BiquadConfig
+Jade.MiniAudio.BiquadConfig.A0 -> double
+Jade.MiniAudio.BiquadConfig.A1 -> double
+Jade.MiniAudio.BiquadConfig.A2 -> double
+Jade.MiniAudio.BiquadConfig.B0 -> double
+Jade.MiniAudio.BiquadConfig.B1 -> double
+Jade.MiniAudio.BiquadConfig.B2 -> double
+Jade.MiniAudio.BiquadConfig.BiquadConfig() -> void
+Jade.MiniAudio.BiquadConfig.Channels -> uint
+Jade.MiniAudio.BiquadConfig.Format -> Jade.MiniAudio.Format
+Jade.MiniAudio.Bool32
+Jade.MiniAudio.Bool32.Bool32() -> void
+Jade.MiniAudio.Bool32.Bool32(bool value) -> void
+Jade.MiniAudio.Bool32.Equals(Jade.MiniAudio.Bool32 other) -> bool
+Jade.MiniAudio.Bool32.Value.get -> bool
+Jade.MiniAudio.Bool8
+Jade.MiniAudio.Bool8.Bool8() -> void
+Jade.MiniAudio.Bool8.Bool8(bool value) -> void
+Jade.MiniAudio.Bool8.Equals(Jade.MiniAudio.Bool8 other) -> bool
+Jade.MiniAudio.Bool8.Value.get -> bool
+Jade.MiniAudio.Bpf2Config
+Jade.MiniAudio.Bpf2Config.Bpf2Config() -> void
+Jade.MiniAudio.Bpf2Config.Channels -> uint
+Jade.MiniAudio.Bpf2Config.CutoffFrequency -> double
+Jade.MiniAudio.Bpf2Config.Format -> Jade.MiniAudio.Format
+Jade.MiniAudio.Bpf2Config.Q -> double
+Jade.MiniAudio.Bpf2Config.SampleRate -> uint
+Jade.MiniAudio.BpfConfig
+Jade.MiniAudio.BpfConfig.BpfConfig() -> void
+Jade.MiniAudio.BpfConfig.Channels -> uint
+Jade.MiniAudio.BpfConfig.CutoffFrequency -> double
+Jade.MiniAudio.BpfConfig.Format -> Jade.MiniAudio.Format
+Jade.MiniAudio.BpfConfig.Order -> uint
+Jade.MiniAudio.BpfConfig.SampleRate -> uint
+Jade.MiniAudio.ChannelConversionPath
+Jade.MiniAudio.ChannelConversionPath.MonoIn = 3 -> Jade.MiniAudio.ChannelConversionPath
+Jade.MiniAudio.ChannelConversionPath.MonoOut = 2 -> Jade.MiniAudio.ChannelConversionPath
+Jade.MiniAudio.ChannelConversionPath.Passthrough = 1 -> Jade.MiniAudio.ChannelConversionPath
+Jade.MiniAudio.ChannelConversionPath.Shuffle = 4 -> Jade.MiniAudio.ChannelConversionPath
+Jade.MiniAudio.ChannelConversionPath.Unknown = 0 -> Jade.MiniAudio.ChannelConversionPath
+Jade.MiniAudio.ChannelConversionPath.Weights = 5 -> Jade.MiniAudio.ChannelConversionPath
+Jade.MiniAudio.ChannelMixMode
+Jade.MiniAudio.ChannelMixMode.CustomWeights = 2 -> Jade.MiniAudio.ChannelMixMode
+Jade.MiniAudio.ChannelMixMode.Default = 0 -> Jade.MiniAudio.ChannelMixMode
+Jade.MiniAudio.ChannelMixMode.Rectangular = 0 -> Jade.MiniAudio.ChannelMixMode
+Jade.MiniAudio.ChannelMixMode.Simple = 1 -> Jade.MiniAudio.ChannelMixMode
+Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.Aux0 = 20 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.Aux1 = 21 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.Aux10 = 30 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.Aux11 = 31 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.Aux12 = 32 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.Aux13 = 33 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.Aux14 = 34 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.Aux15 = 35 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.Aux16 = 36 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.Aux17 = 37 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.Aux18 = 38 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.Aux19 = 39 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.Aux2 = 22 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.Aux20 = 40 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.Aux21 = 41 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.Aux22 = 42 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.Aux23 = 43 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.Aux24 = 44 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.Aux25 = 45 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.Aux26 = 46 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.Aux27 = 47 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.Aux28 = 48 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.Aux29 = 49 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.Aux3 = 23 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.Aux30 = 50 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.Aux31 = 51 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.Aux4 = 24 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.Aux5 = 25 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.Aux6 = 26 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.Aux7 = 27 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.Aux8 = 28 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.Aux9 = 29 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.BackCenter = 10 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.BackLeft = 6 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.BackRight = 7 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.FrontCenter = 4 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.FrontLeft = 2 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.FrontLeftCenter = 8 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.FrontRight = 3 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.FrontRightCenter = 9 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.Left = 2 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.Lfe = 5 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.Mono = 1 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.None = 0 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.PositionCount = 52 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.Right = 3 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.SideLeft = 11 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.SideRight = 12 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.TopBackCenter = 18 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.TopBackLeft = 17 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.TopBackRight = 19 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.TopCenter = 13 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.TopFrontCenter = 15 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.TopFrontLeft = 14 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.ChannelPosition.TopFrontRight = 16 -> Jade.MiniAudio.ChannelPosition
+Jade.MiniAudio.Context
+Jade.MiniAudio.Context.Context() -> void
+Jade.MiniAudio.Context.Context(nint handle) -> void
+Jade.MiniAudio.Context.Equals(Jade.MiniAudio.Context other) -> bool
+Jade.MiniAudio.Context.Handle.get -> nint
+Jade.MiniAudio.ContextCommandWasapiDataQuit
+Jade.MiniAudio.ContextCommandWasapiDataQuit.ContextCommandWasapiDataQuit() -> void
+Jade.MiniAudio.ContextCommandWasapiDataQuit.Unused -> int
+Jade.MiniAudio.ContextCommandWasapiDataReleaseAudioClient
+Jade.MiniAudio.ContextCommandWasapiDataReleaseAudioClient.ContextCommandWasapiDataReleaseAudioClient() -> void
+Jade.MiniAudio.ContextCommandWasapiDataReleaseAudioClient.Device -> Jade.MiniAudio.Device
+Jade.MiniAudio.ContextCommandWasapiDataReleaseAudioClient.DeviceType -> Jade.MiniAudio.DeviceType
+Jade.MiniAudio.ContextConfigAlsa
+Jade.MiniAudio.ContextConfigAlsa.ContextConfigAlsa() -> void
+Jade.MiniAudio.ContextConfigAlsa.UseVerboseDeviceEnumeration -> Jade.MiniAudio.Bool32
+Jade.MiniAudio.ContextConfigCoreAudio
+Jade.MiniAudio.ContextConfigCoreAudio.ContextConfigCoreAudio() -> void
+Jade.MiniAudio.ContextConfigCoreAudio.NoAudioSessionActivate -> Jade.MiniAudio.Bool32
+Jade.MiniAudio.ContextConfigCoreAudio.NoAudioSessionDeactivate -> Jade.MiniAudio.Bool32
+Jade.MiniAudio.ContextConfigCoreAudio.SessionCategory -> Jade.MiniAudio.IOSSessionCategory
+Jade.MiniAudio.ContextConfigCoreAudio.SessionCategoryOptions -> uint
+Jade.MiniAudio.DataConverterExecutionPath
+Jade.MiniAudio.DataConverterExecutionPath.ChannelsFirst = 5 -> Jade.MiniAudio.DataConverterExecutionPath
+Jade.MiniAudio.DataConverterExecutionPath.ChannelsOnly = 2 -> Jade.MiniAudio.DataConverterExecutionPath
+Jade.MiniAudio.DataConverterExecutionPath.FormatOnly = 1 -> Jade.MiniAudio.DataConverterExecutionPath
+Jade.MiniAudio.DataConverterExecutionPath.Passthrough = 0 -> Jade.MiniAudio.DataConverterExecutionPath
+Jade.MiniAudio.DataConverterExecutionPath.ResampleFirst = 4 -> Jade.MiniAudio.DataConverterExecutionPath
+Jade.MiniAudio.DataConverterExecutionPath.ResampleOnly = 3 -> Jade.MiniAudio.DataConverterExecutionPath
+Jade.MiniAudio.DecodingBackendConfig
+Jade.MiniAudio.DecodingBackendConfig.DecodingBackendConfig() -> void
+Jade.MiniAudio.DecodingBackendConfig.PreferredFormat -> Jade.MiniAudio.Format
+Jade.MiniAudio.DecodingBackendConfig.SeekPointCount -> uint
+Jade.MiniAudio.DelayConfig
+Jade.MiniAudio.DelayConfig.Channels -> uint
+Jade.MiniAudio.DelayConfig.Decay -> float
+Jade.MiniAudio.DelayConfig.DelayConfig() -> void
+Jade.MiniAudio.DelayConfig.DelayInFrames -> uint
+Jade.MiniAudio.DelayConfig.DelayStart -> Jade.MiniAudio.Bool32
+Jade.MiniAudio.DelayConfig.Dry -> float
+Jade.MiniAudio.DelayConfig.SampleRate -> uint
+Jade.MiniAudio.DelayConfig.Wet -> float
+Jade.MiniAudio.Device
+Jade.MiniAudio.Device.Device() -> void
+Jade.MiniAudio.Device.Device(nint handle) -> void
+Jade.MiniAudio.Device.Equals(Jade.MiniAudio.Device other) -> bool
+Jade.MiniAudio.Device.Handle.get -> nint
+Jade.MiniAudio.DeviceConfigAAudio
+Jade.MiniAudio.DeviceConfigAAudio.AllowedCapturePolicy -> Jade.MiniAudio.AAudioAllowedCapturePolicy
+Jade.MiniAudio.DeviceConfigAAudio.AllowSetBufferCapacity -> Jade.MiniAudio.Bool32
+Jade.MiniAudio.DeviceConfigAAudio.ContentType -> Jade.MiniAudio.AAudioContentType
+Jade.MiniAudio.DeviceConfigAAudio.DeviceConfigAAudio() -> void
+Jade.MiniAudio.DeviceConfigAAudio.EnableCompatibilityWorkarounds -> Jade.MiniAudio.Bool32
+Jade.MiniAudio.DeviceConfigAAudio.InputPreset -> Jade.MiniAudio.AAudioInputPreset
+Jade.MiniAudio.DeviceConfigAAudio.NoAutoStartAfterReroute -> Jade.MiniAudio.Bool32
+Jade.MiniAudio.DeviceConfigAAudio.Usage -> Jade.MiniAudio.AAudioUsage
+Jade.MiniAudio.DeviceConfigAlsa
+Jade.MiniAudio.DeviceConfigAlsa.DeviceConfigAlsa() -> void
+Jade.MiniAudio.DeviceConfigAlsa.NoAutoChannels -> Jade.MiniAudio.Bool32
+Jade.MiniAudio.DeviceConfigAlsa.NoAutoFormat -> Jade.MiniAudio.Bool32
+Jade.MiniAudio.DeviceConfigAlsa.NoAutoResample -> Jade.MiniAudio.Bool32
+Jade.MiniAudio.DeviceConfigAlsa.NoMMap -> Jade.MiniAudio.Bool32
+Jade.MiniAudio.DeviceConfigCoreAudio
+Jade.MiniAudio.DeviceConfigCoreAudio.AllowNominalSampleRateChange -> Jade.MiniAudio.Bool32
+Jade.MiniAudio.DeviceConfigCoreAudio.DeviceConfigCoreAudio() -> void
+Jade.MiniAudio.DeviceConfigOpenSL
+Jade.MiniAudio.DeviceConfigOpenSL.DeviceConfigOpenSL() -> void
+Jade.MiniAudio.DeviceConfigOpenSL.EnableCompatibilityWorkarounds -> Jade.MiniAudio.Bool32
+Jade.MiniAudio.DeviceConfigOpenSL.RecordingPreset -> Jade.MiniAudio.OpenSLRecordingPreset
+Jade.MiniAudio.DeviceConfigOpenSL.StreamType -> Jade.MiniAudio.OpenSLStreamType
+Jade.MiniAudio.DeviceConfigWasapi
+Jade.MiniAudio.DeviceConfigWasapi.DeviceConfigWasapi() -> void
+Jade.MiniAudio.DeviceConfigWasapi.LoopbackProcessExclude -> Jade.MiniAudio.Bool8
+Jade.MiniAudio.DeviceConfigWasapi.LoopbackProcessId -> uint
+Jade.MiniAudio.DeviceConfigWasapi.NoAutoConvertSrc -> Jade.MiniAudio.Bool8
+Jade.MiniAudio.DeviceConfigWasapi.NoAutoStreamRouting -> Jade.MiniAudio.Bool8
+Jade.MiniAudio.DeviceConfigWasapi.NoDefaultQualitySrc -> Jade.MiniAudio.Bool8
+Jade.MiniAudio.DeviceConfigWasapi.NoHardwareOffloading -> Jade.MiniAudio.Bool8
+Jade.MiniAudio.DeviceConfigWasapi.Usage -> Jade.MiniAudio.WasapiUsage
+Jade.MiniAudio.DeviceInfoNativeDataFormatsElement
+Jade.MiniAudio.DeviceInfoNativeDataFormatsElement.Channels -> uint
+Jade.MiniAudio.DeviceInfoNativeDataFormatsElement.DeviceInfoNativeDataFormatsElement() -> void
+Jade.MiniAudio.DeviceInfoNativeDataFormatsElement.Flags -> uint
+Jade.MiniAudio.DeviceInfoNativeDataFormatsElement.Format -> Jade.MiniAudio.Format
+Jade.MiniAudio.DeviceInfoNativeDataFormatsElement.SampleRate -> uint
+Jade.MiniAudio.DeviceJobThread
+Jade.MiniAudio.DeviceJobThread.DeviceJobThread() -> void
+Jade.MiniAudio.DeviceJobThread.DeviceJobThread(nint handle) -> void
+Jade.MiniAudio.DeviceJobThread.Equals(Jade.MiniAudio.DeviceJobThread other) -> bool
+Jade.MiniAudio.DeviceJobThread.Handle.get -> nint
+Jade.MiniAudio.DeviceJobThreadConfig
+Jade.MiniAudio.DeviceJobThreadConfig.DeviceJobThreadConfig() -> void
+Jade.MiniAudio.DeviceJobThreadConfig.JobQueueCapacity -> uint
+Jade.MiniAudio.DeviceJobThreadConfig.JobQueueFlags -> uint
+Jade.MiniAudio.DeviceJobThreadConfig.NoThread -> Jade.MiniAudio.Bool32
+Jade.MiniAudio.DeviceNotification
+Jade.MiniAudio.DeviceNotification.Data -> Jade.MiniAudio.DeviceNotificationData
+Jade.MiniAudio.DeviceNotification.Device -> Jade.MiniAudio.Device
+Jade.MiniAudio.DeviceNotification.DeviceNotification() -> void
+Jade.MiniAudio.DeviceNotification.Type -> Jade.MiniAudio.DeviceNotificationType
+Jade.MiniAudio.DeviceNotificationData
+Jade.MiniAudio.DeviceNotificationData.DeviceNotificationData() -> void
+Jade.MiniAudio.DeviceNotificationData.Interruption -> Jade.MiniAudio.DeviceNotificationDataInterruption
+Jade.MiniAudio.DeviceNotificationData.Rerouted -> Jade.MiniAudio.DeviceNotificationDataRerouted
+Jade.MiniAudio.DeviceNotificationData.Started -> Jade.MiniAudio.DeviceNotificationDataStarted
+Jade.MiniAudio.DeviceNotificationData.Stopped -> Jade.MiniAudio.DeviceNotificationDataStopped
+Jade.MiniAudio.DeviceNotificationDataInterruption
+Jade.MiniAudio.DeviceNotificationDataInterruption.DeviceNotificationDataInterruption() -> void
+Jade.MiniAudio.DeviceNotificationDataInterruption.Unused -> int
+Jade.MiniAudio.DeviceNotificationDataRerouted
+Jade.MiniAudio.DeviceNotificationDataRerouted.DeviceNotificationDataRerouted() -> void
+Jade.MiniAudio.DeviceNotificationDataRerouted.Unused -> int
+Jade.MiniAudio.DeviceNotificationDataStarted
+Jade.MiniAudio.DeviceNotificationDataStarted.DeviceNotificationDataStarted() -> void
+Jade.MiniAudio.DeviceNotificationDataStarted.Unused -> int
+Jade.MiniAudio.DeviceNotificationDataStopped
+Jade.MiniAudio.DeviceNotificationDataStopped.DeviceNotificationDataStopped() -> void
+Jade.MiniAudio.DeviceNotificationDataStopped.Unused -> int
+Jade.MiniAudio.DeviceNotificationType
+Jade.MiniAudio.DeviceNotificationType.InterruptionBegan = 3 -> Jade.MiniAudio.DeviceNotificationType
+Jade.MiniAudio.DeviceNotificationType.InterruptionEnded = 4 -> Jade.MiniAudio.DeviceNotificationType
+Jade.MiniAudio.DeviceNotificationType.Rerouted = 2 -> Jade.MiniAudio.DeviceNotificationType
+Jade.MiniAudio.DeviceNotificationType.Started = 0 -> Jade.MiniAudio.DeviceNotificationType
+Jade.MiniAudio.DeviceNotificationType.Stopped = 1 -> Jade.MiniAudio.DeviceNotificationType
+Jade.MiniAudio.DeviceNotificationType.Unlocked = 5 -> Jade.MiniAudio.DeviceNotificationType
+Jade.MiniAudio.DeviceState
+Jade.MiniAudio.DeviceState.Started = 2 -> Jade.MiniAudio.DeviceState
+Jade.MiniAudio.DeviceState.Starting = 3 -> Jade.MiniAudio.DeviceState
+Jade.MiniAudio.DeviceState.Stopped = 1 -> Jade.MiniAudio.DeviceState
+Jade.MiniAudio.DeviceState.Stopping = 4 -> Jade.MiniAudio.DeviceState
+Jade.MiniAudio.DeviceState.Uninitialized = 0 -> Jade.MiniAudio.DeviceState
+Jade.MiniAudio.DeviceType
+Jade.MiniAudio.DeviceType.Capture = 2 -> Jade.MiniAudio.DeviceType
+Jade.MiniAudio.DeviceType.Duplex = 3 -> Jade.MiniAudio.DeviceType
+Jade.MiniAudio.DeviceType.Loopback = 4 -> Jade.MiniAudio.DeviceType
+Jade.MiniAudio.DeviceType.Playback = 1 -> Jade.MiniAudio.DeviceType
+Jade.MiniAudio.DitherMode
+Jade.MiniAudio.DitherMode.None = 0 -> Jade.MiniAudio.DitherMode
+Jade.MiniAudio.DitherMode.Rectangle = 1 -> Jade.MiniAudio.DitherMode
+Jade.MiniAudio.DitherMode.Triangle = 2 -> Jade.MiniAudio.DitherMode
+Jade.MiniAudio.EncodingFormat
+Jade.MiniAudio.EncodingFormat.Flac = 2 -> Jade.MiniAudio.EncodingFormat
+Jade.MiniAudio.EncodingFormat.Mp3 = 3 -> Jade.MiniAudio.EncodingFormat
+Jade.MiniAudio.EncodingFormat.Unknown = 0 -> Jade.MiniAudio.EncodingFormat
+Jade.MiniAudio.EncodingFormat.Vorbis = 4 -> Jade.MiniAudio.EncodingFormat
+Jade.MiniAudio.EncodingFormat.Wav = 1 -> Jade.MiniAudio.EncodingFormat
+Jade.MiniAudio.Engine
+Jade.MiniAudio.Engine.Engine() -> void
+Jade.MiniAudio.Engine.Engine(nint handle) -> void
+Jade.MiniAudio.Engine.Equals(Jade.MiniAudio.Engine other) -> bool
+Jade.MiniAudio.Engine.Handle.get -> nint
+Jade.MiniAudio.EngineNodeFadeSettings
+Jade.MiniAudio.EngineNodeFadeSettings.AbsoluteGlobalTimeInFrames -> Jade.MiniAudio.AtomicUint64
+Jade.MiniAudio.EngineNodeFadeSettings.EngineNodeFadeSettings() -> void
+Jade.MiniAudio.EngineNodeFadeSettings.FadeLengthInFrames -> Jade.MiniAudio.AtomicUint64
+Jade.MiniAudio.EngineNodeFadeSettings.VolumeBeg -> Jade.MiniAudio.AtomicFloat
+Jade.MiniAudio.EngineNodeFadeSettings.VolumeEnd -> Jade.MiniAudio.AtomicFloat
+Jade.MiniAudio.EngineNodeType
+Jade.MiniAudio.EngineNodeType.Group = 1 -> Jade.MiniAudio.EngineNodeType
+Jade.MiniAudio.EngineNodeType.Sound = 0 -> Jade.MiniAudio.EngineNodeType
+Jade.MiniAudio.Event
+Jade.MiniAudio.Event.Equals(Jade.MiniAudio.Event other) -> bool
+Jade.MiniAudio.Event.Event() -> void
+Jade.MiniAudio.Event.Event(nint handle) -> void
+Jade.MiniAudio.Event.Handle.get -> nint
+Jade.MiniAudio.Fader
+Jade.MiniAudio.Fader.Config -> Jade.MiniAudio.FaderConfig
+Jade.MiniAudio.Fader.CursorInFrames -> long
+Jade.MiniAudio.Fader.Fader() -> void
+Jade.MiniAudio.Fader.LengthInFrames -> ulong
+Jade.MiniAudio.Fader.VolumeBeg -> float
+Jade.MiniAudio.Fader.VolumeEnd -> float
+Jade.MiniAudio.FaderConfig
+Jade.MiniAudio.FaderConfig.Channels -> uint
+Jade.MiniAudio.FaderConfig.FaderConfig() -> void
+Jade.MiniAudio.FaderConfig.Format -> Jade.MiniAudio.Format
+Jade.MiniAudio.FaderConfig.SampleRate -> uint
+Jade.MiniAudio.Fence
+Jade.MiniAudio.Fence.Equals(Jade.MiniAudio.Fence other) -> bool
+Jade.MiniAudio.Fence.Fence() -> void
+Jade.MiniAudio.Fence.Fence(nint handle) -> void
+Jade.MiniAudio.Fence.Handle.get -> nint
+Jade.MiniAudio.FileInfo
+Jade.MiniAudio.FileInfo.FileInfo() -> void
+Jade.MiniAudio.FileInfo.SizeInBytes -> ulong
+Jade.MiniAudio.Format
+Jade.MiniAudio.Format.Count = 6 -> Jade.MiniAudio.Format
+Jade.MiniAudio.Format.F32 = 5 -> Jade.MiniAudio.Format
+Jade.MiniAudio.Format.S16 = 2 -> Jade.MiniAudio.Format
+Jade.MiniAudio.Format.S24 = 3 -> Jade.MiniAudio.Format
+Jade.MiniAudio.Format.S32 = 4 -> Jade.MiniAudio.Format
+Jade.MiniAudio.Format.U8 = 1 -> Jade.MiniAudio.Format
+Jade.MiniAudio.Format.Unknown = 0 -> Jade.MiniAudio.Format
+Jade.MiniAudio.GainerConfig
+Jade.MiniAudio.GainerConfig.Channels -> uint
+Jade.MiniAudio.GainerConfig.GainerConfig() -> void
+Jade.MiniAudio.GainerConfig.SmoothTimeInFrames -> uint
+Jade.MiniAudio.Handedness
+Jade.MiniAudio.Handedness.Left = 1 -> Jade.MiniAudio.Handedness
+Jade.MiniAudio.Handedness.Right = 0 -> Jade.MiniAudio.Handedness
+Jade.MiniAudio.Hishelf2Config
+Jade.MiniAudio.Hishelf2Config.Channels -> uint
+Jade.MiniAudio.Hishelf2Config.Format -> Jade.MiniAudio.Format
+Jade.MiniAudio.Hishelf2Config.Frequency -> double
+Jade.MiniAudio.Hishelf2Config.GainDB -> double
+Jade.MiniAudio.Hishelf2Config.Hishelf2Config() -> void
+Jade.MiniAudio.Hishelf2Config.SampleRate -> uint
+Jade.MiniAudio.Hishelf2Config.ShelfSlope -> double
+Jade.MiniAudio.Hpf1Config
+Jade.MiniAudio.Hpf1Config.Channels -> uint
+Jade.MiniAudio.Hpf1Config.CutoffFrequency -> double
+Jade.MiniAudio.Hpf1Config.Format -> Jade.MiniAudio.Format
+Jade.MiniAudio.Hpf1Config.Hpf1Config() -> void
+Jade.MiniAudio.Hpf1Config.Q -> double
+Jade.MiniAudio.Hpf1Config.SampleRate -> uint
+Jade.MiniAudio.HpfConfig
+Jade.MiniAudio.HpfConfig.Channels -> uint
+Jade.MiniAudio.HpfConfig.CutoffFrequency -> double
+Jade.MiniAudio.HpfConfig.Format -> Jade.MiniAudio.Format
+Jade.MiniAudio.HpfConfig.HpfConfig() -> void
+Jade.MiniAudio.HpfConfig.Order -> uint
+Jade.MiniAudio.HpfConfig.SampleRate -> uint
+Jade.MiniAudio.IOSSessionCategory
+Jade.MiniAudio.IOSSessionCategory.Ambient = 2 -> Jade.MiniAudio.IOSSessionCategory
+Jade.MiniAudio.IOSSessionCategory.Default = 0 -> Jade.MiniAudio.IOSSessionCategory
+Jade.MiniAudio.IOSSessionCategory.MultiRoute = 7 -> Jade.MiniAudio.IOSSessionCategory
+Jade.MiniAudio.IOSSessionCategory.None = 1 -> Jade.MiniAudio.IOSSessionCategory
+Jade.MiniAudio.IOSSessionCategory.PlayAndRecord = 6 -> Jade.MiniAudio.IOSSessionCategory
+Jade.MiniAudio.IOSSessionCategory.Playback = 4 -> Jade.MiniAudio.IOSSessionCategory
+Jade.MiniAudio.IOSSessionCategory.Record = 5 -> Jade.MiniAudio.IOSSessionCategory
+Jade.MiniAudio.IOSSessionCategory.SoloAmbient = 3 -> Jade.MiniAudio.IOSSessionCategory
+Jade.MiniAudio.IOSSessionCategoryOption
+Jade.MiniAudio.IOSSessionCategoryOption.AllowAirPlay = 64 -> Jade.MiniAudio.IOSSessionCategoryOption
+Jade.MiniAudio.IOSSessionCategoryOption.AllowBluetooth = 4 -> Jade.MiniAudio.IOSSessionCategoryOption
+Jade.MiniAudio.IOSSessionCategoryOption.AllowBluetoothA2dp = 32 -> Jade.MiniAudio.IOSSessionCategoryOption
+Jade.MiniAudio.IOSSessionCategoryOption.DefaultToSpeaker = 8 -> Jade.MiniAudio.IOSSessionCategoryOption
+Jade.MiniAudio.IOSSessionCategoryOption.DuckOthers = 2 -> Jade.MiniAudio.IOSSessionCategoryOption
+Jade.MiniAudio.IOSSessionCategoryOption.InterruptSpokenAudioAndMixWithOthers = 17 -> Jade.MiniAudio.IOSSessionCategoryOption
+Jade.MiniAudio.IOSSessionCategoryOption.MixWithOthers = 1 -> Jade.MiniAudio.IOSSessionCategoryOption
+Jade.MiniAudio.JobQueue
+Jade.MiniAudio.JobQueue.Equals(Jade.MiniAudio.JobQueue other) -> bool
+Jade.MiniAudio.JobQueue.Handle.get -> nint
+Jade.MiniAudio.JobQueue.JobQueue() -> void
+Jade.MiniAudio.JobQueue.JobQueue(nint handle) -> void
+Jade.MiniAudio.JobQueueConfig
+Jade.MiniAudio.JobQueueConfig.Capacity -> uint
+Jade.MiniAudio.JobQueueConfig.Flags -> uint
+Jade.MiniAudio.JobQueueConfig.JobQueueConfig() -> void
+Jade.MiniAudio.JobQueueFlags
+Jade.MiniAudio.JobQueueFlags.Blocking = 1 -> Jade.MiniAudio.JobQueueFlags
+Jade.MiniAudio.JobToc
+Jade.MiniAudio.JobToc.Allocation -> ulong
+Jade.MiniAudio.JobToc.Breakup -> Jade.MiniAudio.JobTocBreakup
+Jade.MiniAudio.JobToc.JobToc() -> void
+Jade.MiniAudio.JobTocBreakup
+Jade.MiniAudio.JobTocBreakup.Code -> ushort
+Jade.MiniAudio.JobTocBreakup.JobTocBreakup() -> void
+Jade.MiniAudio.JobTocBreakup.Refcount -> uint
+Jade.MiniAudio.JobTocBreakup.Slot -> ushort
+Jade.MiniAudio.JobType
+Jade.MiniAudio.JobType.Count = 12 -> Jade.MiniAudio.JobType
+Jade.MiniAudio.JobType.Custom = 1 -> Jade.MiniAudio.JobType
+Jade.MiniAudio.JobType.DeviceAAudioReroute = 11 -> Jade.MiniAudio.JobType
+Jade.MiniAudio.JobType.Quit = 0 -> Jade.MiniAudio.JobType
+Jade.MiniAudio.JobType.ResourceManagerFreeDataBuffer = 6 -> Jade.MiniAudio.JobType
+Jade.MiniAudio.JobType.ResourceManagerFreeDataBufferNode = 3 -> Jade.MiniAudio.JobType
+Jade.MiniAudio.JobType.ResourceManagerFreeDataStream = 8 -> Jade.MiniAudio.JobType
+Jade.MiniAudio.JobType.ResourceManagerLoadDataBuffer = 5 -> Jade.MiniAudio.JobType
+Jade.MiniAudio.JobType.ResourceManagerLoadDataBufferNode = 2 -> Jade.MiniAudio.JobType
+Jade.MiniAudio.JobType.ResourceManagerLoadDataStream = 7 -> Jade.MiniAudio.JobType
+Jade.MiniAudio.JobType.ResourceManagerPageDataBufferNode = 4 -> Jade.MiniAudio.JobType
+Jade.MiniAudio.JobType.ResourceManagerPageDataStream = 9 -> Jade.MiniAudio.JobType
+Jade.MiniAudio.JobType.ResourceManagerSeekDataStream = 10 -> Jade.MiniAudio.JobType
+Jade.MiniAudio.Lcg
+Jade.MiniAudio.Lcg.Lcg() -> void
+Jade.MiniAudio.Lcg.State -> uint
+Jade.MiniAudio.LinearResamplerConfig
+Jade.MiniAudio.LinearResamplerConfig.Channels -> uint
+Jade.MiniAudio.LinearResamplerConfig.Format -> Jade.MiniAudio.Format
+Jade.MiniAudio.LinearResamplerConfig.LinearResamplerConfig() -> void
+Jade.MiniAudio.LinearResamplerConfig.LpfNyquistFactor -> double
+Jade.MiniAudio.LinearResamplerConfig.LpfOrder -> uint
+Jade.MiniAudio.LinearResamplerConfig.SampleRateIn -> uint
+Jade.MiniAudio.LinearResamplerConfig.SampleRateOut -> uint
+Jade.MiniAudio.Log
+Jade.MiniAudio.Log.Equals(Jade.MiniAudio.Log other) -> bool
+Jade.MiniAudio.Log.Handle.get -> nint
+Jade.MiniAudio.Log.Log() -> void
+Jade.MiniAudio.Log.Log(nint handle) -> void
+Jade.MiniAudio.LogLevel
+Jade.MiniAudio.LogLevel.Debug = 4 -> Jade.MiniAudio.LogLevel
+Jade.MiniAudio.LogLevel.Error = 1 -> Jade.MiniAudio.LogLevel
+Jade.MiniAudio.LogLevel.Info = 3 -> Jade.MiniAudio.LogLevel
+Jade.MiniAudio.LogLevel.Warning = 2 -> Jade.MiniAudio.LogLevel
+Jade.MiniAudio.Loshelf2Config
+Jade.MiniAudio.Loshelf2Config.Channels -> uint
+Jade.MiniAudio.Loshelf2Config.Format -> Jade.MiniAudio.Format
+Jade.MiniAudio.Loshelf2Config.Frequency -> double
+Jade.MiniAudio.Loshelf2Config.GainDB -> double
+Jade.MiniAudio.Loshelf2Config.Loshelf2Config() -> void
+Jade.MiniAudio.Loshelf2Config.SampleRate -> uint
+Jade.MiniAudio.Loshelf2Config.ShelfSlope -> double
+Jade.MiniAudio.Lpf1Config
+Jade.MiniAudio.Lpf1Config.Channels -> uint
+Jade.MiniAudio.Lpf1Config.CutoffFrequency -> double
+Jade.MiniAudio.Lpf1Config.Format -> Jade.MiniAudio.Format
+Jade.MiniAudio.Lpf1Config.Lpf1Config() -> void
+Jade.MiniAudio.Lpf1Config.Q -> double
+Jade.MiniAudio.Lpf1Config.SampleRate -> uint
+Jade.MiniAudio.LpfConfig
+Jade.MiniAudio.LpfConfig.Channels -> uint
+Jade.MiniAudio.LpfConfig.CutoffFrequency -> double
+Jade.MiniAudio.LpfConfig.Format -> Jade.MiniAudio.Format
+Jade.MiniAudio.LpfConfig.LpfConfig() -> void
+Jade.MiniAudio.LpfConfig.Order -> uint
+Jade.MiniAudio.LpfConfig.SampleRate -> uint
+Jade.MiniAudio.MonoExpansionMode
+Jade.MiniAudio.MonoExpansionMode.Average = 1 -> Jade.MiniAudio.MonoExpansionMode
+Jade.MiniAudio.MonoExpansionMode.Default = 0 -> Jade.MiniAudio.MonoExpansionMode
+Jade.MiniAudio.MonoExpansionMode.Duplicate = 0 -> Jade.MiniAudio.MonoExpansionMode
+Jade.MiniAudio.MonoExpansionMode.StereoOnly = 2 -> Jade.MiniAudio.MonoExpansionMode
+Jade.MiniAudio.Mutex
+Jade.MiniAudio.Mutex.Equals(Jade.MiniAudio.Mutex other) -> bool
+Jade.MiniAudio.Mutex.Handle.get -> nint
+Jade.MiniAudio.Mutex.Mutex() -> void
+Jade.MiniAudio.Mutex.Mutex(nint handle) -> void
+Jade.MiniAudio.NodeFlags
+Jade.MiniAudio.NodeFlags.AllowNullInput = 4 -> Jade.MiniAudio.NodeFlags
+Jade.MiniAudio.NodeFlags.ContinuousProcessing = 2 -> Jade.MiniAudio.NodeFlags
+Jade.MiniAudio.NodeFlags.DifferentProcessingRates = 8 -> Jade.MiniAudio.NodeFlags
+Jade.MiniAudio.NodeFlags.Passthrough = 1 -> Jade.MiniAudio.NodeFlags
+Jade.MiniAudio.NodeFlags.SilentOutput = 16 -> Jade.MiniAudio.NodeFlags
+Jade.MiniAudio.NodeGraphConfig
+Jade.MiniAudio.NodeGraphConfig.Channels -> uint
+Jade.MiniAudio.NodeGraphConfig.NodeGraphConfig() -> void
+Jade.MiniAudio.NodeGraphConfig.PreMixStackSizeInBytes -> nuint
+Jade.MiniAudio.NodeGraphConfig.ProcessingSizeInFrames -> uint
+Jade.MiniAudio.NodeState
+Jade.MiniAudio.NodeState.Started = 0 -> Jade.MiniAudio.NodeState
+Jade.MiniAudio.NodeState.Stopped = 1 -> Jade.MiniAudio.NodeState
+Jade.MiniAudio.NoiseConfig
+Jade.MiniAudio.NoiseConfig.Amplitude -> double
+Jade.MiniAudio.NoiseConfig.Channels -> uint
+Jade.MiniAudio.NoiseConfig.DuplicateChannels -> Jade.MiniAudio.Bool32
+Jade.MiniAudio.NoiseConfig.Format -> Jade.MiniAudio.Format
+Jade.MiniAudio.NoiseConfig.NoiseConfig() -> void
+Jade.MiniAudio.NoiseConfig.Seed -> int
+Jade.MiniAudio.NoiseConfig.Type -> Jade.MiniAudio.NoiseType
+Jade.MiniAudio.NoiseType
+Jade.MiniAudio.NoiseType.Brownian = 2 -> Jade.MiniAudio.NoiseType
+Jade.MiniAudio.NoiseType.Pink = 1 -> Jade.MiniAudio.NoiseType
+Jade.MiniAudio.NoiseType.White = 0 -> Jade.MiniAudio.NoiseType
+Jade.MiniAudio.Notch2Config
+Jade.MiniAudio.Notch2Config.Channels -> uint
+Jade.MiniAudio.Notch2Config.Format -> Jade.MiniAudio.Format
+Jade.MiniAudio.Notch2Config.Frequency -> double
+Jade.MiniAudio.Notch2Config.Notch2Config() -> void
+Jade.MiniAudio.Notch2Config.Q -> double
+Jade.MiniAudio.Notch2Config.SampleRate -> uint
+Jade.MiniAudio.OpenModeFlags
+Jade.MiniAudio.OpenModeFlags.Read = 1 -> Jade.MiniAudio.OpenModeFlags
+Jade.MiniAudio.OpenModeFlags.Write = 2 -> Jade.MiniAudio.OpenModeFlags
+Jade.MiniAudio.OpenSLRecordingPreset
+Jade.MiniAudio.OpenSLRecordingPreset.Camcorder = 2 -> Jade.MiniAudio.OpenSLRecordingPreset
+Jade.MiniAudio.OpenSLRecordingPreset.Default = 0 -> Jade.MiniAudio.OpenSLRecordingPreset
+Jade.MiniAudio.OpenSLRecordingPreset.Generic = 1 -> Jade.MiniAudio.OpenSLRecordingPreset
+Jade.MiniAudio.OpenSLRecordingPreset.VoiceCommunication = 4 -> Jade.MiniAudio.OpenSLRecordingPreset
+Jade.MiniAudio.OpenSLRecordingPreset.VoiceRecognition = 3 -> Jade.MiniAudio.OpenSLRecordingPreset
+Jade.MiniAudio.OpenSLRecordingPreset.VoiceUnprocessed = 5 -> Jade.MiniAudio.OpenSLRecordingPreset
+Jade.MiniAudio.OpenSLStreamType
+Jade.MiniAudio.OpenSLStreamType.Alarm = 5 -> Jade.MiniAudio.OpenSLStreamType
+Jade.MiniAudio.OpenSLStreamType.Default = 0 -> Jade.MiniAudio.OpenSLStreamType
+Jade.MiniAudio.OpenSLStreamType.Media = 4 -> Jade.MiniAudio.OpenSLStreamType
+Jade.MiniAudio.OpenSLStreamType.Notification = 6 -> Jade.MiniAudio.OpenSLStreamType
+Jade.MiniAudio.OpenSLStreamType.Ring = 3 -> Jade.MiniAudio.OpenSLStreamType
+Jade.MiniAudio.OpenSLStreamType.System = 2 -> Jade.MiniAudio.OpenSLStreamType
+Jade.MiniAudio.OpenSLStreamType.Voice = 1 -> Jade.MiniAudio.OpenSLStreamType
+Jade.MiniAudio.PanMode
+Jade.MiniAudio.PanMode.Balance = 0 -> Jade.MiniAudio.PanMode
+Jade.MiniAudio.PanMode.Pan = 1 -> Jade.MiniAudio.PanMode
+Jade.MiniAudio.Panner
+Jade.MiniAudio.Panner.Channels -> uint
+Jade.MiniAudio.Panner.Format -> Jade.MiniAudio.Format
+Jade.MiniAudio.Panner.Mode -> Jade.MiniAudio.PanMode
+Jade.MiniAudio.Panner.Pan -> float
+Jade.MiniAudio.Panner.Panner() -> void
+Jade.MiniAudio.PannerConfig
+Jade.MiniAudio.PannerConfig.Channels -> uint
+Jade.MiniAudio.PannerConfig.Format -> Jade.MiniAudio.Format
+Jade.MiniAudio.PannerConfig.Mode -> Jade.MiniAudio.PanMode
+Jade.MiniAudio.PannerConfig.Pan -> float
+Jade.MiniAudio.PannerConfig.PannerConfig() -> void
+Jade.MiniAudio.Peak2Config
+Jade.MiniAudio.Peak2Config.Channels -> uint
+Jade.MiniAudio.Peak2Config.Format -> Jade.MiniAudio.Format
+Jade.MiniAudio.Peak2Config.Frequency -> double
+Jade.MiniAudio.Peak2Config.GainDB -> double
+Jade.MiniAudio.Peak2Config.Peak2Config() -> void
+Jade.MiniAudio.Peak2Config.Q -> double
+Jade.MiniAudio.Peak2Config.SampleRate -> uint
+Jade.MiniAudio.PerformanceProfile
+Jade.MiniAudio.PerformanceProfile.Conservative = 1 -> Jade.MiniAudio.PerformanceProfile
+Jade.MiniAudio.PerformanceProfile.LowLatency = 0 -> Jade.MiniAudio.PerformanceProfile
+Jade.MiniAudio.Positioning
+Jade.MiniAudio.Positioning.Absolute = 0 -> Jade.MiniAudio.Positioning
+Jade.MiniAudio.Positioning.Relative = 1 -> Jade.MiniAudio.Positioning
+Jade.MiniAudio.PulsewaveConfig
+Jade.MiniAudio.PulsewaveConfig.Amplitude -> double
+Jade.MiniAudio.PulsewaveConfig.Channels -> uint
+Jade.MiniAudio.PulsewaveConfig.DutyCycle -> double
+Jade.MiniAudio.PulsewaveConfig.Format -> Jade.MiniAudio.Format
+Jade.MiniAudio.PulsewaveConfig.Frequency -> double
+Jade.MiniAudio.PulsewaveConfig.PulsewaveConfig() -> void
+Jade.MiniAudio.PulsewaveConfig.SampleRate -> uint
+Jade.MiniAudio.ResampleAlgorithm
+Jade.MiniAudio.ResampleAlgorithm.Custom = 1 -> Jade.MiniAudio.ResampleAlgorithm
+Jade.MiniAudio.ResampleAlgorithm.Linear = 0 -> Jade.MiniAudio.ResampleAlgorithm
+Jade.MiniAudio.ResamplerConfigLinear
+Jade.MiniAudio.ResamplerConfigLinear.LpfOrder -> uint
+Jade.MiniAudio.ResamplerConfigLinear.ResamplerConfigLinear() -> void
+Jade.MiniAudio.ResourceManager
+Jade.MiniAudio.ResourceManager.Equals(Jade.MiniAudio.ResourceManager other) -> bool
+Jade.MiniAudio.ResourceManager.Handle.get -> nint
+Jade.MiniAudio.ResourceManager.ResourceManager() -> void
+Jade.MiniAudio.ResourceManager.ResourceManager(nint handle) -> void
+Jade.MiniAudio.ResourceManagerDataSourceFlags
+Jade.MiniAudio.ResourceManagerDataSourceFlags.Async = 4 -> Jade.MiniAudio.ResourceManagerDataSourceFlags
+Jade.MiniAudio.ResourceManagerDataSourceFlags.Decode = 2 -> Jade.MiniAudio.ResourceManagerDataSourceFlags
+Jade.MiniAudio.ResourceManagerDataSourceFlags.Looping = 32 -> Jade.MiniAudio.ResourceManagerDataSourceFlags
+Jade.MiniAudio.ResourceManagerDataSourceFlags.Stream = 1 -> Jade.MiniAudio.ResourceManagerDataSourceFlags
+Jade.MiniAudio.ResourceManagerDataSourceFlags.UnknownLength = 16 -> Jade.MiniAudio.ResourceManagerDataSourceFlags
+Jade.MiniAudio.ResourceManagerDataSourceFlags.WaitInit = 8 -> Jade.MiniAudio.ResourceManagerDataSourceFlags
+Jade.MiniAudio.ResourceManagerDataSupplyType
+Jade.MiniAudio.ResourceManagerDataSupplyType.Decoded = 2 -> Jade.MiniAudio.ResourceManagerDataSupplyType
+Jade.MiniAudio.ResourceManagerDataSupplyType.DecodedPaged = 3 -> Jade.MiniAudio.ResourceManagerDataSupplyType
+Jade.MiniAudio.ResourceManagerDataSupplyType.Encoded = 1 -> Jade.MiniAudio.ResourceManagerDataSupplyType
+Jade.MiniAudio.ResourceManagerDataSupplyType.Unknown = 0 -> Jade.MiniAudio.ResourceManagerDataSupplyType
+Jade.MiniAudio.ResourceManagerFlags
+Jade.MiniAudio.ResourceManagerFlags.NonBlocking = 1 -> Jade.MiniAudio.ResourceManagerFlags
+Jade.MiniAudio.ResourceManagerFlags.NoThreading = 2 -> Jade.MiniAudio.ResourceManagerFlags
+Jade.MiniAudio.Result
+Jade.MiniAudio.Result.AccessDenied = -6 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.AddressFamilyNotSupported = -43 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.AlreadyConnected = -46 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.AlreadyExists = -8 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.AlreadyInUse = -23 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.ApiNotFound = -205 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.AtEnd = -17 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.BackendNotEnabled = -208 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.BadAddress = -24 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.BadMessage = -31 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.BadPipe = -26 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.BadProtocol = -39 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.BadSeek = -25 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.Busy = -19 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.Cancelled = -51 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.ConnectionRefused = -48 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.ConnectionReset = -45 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.CrcMismatch = -100 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.Deadlock = -27 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.DeviceAlreadyInitialized = -301 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.DeviceNotInitialized = -300 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.DeviceNotStarted = -302 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.DeviceNotStopped = -303 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.DeviceTypeNotSupported = -201 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.DirectoryNotEmpty = -16 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.DoesNotExist = -7 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.Error = -1 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.FailedToInitBackend = -400 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.FailedToOpenBackendDevice = -401 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.FailedToStartBackendDevice = -402 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.FailedToStopBackendDevice = -403 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.FormatNotSupported = -200 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.InProgress = -50 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.Interrupt = -21 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.InvalidArgs = -2 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.InvalidData = -33 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.InvalidDeviceConfig = -206 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.InvalidFile = -10 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.InvalidOperation = -3 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.IoError = -20 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.IsDirectory = -15 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.Loop = -207 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.MemoryAlreadyMapped = -52 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.NameTooLong = -13 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.NoAddress = -38 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.NoBackend = -203 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.NoDataAvailable = -32 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.NoDevice = -204 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.NoHost = -49 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.NoMessage = -30 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.NoNetwork = -35 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.NoSpace = -18 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.NotConnected = -47 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.NotDirectory = -14 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.NotImplemented = -29 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.NotSocket = -37 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.NotUnique = -36 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.OutOfMemory = -4 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.OutOfRange = -5 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.PathTooLong = -12 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.ProtocolFamilyNotSupported = -42 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.ProtocolNotSupported = -41 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.ProtocolUnavailable = -40 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.ShareModeNotSupported = -202 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.SocketNotSupported = -44 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.Success = 0 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.Timeout = -34 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.TooBig = -11 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.TooManyLinks = -28 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.TooManyOpenFiles = -9 -> Jade.MiniAudio.Result
+Jade.MiniAudio.Result.Unavailable = -22 -> Jade.MiniAudio.Result
+Jade.MiniAudio.SeekOrigin
+Jade.MiniAudio.SeekOrigin.Current = 1 -> Jade.MiniAudio.SeekOrigin
+Jade.MiniAudio.SeekOrigin.End = 2 -> Jade.MiniAudio.SeekOrigin
+Jade.MiniAudio.SeekOrigin.Start = 0 -> Jade.MiniAudio.SeekOrigin
+Jade.MiniAudio.Semaphore
+Jade.MiniAudio.Semaphore.Equals(Jade.MiniAudio.Semaphore other) -> bool
+Jade.MiniAudio.Semaphore.Handle.get -> nint
+Jade.MiniAudio.Semaphore.Semaphore() -> void
+Jade.MiniAudio.Semaphore.Semaphore(nint handle) -> void
+Jade.MiniAudio.ShareMode
+Jade.MiniAudio.ShareMode.Exclusive = 1 -> Jade.MiniAudio.ShareMode
+Jade.MiniAudio.ShareMode.Shared = 0 -> Jade.MiniAudio.ShareMode
+Jade.MiniAudio.SlotAllocatorConfig
+Jade.MiniAudio.SlotAllocatorConfig.Capacity -> uint
+Jade.MiniAudio.SlotAllocatorConfig.SlotAllocatorConfig() -> void
+Jade.MiniAudio.SlotAllocatorGroup
+Jade.MiniAudio.SlotAllocatorGroup.Bitfield -> uint
+Jade.MiniAudio.SlotAllocatorGroup.SlotAllocatorGroup() -> void
+Jade.MiniAudio.Sound
+Jade.MiniAudio.Sound.Equals(Jade.MiniAudio.Sound other) -> bool
+Jade.MiniAudio.Sound.Handle.get -> nint
+Jade.MiniAudio.Sound.Sound() -> void
+Jade.MiniAudio.Sound.Sound(nint handle) -> void
+Jade.MiniAudio.SoundFlags
+Jade.MiniAudio.SoundFlags.Async = 4 -> Jade.MiniAudio.SoundFlags
+Jade.MiniAudio.SoundFlags.Decode = 2 -> Jade.MiniAudio.SoundFlags
+Jade.MiniAudio.SoundFlags.Looping = 32 -> Jade.MiniAudio.SoundFlags
+Jade.MiniAudio.SoundFlags.NoDefaultAttachment = 4096 -> Jade.MiniAudio.SoundFlags
+Jade.MiniAudio.SoundFlags.NoPitch = 8192 -> Jade.MiniAudio.SoundFlags
+Jade.MiniAudio.SoundFlags.NoSpatialization = 16384 -> Jade.MiniAudio.SoundFlags
+Jade.MiniAudio.SoundFlags.Stream = 1 -> Jade.MiniAudio.SoundFlags
+Jade.MiniAudio.SoundFlags.UnknownLength = 16 -> Jade.MiniAudio.SoundFlags
+Jade.MiniAudio.SoundFlags.WaitInit = 8 -> Jade.MiniAudio.SoundFlags
+Jade.MiniAudio.Stack
+Jade.MiniAudio.Stack.Data -> Jade.MiniAudio.StackData
+Jade.MiniAudio.Stack.Offset -> nuint
+Jade.MiniAudio.Stack.SizeInBytes -> nuint
+Jade.MiniAudio.Stack.Stack() -> void
+Jade.MiniAudio.StackData
+Jade.MiniAudio.StackData.StackData() -> void
+Jade.MiniAudio.StandardChannelMap
+Jade.MiniAudio.StandardChannelMap.Alsa = 1 -> Jade.MiniAudio.StandardChannelMap
+Jade.MiniAudio.StandardChannelMap.Default = 0 -> Jade.MiniAudio.StandardChannelMap
+Jade.MiniAudio.StandardChannelMap.Flac = 3 -> Jade.MiniAudio.StandardChannelMap
+Jade.MiniAudio.StandardChannelMap.Microsoft = 0 -> Jade.MiniAudio.StandardChannelMap
+Jade.MiniAudio.StandardChannelMap.Rfc3551 = 2 -> Jade.MiniAudio.StandardChannelMap
+Jade.MiniAudio.StandardChannelMap.Sndio = 6 -> Jade.MiniAudio.StandardChannelMap
+Jade.MiniAudio.StandardChannelMap.Sound4 = 5 -> Jade.MiniAudio.StandardChannelMap
+Jade.MiniAudio.StandardChannelMap.Vorbis = 4 -> Jade.MiniAudio.StandardChannelMap
+Jade.MiniAudio.StandardChannelMap.WebAudio = 3 -> Jade.MiniAudio.StandardChannelMap
+Jade.MiniAudio.StandardSampleRate
+Jade.MiniAudio.StandardSampleRate.Count = 14 -> Jade.MiniAudio.StandardSampleRate
+Jade.MiniAudio.StandardSampleRate.Max = 384000 -> Jade.MiniAudio.StandardSampleRate
+Jade.MiniAudio.StandardSampleRate.Min = 8000 -> Jade.MiniAudio.StandardSampleRate
+Jade.MiniAudio.StandardSampleRate.Rate11025 = 11025 -> Jade.MiniAudio.StandardSampleRate
+Jade.MiniAudio.StandardSampleRate.Rate16000 = 16000 -> Jade.MiniAudio.StandardSampleRate
+Jade.MiniAudio.StandardSampleRate.Rate176400 = 176400 -> Jade.MiniAudio.StandardSampleRate
+Jade.MiniAudio.StandardSampleRate.Rate192000 = 192000 -> Jade.MiniAudio.StandardSampleRate
+Jade.MiniAudio.StandardSampleRate.Rate22050 = 22050 -> Jade.MiniAudio.StandardSampleRate
+Jade.MiniAudio.StandardSampleRate.Rate24000 = 24000 -> Jade.MiniAudio.StandardSampleRate
+Jade.MiniAudio.StandardSampleRate.Rate32000 = 32000 -> Jade.MiniAudio.StandardSampleRate
+Jade.MiniAudio.StandardSampleRate.Rate352800 = 352800 -> Jade.MiniAudio.StandardSampleRate
+Jade.MiniAudio.StandardSampleRate.Rate384000 = 384000 -> Jade.MiniAudio.StandardSampleRate
+Jade.MiniAudio.StandardSampleRate.Rate44100 = 44100 -> Jade.MiniAudio.StandardSampleRate
+Jade.MiniAudio.StandardSampleRate.Rate48000 = 48000 -> Jade.MiniAudio.StandardSampleRate
+Jade.MiniAudio.StandardSampleRate.Rate8000 = 8000 -> Jade.MiniAudio.StandardSampleRate
+Jade.MiniAudio.StandardSampleRate.Rate88200 = 88200 -> Jade.MiniAudio.StandardSampleRate
+Jade.MiniAudio.StandardSampleRate.Rate96000 = 96000 -> Jade.MiniAudio.StandardSampleRate
+Jade.MiniAudio.StreamFormat
+Jade.MiniAudio.StreamFormat.Pcm = 0 -> Jade.MiniAudio.StreamFormat
+Jade.MiniAudio.StreamLayout
+Jade.MiniAudio.StreamLayout.Deinterleaved = 1 -> Jade.MiniAudio.StreamLayout
+Jade.MiniAudio.StreamLayout.Interleaved = 0 -> Jade.MiniAudio.StreamLayout
+Jade.MiniAudio.ThreadPriority
+Jade.MiniAudio.ThreadPriority.Default = 0 -> Jade.MiniAudio.ThreadPriority
+Jade.MiniAudio.ThreadPriority.High = -1 -> Jade.MiniAudio.ThreadPriority
+Jade.MiniAudio.ThreadPriority.Highest = 0 -> Jade.MiniAudio.ThreadPriority
+Jade.MiniAudio.ThreadPriority.Idle = -5 -> Jade.MiniAudio.ThreadPriority
+Jade.MiniAudio.ThreadPriority.Low = -3 -> Jade.MiniAudio.ThreadPriority
+Jade.MiniAudio.ThreadPriority.Lowest = -4 -> Jade.MiniAudio.ThreadPriority
+Jade.MiniAudio.ThreadPriority.Normal = -2 -> Jade.MiniAudio.ThreadPriority
+Jade.MiniAudio.ThreadPriority.Realtime = 1 -> Jade.MiniAudio.ThreadPriority
+Jade.MiniAudio.Timer
+Jade.MiniAudio.Timer.Counter -> long
+Jade.MiniAudio.Timer.CounterD -> double
+Jade.MiniAudio.Timer.Timer() -> void
+Jade.MiniAudio.WasapiUsage
+Jade.MiniAudio.WasapiUsage.Default = 0 -> Jade.MiniAudio.WasapiUsage
+Jade.MiniAudio.WasapiUsage.Games = 1 -> Jade.MiniAudio.WasapiUsage
+Jade.MiniAudio.WasapiUsage.ProAudio = 2 -> Jade.MiniAudio.WasapiUsage
+Jade.MiniAudio.WaveformConfig
+Jade.MiniAudio.WaveformConfig.Amplitude -> double
+Jade.MiniAudio.WaveformConfig.Channels -> uint
+Jade.MiniAudio.WaveformConfig.Format -> Jade.MiniAudio.Format
+Jade.MiniAudio.WaveformConfig.Frequency -> double
+Jade.MiniAudio.WaveformConfig.SampleRate -> uint
+Jade.MiniAudio.WaveformConfig.Type -> Jade.MiniAudio.WaveformType
+Jade.MiniAudio.WaveformConfig.WaveformConfig() -> void
+Jade.MiniAudio.WaveformType
+Jade.MiniAudio.WaveformType.Sawtooth = 3 -> Jade.MiniAudio.WaveformType
+Jade.MiniAudio.WaveformType.Sine = 0 -> Jade.MiniAudio.WaveformType
+Jade.MiniAudio.WaveformType.Square = 1 -> Jade.MiniAudio.WaveformType
+Jade.MiniAudio.WaveformType.Triangle = 2 -> Jade.MiniAudio.WaveformType
+override Jade.MiniAudio.AsyncNotificationEvent.Equals(object? obj) -> bool
+override Jade.MiniAudio.AsyncNotificationEvent.GetHashCode() -> int
+override Jade.MiniAudio.Bool32.Equals(object? obj) -> bool
+override Jade.MiniAudio.Bool32.GetHashCode() -> int
+override Jade.MiniAudio.Bool32.ToString() -> string!
+override Jade.MiniAudio.Bool8.Equals(object? obj) -> bool
+override Jade.MiniAudio.Bool8.GetHashCode() -> int
+override Jade.MiniAudio.Bool8.ToString() -> string!
+override Jade.MiniAudio.Context.Equals(object? obj) -> bool
+override Jade.MiniAudio.Context.GetHashCode() -> int
+override Jade.MiniAudio.Device.Equals(object? obj) -> bool
+override Jade.MiniAudio.Device.GetHashCode() -> int
+override Jade.MiniAudio.DeviceJobThread.Equals(object? obj) -> bool
+override Jade.MiniAudio.DeviceJobThread.GetHashCode() -> int
+override Jade.MiniAudio.Engine.Equals(object? obj) -> bool
+override Jade.MiniAudio.Engine.GetHashCode() -> int
+override Jade.MiniAudio.Event.Equals(object? obj) -> bool
+override Jade.MiniAudio.Event.GetHashCode() -> int
+override Jade.MiniAudio.Fence.Equals(object? obj) -> bool
+override Jade.MiniAudio.Fence.GetHashCode() -> int
+override Jade.MiniAudio.JobQueue.Equals(object? obj) -> bool
+override Jade.MiniAudio.JobQueue.GetHashCode() -> int
+override Jade.MiniAudio.Log.Equals(object? obj) -> bool
+override Jade.MiniAudio.Log.GetHashCode() -> int
+override Jade.MiniAudio.Mutex.Equals(object? obj) -> bool
+override Jade.MiniAudio.Mutex.GetHashCode() -> int
+override Jade.MiniAudio.ResourceManager.Equals(object? obj) -> bool
+override Jade.MiniAudio.ResourceManager.GetHashCode() -> int
+override Jade.MiniAudio.Semaphore.Equals(object? obj) -> bool
+override Jade.MiniAudio.Semaphore.GetHashCode() -> int
+override Jade.MiniAudio.Sound.Equals(object? obj) -> bool
+override Jade.MiniAudio.Sound.GetHashCode() -> int
+static Jade.MiniAudio.AsyncNotificationEvent.operator !=(Jade.MiniAudio.AsyncNotificationEvent left, Jade.MiniAudio.AsyncNotificationEvent right) -> bool
+static Jade.MiniAudio.AsyncNotificationEvent.operator ==(Jade.MiniAudio.AsyncNotificationEvent left, Jade.MiniAudio.AsyncNotificationEvent right) -> bool
+static Jade.MiniAudio.Bool32.implicit operator bool(Jade.MiniAudio.Bool32 value) -> bool
+static Jade.MiniAudio.Bool32.implicit operator Jade.MiniAudio.Bool32(bool value) -> Jade.MiniAudio.Bool32
+static Jade.MiniAudio.Bool32.operator !=(Jade.MiniAudio.Bool32 left, Jade.MiniAudio.Bool32 right) -> bool
+static Jade.MiniAudio.Bool32.operator ==(Jade.MiniAudio.Bool32 left, Jade.MiniAudio.Bool32 right) -> bool
+static Jade.MiniAudio.Bool8.implicit operator bool(Jade.MiniAudio.Bool8 value) -> bool
+static Jade.MiniAudio.Bool8.implicit operator Jade.MiniAudio.Bool8(bool value) -> Jade.MiniAudio.Bool8
+static Jade.MiniAudio.Bool8.operator !=(Jade.MiniAudio.Bool8 left, Jade.MiniAudio.Bool8 right) -> bool
+static Jade.MiniAudio.Bool8.operator ==(Jade.MiniAudio.Bool8 left, Jade.MiniAudio.Bool8 right) -> bool
+static Jade.MiniAudio.Context.operator !=(Jade.MiniAudio.Context left, Jade.MiniAudio.Context right) -> bool
+static Jade.MiniAudio.Context.operator ==(Jade.MiniAudio.Context left, Jade.MiniAudio.Context right) -> bool
+static Jade.MiniAudio.Device.operator !=(Jade.MiniAudio.Device left, Jade.MiniAudio.Device right) -> bool
+static Jade.MiniAudio.Device.operator ==(Jade.MiniAudio.Device left, Jade.MiniAudio.Device right) -> bool
+static Jade.MiniAudio.DeviceJobThread.operator !=(Jade.MiniAudio.DeviceJobThread left, Jade.MiniAudio.DeviceJobThread right) -> bool
+static Jade.MiniAudio.DeviceJobThread.operator ==(Jade.MiniAudio.DeviceJobThread left, Jade.MiniAudio.DeviceJobThread right) -> bool
+static Jade.MiniAudio.Engine.operator !=(Jade.MiniAudio.Engine left, Jade.MiniAudio.Engine right) -> bool
+static Jade.MiniAudio.Engine.operator ==(Jade.MiniAudio.Engine left, Jade.MiniAudio.Engine right) -> bool
+static Jade.MiniAudio.Event.operator !=(Jade.MiniAudio.Event left, Jade.MiniAudio.Event right) -> bool
+static Jade.MiniAudio.Event.operator ==(Jade.MiniAudio.Event left, Jade.MiniAudio.Event right) -> bool
+static Jade.MiniAudio.Fence.operator !=(Jade.MiniAudio.Fence left, Jade.MiniAudio.Fence right) -> bool
+static Jade.MiniAudio.Fence.operator ==(Jade.MiniAudio.Fence left, Jade.MiniAudio.Fence right) -> bool
+static Jade.MiniAudio.JobQueue.operator !=(Jade.MiniAudio.JobQueue left, Jade.MiniAudio.JobQueue right) -> bool
+static Jade.MiniAudio.JobQueue.operator ==(Jade.MiniAudio.JobQueue left, Jade.MiniAudio.JobQueue right) -> bool
+static Jade.MiniAudio.Log.operator !=(Jade.MiniAudio.Log left, Jade.MiniAudio.Log right) -> bool
+static Jade.MiniAudio.Log.operator ==(Jade.MiniAudio.Log left, Jade.MiniAudio.Log right) -> bool
+static Jade.MiniAudio.Mutex.operator !=(Jade.MiniAudio.Mutex left, Jade.MiniAudio.Mutex right) -> bool
+static Jade.MiniAudio.Mutex.operator ==(Jade.MiniAudio.Mutex left, Jade.MiniAudio.Mutex right) -> bool
+static Jade.MiniAudio.ResourceManager.operator !=(Jade.MiniAudio.ResourceManager left, Jade.MiniAudio.ResourceManager right) -> bool
+static Jade.MiniAudio.ResourceManager.operator ==(Jade.MiniAudio.ResourceManager left, Jade.MiniAudio.ResourceManager right) -> bool
+static Jade.MiniAudio.Semaphore.operator !=(Jade.MiniAudio.Semaphore left, Jade.MiniAudio.Semaphore right) -> bool
+static Jade.MiniAudio.Semaphore.operator ==(Jade.MiniAudio.Semaphore left, Jade.MiniAudio.Semaphore right) -> bool
+static Jade.MiniAudio.Sound.operator !=(Jade.MiniAudio.Sound left, Jade.MiniAudio.Sound right) -> bool
+static Jade.MiniAudio.Sound.operator ==(Jade.MiniAudio.Sound left, Jade.MiniAudio.Sound right) -> bool

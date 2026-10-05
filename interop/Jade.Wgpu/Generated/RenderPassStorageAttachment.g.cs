@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public unsafe partial struct RenderPassStorageAttachment
 {
     /// <summary>Maps <c>WGPURenderPassStorageAttachment.nextInChain</c>.</summary>
-    internal WGPUChainedStruct* NextInChain;
+    internal Raw.ChainedStruct* NextInChain;
 
     /// <summary>Maps <c>WGPURenderPassStorageAttachment.offset</c>.</summary>
     public ulong Offset;

@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public partial struct DawnAdapterPropertiesPowerPreference
 {
     /// <summary>Maps <c>WGPUDawnAdapterPropertiesPowerPreference.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUDawnAdapterPropertiesPowerPreference.powerPreference</c>.</summary>
     public PowerPreference PowerPreference;
@@ -21,6 +21,6 @@ public partial struct DawnAdapterPropertiesPowerPreference
     /// <summary>Initializes a new instance of the <see cref="DawnAdapterPropertiesPowerPreference"/> struct with the defaults of <c>WGPU_DAWN_ADAPTER_PROPERTIES_POWER_PREFERENCE_INIT</c>.</summary>
     public DawnAdapterPropertiesPowerPreference()
     {
-        Chain.sType = SType.DawnAdapterPropertiesPowerPreference;
+        Chain.SType = SType.DawnAdapterPropertiesPowerPreference;
     }
 }

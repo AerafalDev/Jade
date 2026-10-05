@@ -12,7 +12,7 @@ namespace Jade.Wgpu;
 public unsafe partial struct BufferBindingLayout
 {
     /// <summary>Maps <c>WGPUBufferBindingLayout.nextInChain</c>.</summary>
-    internal WGPUChainedStruct* NextInChain;
+    internal Raw.ChainedStruct* NextInChain;
 
     /// <summary>Maps <c>WGPUBufferBindingLayout.type</c>.</summary>
     public BufferBindingType Type;

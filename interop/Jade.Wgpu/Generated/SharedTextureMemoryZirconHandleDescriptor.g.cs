@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public partial struct SharedTextureMemoryZirconHandleDescriptor
 {
     /// <summary>Maps <c>WGPUSharedTextureMemoryZirconHandleDescriptor.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUSharedTextureMemoryZirconHandleDescriptor.memoryFD</c>.</summary>
     public uint MemoryFD;
@@ -24,6 +24,6 @@ public partial struct SharedTextureMemoryZirconHandleDescriptor
     /// <summary>Initializes a new instance of the <see cref="SharedTextureMemoryZirconHandleDescriptor"/> struct with the defaults of <c>WGPU_SHARED_TEXTURE_MEMORY_ZIRCON_HANDLE_DESCRIPTOR_INIT</c>.</summary>
     public SharedTextureMemoryZirconHandleDescriptor()
     {
-        Chain.sType = SType.SharedTextureMemoryZirconHandleDescriptor;
+        Chain.SType = SType.SharedTextureMemoryZirconHandleDescriptor;
     }
 }

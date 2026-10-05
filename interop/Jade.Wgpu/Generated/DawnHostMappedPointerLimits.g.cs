@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public partial struct DawnHostMappedPointerLimits
 {
     /// <summary>Maps <c>WGPUDawnHostMappedPointerLimits.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUDawnHostMappedPointerLimits.hostMappedPointerAlignment</c>.</summary>
     public uint HostMappedPointerAlignment;
@@ -21,7 +21,7 @@ public partial struct DawnHostMappedPointerLimits
     /// <summary>Initializes a new instance of the <see cref="DawnHostMappedPointerLimits"/> struct with the defaults of <c>WGPU_DAWN_HOST_MAPPED_POINTER_LIMITS_INIT</c>.</summary>
     public DawnHostMappedPointerLimits()
     {
-        Chain.sType = SType.DawnHostMappedPointerLimits;
-        HostMappedPointerAlignment = NativeMethods.WGPU_LIMIT_U32_UNDEFINED;
+        Chain.SType = SType.DawnHostMappedPointerLimits;
+        HostMappedPointerAlignment = Raw.NativeMethods.LimitU32Undefined;
     }
 }

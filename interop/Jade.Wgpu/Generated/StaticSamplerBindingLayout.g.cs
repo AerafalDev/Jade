@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public partial struct StaticSamplerBindingLayout
 {
     /// <summary>Maps <c>WGPUStaticSamplerBindingLayout.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUStaticSamplerBindingLayout.sampler</c>.</summary>
     public Sampler Sampler;
@@ -24,7 +24,7 @@ public partial struct StaticSamplerBindingLayout
     /// <summary>Initializes a new instance of the <see cref="StaticSamplerBindingLayout"/> struct with the defaults of <c>WGPU_STATIC_SAMPLER_BINDING_LAYOUT_INIT</c>.</summary>
     public StaticSamplerBindingLayout()
     {
-        Chain.sType = SType.StaticSamplerBindingLayout;
-        SampledTextureBinding = NativeMethods.WGPU_LIMIT_U32_UNDEFINED;
+        Chain.SType = SType.StaticSamplerBindingLayout;
+        SampledTextureBinding = Raw.NativeMethods.LimitU32Undefined;
     }
 }

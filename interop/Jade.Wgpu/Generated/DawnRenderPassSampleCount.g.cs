@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public partial struct DawnRenderPassSampleCount
 {
     /// <summary>Maps <c>WGPUDawnRenderPassSampleCount.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUDawnRenderPassSampleCount.sampleCount</c>.</summary>
     public uint SampleCount;
@@ -21,7 +21,7 @@ public partial struct DawnRenderPassSampleCount
     /// <summary>Initializes a new instance of the <see cref="DawnRenderPassSampleCount"/> struct with the defaults of <c>WGPU_DAWN_RENDER_PASS_SAMPLE_COUNT_INIT</c>.</summary>
     public DawnRenderPassSampleCount()
     {
-        Chain.sType = SType.DawnRenderPassSampleCount;
+        Chain.SType = SType.DawnRenderPassSampleCount;
         SampleCount = 1;
     }
 }

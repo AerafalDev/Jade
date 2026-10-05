@@ -12,7 +12,7 @@ namespace Jade.Wgpu;
 public unsafe partial struct InstanceLimits
 {
     /// <summary>Maps <c>WGPUInstanceLimits.nextInChain</c>.</summary>
-    internal WGPUChainedStruct* NextInChain;
+    internal Raw.ChainedStruct* NextInChain;
 
     /// <summary>Maps <c>WGPUInstanceLimits.timedWaitAnyMaxCount</c>.</summary>
     public nuint TimedWaitAnyMaxCount;

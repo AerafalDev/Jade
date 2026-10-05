@@ -12,7 +12,7 @@ namespace Jade.Wgpu;
 public unsafe partial struct BindGroupLayoutEntry
 {
     /// <summary>Maps <c>WGPUBindGroupLayoutEntry.nextInChain</c>.</summary>
-    internal WGPUChainedStruct* NextInChain;
+    internal Raw.ChainedStruct* NextInChain;
 
     /// <summary>Maps <c>WGPUBindGroupLayoutEntry.binding</c>.</summary>
     public uint Binding;

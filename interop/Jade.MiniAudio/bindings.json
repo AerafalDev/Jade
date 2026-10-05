@@ -12,6 +12,102 @@
     ],
     "forcedIncludes": [
       "build/miniaudio/config.h"
+    ],
+    "shims": [
+      "build/miniaudio/jade_miniaudio.h"
+    ],
+    "prefixes": [
+      "jade_ma_",
+      "ma_"
+    ],
+    "memberPrefixes": [
+      "p",
+      "pp"
+    ],
+    "types": {
+      "ma_proc": "void*",
+      "ma_uintptr": "uintptr_t",
+      "ma_vec3f": "System.Numerics.Vector3",
+      "ma_wchar_win32": "uint16_t",
+      "wchar_t": "void"
+    },
+    "opaque": {
+      "ma_async_notification_event": "It embeds ma_event.",
+      "ma_context": "Its backend members depend on the platform and the MA_* defines.",
+      "ma_device": "Its backend members depend on the platform and the MA_* defines.",
+      "ma_device_job_thread": "It embeds ma_thread.",
+      "ma_engine": "It embeds threading types that depend on the platform.",
+      "ma_event": "A Win32 handle on Windows, a structure of pthread types elsewhere.",
+      "ma_fence": "It embeds ma_event.",
+      "ma_job_queue": "It embeds ma_semaphore.",
+      "ma_log": "It embeds ma_mutex.",
+      "ma_mutex": "A Win32 handle on Windows, a pthread mutex elsewhere.",
+      "ma_resource_manager": "It embeds ma_thread and ma_job_queue.",
+      "ma_semaphore": "A Win32 handle on Windows, a structure of pthread types elsewhere.",
+      "ma_sound": "It embeds threading types that depend on the platform."
+    },
+    "opaqueAllocators": {
+      "allocate": "jade_{name}_alloc",
+      "free": "jade_{name}_free"
+    },
+    "booleans": [
+      "ma_bool8",
+      "ma_bool32"
+    ],
+    "enums": {
+      "ma_job_queue_flags": {
+        "flags": true
+      },
+      "ma_node_flags": {
+        "flags": true
+      },
+      "ma_open_mode_flags": {
+        "flags": true
+      },
+      "ma_resource_manager_data_source_flags": {
+        "flags": true
+      },
+      "ma_resource_manager_flags": {
+        "flags": true
+      },
+      "ma_sound_flags": {
+        "flags": true
+      }
+    },
+    "constants": [
+      "MA_VERSION_(MAJOR|MINOR|REVISION|STRING)",
+      "MA_SIMD_ALIGNMENT",
+      "MA_(MIN|MAX)_CHANNELS",
+      "MA_MAX_FILTER_ORDER",
+      "MA_CHANNEL_INDEX_NULL",
+      "MA_MAX_NODE_(LOCAL_)?BUS_COUNT",
+      "MA_ENGINE_MAX_LISTENERS",
+      "MA_LISTENER_INDEX_CLOSEST",
+      "MA_SOUND_SOURCE_CHANNEL_COUNT",
+      "MA_DATA_FORMAT_FLAG_EXCLUSIVE_MODE"
     ]
+  },
+  "library": "miniaudio",
+  "exclude": {
+    "ma_IMMNotificationClient": "The COM client through which the WASAPI backend follows device changes on Windows; only the opaque ma_context and ma_device refer to it.",
+    "ma_sound_inlined": "The engine's list node of the sounds that ma_engine_play_sound starts; only the opaque ma_engine refers to it.",
+    "ma_thread": "A Win32 handle on Windows, a pthread elsewhere; only opaque structures embed it, and no function takes it."
+  },
+  "names": {
+    "_ma_channel_position": "ChannelPosition",
+    "ma_context_command__wasapi_data_releaseAudioClient.pDevice": "Device",
+    "ma_device_notification.pDevice": "Device",
+    "ma_node_base._inputBuses": "LocalInputBuses",
+    "ma_node_base._outputBuses": "LocalOutputBuses",
+    "ma_version_string": "GetVersionString"
+  },
+  "words": {
+    "aaudio": "AAudio",
+    "coreaudio": "CoreAudio",
+    "dsound": "DSound",
+    "ID": "Id",
+    "ios": "IOS",
+    "opensl": "OpenSL",
+    "webaudio": "WebAudio"
   }
 }

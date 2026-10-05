@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public partial struct DawnDeviceAllocatorControl
 {
     /// <summary>Maps <c>WGPUDawnDeviceAllocatorControl.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUDawnDeviceAllocatorControl.allocatorHeapBlockSize</c>.</summary>
     public nuint AllocatorHeapBlockSize;
@@ -21,6 +21,6 @@ public partial struct DawnDeviceAllocatorControl
     /// <summary>Initializes a new instance of the <see cref="DawnDeviceAllocatorControl"/> struct with the defaults of <c>WGPU_DAWN_DEVICE_ALLOCATOR_CONTROL_INIT</c>.</summary>
     public DawnDeviceAllocatorControl()
     {
-        Chain.sType = SType.DawnDeviceAllocatorControl;
+        Chain.SType = SType.DawnDeviceAllocatorControl;
     }
 }

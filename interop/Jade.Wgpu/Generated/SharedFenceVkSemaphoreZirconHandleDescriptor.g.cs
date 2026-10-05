@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public partial struct SharedFenceVkSemaphoreZirconHandleDescriptor
 {
     /// <summary>Maps <c>WGPUSharedFenceVkSemaphoreZirconHandleDescriptor.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUSharedFenceVkSemaphoreZirconHandleDescriptor.handle</c>.</summary>
     public uint Handle;
@@ -21,6 +21,6 @@ public partial struct SharedFenceVkSemaphoreZirconHandleDescriptor
     /// <summary>Initializes a new instance of the <see cref="SharedFenceVkSemaphoreZirconHandleDescriptor"/> struct with the defaults of <c>WGPU_SHARED_FENCE_VK_SEMAPHORE_ZIRCON_HANDLE_DESCRIPTOR_INIT</c>.</summary>
     public SharedFenceVkSemaphoreZirconHandleDescriptor()
     {
-        Chain.sType = SType.SharedFenceVkSemaphoreZirconHandleDescriptor;
+        Chain.SType = SType.SharedFenceVkSemaphoreZirconHandleDescriptor;
     }
 }

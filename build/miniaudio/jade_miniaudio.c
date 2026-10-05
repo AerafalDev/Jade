@@ -21,7 +21,16 @@
         ma_aligned_free(object, NULL);                                                    \
     }
 
+JADE_MA_DEFINE_ALLOCATOR(ma_async_notification_event)
 JADE_MA_DEFINE_ALLOCATOR(ma_context)
 JADE_MA_DEFINE_ALLOCATOR(ma_device)
+JADE_MA_DEFINE_ALLOCATOR(ma_device_job_thread)
 JADE_MA_DEFINE_ALLOCATOR(ma_engine)
+JADE_MA_DEFINE_ALLOCATOR(ma_event)
+JADE_MA_DEFINE_ALLOCATOR(ma_fence)
+JADE_MA_DEFINE_ALLOCATOR(ma_job_queue)
+JADE_MA_DEFINE_ALLOCATOR(ma_log)
+JADE_MA_DEFINE_ALLOCATOR(ma_mutex)
+JADE_MA_DEFINE_ALLOCATOR(ma_resource_manager)
+JADE_MA_DEFINE_ALLOCATOR(ma_semaphore)
 JADE_MA_DEFINE_ALLOCATOR(ma_sound)

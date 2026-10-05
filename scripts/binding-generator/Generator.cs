@@ -11,13 +11,8 @@ namespace Jade.BindingGenerator;
 
 /// <summary>
 /// Entry point of the binding generator: loads the inputs of every generated interop library,
-/// reports what they contain, and writes the raw layer of the libraries whose front-end builds an
-/// intermediate representation.
+/// reports what they contain, builds their intermediate representation and writes their raw layer.
 /// </summary>
-/// <remarks>
-/// The <c>dawn.json</c> front-end builds one (roadmap task 7); the C header front-end only loads
-/// and reports until roadmap task 8.
-/// </remarks>
 internal static class Generator
 {
     /// <summary>The exit code of a run that completed.</summary>
@@ -56,15 +51,18 @@ internal static class Generator
 
                 await InputReport.WriteAsync(output, loaded, cancellationToken).ConfigureAwait(false);
 
-                if (loaded.Dawn is { } api)
+                var configuration = loaded.Configuration;
+                var model = loaded switch
                 {
-                    var model = DawnModelBuilder.Build(api, loaded.Configuration.Exclude);
-                    var projected = RawProjection.Project(model, library.Project, loaded.Configuration);
-                    var update = GeneratedDirectory.Update(library.GeneratedDirectory, RawLayerEmitter.Emit(projected));
-                    var directory = Path.GetRelativePath(layout.Root, library.GeneratedDirectory).Replace('\\', '/');
+                    { Dawn: { } api } => DawnModelBuilder.Build(api, configuration.Exclude),
+                    { Headers: { } headers } => ClangModelBuilder.Build(configuration.Dependency, headers, configuration.Clang!, configuration.Exclude),
+                    _ => throw new InvalidDataException($"{library.Project} has no loaded input."),
+                };
+                var projected = RawProjection.Project(model, library.Project, configuration);
+                var update = GeneratedDirectory.Update(library.GeneratedDirectory, RawLayerEmitter.Emit(projected));
+                var directory = Path.GetRelativePath(layout.Root, library.GeneratedDirectory).Replace('\\', '/');
 
-                    await OutputReport.WriteAsync(output, directory, model, projected, update, cancellationToken).ConfigureAwait(false);
-                }
+                await OutputReport.WriteAsync(output, directory, model, projected, update, cancellationToken).ConfigureAwait(false);
             }
 
             return SuccessExitCode;

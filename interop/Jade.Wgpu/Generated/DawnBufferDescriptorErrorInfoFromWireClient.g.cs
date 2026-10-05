@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public partial struct DawnBufferDescriptorErrorInfoFromWireClient
 {
     /// <summary>Maps <c>WGPUDawnBufferDescriptorErrorInfoFromWireClient.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUDawnBufferDescriptorErrorInfoFromWireClient.outOfMemory</c>.</summary>
     public Bool32 OutOfMemory;
@@ -21,6 +21,6 @@ public partial struct DawnBufferDescriptorErrorInfoFromWireClient
     /// <summary>Initializes a new instance of the <see cref="DawnBufferDescriptorErrorInfoFromWireClient"/> struct with the defaults of <c>WGPU_DAWN_BUFFER_DESCRIPTOR_ERROR_INFO_FROM_WIRE_CLIENT_INIT</c>.</summary>
     public DawnBufferDescriptorErrorInfoFromWireClient()
     {
-        Chain.sType = SType.DawnBufferDescriptorErrorInfoFromWireClient;
+        Chain.SType = SType.DawnBufferDescriptorErrorInfoFromWireClient;
     }
 }

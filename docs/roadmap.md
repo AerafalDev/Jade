@@ -17,18 +17,19 @@ Status: `done`, `next`, `planned`.
 | 5 | Binding generator design | 4 | done |
 | 6 | Native build for the host platform | 2, 4 | done |
 | 7 | Generator: WebGPU raw layer | 2, 5, 6 | done |
-| 8 | Generator: SDL3 and miniaudio raw layers | 5, 6 | next |
-| 9 | Generated layout tests on the host | 6, 7, 8 | planned |
+| 8 | Generator: SDL3 and miniaudio raw layers | 5, 6 | done |
+| 9 | Generated layout tests on the host | 6, 7, 8 | next |
 | 10 | Native CI matrix for every RID | 3, 6 | planned |
 | 11 | `Jade.Native.*` packaging | 10 | planned |
 | 12 | WebGPU idiomatic layer | 7 | planned |
 | 13 | SDL3 and miniaudio idiomatic layers | 8 | planned |
 | 14 | Desktop sample | 9, 11, 12, 13 | planned |
-| 15 | Browser sample | 14 | planned |
+| 15 | Browser sample | 14, 20 | planned |
 | 16 | Android sample | 14 | planned |
 | 17 | iOS sample | 14 | planned |
 | 18 | Layout tests on every target in CI | 9, 15, 16, 17 | planned |
 | 19 | NuGet publication | 3, 11 | planned |
+| 20 | Generator: Emscripten raw layer | 8 | planned |
 
 ## Tasks
 
@@ -87,7 +88,8 @@ emits no C# yet. `interop/Jade.Wgpu`, `interop/Jade.Sdl` and `interop/Jade.MiniA
 [0026](adr/0026-binding-generator-pipeline.md) (pipeline, intermediate representation with
 per-platform availability, multi-triple parsing, configuration format, `MA_*` defines),
 [0027](adr/0027-interop-mapping-rules.md) (remaining mapping rules),
-[0028](adr/0028-internal-raw-interop-layer.md) (internal raw layer with C names) and
+[0028](adr/0028-internal-raw-interop-layer.md) (internal raw layer with C names, superseded by
+[0034](adr/0034-raw-layer-with-dotnet-names.md)) and
 [0029](adr/0029-descriptors-and-chained-structs.md) (descriptor classification, stack-based arena,
 generic chained extensions).
 
@@ -122,32 +124,34 @@ matched every layout, enum value, function arity and all but one default (a NaN 
 Decision: [0032](adr/0032-webgpu-raw-layer-generation.md) (projection, defaults, emission, native
 library search paths, public API files, verification).
 
-### 8. Generator: SDL3 and miniaudio raw layers
+### 8. Generator: SDL3 and miniaudio raw layers (done, 2026-10-05)
 
-- Raw layers of `Jade.Sdl` and `Jade.MiniAudio` from the headers through ClangSharp, with their
-  annotation configurations.
-- Merge the per-triple parses into platform availability; macro evaluation by clang; the set of SDL3
-  headers beyond `SDL3/SDL.h` (`SDL_main.h` for mobile entry points, for instance); skipped
-  constructs listed in the output ([0027](adr/0027-interop-mapping-rules.md)).
-- Bind the shim of `build/miniaudio/jade_miniaudio.h`, which lives in the repository rather than in
-  the fetched sources, and extend its allocators to every structure the generator makes opaque
-  ([0031](adr/0031-native-build-definitions.md)).
-- SDL3 is built without its audio subsystem, whose functions only return errors: decide whether
-  `SDL_audio.h` is bound at all.
-- Reuse the IR, projection and emitter of [0032](adr/0032-webgpu-raw-layer-generation.md): `library`,
-  `exclude`, `names` and `words` in each `bindings.json`, the assembly attributes of `Jade.Wgpu`
-  (`DisableRuntimeMarshalling`, `DefaultDllImportSearchPaths`), `tests/Jade.Sdl.Tests` and
-  `tests/Jade.MiniAudio.Tests` like `Jade.Wgpu.Tests`, and the `DataRow`s of
-  `BuildConventionTests.InteropLibraryDisablesRuntimeMarshalling`.
-- Done when the generated code builds, regeneration produces no diff, and smoke tests initialize
-  SDL3 video and a miniaudio context on the host.
+The C header front-end (`Clang/TargetModelBuilder.cs`, `Clang/ClangModelBuilder.cs`,
+`Clang/MacroEvaluator.cs`): each target's parse collected on its own, merged into platform
+availability, divergences reported all at once unless opaque or excluded, layouts checked against
+clang's, macros selected by regular expressions and evaluated by clang into enums and constants.
+`Jade.Sdl` (350 files, 1,177 functions, 2,859 public declarations) is bound from `SDL3/SDL.h` and
+`SDL3/SDL_main.h`, without `SDL_audio.h`; `Jade.MiniAudio` (292 files, 955 functions, 871 public
+declarations) from `miniaudio.h` and the shim, which now allocates the 13 opaque types. The emitter
+gained unions, inline arrays, string constants, `[MarshalAs(UnmanagedType.U1)]` for C `bool` in
+imports and one `NativeMethods` file per header. Every raw declaration of the three libraries now
+has a .NET name, its internal part in `Jade.<Library>.Raw` (maintainer's decision). `ma_vec3f` maps
+to `System.Numerics.Vector3`. `tests/Jade.Sdl.Tests` and `tests/Jade.MiniAudio.Tests` check the
+exports of the host's libraries, initialize SDL3 video (the `dummy` driver and the host's display)
+and a miniaudio context, and read a `Vector3` returned by value. Decisions:
+[0033](adr/0033-c-header-raw-layer-generation.md) (front-end, annotations, SDL3 headers,
+miniaudio opaque types), [0034](adr/0034-raw-layer-with-dotnet-names.md) (raw layer with .NET names,
+supersedes 0028) and [0035](adr/0035-emscripten-interop-generation.md) (`Jade.Emscripten` will be
+generated, roadmap task 20).
 
 ### 9. Generated layout tests on the host
 
 - `sizeof`/`offsetof` comparison between C and C# for every generated struct
   ([0009](adr/0009-interop-mapping-conventions.md)), in each interop assembly's test project; the
-  layout emitter maps C names to C# names from the projection of
-  [0032](adr/0032-webgpu-raw-layer-generation.md).
+  layout emitter maps C names to C# names from the projection
+  ([0032](adr/0032-webgpu-raw-layer-generation.md), [0034](adr/0034-raw-layer-with-dotnet-names.md)).
+- Cover what task 8 added: unions, inline arrays, anonymous records, and the C types mapped to .NET
+  types (`ma_vec3f` and `System.Numerics.Vector3`); opaque types have no managed layout to compare.
 - Done when the tests pass on the host and fail when a layout is deliberately broken.
 
 ### 10. Native CI matrix for every RID
@@ -197,6 +201,12 @@ library search paths, public API files, verification).
 
 ### 13. SDL3 and miniaudio idiomatic layers
 
+- **Decisions to take:** the public names that collide with framework types (`Thread`, `Mutex`,
+  `Semaphore`, `Process`, `Environment`, `DateTime`, `Guid`, `Condition`, `Timer`), as task 12 does
+  for `Buffer`; whether the idiomatic layer exposes SDL3's GPU and 2D renderer APIs, which the raw
+  layer binds; how miniaudio's `_w` functions, which take `void*` for `wchar_t*`, are exposed.
+- Hand-written alternatives to the variadic logging and formatting functions (`SDL_Log`,
+  `SDL_SetError`, `ma_log_postf`) ([0027](adr/0027-interop-mapping-rules.md)).
 - Done when the host smoke tests open a window, read input events and play a sound through the
   idiomatic APIs only.
 
@@ -207,7 +217,8 @@ library search paths, public API files, verification).
 
 ### 15. Browser sample
 
-- `Jade.Emscripten`, `requestAnimationFrame` loop, asynchronous WebGPU initialization.
+- `requestAnimationFrame` loop through `Jade.Emscripten` (task 20), asynchronous WebGPU
+  initialization.
 - Done when the sample runs in a WebGPU-capable browser from the packages.
 
 ### 16. Android sample
@@ -233,11 +244,26 @@ library search paths, public API files, verification).
   [0004](adr/0004-webgpu-via-dawn.md)); NuGet badge in the README.
 - Supported OS list in the README, from [0024](adr/0024-minimum-os-versions.md).
 
+### 20. Generator: Emscripten raw layer
+
+- `Jade.Emscripten`'s raw layer generated from `emscripten/emscripten.h` and `emscripten/html5.h`
+  through the C header front-end ([0035](adr/0035-emscripten-interop-generation.md)).
+- **Decisions to take:** where the headers come from (the `dotnet/emscripten` fork at the commit
+  the SDK's VMR pins, or the installed workload pack, which the regenerating CI jobs would then
+  install); per-library targets (`browser-wasm` only, no per-member platform attribute under the
+  assembly's `[SupportedOSPlatform("browser")]`).
+- Verify the import name of Emscripten functions linked statically into the application's module,
+  and `[UnmanagedCallersOnly]` callbacks under Mono WebAssembly.
+- Done when the generated layer builds, regeneration produces no diff, and a browser test calls
+  an Emscripten function.
+
 ## Open decisions
 
 | Decision | Task |
 | --- | --- |
 | Output structures and extensions of nested chain roots | 12 |
+| Names that collide with framework types; SDL3 GPU and renderer APIs; miniaudio `_w` functions | 12, 13 |
+| Source of Emscripten's headers and per-library targets | 20 |
 | `required` members, public constants, the `Buffer` name | 12 |
 | Native build runners, frequency and caching; emulator tests | 10, 16 |
 | Package versioning and release workflow | 19 |

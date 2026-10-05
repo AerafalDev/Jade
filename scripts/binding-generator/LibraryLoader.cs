@@ -26,7 +26,7 @@ internal sealed class LibraryLoader(PinnedVersions versions, SourceCache cache, 
         return configuration switch
         {
             { DawnJson: { } dawnJson } => loaded with { Dawn = DawnApi.Load(Path.Combine(sourceDirectory, dawnJson)) },
-            { Clang: { } clang } => loaded with { Headers = headerParser.Parse(configuration.Dependency, sourceDirectory, clang) },
+            { Clang: { } clang } => loaded with { Headers = headerParser.Parse(configuration.Dependency, sourceDirectory, clang, configuration.Exclude) },
             _ => throw new InvalidDataException($"'{library.ConfigurationFile}' selects no front-end."),
         };
     }

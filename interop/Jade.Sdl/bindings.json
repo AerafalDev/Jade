@@ -5,10 +5,152 @@
   ],
   "clang": {
     "headers": [
-      "SDL3/SDL.h"
+      "SDL3/SDL.h",
+      "SDL3/SDL_main.h"
     ],
     "includeDirectories": [
       "include"
+    ],
+    "defines": [
+      "SDL_DISABLE_OLD_NAMES",
+      "SDL_MAIN_HANDLED"
+    ],
+    "prefixes": [
+      "SDL_"
+    ],
+    "excludeHeaders": {
+      "SDL3/SDL_audio.h": "SDL3 is built without its audio subsystem, so its device functions only fail; audio goes through miniaudio (ADR 0005, ADR 0033)."
+    },
+    "types": {
+      "wchar_t": "void"
+    },
+    "enums": {
+      "SDL_BlendMode": {
+        "macros": "SDL_BLENDMODE_.+"
+      },
+      "SDL_GLContextFlag": {
+        "macros": "SDL_GL_CONTEXT_[A-Z_]+_FLAG",
+        "flags": true
+      },
+      "SDL_GLContextReleaseFlag": {
+        "macros": "SDL_GL_CONTEXT_RELEASE_BEHAVIOR_.+"
+      },
+      "SDL_GLContextResetNotification": {
+        "macros": "SDL_GL_CONTEXT_RESET_(NO_NOTIFICATION|LOSE_CONTEXT)"
+      },
+      "SDL_GLProfile": {
+        "macros": "SDL_GL_CONTEXT_PROFILE_.+",
+        "flags": true
+      },
+      "SDL_GlobFlags": {
+        "macros": "SDL_GLOB_.+",
+        "flags": true
+      },
+      "SDL_GPUBufferUsageFlags": {
+        "macros": "SDL_GPU_BUFFERUSAGE_.+",
+        "flags": true
+      },
+      "SDL_GPUColorComponentFlags": {
+        "macros": "SDL_GPU_COLORCOMPONENT_.+",
+        "flags": true
+      },
+      "SDL_GPUShaderFormat": {
+        "macros": "SDL_GPU_SHADERFORMAT_.+",
+        "flags": true
+      },
+      "SDL_GPUTextureUsageFlags": {
+        "macros": "SDL_GPU_TEXTUREUSAGE_.+",
+        "flags": true
+      },
+      "SDL_HapticDirectionType": {
+        "macros": "SDL_HAPTIC_(POLAR|CARTESIAN|SPHERICAL|STEERING_AXIS)"
+      },
+      "SDL_HapticEffectType": {
+        "macros": "SDL_HAPTIC_(CONSTANT|SINE|SQUARE|TRIANGLE|SAWTOOTHUP|SAWTOOTHDOWN|RAMP|SPRING|DAMPER|INERTIA|FRICTION|LEFTRIGHT|RESERVED[1-3]|CUSTOM)",
+        "flags": true
+      },
+      "SDL_InitFlags": {
+        "macros": "SDL_INIT_.+",
+        "flags": true
+      },
+      "SDL_Keycode": {
+        "macros": "SDLK_.+"
+      },
+      "SDL_Keymod": {
+        "macros": "SDL_KMOD_.+",
+        "flags": true
+      },
+      "SDL_MessageBoxButtonFlags": {
+        "macros": "SDL_MESSAGEBOX_BUTTON_.+",
+        "flags": true
+      },
+      "SDL_MessageBoxFlags": {
+        "macros": "SDL_MESSAGEBOX_(ERROR|WARNING|INFORMATION|BUTTONS_.+)",
+        "flags": true
+      },
+      "SDL_MouseButtonFlags": {
+        "macros": "SDL_BUTTON_[A-Z0-9]+MASK",
+        "flags": true
+      },
+      "SDL_PenInputFlags": {
+        "macros": "SDL_PEN_INPUT_.+",
+        "flags": true
+      },
+      "SDL_SurfaceFlags": {
+        "macros": "SDL_SURFACE_.+",
+        "flags": true
+      },
+      "SDL_TrayEntryFlags": {
+        "macros": "SDL_TRAYENTRY_.+",
+        "flags": true
+      },
+      "SDL_WindowFlags": {
+        "macros": "SDL_WINDOW_(?!SURFACE_VSYNC_).+",
+        "flags": true
+      }
+    },
+    "constants": [
+      "SDL_HINT_.+",
+      "SDL_PROP_.+",
+      "SDL_(MAJOR|MINOR|MICRO)_VERSION",
+      "SDL_VERSION",
+      "SDL_BUTTON_(LEFT|MIDDLE|RIGHT|X1|X2)",
+      "SDL_HAPTIC_(GAIN|AUTOCENTER|STATUS|PAUSE|INFINITY)",
+      "SDL_(TOUCH_MOUSEID|MOUSE_TOUCHID|PEN_MOUSEID|PEN_TOUCHID)",
+      "SDL_WINDOWPOS_(UNDEFINED|CENTERED)(_MASK)?",
+      "SDL_(WINDOW_SURFACE|RENDERER)_VSYNC_(DISABLED|ADAPTIVE)",
+      "SDL_ALPHA_(OPAQUE|TRANSPARENT)(_FLOAT)?",
+      "SDL_STANDARD_GRAVITY",
+      "SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE",
+      "SDL_(MS|US|NS)_PER_SECOND",
+      "SDL_NS_PER_(MS|US)"
     ]
+  },
+  "library": "SDL3",
+  "exclude": {
+    "SDL_DUMMY_ENUM": "SDL3's compile-time check that enums are 32 bits wide; not part of the API.",
+    "SDL_alignment_test": "SDL3's compile-time check of pointer alignment; not part of the API.",
+    "SDL_main": "The entry point that the application defines, which SDL3 does not export.",
+    "__debugbreak": "An MSVC intrinsic that SDL_assert.h declares, which SDL3 does not export."
+  },
+  "names": {
+    "SDL_GLContextState": "GLContext",
+    "SDL_iconv_data_t": "Iconv",
+    "tagMSG": "WindowsMessage"
+  },
+  "words": {
+    "ID": "Id",
+    "gamecube": "GameCube",
+    "joycon": "JoyCon",
+    "lalt": "LAlt",
+    "lctrl": "LCtrl",
+    "lgui": "LGui",
+    "lshift": "LShift",
+    "opengl": "OpenGL",
+    "ralt": "RAlt",
+    "rctrl": "RCtrl",
+    "rgui": "RGui",
+    "rshift": "RShift",
+    "xboxone": "XboxOne"
   }
 }

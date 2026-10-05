@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public partial struct SharedTextureMemoryD3D11BeginState
 {
     /// <summary>Maps <c>WGPUSharedTextureMemoryD3D11BeginState.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUSharedTextureMemoryD3D11BeginState.requiresEndAccessFence</c>.</summary>
     public Bool32 RequiresEndAccessFence;
@@ -21,7 +21,7 @@ public partial struct SharedTextureMemoryD3D11BeginState
     /// <summary>Initializes a new instance of the <see cref="SharedTextureMemoryD3D11BeginState"/> struct with the defaults of <c>WGPU_SHARED_TEXTURE_MEMORY_D3D11_BEGIN_STATE_INIT</c>.</summary>
     public SharedTextureMemoryD3D11BeginState()
     {
-        Chain.sType = SType.SharedTextureMemoryD3D11BeginState;
+        Chain.SType = SType.SharedTextureMemoryD3D11BeginState;
         RequiresEndAccessFence = true;
     }
 }

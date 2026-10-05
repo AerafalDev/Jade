@@ -12,11 +12,11 @@ namespace Jade.Wgpu;
 public partial struct ExternalTextureBindingLayout
 {
     /// <summary>Maps <c>WGPUExternalTextureBindingLayout.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Initializes a new instance of the <see cref="ExternalTextureBindingLayout"/> struct with the defaults of <c>WGPU_EXTERNAL_TEXTURE_BINDING_LAYOUT_INIT</c>.</summary>
     public ExternalTextureBindingLayout()
     {
-        Chain.sType = SType.ExternalTextureBindingLayout;
+        Chain.SType = SType.ExternalTextureBindingLayout;
     }
 }

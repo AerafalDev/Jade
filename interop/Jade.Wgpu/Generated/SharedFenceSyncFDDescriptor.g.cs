@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public partial struct SharedFenceSyncFDDescriptor
 {
     /// <summary>Maps <c>WGPUSharedFenceSyncFDDescriptor.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUSharedFenceSyncFDDescriptor.handle</c>.</summary>
     public int Handle;
@@ -21,6 +21,6 @@ public partial struct SharedFenceSyncFDDescriptor
     /// <summary>Initializes a new instance of the <see cref="SharedFenceSyncFDDescriptor"/> struct with the defaults of <c>WGPU_SHARED_FENCE_SYNC_FD_DESCRIPTOR_INIT</c>.</summary>
     public SharedFenceSyncFDDescriptor()
     {
-        Chain.sType = SType.SharedFenceSyncFDDescriptor;
+        Chain.SType = SType.SharedFenceSyncFDDescriptor;
     }
 }

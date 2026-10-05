@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public unsafe partial struct ColorSpaceDawn
 {
     /// <summary>Maps <c>WGPUColorSpaceDawn.nextInChain</c>.</summary>
-    internal WGPUChainedStruct* NextInChain;
+    internal Raw.ChainedStruct* NextInChain;
 
     /// <summary>Maps <c>WGPUColorSpaceDawn.primaries</c>.</summary>
     public ColorSpacePrimariesDawn Primaries;

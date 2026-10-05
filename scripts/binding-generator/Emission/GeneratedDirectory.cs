@@ -5,7 +5,7 @@ namespace Jade.BindingGenerator.Emission;
 /// <summary>Brings a <c>Generated/</c> directory in line with the files a run produces.</summary>
 internal static class GeneratedDirectory
 {
-    /// <summary>The pattern of the files the generator owns; the directory holds nothing else (ADR 0023).</summary>
+    /// <summary>The pattern of the files the generator owns, in the directory and its <c>Raw/</c> subdirectory; they hold nothing else (ADR 0023).</summary>
     private const string GeneratedFilePattern = "*.g.cs";
 
     /// <summary>The encoding of the generated files: UTF-8 without a byte order mark.</summary>
@@ -34,9 +34,9 @@ internal static class GeneratedDirectory
 
         var deleted = 0;
 
-        foreach (var path in Directory.EnumerateFiles(directory, GeneratedFilePattern).Order(StringComparer.Ordinal).ToList())
+        foreach (var path in Directory.EnumerateFiles(directory, GeneratedFilePattern, SearchOption.AllDirectories).Order(StringComparer.Ordinal).ToList())
         {
-            if (!names.Contains(Path.GetFileName(path)))
+            if (!names.Contains(Path.GetRelativePath(directory, path).Replace(Path.DirectorySeparatorChar, '/')))
             {
                 File.Delete(path);
                 deleted++;
@@ -49,6 +49,8 @@ internal static class GeneratedDirectory
         {
             var path = Path.Combine(directory, file.Name);
             var content = _encoding.GetBytes(file.Content);
+
+            _ = Directory.CreateDirectory(Path.GetDirectoryName(path)!);
 
             if (!File.Exists(path) || !File.ReadAllBytes(path).AsSpan().SequenceEqual(content))
             {

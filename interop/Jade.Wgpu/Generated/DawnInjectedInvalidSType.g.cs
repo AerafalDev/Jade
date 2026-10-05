@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public partial struct DawnInjectedInvalidSType
 {
     /// <summary>Maps <c>WGPUDawnInjectedInvalidSType.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUDawnInjectedInvalidSType.invalidSType</c>.</summary>
     public SType InvalidSType;
@@ -21,6 +21,6 @@ public partial struct DawnInjectedInvalidSType
     /// <summary>Initializes a new instance of the <see cref="DawnInjectedInvalidSType"/> struct with the defaults of <c>WGPU_DAWN_INJECTED_INVALID_S_TYPE_INIT</c>.</summary>
     public DawnInjectedInvalidSType()
     {
-        Chain.sType = SType.DawnInjectedInvalidSType;
+        Chain.SType = SType.DawnInjectedInvalidSType;
     }
 }

@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public partial struct RenderPassDescriptorResolveRect
 {
     /// <summary>Maps <c>WGPURenderPassDescriptorResolveRect.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPURenderPassDescriptorResolveRect.colorOffsetX</c>.</summary>
     public uint ColorOffsetX;
@@ -36,6 +36,6 @@ public partial struct RenderPassDescriptorResolveRect
     /// <summary>Initializes a new instance of the <see cref="RenderPassDescriptorResolveRect"/> struct with the defaults of <c>WGPU_RENDER_PASS_DESCRIPTOR_RESOLVE_RECT_INIT</c>.</summary>
     public RenderPassDescriptorResolveRect()
     {
-        Chain.sType = SType.RenderPassDescriptorResolveRect;
+        Chain.SType = SType.RenderPassDescriptorResolveRect;
     }
 }

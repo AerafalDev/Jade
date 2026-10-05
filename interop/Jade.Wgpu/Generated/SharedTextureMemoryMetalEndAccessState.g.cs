@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public partial struct SharedTextureMemoryMetalEndAccessState
 {
     /// <summary>Maps <c>WGPUSharedTextureMemoryMetalEndAccessState.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUSharedTextureMemoryMetalEndAccessState.commandsScheduledFuture</c>.</summary>
     public Future CommandsScheduledFuture;
@@ -21,6 +21,6 @@ public partial struct SharedTextureMemoryMetalEndAccessState
     /// <summary>Initializes a new instance of the <see cref="SharedTextureMemoryMetalEndAccessState"/> struct with the defaults of <c>WGPU_SHARED_TEXTURE_MEMORY_METAL_END_ACCESS_STATE_INIT</c>.</summary>
     public SharedTextureMemoryMetalEndAccessState()
     {
-        Chain.sType = SType.SharedTextureMemoryMetalEndAccessState;
+        Chain.SType = SType.SharedTextureMemoryMetalEndAccessState;
     }
 }

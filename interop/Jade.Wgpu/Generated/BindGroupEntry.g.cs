@@ -12,7 +12,7 @@ namespace Jade.Wgpu;
 public unsafe partial struct BindGroupEntry
 {
     /// <summary>Maps <c>WGPUBindGroupEntry.nextInChain</c>.</summary>
-    internal WGPUChainedStruct* NextInChain;
+    internal Raw.ChainedStruct* NextInChain;
 
     /// <summary>Maps <c>WGPUBindGroupEntry.binding</c>.</summary>
     public uint Binding;
@@ -35,6 +35,6 @@ public unsafe partial struct BindGroupEntry
     /// <summary>Initializes a new instance of the <see cref="BindGroupEntry"/> struct with the defaults of <c>WGPU_BIND_GROUP_ENTRY_INIT</c>.</summary>
     public BindGroupEntry()
     {
-        Size = NativeMethods.WGPU_WHOLE_SIZE;
+        Size = Raw.NativeMethods.WholeSize;
     }
 }

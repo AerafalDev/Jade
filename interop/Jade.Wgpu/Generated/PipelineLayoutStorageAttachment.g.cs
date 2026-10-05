@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public unsafe partial struct PipelineLayoutStorageAttachment
 {
     /// <summary>Maps <c>WGPUPipelineLayoutStorageAttachment.nextInChain</c>.</summary>
-    internal WGPUChainedStruct* NextInChain;
+    internal Raw.ChainedStruct* NextInChain;
 
     /// <summary>Maps <c>WGPUPipelineLayoutStorageAttachment.offset</c>.</summary>
     public ulong Offset;

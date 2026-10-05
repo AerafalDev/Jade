@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public partial struct DawnTextureInternalUsageDescriptor
 {
     /// <summary>Maps <c>WGPUDawnTextureInternalUsageDescriptor.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUDawnTextureInternalUsageDescriptor.internalUsage</c>.</summary>
     public TextureUsage InternalUsage;
@@ -21,6 +21,6 @@ public partial struct DawnTextureInternalUsageDescriptor
     /// <summary>Initializes a new instance of the <see cref="DawnTextureInternalUsageDescriptor"/> struct with the defaults of <c>WGPU_DAWN_TEXTURE_INTERNAL_USAGE_DESCRIPTOR_INIT</c>.</summary>
     public DawnTextureInternalUsageDescriptor()
     {
-        Chain.sType = SType.DawnTextureInternalUsageDescriptor;
+        Chain.SType = SType.DawnTextureInternalUsageDescriptor;
     }
 }

@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public partial struct RenderPassRenderAreaRect
 {
     /// <summary>Maps <c>WGPURenderPassRenderAreaRect.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPURenderPassRenderAreaRect.origin</c>.</summary>
     public Origin2D Origin;
@@ -24,6 +24,6 @@ public partial struct RenderPassRenderAreaRect
     /// <summary>Initializes a new instance of the <see cref="RenderPassRenderAreaRect"/> struct with the defaults of <c>WGPU_RENDER_PASS_RENDER_AREA_RECT_INIT</c>.</summary>
     public RenderPassRenderAreaRect()
     {
-        Chain.sType = SType.RenderPassRenderAreaRect;
+        Chain.SType = SType.RenderPassRenderAreaRect;
     }
 }

@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public partial struct RenderBundleEncoderResourceTable
 {
     /// <summary>Maps <c>WGPURenderBundleEncoderResourceTable.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPURenderBundleEncoderResourceTable.usesResourceTable</c>.</summary>
     public Bool32 UsesResourceTable;
@@ -21,6 +21,6 @@ public partial struct RenderBundleEncoderResourceTable
     /// <summary>Initializes a new instance of the <see cref="RenderBundleEncoderResourceTable"/> struct with the defaults of <c>WGPU_RENDER_BUNDLE_ENCODER_RESOURCE_TABLE_INIT</c>.</summary>
     public RenderBundleEncoderResourceTable()
     {
-        Chain.sType = SType.RenderBundleEncoderResourceTable;
+        Chain.SType = SType.RenderBundleEncoderResourceTable;
     }
 }

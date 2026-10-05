@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public partial struct DawnFakeBufferOomForTesting
 {
     /// <summary>Maps <c>WGPUDawnFakeBufferOOMForTesting.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUDawnFakeBufferOOMForTesting.fakeOOMAtWireClientMap</c>.</summary>
     public Bool32 FakeOomAtWireClientMap;
@@ -27,6 +27,6 @@ public partial struct DawnFakeBufferOomForTesting
     /// <summary>Initializes a new instance of the <see cref="DawnFakeBufferOomForTesting"/> struct with the defaults of <c>WGPU_DAWN_FAKE_BUFFER_OOM_FOR_TESTING_INIT</c>.</summary>
     public DawnFakeBufferOomForTesting()
     {
-        Chain.sType = SType.DawnFakeBufferOomForTesting;
+        Chain.SType = SType.DawnFakeBufferOomForTesting;
     }
 }

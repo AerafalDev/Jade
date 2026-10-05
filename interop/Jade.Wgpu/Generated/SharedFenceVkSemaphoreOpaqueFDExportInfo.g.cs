@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public partial struct SharedFenceVkSemaphoreOpaqueFDExportInfo
 {
     /// <summary>Maps <c>WGPUSharedFenceVkSemaphoreOpaqueFDExportInfo.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUSharedFenceVkSemaphoreOpaqueFDExportInfo.handle</c>.</summary>
     public int Handle;
@@ -21,6 +21,6 @@ public partial struct SharedFenceVkSemaphoreOpaqueFDExportInfo
     /// <summary>Initializes a new instance of the <see cref="SharedFenceVkSemaphoreOpaqueFDExportInfo"/> struct with the defaults of <c>WGPU_SHARED_FENCE_VK_SEMAPHORE_OPAQUE_FD_EXPORT_INFO_INIT</c>.</summary>
     public SharedFenceVkSemaphoreOpaqueFDExportInfo()
     {
-        Chain.sType = SType.SharedFenceVkSemaphoreOpaqueFDExportInfo;
+        Chain.SType = SType.SharedFenceVkSemaphoreOpaqueFDExportInfo;
     }
 }

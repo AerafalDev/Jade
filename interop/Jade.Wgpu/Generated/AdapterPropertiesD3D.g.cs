@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public partial struct AdapterPropertiesD3D
 {
     /// <summary>Maps <c>WGPUAdapterPropertiesD3D.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUAdapterPropertiesD3D.shaderModel</c>.</summary>
     public uint ShaderModel;
@@ -27,6 +27,6 @@ public partial struct AdapterPropertiesD3D
     /// <summary>Initializes a new instance of the <see cref="AdapterPropertiesD3D"/> struct with the defaults of <c>WGPU_ADAPTER_PROPERTIES_D3D_INIT</c>.</summary>
     public AdapterPropertiesD3D()
     {
-        Chain.sType = SType.AdapterPropertiesD3D;
+        Chain.SType = SType.AdapterPropertiesD3D;
     }
 }

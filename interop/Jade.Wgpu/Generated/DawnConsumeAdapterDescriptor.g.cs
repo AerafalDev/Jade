@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public partial struct DawnConsumeAdapterDescriptor
 {
     /// <summary>Maps <c>WGPUDawnConsumeAdapterDescriptor.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUDawnConsumeAdapterDescriptor.consumeAdapter</c>.</summary>
     public Bool32 ConsumeAdapter;
@@ -21,6 +21,6 @@ public partial struct DawnConsumeAdapterDescriptor
     /// <summary>Initializes a new instance of the <see cref="DawnConsumeAdapterDescriptor"/> struct with the defaults of <c>WGPU_DAWN_CONSUME_ADAPTER_DESCRIPTOR_INIT</c>.</summary>
     public DawnConsumeAdapterDescriptor()
     {
-        Chain.sType = SType.DawnConsumeAdapterDescriptor;
+        Chain.SType = SType.DawnConsumeAdapterDescriptor;
     }
 }

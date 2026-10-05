@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public unsafe partial struct SharedFenceExportInfo
 {
     /// <summary>Maps <c>WGPUSharedFenceExportInfo.nextInChain</c>.</summary>
-    internal WGPUChainedStruct* NextInChain;
+    internal Raw.ChainedStruct* NextInChain;
 
     /// <summary>Maps <c>WGPUSharedFenceExportInfo.type</c>.</summary>
     public SharedFenceType Type;

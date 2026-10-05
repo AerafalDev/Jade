@@ -23,7 +23,7 @@ public partial struct TexelCopyBufferLayout
     /// <summary>Initializes a new instance of the <see cref="TexelCopyBufferLayout"/> struct with the defaults of <c>WGPU_TEXEL_COPY_BUFFER_LAYOUT_INIT</c>.</summary>
     public TexelCopyBufferLayout()
     {
-        BytesPerRow = NativeMethods.WGPU_COPY_STRIDE_UNDEFINED;
-        RowsPerImage = NativeMethods.WGPU_COPY_STRIDE_UNDEFINED;
+        BytesPerRow = Raw.NativeMethods.CopyStrideUndefined;
+        RowsPerImage = Raw.NativeMethods.CopyStrideUndefined;
     }
 }

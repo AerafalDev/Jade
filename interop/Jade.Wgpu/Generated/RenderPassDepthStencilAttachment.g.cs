@@ -12,7 +12,7 @@ namespace Jade.Wgpu;
 public unsafe partial struct RenderPassDepthStencilAttachment
 {
     /// <summary>Maps <c>WGPURenderPassDepthStencilAttachment.nextInChain</c>.</summary>
-    internal WGPUChainedStruct* NextInChain;
+    internal Raw.ChainedStruct* NextInChain;
 
     /// <summary>Maps <c>WGPURenderPassDepthStencilAttachment.view</c>.</summary>
     public TextureView View;
@@ -44,6 +44,6 @@ public unsafe partial struct RenderPassDepthStencilAttachment
     /// <summary>Initializes a new instance of the <see cref="RenderPassDepthStencilAttachment"/> struct with the defaults of <c>WGPU_RENDER_PASS_DEPTH_STENCIL_ATTACHMENT_INIT</c>.</summary>
     public RenderPassDepthStencilAttachment()
     {
-        DepthClearValue = NativeMethods.WGPU_DEPTH_CLEAR_VALUE_UNDEFINED;
+        DepthClearValue = Raw.NativeMethods.DepthClearValueUndefined;
     }
 }

@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public partial struct PipelineLayoutResourceTable
 {
     /// <summary>Maps <c>WGPUPipelineLayoutResourceTable.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUPipelineLayoutResourceTable.usesResourceTable</c>.</summary>
     public Bool32 UsesResourceTable;
@@ -21,6 +21,6 @@ public partial struct PipelineLayoutResourceTable
     /// <summary>Initializes a new instance of the <see cref="PipelineLayoutResourceTable"/> struct with the defaults of <c>WGPU_PIPELINE_LAYOUT_RESOURCE_TABLE_INIT</c>.</summary>
     public PipelineLayoutResourceTable()
     {
-        Chain.sType = SType.PipelineLayoutResourceTable;
+        Chain.SType = SType.PipelineLayoutResourceTable;
     }
 }

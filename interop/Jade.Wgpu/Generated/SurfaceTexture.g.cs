@@ -12,7 +12,7 @@ namespace Jade.Wgpu;
 public unsafe partial struct SurfaceTexture
 {
     /// <summary>Maps <c>WGPUSurfaceTexture.nextInChain</c>.</summary>
-    internal WGPUChainedStruct* NextInChain;
+    internal Raw.ChainedStruct* NextInChain;
 
     /// <summary>Maps <c>WGPUSurfaceTexture.texture</c>.</summary>
     public Texture Texture;

@@ -12,7 +12,7 @@ namespace Jade.Wgpu;
 public unsafe partial struct MultisampleState
 {
     /// <summary>Maps <c>WGPUMultisampleState.nextInChain</c>.</summary>
-    internal WGPUChainedStruct* NextInChain;
+    internal Raw.ChainedStruct* NextInChain;
 
     /// <summary>Maps <c>WGPUMultisampleState.count</c>.</summary>
     public uint Count;

@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public unsafe partial struct SharedTextureMemoryProperties
 {
     /// <summary>Maps <c>WGPUSharedTextureMemoryProperties.nextInChain</c>.</summary>
-    internal WGPUChainedStruct* NextInChain;
+    internal Raw.ChainedStruct* NextInChain;
 
     /// <summary>Maps <c>WGPUSharedTextureMemoryProperties.usage</c>.</summary>
     public TextureUsage Usage;

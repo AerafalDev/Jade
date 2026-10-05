@@ -11,17 +11,22 @@ internal sealed class ParsedHeaders
     /// <summary>Initializes a new instance of the <see cref="ParsedHeaders"/> class.</summary>
     /// <param name="targets">The targets, in the order of ADR 0012; at most 64, so that a set of them fits a <see cref="ulong"/>.</param>
     /// <param name="declarations">The declarations of each target.</param>
-    public ParsedHeaders(IReadOnlyList<Target> targets, IReadOnlyDictionary<Target, IReadOnlySet<HeaderDeclaration>> declarations)
+    /// <param name="byTarget">What each target declares, in the order of <paramref name="targets"/>.</param>
+    public ParsedHeaders(IReadOnlyList<Target> targets, IReadOnlyDictionary<Target, IReadOnlySet<HeaderDeclaration>> declarations, IReadOnlyList<TargetDeclarations> byTarget)
     {
         ArgumentOutOfRangeException.ThrowIfGreaterThan(targets.Count, sizeof(ulong) * 8);
 
         Targets = targets;
+        ByTarget = byTarget;
         _declarations = declarations;
         AllDeclarations = [.. declarations.Values.SelectMany(static set => set).Distinct().Order(HeaderDeclaration.ByName)];
     }
 
     /// <summary>Gets the targets the headers were parsed for.</summary>
     public IReadOnlyList<Target> Targets { get; }
+
+    /// <summary>Gets what each target declares, the input of the merge into the intermediate representation.</summary>
+    public IReadOnlyList<TargetDeclarations> ByTarget { get; }
 
     /// <summary>Gets the declarations of every target together, ordered by <see cref="HeaderDeclaration.ByName"/>.</summary>
     public IReadOnlyList<HeaderDeclaration> AllDeclarations { get; }

@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public partial struct SharedTextureMemoryVkImageLayoutEndState
 {
     /// <summary>Maps <c>WGPUSharedTextureMemoryVkImageLayoutEndState.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUSharedTextureMemoryVkImageLayoutEndState.oldLayout</c>.</summary>
     public int OldLayout;
@@ -24,6 +24,6 @@ public partial struct SharedTextureMemoryVkImageLayoutEndState
     /// <summary>Initializes a new instance of the <see cref="SharedTextureMemoryVkImageLayoutEndState"/> struct with the defaults of <c>WGPU_SHARED_TEXTURE_MEMORY_VK_IMAGE_LAYOUT_END_STATE_INIT</c>.</summary>
     public SharedTextureMemoryVkImageLayoutEndState()
     {
-        Chain.sType = SType.SharedTextureMemoryVkImageLayoutEndState;
+        Chain.SType = SType.SharedTextureMemoryVkImageLayoutEndState;
     }
 }

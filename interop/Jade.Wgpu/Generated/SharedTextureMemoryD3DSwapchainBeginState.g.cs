@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public partial struct SharedTextureMemoryD3DSwapchainBeginState
 {
     /// <summary>Maps <c>WGPUSharedTextureMemoryD3DSwapchainBeginState.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUSharedTextureMemoryD3DSwapchainBeginState.isSwapchain</c>.</summary>
     public Bool32 IsSwapchain;
@@ -21,6 +21,6 @@ public partial struct SharedTextureMemoryD3DSwapchainBeginState
     /// <summary>Initializes a new instance of the <see cref="SharedTextureMemoryD3DSwapchainBeginState"/> struct with the defaults of <c>WGPU_SHARED_TEXTURE_MEMORY_D3D_SWAPCHAIN_BEGIN_STATE_INIT</c>.</summary>
     public SharedTextureMemoryD3DSwapchainBeginState()
     {
-        Chain.sType = SType.SharedTextureMemoryD3DSwapchainBeginState;
+        Chain.SType = SType.SharedTextureMemoryD3DSwapchainBeginState;
     }
 }

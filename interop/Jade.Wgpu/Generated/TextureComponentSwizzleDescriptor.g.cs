@@ -12,7 +12,7 @@ namespace Jade.Wgpu;
 public partial struct TextureComponentSwizzleDescriptor
 {
     /// <summary>Maps <c>WGPUTextureComponentSwizzleDescriptor.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUTextureComponentSwizzleDescriptor.swizzle</c>.</summary>
     public TextureComponentSwizzle Swizzle;
@@ -20,6 +20,6 @@ public partial struct TextureComponentSwizzleDescriptor
     /// <summary>Initializes a new instance of the <see cref="TextureComponentSwizzleDescriptor"/> struct with the defaults of <c>WGPU_TEXTURE_COMPONENT_SWIZZLE_DESCRIPTOR_INIT</c>.</summary>
     public TextureComponentSwizzleDescriptor()
     {
-        Chain.sType = SType.TextureComponentSwizzleDescriptor;
+        Chain.SType = SType.TextureComponentSwizzleDescriptor;
     }
 }

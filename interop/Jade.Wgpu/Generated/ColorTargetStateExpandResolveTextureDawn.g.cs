@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public partial struct ColorTargetStateExpandResolveTextureDawn
 {
     /// <summary>Maps <c>WGPUColorTargetStateExpandResolveTextureDawn.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUColorTargetStateExpandResolveTextureDawn.enabled</c>.</summary>
     public Bool32 Enabled;
@@ -21,6 +21,6 @@ public partial struct ColorTargetStateExpandResolveTextureDawn
     /// <summary>Initializes a new instance of the <see cref="ColorTargetStateExpandResolveTextureDawn"/> struct with the defaults of <c>WGPU_COLOR_TARGET_STATE_EXPAND_RESOLVE_TEXTURE_DAWN_INIT</c>.</summary>
     public ColorTargetStateExpandResolveTextureDawn()
     {
-        Chain.sType = SType.ColorTargetStateExpandResolveTextureDawn;
+        Chain.SType = SType.ColorTargetStateExpandResolveTextureDawn;
     }
 }

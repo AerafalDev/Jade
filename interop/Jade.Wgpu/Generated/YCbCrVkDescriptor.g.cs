@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public partial struct YCbCrVkDescriptor
 {
     /// <summary>Maps <c>WGPUYCbCrVkDescriptor.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUYCbCrVkDescriptor.vkFormat</c>.</summary>
     public uint VkFormat;
@@ -54,6 +54,6 @@ public partial struct YCbCrVkDescriptor
     /// <summary>Initializes a new instance of the <see cref="YCbCrVkDescriptor"/> struct with the defaults of <c>WGPU_Y_CB_CR_VK_DESCRIPTOR_INIT</c>.</summary>
     public YCbCrVkDescriptor()
     {
-        Chain.sType = SType.YCbCrVkDescriptor;
+        Chain.SType = SType.YCbCrVkDescriptor;
     }
 }

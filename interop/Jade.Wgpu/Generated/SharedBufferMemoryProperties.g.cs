@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public unsafe partial struct SharedBufferMemoryProperties
 {
     /// <summary>Maps <c>WGPUSharedBufferMemoryProperties.nextInChain</c>.</summary>
-    internal WGPUChainedStruct* NextInChain;
+    internal Raw.ChainedStruct* NextInChain;
 
     /// <summary>Maps <c>WGPUSharedBufferMemoryProperties.usage</c>.</summary>
     public BufferUsage Usage;

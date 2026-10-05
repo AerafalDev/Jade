@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public partial struct TexelBufferBindingLayout
 {
     /// <summary>Maps <c>WGPUTexelBufferBindingLayout.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUTexelBufferBindingLayout.access</c>.</summary>
     public TexelBufferAccess Access;
@@ -24,6 +24,6 @@ public partial struct TexelBufferBindingLayout
     /// <summary>Initializes a new instance of the <see cref="TexelBufferBindingLayout"/> struct with the defaults of <c>WGPU_TEXEL_BUFFER_BINDING_LAYOUT_INIT</c>.</summary>
     public TexelBufferBindingLayout()
     {
-        Chain.sType = SType.TexelBufferBindingLayout;
+        Chain.SType = SType.TexelBufferBindingLayout;
     }
 }

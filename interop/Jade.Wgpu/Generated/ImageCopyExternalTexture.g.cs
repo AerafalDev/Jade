@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public unsafe partial struct ImageCopyExternalTexture
 {
     /// <summary>Maps <c>WGPUImageCopyExternalTexture.nextInChain</c>.</summary>
-    internal WGPUChainedStruct* NextInChain;
+    internal Raw.ChainedStruct* NextInChain;
 
     /// <summary>Maps <c>WGPUImageCopyExternalTexture.externalTexture</c>.</summary>
     public ExternalTexture ExternalTexture;

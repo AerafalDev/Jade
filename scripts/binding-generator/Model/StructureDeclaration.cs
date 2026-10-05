@@ -6,6 +6,9 @@ internal sealed record StructureDeclaration : Declaration
     /// <summary>Gets the members, in C layout order, the chain and userdata members included.</summary>
     public required IReadOnlyList<StructureMember> Members { get; init; }
 
+    /// <summary>Gets whether the structure is a C union, whose members all start at offset 0.</summary>
+    public bool IsUnion { get; init; }
+
     /// <summary>
     /// Gets the C name of the macro that initializes the structure with its defaults, such as
     /// <c>WGPU_EXTENT_3D_INIT</c>, or <see langword="null"/> when the API defines none.

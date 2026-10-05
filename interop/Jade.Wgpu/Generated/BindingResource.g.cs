@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public unsafe partial struct BindingResource
 {
     /// <summary>Maps <c>WGPUBindingResource.nextInChain</c>.</summary>
-    internal WGPUChainedStruct* NextInChain;
+    internal Raw.ChainedStruct* NextInChain;
 
     /// <summary>Maps <c>WGPUBindingResource.buffer</c>.</summary>
     public Buffer Buffer;
@@ -33,6 +33,6 @@ public unsafe partial struct BindingResource
     /// <summary>Initializes a new instance of the <see cref="BindingResource"/> struct with the defaults of <c>WGPU_BINDING_RESOURCE_INIT</c>.</summary>
     public BindingResource()
     {
-        Size = NativeMethods.WGPU_WHOLE_SIZE;
+        Size = Raw.NativeMethods.WholeSize;
     }
 }
