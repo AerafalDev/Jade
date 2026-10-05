@@ -58,6 +58,9 @@ package("dawn")
         if package:is_plat("windows") then
             -- D3D12 compiles shaders with the DXC that Dawn builds and ships (docs/adr/0030).
             table.insert(configs, "-DDAWN_USE_BUILT_DXC=ON")
+            -- Abseil replaces CMAKE_MSVC_RUNTIME_LIBRARY with the DLL runtime unless told
+            -- otherwise, which would mix it with the static CRT of everything else (docs/adr/0038).
+            table.insert(configs, "-DABSL_MSVC_STATIC_RUNTIME=ON")
         end
         if package:is_plat("macosx", "iphoneos") then
             table.insert(configs, "-DCMAKE_OSX_DEPLOYMENT_TARGET=" .. get_config("target_minver"))

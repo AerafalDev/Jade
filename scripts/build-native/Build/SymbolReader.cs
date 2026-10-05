@@ -29,7 +29,11 @@ internal sealed record SymbolReader(string Program, IReadOnlyList<string> Argume
                 continue;
             }
 
-            _ = symbols.Add(Prefixed && line[0] == '_' ? line[1..] : line);
+            // ELF symbol versions follow the name (SDL_Init@@SDL3_0.0.0).
+            var version = line.IndexOf('@', StringComparison.Ordinal);
+            var name = version < 0 ? line : line[..version];
+
+            _ = symbols.Add(Prefixed && name[0] == '_' ? name[1..] : name);
         }
 
         return symbols;

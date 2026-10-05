@@ -44,13 +44,9 @@
           "url": "https://github.com/xmake-io/xmake/releases/download/v3.1.1/xmake-v3.1.1.tar.gz",
           "sha256": "e67e6692bdf8fcb10cdb2cc78c0e8f0ae6c86ad3e3fc532880feca49eefb74b8"
         },
-        "macos-arm64": {
-          "url": "https://github.com/xmake-io/xmake/releases/download/v3.1.1/xmake-bundle-v3.1.1.macos.arm64",
-          "sha256": "a614dedc4dd765209949350ce4a0449638542df8147837fb1ba1ce4e9a0ff8ac"
-        },
-        "macos-x64": {
-          "url": "https://github.com/xmake-io/xmake/releases/download/v3.1.1/xmake-bundle-v3.1.1.macos.x86_64",
-          "sha256": "ca1d0dbda4d58d77ae10a2f6d8641892e98b193ef227b461a804a2409fe2fe4b"
+        "macos": {
+          "url": "https://github.com/xmake-io/xmake/releases/download/v3.1.1/xmake-v3.1.1.tar.gz",
+          "sha256": "e67e6692bdf8fcb10cdb2cc78c0e8f0ae6c86ad3e3fc532880feca49eefb74b8"
         },
         "windows-arm64": {
           "url": "https://github.com/xmake-io/xmake/releases/download/v3.1.1/xmake-v3.1.1.arm64.zip",
@@ -61,7 +57,7 @@
           "sha256": "33fdf2f34a0e45fa731c000d59590d27b13dec7011f69cbf575004ed9279b4a2"
         }
       },
-      "source": "GitHub release v3.1.1 of xmake-io/xmake (published 2026-08-27, newest on 2026-10-05). The release has no Linux arm64 binary, so Linux builds the source archive; hashes computed from the downloaded assets, and the Windows ones match the release's .sha256 files."
+      "source": "GitHub release v3.1.1 of xmake-io/xmake (published 2026-08-27, newest on 2026-10-05). Linux and macOS build the source archive: the release has no Linux arm64 binary, and the macOS bundle keeps its scripts inside the executable, where xmake's Xcode toolchain cannot run gas-preprocessor.pl as the iOS assembler. Hashes computed from the downloaded assets; the Windows ones match the release's .sha256 files."
     },
     "cmake": {
       "version": "4.4.4",

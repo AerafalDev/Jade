@@ -11,13 +11,12 @@ target("miniaudio")
     set_warnings("all", "error")
     add_forceincludes(path.join(os.scriptdir(), "config.h"))
     add_includedirs(get_config("miniaudio_source"))
-    add_files("jade_miniaudio.c")
+    add_files(path.join(get_config("miniaudio_source"), "miniaudio.c"), "jade_miniaudio.c")
 
     if is_plat("iphoneos") then
-        -- miniaudio's iOS backend uses AVAudioSession (miniaudio.h, section 2.2).
-        add_files(path.join(get_config("miniaudio_source"), "miniaudio.c"), {sourcekind = "mm"})
-    else
-        add_files(path.join(get_config("miniaudio_source"), "miniaudio.c"))
+        -- miniaudio's iOS backend uses AVAudioSession, so it compiles as Objective-C (miniaudio.h,
+        -- section 2.2). A sourcekind of "mm" does not do it: xmake only passes -x for C and C++.
+        add_cflags("-xobjective-c", {force = true})
     end
 
     if is_plat("linux", "android") then

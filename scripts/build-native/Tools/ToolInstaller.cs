@@ -83,18 +83,13 @@ internal sealed class ToolInstaller(string directory, HostPlatform host, TextWri
             await ExtractTarGzAsync(archive, staging, cancellationToken).ConfigureAwait(false);
             File.Delete(archive);
         }
-        else if (!OperatingSystem.IsWindows())
-        {
-            // A single executable: xmake's macOS bundle, which embeds its scripts.
-            File.Move(archive, Path.Combine(staging, name));
-            File.SetUnixFileMode(Path.Combine(staging, name), UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute | UnixFileMode.GroupRead | UnixFileMode.GroupExecute | UnixFileMode.OtherRead | UnixFileMode.OtherExecute);
-        }
         else
         {
             throw new InvalidDataException($"{asset.Url} is neither a .zip nor a .tar.gz archive.");
         }
 
-        if (name == "xmake" && host.Platform == NativePlatform.Linux)
+        // xmake's source archive, the one Linux and macOS install (build/versions.json).
+        if (name == "xmake" && host.Platform != NativePlatform.Windows)
         {
             await BuildXmakeAsync(staging, cancellationToken).ConfigureAwait(false);
         }
@@ -159,7 +154,11 @@ internal sealed class ToolInstaller(string directory, HostPlatform host, TextWri
     /// <param name="staging">The directory the sources were extracted into.</param>
     /// <param name="cancellationToken">Stops the build.</param>
     /// <returns>A task that completes when xmake is installed under <c>bin/</c>.</returns>
-    /// <remarks>xmake publishes no Linux arm64 binary, so Linux always builds the same sources.</remarks>
+    /// <remarks>
+    /// xmake publishes no Linux arm64 binary, and its macOS bundle keeps its scripts inside the
+    /// executable, where they are not files that other programs can run (the iOS assembler is
+    /// <c>scripts/gas-preprocessor.pl</c>): both build the same sources instead.
+    /// </remarks>
     private static async Task BuildXmakeAsync(string staging, CancellationToken cancellationToken)
     {
         var sources = Directory.EnumerateDirectories(staging).Single();
