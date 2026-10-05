@@ -39,9 +39,10 @@ Each interop project has two layers ([0008](adr/0008-two-layer-interop.md)):
 
 - a **raw layer**, a strictly blittable image of the C API under
   `[assembly: DisableRuntimeMarshalling]`, with no runtime code generation, so it runs under JIT,
-  NativeAOT, iOS AOT and Mono WebAssembly. It is internal and keeps the C names; the types that are
-  identical in both layers (enums, flags, handles, structures without pointers) are public
-  ([0028](adr/0028-internal-raw-interop-layer.md));
+  NativeAOT, iOS AOT and Mono WebAssembly. Every declaration has a .NET name and the summary of each
+  names its C declaration. The types that are identical in both layers (enums, flags, handles,
+  structures without pointers) are public; the other structures and the functions are internal, in
+  the `Jade.<Library>.Raw` namespace ([0034](adr/0034-raw-layer-with-dotnet-names.md));
 - an **idiomatic layer** on top: spans, `in`/`ref`/`out`, unmanaged function pointers, methods on
   the type they operate on, `Task`-based asynchronous WebGPU operations. Descriptors are
   `ref struct` mirrors lowered without copy where possible and through a stack-based arena
@@ -65,7 +66,7 @@ The mapping rules are in [0009](adr/0009-interop-mapping-conventions.md) and
 | `Jade.Emscripten` (in `interop/`) | .NET 11, no RID | Emscripten runtime interop, `[SupportedOSPlatform("browser")]` ([0019](adr/0019-browser-and-roslyn-component-targeting.md)). |
 | `Jade.Native.Wgpu`, `Jade.Native.Sdl`, `Jade.Native.MiniAudio` (in `native/`) | packaging only | Native binaries for every RID ([0011](adr/0011-native-package-layout.md)). |
 | `Jade.Tests` (in `tests/`) | .NET 11 | MSTest on Microsoft.Testing.Platform ([0018](adr/0018-test-framework.md)). |
-| `Jade.Wgpu.Tests` (in `tests/`) | .NET 11 | Tests of the `Jade.Wgpu` raw layer and smoke tests against the host's natives ([0032](adr/0032-webgpu-raw-layer-generation.md)). |
+| `Jade.Wgpu.Tests`, `Jade.Sdl.Tests`, `Jade.MiniAudio.Tests` (in `tests/`) | .NET 11 | Tests of each raw layer, and export and smoke tests against the host's natives ([0032](adr/0032-webgpu-raw-layer-generation.md), [0033](adr/0033-c-header-raw-layer-generation.md)). |
 
 Every .NET 11 library is AOT-compatible and every package that ships an assembly tracks its public
 API. Build and packaging conventions are in [0021](adr/0021-build-and-packaging-conventions.md);
@@ -103,12 +104,15 @@ flowchart LR
 - `interop/<project>/bindings.json` selects the front-end and the inputs of each generated library,
   the name its functions are imported from (`library`), the declarations it leaves out with the
   reason (`exclude`) and the exceptions to the naming rules (`names`, `words`)
-  ([0032](adr/0032-webgpu-raw-layer-generation.md)); roadmap task 8 adds the annotations of the C
-  header libraries. The `MA_*` defines live in `build/miniaudio/config.h`, which the native build and
-  the generator both force-include.
-- Mapping rules: [0009](adr/0009-interop-mapping-conventions.md) and
-  [0027](adr/0027-interop-mapping-rules.md). The raw layer is internal and keeps the C names
-  ([0028](adr/0028-internal-raw-interop-layer.md)); descriptors and chained structures follow
+  ([0032](adr/0032-webgpu-raw-layer-generation.md)). For C headers, its `clang` object adds the
+  annotations of [0033](adr/0033-c-header-raw-layer-generation.md): defines, shim headers, prefixes,
+  excluded headers, types mapped by name, opaque types and their shim allocators, booleans, enums
+  made of macros, and constants. The `MA_*` defines live in `build/miniaudio/config.h`, which the
+  native build and the generator both force-include.
+- Mapping rules: [0009](adr/0009-interop-mapping-conventions.md),
+  [0027](adr/0027-interop-mapping-rules.md) and [0033](adr/0033-c-header-raw-layer-generation.md).
+  The raw layer has .NET names, its internal part in a `Raw` namespace
+  ([0034](adr/0034-raw-layer-with-dotnet-names.md)); descriptors and chained structures follow
   [0029](adr/0029-descriptors-and-chained-structs.md).
 - The output is committed. The CI `build` jobs build the generator with warnings as errors,
   regenerate the bindings on Linux, Windows and macOS, and fail on any diff, which requires a
@@ -116,12 +120,21 @@ flowchart LR
 - The `dawn.json` front-end builds the intermediate representation of `webgpu.h` as Dawn's `api.h`
   template renders it: the chain, userdata and reference counting members it adds, the tag offsets
   of enum values, and the defaults of the `WGPU_*_INIT` macros
-  ([0032](adr/0032-webgpu-raw-layer-generation.md)). The raw emitter writes `Jade.Wgpu`'s raw layer,
-  one file per type: public enums, flags, handles, `Bool32` and value structures with .NET names;
-  internal structures, constants and functions (in `NativeMethods`) with their C names. Each
-  structure's parameterless constructor applies its `*_INIT` macro. The generated public
+  ([0032](adr/0032-webgpu-raw-layer-generation.md)). The raw emitter writes one file per type:
+  public enums, flags, handles, booleans and value structures in `Generated/`; internal
+  structures, inline arrays and `NativeMethods` (constants and functions, imported through
+  `EntryPoint`) in `Generated/Raw/` ([0034](adr/0034-raw-layer-with-dotnet-names.md)). Each
+  WebGPU structure's parameterless constructor applies its `*_INIT` macro. The generated public
   declarations are listed in `PublicAPI.Unshipped.txt` through the analyzer's fix.
-- The C header front-end still only loads and reports; its model and emission are roadmap task 8.
+- The C header front-end ([0033](adr/0033-c-header-raw-layer-generation.md)) collects each
+  target's parse on its own, then merges them: a declaration is available on the platform families
+  whose targets declare it, and a declaration that differs between targets fails the generator
+  unless it is opaque or excluded. Structures never defined or made opaque become handles; the
+  layout of every other structure is checked against clang's; macros selected by the
+  configuration are evaluated by clang into enums and constants; `NativeMethods` is split into one
+  partial file per header. SDL3 is bound from `SDL3/SDL.h` and `SDL3/SDL_main.h` without
+  `SDL_audio.h`; miniaudio from `miniaudio.h` and the shim `build/miniaudio/jade_miniaudio.h`,
+  which allocates every opaque type.
 - Native libraries are imported with `LibraryImport` and searched in the assembly's directory and
   the safe Windows directories (`DefaultDllImportSearchPaths`).
 
@@ -250,9 +263,9 @@ Details and verification in [0025](adr/0025-browser-natives-with-workload-emscri
 - Generated layout tests compare C `sizeof`/`offsetof` with the C# layout on every target,
   WebAssembly included.
 - CI regenerates the bindings on every host and fails if the committed code differs.
-- Each interop assembly's test project checks its raw layer and runs smoke tests against the
-  host's natives from `artifacts/native/bin/<rid>/`; they are skipped where the natives are not
-  built (`Jade.Wgpu.Tests` today).
+- Each interop assembly's test project checks its raw layer, checks that the host's library
+  exports every function imported for its platform, and runs smoke tests against the host's
+  natives from `artifacts/native/bin/<rid>/`; they are skipped where the natives are not built.
 - One sample per platform family (`samples/Desktop`, `Android`, `iOS`, `Browser`) validates the
   interop and the natives end to end.
 - Public API changes are tracked by the PublicApiAnalyzers files; packages pass package
@@ -293,9 +306,12 @@ the workflows above, Dependabot, issue and pull request templates, `CODEOWNERS`,
 `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md`. The native dependencies, toolchains and minimum OS
 versions are pinned in `build/versions.json`, and `THIRD-PARTY-NOTICES.md` covers the pinned
 sources. The binding generator fetches and loads the pinned inputs (`dawn.json`, and the SDL3 and
-miniaudio headers parsed for every RID) and generates the raw layer of `Jade.Wgpu` (296 files,
-276 functions); `Jade.Wgpu.Tests` creates a WebGPU instance and requests an adapter on the host
-through it. The SDL3 and miniaudio raw layers and every idiomatic layer are still to come.
+miniaudio headers parsed for every RID) and generates the raw layers of `Jade.Wgpu` (296 files,
+276 functions), `Jade.Sdl` (350 files, 1,177 functions) and `Jade.MiniAudio` (292 files, 955
+functions). On the host, `Jade.Wgpu.Tests` creates a WebGPU instance and requests an adapter,
+`Jade.Sdl.Tests` initializes SDL3 video and creates a window, and `Jade.MiniAudio.Tests`
+initializes a miniaudio context. The idiomatic layers and `Jade.Emscripten`, which will be generated
+too ([0035](adr/0035-emscripten-interop-generation.md)), are still to come.
 `scripts/build-native.cs` builds Dawn, SDL3 and miniaudio for `linux-x64` from the definitions of
 `build/`; the other RIDs, CI artifacts and packaging come later. No sample exists yet. The ordered
 list of next tasks is in the [roadmap](roadmap.md).

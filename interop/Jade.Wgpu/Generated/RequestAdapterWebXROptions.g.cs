@@ -12,7 +12,7 @@ namespace Jade.Wgpu;
 public partial struct RequestAdapterWebXROptions
 {
     /// <summary>Maps <c>WGPURequestAdapterWebXROptions.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPURequestAdapterWebXROptions.xrCompatible</c>.</summary>
     public Bool32 XrCompatible;
@@ -20,6 +20,6 @@ public partial struct RequestAdapterWebXROptions
     /// <summary>Initializes a new instance of the <see cref="RequestAdapterWebXROptions"/> struct with the defaults of <c>WGPU_REQUEST_ADAPTER_WEBXR_OPTIONS_INIT</c>.</summary>
     public RequestAdapterWebXROptions()
     {
-        Chain.sType = SType.RequestAdapterWebXROptions;
+        Chain.SType = SType.RequestAdapterWebXROptions;
     }
 }

@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public partial struct SharedTextureMemoryAHardwareBufferProperties
 {
     /// <summary>Maps <c>WGPUSharedTextureMemoryAHardwareBufferProperties.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUSharedTextureMemoryAHardwareBufferProperties.yCbCrInfo</c>.</summary>
     public YCbCrVkDescriptor YCbCrInfo;
@@ -21,7 +21,7 @@ public partial struct SharedTextureMemoryAHardwareBufferProperties
     /// <summary>Initializes a new instance of the <see cref="SharedTextureMemoryAHardwareBufferProperties"/> struct with the defaults of <c>WGPU_SHARED_TEXTURE_MEMORY_A_HARDWARE_BUFFER_PROPERTIES_INIT</c>.</summary>
     public SharedTextureMemoryAHardwareBufferProperties()
     {
-        Chain.sType = SType.SharedTextureMemoryAHardwareBufferProperties;
+        Chain.SType = SType.SharedTextureMemoryAHardwareBufferProperties;
         YCbCrInfo = new YCbCrVkDescriptor();
     }
 }

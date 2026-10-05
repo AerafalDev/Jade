@@ -12,7 +12,7 @@ namespace Jade.Wgpu;
 public unsafe partial struct PrimitiveState
 {
     /// <summary>Maps <c>WGPUPrimitiveState.nextInChain</c>.</summary>
-    internal WGPUChainedStruct* NextInChain;
+    internal Raw.ChainedStruct* NextInChain;
 
     /// <summary>Maps <c>WGPUPrimitiveState.topology</c>.</summary>
     public PrimitiveTopology Topology;

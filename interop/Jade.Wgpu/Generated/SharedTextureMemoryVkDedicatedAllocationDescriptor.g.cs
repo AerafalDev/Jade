@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public partial struct SharedTextureMemoryVkDedicatedAllocationDescriptor
 {
     /// <summary>Maps <c>WGPUSharedTextureMemoryVkDedicatedAllocationDescriptor.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUSharedTextureMemoryVkDedicatedAllocationDescriptor.dedicatedAllocation</c>.</summary>
     public Bool32 DedicatedAllocation;
@@ -21,6 +21,6 @@ public partial struct SharedTextureMemoryVkDedicatedAllocationDescriptor
     /// <summary>Initializes a new instance of the <see cref="SharedTextureMemoryVkDedicatedAllocationDescriptor"/> struct with the defaults of <c>WGPU_SHARED_TEXTURE_MEMORY_VK_DEDICATED_ALLOCATION_DESCRIPTOR_INIT</c>.</summary>
     public SharedTextureMemoryVkDedicatedAllocationDescriptor()
     {
-        Chain.sType = SType.SharedTextureMemoryVkDedicatedAllocationDescriptor;
+        Chain.SType = SType.SharedTextureMemoryVkDedicatedAllocationDescriptor;
     }
 }

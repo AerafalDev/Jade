@@ -12,7 +12,7 @@ namespace Jade.Wgpu;
 public unsafe partial struct VertexAttribute
 {
     /// <summary>Maps <c>WGPUVertexAttribute.nextInChain</c>.</summary>
-    internal WGPUChainedStruct* NextInChain;
+    internal Raw.ChainedStruct* NextInChain;
 
     /// <summary>Maps <c>WGPUVertexAttribute.format</c>.</summary>
     public VertexFormat Format;

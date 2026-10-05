@@ -8,6 +8,6 @@ using System.Runtime.InteropServices;
 // executable), and on Linux and macOS only AssemblyDirectory probes there; SafeDirectories keeps the
 // current directory and PATH out of the Windows search. CA5393 counts AssemblyDirectory as unsafe.
 [assembly: DefaultDllImportSearchPaths(DllImportSearchPath.AssemblyDirectory | DllImportSearchPath.SafeDirectories)]
-[assembly: SuppressMessage("Security", "CA5393:Do not use unsafe DllImportSearchPath value", Justification = "The native libraries are deployed next to the assembly.", Scope = "type", Target = "~T:Jade.Wgpu.NativeMethods")]
+[assembly: SuppressMessage("Security", "CA5393:Do not use unsafe DllImportSearchPath value", Justification = "The native libraries are deployed next to the assembly.", Scope = "type", Target = "~T:Jade.Wgpu.Raw.NativeMethods")]
 
 [assembly: InternalsVisibleTo("Jade.Wgpu.Tests")]

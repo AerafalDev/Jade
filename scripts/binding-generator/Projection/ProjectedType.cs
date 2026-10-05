@@ -8,10 +8,10 @@ internal abstract record ProjectedType
     /// <summary>Gets the C name of the declaration the type maps.</summary>
     public required string CName { get; init; }
 
-    /// <summary>Gets the C# name: a .NET name for a public type, the C name for an internal one (ADR 0028).</summary>
+    /// <summary>Gets the .NET name (ADR 0034).</summary>
     public required string Name { get; init; }
 
-    /// <summary>Gets whether the type is public, because it is identical in both layers (ADR 0028).</summary>
+    /// <summary>Gets whether the type is public, because it is identical in both layers; an internal type lives in the <c>Raw</c> namespace (ADR 0034).</summary>
     public required bool IsPublic { get; init; }
 
     /// <summary>Gets the platform families the type is available on.</summary>

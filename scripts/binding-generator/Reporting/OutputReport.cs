@@ -24,7 +24,7 @@ internal static class OutputReport
             string.Create(CultureInfo.InvariantCulture, $"  raw layer: {update.Files} files in {directory} ({update.Written} written, {update.Deleted} deleted)"),
             string.Create(
                 CultureInfo.InvariantCulture,
-                $"    enums: {library.Types.OfType<ProjectedEnum>().Count()}, handles: {library.Types.OfType<ProjectedHandle>().Count()}, booleans: {library.Types.OfType<ProjectedBoolean>().Count()}, public structures: {structures.Count(static structure => structure.IsPublic)}, internal structures: {structures.Count(static structure => !structure.IsPublic)}, constants: {library.Constants.Count}, functions: {library.Functions.Count}"),
+                $"    enums: {library.Types.OfType<ProjectedEnum>().Count()}, handles: {library.Types.OfType<ProjectedHandle>().Count()}, booleans: {library.Types.OfType<ProjectedBoolean>().Count()}, public structures: {structures.Count(static structure => structure.IsPublic)}, internal structures: {structures.Count(static structure => !structure.IsPublic)}, inline arrays: {library.Types.OfType<ProjectedInlineArray>().Count()}, constants: {library.Constants.Count}, functions: {library.Functions.Count}"),
             string.Create(CultureInfo.InvariantCulture, $"    skipped: {model.Skipped.Count}"),
         };
 

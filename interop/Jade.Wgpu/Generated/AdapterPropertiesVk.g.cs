@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public partial struct AdapterPropertiesVk
 {
     /// <summary>Maps <c>WGPUAdapterPropertiesVk.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUAdapterPropertiesVk.driverVersion</c>.</summary>
     public uint DriverVersion;
@@ -21,6 +21,6 @@ public partial struct AdapterPropertiesVk
     /// <summary>Initializes a new instance of the <see cref="AdapterPropertiesVk"/> struct with the defaults of <c>WGPU_ADAPTER_PROPERTIES_VK_INIT</c>.</summary>
     public AdapterPropertiesVk()
     {
-        Chain.sType = SType.AdapterPropertiesVk;
+        Chain.SType = SType.AdapterPropertiesVk;
     }
 }

@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public partial struct DawnWireWgslControl
 {
     /// <summary>Maps <c>WGPUDawnWireWGSLControl.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUDawnWireWGSLControl.enableExperimental</c>.</summary>
     public Bool32 EnableExperimental;
@@ -27,6 +27,6 @@ public partial struct DawnWireWgslControl
     /// <summary>Initializes a new instance of the <see cref="DawnWireWgslControl"/> struct with the defaults of <c>WGPU_DAWN_WIRE_WGSL_CONTROL_INIT</c>.</summary>
     public DawnWireWgslControl()
     {
-        Chain.sType = SType.DawnWireWgslControl;
+        Chain.SType = SType.DawnWireWgslControl;
     }
 }

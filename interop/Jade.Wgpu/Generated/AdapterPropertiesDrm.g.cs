@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public partial struct AdapterPropertiesDrm
 {
     /// <summary>Maps <c>WGPUAdapterPropertiesDrm.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUAdapterPropertiesDrm.hasPrimary</c>.</summary>
     public Bool32 HasPrimary;
@@ -36,6 +36,6 @@ public partial struct AdapterPropertiesDrm
     /// <summary>Initializes a new instance of the <see cref="AdapterPropertiesDrm"/> struct with the defaults of <c>WGPU_ADAPTER_PROPERTIES_DRM_INIT</c>.</summary>
     public AdapterPropertiesDrm()
     {
-        Chain.sType = SType.AdapterPropertiesDrm;
+        Chain.SType = SType.AdapterPropertiesDrm;
     }
 }

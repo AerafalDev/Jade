@@ -12,7 +12,7 @@ namespace Jade.Wgpu;
 public unsafe partial struct RequestAdapterOptions
 {
     /// <summary>Maps <c>WGPURequestAdapterOptions.nextInChain</c>.</summary>
-    internal WGPUChainedStruct* NextInChain;
+    internal Raw.ChainedStruct* NextInChain;
 
     /// <summary>Maps <c>WGPURequestAdapterOptions.featureLevel</c>.</summary>
     public FeatureLevel FeatureLevel;

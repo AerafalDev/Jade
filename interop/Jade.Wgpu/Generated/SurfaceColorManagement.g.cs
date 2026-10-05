@@ -12,7 +12,7 @@ namespace Jade.Wgpu;
 public partial struct SurfaceColorManagement
 {
     /// <summary>Maps <c>WGPUSurfaceColorManagement.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUSurfaceColorManagement.colorSpace</c>.</summary>
     public PredefinedColorSpace ColorSpace;
@@ -23,6 +23,6 @@ public partial struct SurfaceColorManagement
     /// <summary>Initializes a new instance of the <see cref="SurfaceColorManagement"/> struct with the defaults of <c>WGPU_SURFACE_COLOR_MANAGEMENT_INIT</c>.</summary>
     public SurfaceColorManagement()
     {
-        Chain.sType = SType.SurfaceColorManagement;
+        Chain.SType = SType.SurfaceColorManagement;
     }
 }

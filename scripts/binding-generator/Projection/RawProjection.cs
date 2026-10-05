@@ -6,17 +6,20 @@ using Jade.BindingGenerator.Model;
 
 namespace Jade.BindingGenerator.Projection;
 
-/// <summary>Projects the intermediate representation onto the C# declarations of the raw layer (ADR 0026 to 0029).</summary>
+/// <summary>Projects the intermediate representation onto the C# declarations of the raw layer (ADR 0026 to 0029, ADR 0034).</summary>
 /// <remarks>
-/// Enums, flags, handles, booleans and value structures are public with .NET names, since they are
-/// identical in both layers; the other structures, the constants and the functions are internal
-/// and keep their C names (ADR 0028). A value structure holds no pointer but its chain members
-/// (ADR 0029).
+/// Every declaration gets a .NET name. Enums, flags, handles, booleans and value structures are
+/// public, since they are identical in both layers; the other structures, the constants and the
+/// functions are internal, in the <c>Raw</c> namespace, so that their .NET names stay free for the
+/// idiomatic layer (ADR 0034). A value structure holds no pointer but its chain members (ADR 0029).
 /// </remarks>
 internal sealed class RawProjection
 {
     /// <summary>The name of the internal class that holds the constants and the functions.</summary>
     public const string NativeMethodsClass = "NativeMethods";
+
+    /// <summary>The namespace of the internal declarations, under the library's own (ADR 0034).</summary>
+    public const string RawNamespace = "Raw";
 
     /// <summary>The C# types of the builtin C types, by C spelling (ADR 0009 and 0027).</summary>
     private static readonly FrozenDictionary<string, string> _builtinTypes = new Dictionary<string, string>(StringComparer.Ordinal)
@@ -25,6 +28,15 @@ internal sealed class RawProjection
         ["_Bool"] = "bool",
         ["bool"] = "bool",
         ["char"] = "byte",
+        ["signed char"] = "sbyte",
+        ["unsigned char"] = "byte",
+        ["short"] = "short",
+        ["unsigned short"] = "ushort",
+        ["unsigned int"] = "uint",
+        ["long"] = "global::System.Runtime.InteropServices.CLong",
+        ["unsigned long"] = "global::System.Runtime.InteropServices.CULong",
+        ["long long"] = "long",
+        ["unsigned long long"] = "ulong",
         ["int8_t"] = "sbyte",
         ["uint8_t"] = "byte",
         ["int16_t"] = "short",
@@ -84,6 +96,12 @@ internal sealed class RawProjection
     /// <summary>The projected structures, by C name; a structure's defaults need those of the structures it holds.</summary>
     private readonly Dictionary<string, ProjectedStructure> _structures = [with(StringComparer.Ordinal)];
 
+    /// <summary>The inline arrays of the array members of the structures.</summary>
+    private readonly List<ProjectedInlineArray> _inlineArrays = [];
+
+    /// <summary>The .NET names of the constants, by C name; structure defaults refer to them.</summary>
+    private readonly Dictionary<string, string> _constantNames = [with(StringComparer.Ordinal)];
+
     /// <summary>Initializes a new instance of the <see cref="RawProjection"/> class.</summary>
     /// <param name="model">The model to project.</param>
     /// <param name="names">The .NET naming rules.</param>
@@ -112,38 +130,41 @@ internal sealed class RawProjection
     /// <returns>The raw layer.</returns>
     private ProjectedLibrary Project(string @namespace, string library)
     {
-        if (_model.Typedefs.FirstOrDefault(static typedef => !typedef.IsBoolean) is { } typedef)
-        {
-            throw new InvalidDataException($"'{typedef.CName}' is a typedef that is not a boolean, which the raw layer does not support yet.");
-        }
+        // Other typedefs are aliases, which C# cannot declare: their uses name their target (ADR 0027).
+        var booleans = _model.Typedefs.Where(static typedef => typedef.IsBoolean).ToList();
 
-        IEnumerable<Declaration> publicTypes = [.. _model.Typedefs, .. _model.Enums, .. _model.Handles, .. _model.Structures.Where(IsValueStructure)];
+        IEnumerable<Declaration> types = [.. booleans, .. _model.Enums, .. _model.Handles, .. _model.Structures];
 
-        foreach (var declaration in publicTypes)
+        foreach (var declaration in types)
         {
             _typeNames.Add(declaration.CName, _names.GetName(declaration.CName, declaration.Words));
         }
 
-        foreach (var structure in _model.Structures.Where(structure => !IsValueStructure(structure)))
+        foreach (var constant in _model.Constants)
         {
-            _typeNames.Add(structure.CName, structure.CName);
+            _constantNames.Add(constant.CName, _names.GetName(constant.CName, constant.Words));
         }
 
-        var types = _model.Typedefs.Select(ProjectBoolean)
+        var projectedTypes = booleans.Select(ProjectBoolean)
             .Concat<ProjectedType>(_model.Enums.Select(ProjectEnum))
             .Concat(_model.Handles.Select(ProjectHandle))
             .Concat(_model.Structures.Select(ProjectStructure))
+            .ToList()
+            .Concat(_inlineArrays)
             .OrderBy(static type => type.Name, StringComparer.Ordinal)
             .ToList();
 
-        CheckUnique("type", @namespace, types.Select(static type => type.Name).Append(NativeMethodsClass), StringComparer.OrdinalIgnoreCase);
+        // Public and internal types live in two namespaces, but one name must never mean both:
+        // the internal declarations see the public ones through their enclosing namespace.
+        CheckUnique("type", @namespace, projectedTypes.Select(static type => type.Name).Append(NativeMethodsClass).Append(RawNamespace), StringComparer.OrdinalIgnoreCase);
 
         var constants = _model.Constants.Select(ProjectConstant).ToList();
         var functions = _model.Functions.Select(ProjectFunction).ToList();
 
+        CheckUnique("member", NativeMethodsClass, constants.Select(static constant => constant.Name).Concat(functions.Select(static function => function.Name)).Append("LibraryName"), StringComparer.Ordinal);
         _names.CheckAllUsed();
 
-        return new ProjectedLibrary(@namespace, library, types, constants, functions);
+        return new ProjectedLibrary(@namespace, library, projectedTypes, constants, functions);
     }
 
     /// <summary>Projects a boolean typedef onto a boolean structure of the same size.</summary>
@@ -221,13 +242,17 @@ internal sealed class RawProjection
 
         var isPublic = IsValueStructure(declaration);
         var name = _typeNames[declaration.CName];
-        var fields = declaration.Members
-            .Select(member => new ProjectedField(
-                member.CName,
-                isPublic ? _names.GetName($"{declaration.CName}.{member.CName}", member.Words) : Escape(member.CName),
-                GetTypeName(member.Type),
-                isPublic && member.Role == MemberRole.Value))
-            .ToList();
+        var fields = new List<ProjectedField>();
+
+        foreach (var member in declaration.Members)
+        {
+            var fieldName = _names.GetName($"{declaration.CName}.{member.CName}", member.Words);
+            var type = member.Type is ArrayTypeReference array
+                ? ProjectInlineArray(declaration, member, array, $"{name}{fieldName}", isPublic)
+                : GetTypeName(member.Type, isPublic);
+
+            fields.Add(new ProjectedField(member.CName, fieldName, type, isPublic && member.Role == MemberRole.Value));
+        }
 
         // A member cannot have the name of its enclosing type (CS0542).
         CheckUnique("member", declaration.CName, fields.Select(static field => field.Name).Append(name), StringComparer.Ordinal);
@@ -239,6 +264,7 @@ internal sealed class RawProjection
             IsPublic = isPublic,
             Availability = declaration.Availability,
             Fields = fields,
+            IsUnion = declaration.IsUnion,
             InitializerCName = declaration.InitializerCName,
             Defaults = [.. declaration.Members.Zip(fields).SelectMany(pair => GetDefaults(pair.First, pair.Second))],
         };
@@ -246,6 +272,40 @@ internal sealed class RawProjection
         _structures.Add(declaration.CName, projected);
 
         return projected;
+    }
+
+    /// <summary>Projects the inline array of an array member.</summary>
+    /// <param name="structure">The structure that holds the member.</param>
+    /// <param name="member">The member.</param>
+    /// <param name="array">The type of the member.</param>
+    /// <param name="name">The C# name of the inline array.</param>
+    /// <param name="isPublic">Whether the structure, and so the inline array, is public.</param>
+    /// <returns>The C# name of the inline array.</returns>
+    private string ProjectInlineArray(StructureDeclaration structure, StructureMember member, ArrayTypeReference array, string name, bool isPublic)
+    {
+        if (array.Element is ArrayTypeReference)
+        {
+            throw new InvalidDataException($"'{structure.CName}.{member.CName}' is an array of arrays, which the raw layer does not support yet.");
+        }
+
+        var elementType = GetTypeName(array.Element);
+
+        if (elementType.EndsWith('*', StringComparison.Ordinal) || elementType.StartsWith("delegate*", StringComparison.Ordinal))
+        {
+            throw new InvalidDataException($"'{structure.CName}.{member.CName}' is an array of pointers, which an inline array cannot hold.");
+        }
+
+        _inlineArrays.Add(new ProjectedInlineArray
+        {
+            CName = $"{structure.CName}.{member.CName}",
+            Name = name,
+            IsPublic = isPublic,
+            Availability = structure.Availability,
+            ElementType = elementType,
+            Length = array.Length,
+        });
+
+        return name;
     }
 
     /// <summary>Gets the assignments that give a field its default, if it is not zero.</summary>
@@ -292,11 +352,20 @@ internal sealed class RawProjection
     /// <returns>The C# constant.</returns>
     private ProjectedConstant ProjectConstant(ConstantDeclaration constant)
     {
+        var header = GetHeaderName(constant.Header);
+        var name = _constantNames[constant.CName];
+
+        // A UTF-8 literal is NUL-terminated in memory, so the span's address is the C string.
+        if (constant.Value is StringExpression text)
+        {
+            return new ProjectedConstant(constant.CName, name, "global::System.ReadOnlySpan<byte>", $"{FormatString(text.Value)}u8", IsConst: false, constant.Availability, header);
+        }
+
         var type = GetTypeName(constant.Type);
 
         return constant.Value is TypeMaximumExpression
-            ? new ProjectedConstant(constant.CName, type, $"{type}.MaxValue", type is not ("nint" or "nuint"), constant.Availability)
-            : new ProjectedConstant(constant.CName, type, FormatValue(constant.Value, constant.Type, constant.CName) ?? "0", IsConst: true, constant.Availability);
+            ? new ProjectedConstant(constant.CName, name, type, $"{type}.MaxValue", type is not ("nint" or "nuint"), constant.Availability, header)
+            : new ProjectedConstant(constant.CName, name, type, FormatValue(constant.Value, constant.Type, constant.CName) ?? "0", IsConst: true, constant.Availability, header);
     }
 
     /// <summary>Projects a function.</summary>
@@ -304,11 +373,23 @@ internal sealed class RawProjection
     /// <returns>The C# function.</returns>
     private ProjectedFunction ProjectFunction(FunctionDeclaration function)
     {
-        var parameters = function.Parameters.Select(parameter => new ProjectedParameter(Escape(parameter.CName), GetTypeName(parameter.Type))).ToList();
+        // A method is named after its owner too, as its C name is: wgpuDeviceCreateBuffer gives DeviceCreateBuffer.
+        IReadOnlyList<string> words = function.Owner is { } owner ? [.. _model.Get<Declaration>(owner).Words, .. function.Words] : function.Words;
+        var parameters = function.Parameters
+            .Select(parameter => new ProjectedParameter(Escape(_names.GetParameterName($"{function.CName}.{parameter.CName}", parameter.Words)), GetTypeName(parameter.Type)))
+            .ToList();
 
         CheckUnique("parameter", function.CName, parameters.Select(static parameter => parameter.Name), StringComparer.Ordinal);
 
-        return new ProjectedFunction(function.CName, GetTypeName(function.ReturnType), parameters, function.Availability);
+        return new ProjectedFunction(function.CName, _names.GetName(function.CName, words), GetTypeName(function.ReturnType), parameters, function.Availability, GetHeaderName(function.Header));
+    }
+
+    /// <summary>Gets the name of a header that names the partial file of its declarations (ADR 0027).</summary>
+    /// <param name="header">The header, such as <c>SDL3/SDL_video.h</c>, or <see langword="null"/>.</param>
+    /// <returns>The file name without directory and extension, such as <c>SDL_video</c>.</returns>
+    private static string? GetHeaderName(string? header)
+    {
+        return header is null ? null : Path.GetFileNameWithoutExtension(header);
     }
 
     /// <summary>Tells whether a structure is a value structure: no pointer but its chain members (ADR 0029).</summary>
@@ -334,6 +415,8 @@ internal sealed class RawProjection
         return type switch
         {
             BuiltinTypeReference builtin => builtin.Spelling != "void",
+            DotNetTypeReference => true,
+            ArrayTypeReference array => IsValueType(array.Element),
             NamedTypeReference named => _model.Find(named.CName) switch
             {
                 EnumDeclaration or HandleDeclaration => true,
@@ -347,24 +430,39 @@ internal sealed class RawProjection
 
     /// <summary>Gets the C# spelling of a type.</summary>
     /// <param name="type">The type.</param>
+    /// <param name="fromPublic">Whether a public type uses it, from whose namespace an internal type is reached through <c>Raw.</c>.</param>
     /// <returns>The C# type; a function pointer type is spelled inline, since C# has no public type alias (ADR 0027).</returns>
-    private string GetTypeName(TypeReference type)
+    private string GetTypeName(TypeReference type, bool fromPublic = false)
     {
         return type switch
         {
             BuiltinTypeReference builtin => _builtinTypes.TryGetValue(builtin.Spelling, out var keyword)
                 ? keyword
                 : throw new InvalidDataException($"The C type '{builtin.Spelling}' has no mapping."),
-            PointerTypeReference pointer => GetTypeName(pointer.Pointee) + "*",
+            PointerTypeReference pointer => GetTypeName(pointer.Pointee, fromPublic) + "*",
+            DotNetTypeReference dotNet => $"global::{dotNet.FullName}",
+            FunctionPointerTypeReference function => GetFunctionPointerName(function.ParameterTypes, function.ReturnType, fromPublic),
             NamedTypeReference named => _model.Find(named.CName) switch
             {
-                FunctionPointerDeclaration function =>
-                    $"delegate* unmanaged[Cdecl]<{string.Join(", ", function.Parameters.Select(parameter => GetTypeName(parameter.Type)).Append(GetTypeName(function.ReturnType)))}>",
+                FunctionPointerDeclaration function => GetFunctionPointerName(function.Parameters.Select(static parameter => parameter.Type), function.ReturnType, fromPublic),
+                TypedefDeclaration { IsBoolean: false } typedef => GetTypeName(typedef.Target, fromPublic),
+                StructureDeclaration structure when fromPublic && !IsValueStructure(structure) => $"{RawNamespace}.{_typeNames[named.CName]}",
                 null => throw new InvalidDataException($"'{named.CName}' is not declared."),
                 _ => _typeNames[named.CName],
             },
+            ArrayTypeReference => throw new InvalidDataException($"An array of {type} is used outside a structure member."),
             _ => throw new UnreachableException($"Unknown type reference {type}."),
         };
+    }
+
+    /// <summary>Spells a function pointer type.</summary>
+    /// <param name="parameterTypes">The types of the parameters.</param>
+    /// <param name="returnType">The return type.</param>
+    /// <param name="fromPublic">Whether a public type uses it.</param>
+    /// <returns>The <c>delegate* unmanaged[Cdecl]</c> type.</returns>
+    private string GetFunctionPointerName(IEnumerable<TypeReference> parameterTypes, TypeReference returnType, bool fromPublic)
+    {
+        return $"delegate* unmanaged[Cdecl]<{string.Join(", ", parameterTypes.Select(type => GetTypeName(type, fromPublic)).Append(GetTypeName(returnType, fromPublic)))}>";
     }
 
     /// <summary>Gets the C# keyword of an integer type that an enum or a boolean is stored in.</summary>
@@ -385,20 +483,58 @@ internal sealed class RawProjection
     /// <returns>The expression, or <see langword="null"/> for a zero value, which needs no assignment.</returns>
     private string? FormatValue(ValueExpression value, TypeReference type, string cName)
     {
+        // A zero value needs no type, and an array member, which only has zero defaults, has no C# type of its own.
+        if (value is ZeroExpression)
+        {
+            return null;
+        }
+
         var typeName = GetTypeName(type);
 
         return value switch
         {
-            ZeroExpression or IntegerExpression { Value: 0 } or BooleanExpression { Value: false } => null,
+            IntegerExpression { Value: 0 } or BooleanExpression { Value: false } => null,
             FloatExpression { Value: 0 } number when !double.IsNegative(number.Value) => null,
+            IntegerExpression integer when IsSigned(typeName) => unchecked((long)integer.Value).ToString(CultureInfo.InvariantCulture),
             IntegerExpression integer => integer.Value.ToString(CultureInfo.InvariantCulture),
             FloatExpression number when double.IsNaN(number.Value) => $"{typeName}.NaN",
-            FloatExpression number => number.Value.ToString("R", CultureInfo.InvariantCulture) + (typeName == "float" ? "f" : "d"),
+            // A float is written with the shortest digits that give back its value, not those of its double.
+            FloatExpression number when typeName == "float" => ((float)number.Value).ToString("R", CultureInfo.InvariantCulture) + "f",
+            FloatExpression number => number.Value.ToString("R", CultureInfo.InvariantCulture) + "d",
             BooleanExpression => "true",
-            ConstantReferenceExpression constant => $"{NativeMethodsClass}.{constant.CName}",
+            ConstantReferenceExpression constant => $"{RawNamespace}.{NativeMethodsClass}.{_constantNames[constant.CName]}",
             EnumValueReferenceExpression enumValue => GetEnumValue(enumValue),
             _ => throw new InvalidDataException($"'{cName}' has the value {value}, which a structure member cannot have."),
         };
+    }
+
+    /// <summary>Tells whether a C# integer type is signed.</summary>
+    /// <param name="typeName">The C# type.</param>
+    /// <returns><see langword="true"/> for the signed integer keywords.</returns>
+    public static bool IsSigned(string typeName)
+    {
+        return typeName is "sbyte" or "short" or "int" or "long" or "nint";
+    }
+
+    /// <summary>Formats a string as a C# literal.</summary>
+    /// <param name="value">The string.</param>
+    /// <returns>The quoted literal, with the characters C# requires escaped.</returns>
+    private static string FormatString(string value)
+    {
+        var builder = new System.Text.StringBuilder("\"", value.Length + 2);
+
+        foreach (var character in value)
+        {
+            _ = character switch
+            {
+                '"' => builder.Append("\\\""),
+                '\\' => builder.Append("\\\\"),
+                _ when char.IsControl(character) => builder.Append(CultureInfo.InvariantCulture, $"\\u{(int)character:X4}"),
+                _ => builder.Append(character),
+            };
+        }
+
+        return builder.Append('"').ToString();
     }
 
     /// <summary>Formats an enum value as a C# expression.</summary>

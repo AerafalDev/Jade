@@ -1,1 +1,2860 @@
 #nullable enable
+Jade.Sdl.AppResult
+Jade.Sdl.AppResult.Continue = 0 -> Jade.Sdl.AppResult
+Jade.Sdl.AppResult.Failure = 2 -> Jade.Sdl.AppResult
+Jade.Sdl.AppResult.Success = 1 -> Jade.Sdl.AppResult
+Jade.Sdl.ArrayOrder
+Jade.Sdl.ArrayOrder.Abgr = 6 -> Jade.Sdl.ArrayOrder
+Jade.Sdl.ArrayOrder.Argb = 3 -> Jade.Sdl.ArrayOrder
+Jade.Sdl.ArrayOrder.Bgr = 4 -> Jade.Sdl.ArrayOrder
+Jade.Sdl.ArrayOrder.Bgra = 5 -> Jade.Sdl.ArrayOrder
+Jade.Sdl.ArrayOrder.None = 0 -> Jade.Sdl.ArrayOrder
+Jade.Sdl.ArrayOrder.Rgb = 1 -> Jade.Sdl.ArrayOrder
+Jade.Sdl.ArrayOrder.Rgba = 2 -> Jade.Sdl.ArrayOrder
+Jade.Sdl.AssertState
+Jade.Sdl.AssertState.Abort = 2 -> Jade.Sdl.AssertState
+Jade.Sdl.AssertState.AlwaysIgnore = 4 -> Jade.Sdl.AssertState
+Jade.Sdl.AssertState.Break = 1 -> Jade.Sdl.AssertState
+Jade.Sdl.AssertState.Ignore = 3 -> Jade.Sdl.AssertState
+Jade.Sdl.AssertState.Retry = 0 -> Jade.Sdl.AssertState
+Jade.Sdl.AsyncIO
+Jade.Sdl.AsyncIO.AsyncIO() -> void
+Jade.Sdl.AsyncIO.AsyncIO(nint handle) -> void
+Jade.Sdl.AsyncIO.Equals(Jade.Sdl.AsyncIO other) -> bool
+Jade.Sdl.AsyncIO.Handle.get -> nint
+Jade.Sdl.AsyncIOQueue
+Jade.Sdl.AsyncIOQueue.AsyncIOQueue() -> void
+Jade.Sdl.AsyncIOQueue.AsyncIOQueue(nint handle) -> void
+Jade.Sdl.AsyncIOQueue.Equals(Jade.Sdl.AsyncIOQueue other) -> bool
+Jade.Sdl.AsyncIOQueue.Handle.get -> nint
+Jade.Sdl.AsyncIOResult
+Jade.Sdl.AsyncIOResult.Canceled = 2 -> Jade.Sdl.AsyncIOResult
+Jade.Sdl.AsyncIOResult.Complete = 0 -> Jade.Sdl.AsyncIOResult
+Jade.Sdl.AsyncIOResult.Failure = 1 -> Jade.Sdl.AsyncIOResult
+Jade.Sdl.AsyncIOTaskType
+Jade.Sdl.AsyncIOTaskType.Close = 2 -> Jade.Sdl.AsyncIOTaskType
+Jade.Sdl.AsyncIOTaskType.Read = 0 -> Jade.Sdl.AsyncIOTaskType
+Jade.Sdl.AsyncIOTaskType.Write = 1 -> Jade.Sdl.AsyncIOTaskType
+Jade.Sdl.AtomicInt
+Jade.Sdl.AtomicInt.AtomicInt() -> void
+Jade.Sdl.AtomicInt.Value -> int
+Jade.Sdl.AtomicU32
+Jade.Sdl.AtomicU32.AtomicU32() -> void
+Jade.Sdl.AtomicU32.Value -> uint
+Jade.Sdl.AudioDeviceEvent
+Jade.Sdl.AudioDeviceEvent.AudioDeviceEvent() -> void
+Jade.Sdl.AudioDeviceEvent.Padding1 -> byte
+Jade.Sdl.AudioDeviceEvent.Padding2 -> byte
+Jade.Sdl.AudioDeviceEvent.Padding3 -> byte
+Jade.Sdl.AudioDeviceEvent.Recording -> bool
+Jade.Sdl.AudioDeviceEvent.Reserved -> uint
+Jade.Sdl.AudioDeviceEvent.Timestamp -> ulong
+Jade.Sdl.AudioDeviceEvent.Type -> Jade.Sdl.EventType
+Jade.Sdl.AudioDeviceEvent.Which -> uint
+Jade.Sdl.BitmapOrder
+Jade.Sdl.BitmapOrder.None = 0 -> Jade.Sdl.BitmapOrder
+Jade.Sdl.BitmapOrder.Order1234 = 2 -> Jade.Sdl.BitmapOrder
+Jade.Sdl.BitmapOrder.Order4321 = 1 -> Jade.Sdl.BitmapOrder
+Jade.Sdl.BlendFactor
+Jade.Sdl.BlendFactor.DstAlpha = 9 -> Jade.Sdl.BlendFactor
+Jade.Sdl.BlendFactor.DstColor = 7 -> Jade.Sdl.BlendFactor
+Jade.Sdl.BlendFactor.One = 2 -> Jade.Sdl.BlendFactor
+Jade.Sdl.BlendFactor.OneMinusDstAlpha = 10 -> Jade.Sdl.BlendFactor
+Jade.Sdl.BlendFactor.OneMinusDstColor = 8 -> Jade.Sdl.BlendFactor
+Jade.Sdl.BlendFactor.OneMinusSrcAlpha = 6 -> Jade.Sdl.BlendFactor
+Jade.Sdl.BlendFactor.OneMinusSrcColor = 4 -> Jade.Sdl.BlendFactor
+Jade.Sdl.BlendFactor.SrcAlpha = 5 -> Jade.Sdl.BlendFactor
+Jade.Sdl.BlendFactor.SrcColor = 3 -> Jade.Sdl.BlendFactor
+Jade.Sdl.BlendFactor.Zero = 1 -> Jade.Sdl.BlendFactor
+Jade.Sdl.BlendMode
+Jade.Sdl.BlendMode.Add = 2 -> Jade.Sdl.BlendMode
+Jade.Sdl.BlendMode.AddPremultiplied = 32 -> Jade.Sdl.BlendMode
+Jade.Sdl.BlendMode.Blend = 1 -> Jade.Sdl.BlendMode
+Jade.Sdl.BlendMode.BlendPremultiplied = 16 -> Jade.Sdl.BlendMode
+Jade.Sdl.BlendMode.Invalid = 2147483647 -> Jade.Sdl.BlendMode
+Jade.Sdl.BlendMode.Mod = 4 -> Jade.Sdl.BlendMode
+Jade.Sdl.BlendMode.Mul = 8 -> Jade.Sdl.BlendMode
+Jade.Sdl.BlendMode.None = 0 -> Jade.Sdl.BlendMode
+Jade.Sdl.BlendOperation
+Jade.Sdl.BlendOperation.Add = 1 -> Jade.Sdl.BlendOperation
+Jade.Sdl.BlendOperation.Maximum = 5 -> Jade.Sdl.BlendOperation
+Jade.Sdl.BlendOperation.Minimum = 4 -> Jade.Sdl.BlendOperation
+Jade.Sdl.BlendOperation.RevSubtract = 3 -> Jade.Sdl.BlendOperation
+Jade.Sdl.BlendOperation.Subtract = 2 -> Jade.Sdl.BlendOperation
+Jade.Sdl.Camera
+Jade.Sdl.Camera.Camera() -> void
+Jade.Sdl.Camera.Camera(nint handle) -> void
+Jade.Sdl.Camera.Equals(Jade.Sdl.Camera other) -> bool
+Jade.Sdl.Camera.Handle.get -> nint
+Jade.Sdl.CameraDeviceEvent
+Jade.Sdl.CameraDeviceEvent.CameraDeviceEvent() -> void
+Jade.Sdl.CameraDeviceEvent.Reserved -> uint
+Jade.Sdl.CameraDeviceEvent.Timestamp -> ulong
+Jade.Sdl.CameraDeviceEvent.Type -> Jade.Sdl.EventType
+Jade.Sdl.CameraDeviceEvent.Which -> uint
+Jade.Sdl.CameraPermissionState
+Jade.Sdl.CameraPermissionState.Approved = 1 -> Jade.Sdl.CameraPermissionState
+Jade.Sdl.CameraPermissionState.Denied = -1 -> Jade.Sdl.CameraPermissionState
+Jade.Sdl.CameraPermissionState.Pending = 0 -> Jade.Sdl.CameraPermissionState
+Jade.Sdl.CameraPosition
+Jade.Sdl.CameraPosition.BackFacing = 2 -> Jade.Sdl.CameraPosition
+Jade.Sdl.CameraPosition.FrontFacing = 1 -> Jade.Sdl.CameraPosition
+Jade.Sdl.CameraPosition.Unknown = 0 -> Jade.Sdl.CameraPosition
+Jade.Sdl.CameraSpec
+Jade.Sdl.CameraSpec.CameraSpec() -> void
+Jade.Sdl.CameraSpec.Colorspace -> Jade.Sdl.Colorspace
+Jade.Sdl.CameraSpec.Format -> Jade.Sdl.PixelFormat
+Jade.Sdl.CameraSpec.FramerateDenominator -> int
+Jade.Sdl.CameraSpec.FramerateNumerator -> int
+Jade.Sdl.CameraSpec.Height -> int
+Jade.Sdl.CameraSpec.Width -> int
+Jade.Sdl.Capitalization
+Jade.Sdl.Capitalization.Letters = 3 -> Jade.Sdl.Capitalization
+Jade.Sdl.Capitalization.None = 0 -> Jade.Sdl.Capitalization
+Jade.Sdl.Capitalization.Sentences = 1 -> Jade.Sdl.Capitalization
+Jade.Sdl.Capitalization.Words = 2 -> Jade.Sdl.Capitalization
+Jade.Sdl.ChromaLocation
+Jade.Sdl.ChromaLocation.Center = 2 -> Jade.Sdl.ChromaLocation
+Jade.Sdl.ChromaLocation.Left = 1 -> Jade.Sdl.ChromaLocation
+Jade.Sdl.ChromaLocation.None = 0 -> Jade.Sdl.ChromaLocation
+Jade.Sdl.ChromaLocation.Topleft = 3 -> Jade.Sdl.ChromaLocation
+Jade.Sdl.Color
+Jade.Sdl.Color.A -> byte
+Jade.Sdl.Color.B -> byte
+Jade.Sdl.Color.Color() -> void
+Jade.Sdl.Color.G -> byte
+Jade.Sdl.Color.R -> byte
+Jade.Sdl.ColorPrimaries
+Jade.Sdl.ColorPrimaries.Bt2020 = 9 -> Jade.Sdl.ColorPrimaries
+Jade.Sdl.ColorPrimaries.Bt470bg = 5 -> Jade.Sdl.ColorPrimaries
+Jade.Sdl.ColorPrimaries.Bt470m = 4 -> Jade.Sdl.ColorPrimaries
+Jade.Sdl.ColorPrimaries.Bt601 = 6 -> Jade.Sdl.ColorPrimaries
+Jade.Sdl.ColorPrimaries.Bt709 = 1 -> Jade.Sdl.ColorPrimaries
+Jade.Sdl.ColorPrimaries.Custom = 31 -> Jade.Sdl.ColorPrimaries
+Jade.Sdl.ColorPrimaries.Ebu3213 = 22 -> Jade.Sdl.ColorPrimaries
+Jade.Sdl.ColorPrimaries.GenericFilm = 8 -> Jade.Sdl.ColorPrimaries
+Jade.Sdl.ColorPrimaries.Smpte240 = 7 -> Jade.Sdl.ColorPrimaries
+Jade.Sdl.ColorPrimaries.Smpte431 = 11 -> Jade.Sdl.ColorPrimaries
+Jade.Sdl.ColorPrimaries.Smpte432 = 12 -> Jade.Sdl.ColorPrimaries
+Jade.Sdl.ColorPrimaries.Unknown = 0 -> Jade.Sdl.ColorPrimaries
+Jade.Sdl.ColorPrimaries.Unspecified = 2 -> Jade.Sdl.ColorPrimaries
+Jade.Sdl.ColorPrimaries.Xyz = 10 -> Jade.Sdl.ColorPrimaries
+Jade.Sdl.ColorRange
+Jade.Sdl.ColorRange.Full = 2 -> Jade.Sdl.ColorRange
+Jade.Sdl.ColorRange.Limited = 1 -> Jade.Sdl.ColorRange
+Jade.Sdl.ColorRange.Unknown = 0 -> Jade.Sdl.ColorRange
+Jade.Sdl.Colorspace
+Jade.Sdl.Colorspace.Bt2020Full = 571483657 -> Jade.Sdl.Colorspace
+Jade.Sdl.Colorspace.Bt2020Limited = 554706441 -> Jade.Sdl.Colorspace
+Jade.Sdl.Colorspace.Bt601Full = 571480262 -> Jade.Sdl.Colorspace
+Jade.Sdl.Colorspace.Bt601Limited = 554703046 -> Jade.Sdl.Colorspace
+Jade.Sdl.Colorspace.Bt709Full = 571474977 -> Jade.Sdl.Colorspace
+Jade.Sdl.Colorspace.Bt709Limited = 554697761 -> Jade.Sdl.Colorspace
+Jade.Sdl.Colorspace.Hdr10 = 301999616 -> Jade.Sdl.Colorspace
+Jade.Sdl.Colorspace.Jpeg = 570426566 -> Jade.Sdl.Colorspace
+Jade.Sdl.Colorspace.RgbDefault = 301991328 -> Jade.Sdl.Colorspace
+Jade.Sdl.Colorspace.Srgb = 301991328 -> Jade.Sdl.Colorspace
+Jade.Sdl.Colorspace.SrgbLinear = 301991168 -> Jade.Sdl.Colorspace
+Jade.Sdl.Colorspace.Unknown = 0 -> Jade.Sdl.Colorspace
+Jade.Sdl.Colorspace.YuvDefault = 554703046 -> Jade.Sdl.Colorspace
+Jade.Sdl.ColorType
+Jade.Sdl.ColorType.Rgb = 1 -> Jade.Sdl.ColorType
+Jade.Sdl.ColorType.Unknown = 0 -> Jade.Sdl.ColorType
+Jade.Sdl.ColorType.Ycbcr = 2 -> Jade.Sdl.ColorType
+Jade.Sdl.CommonEvent
+Jade.Sdl.CommonEvent.CommonEvent() -> void
+Jade.Sdl.CommonEvent.Reserved -> uint
+Jade.Sdl.CommonEvent.Timestamp -> ulong
+Jade.Sdl.CommonEvent.Type -> uint
+Jade.Sdl.Condition
+Jade.Sdl.Condition.Condition() -> void
+Jade.Sdl.Condition.Condition(nint handle) -> void
+Jade.Sdl.Condition.Equals(Jade.Sdl.Condition other) -> bool
+Jade.Sdl.Condition.Handle.get -> nint
+Jade.Sdl.Cursor
+Jade.Sdl.Cursor.Cursor() -> void
+Jade.Sdl.Cursor.Cursor(nint handle) -> void
+Jade.Sdl.Cursor.Equals(Jade.Sdl.Cursor other) -> bool
+Jade.Sdl.Cursor.Handle.get -> nint
+Jade.Sdl.DateFormat
+Jade.Sdl.DateFormat.Ddmmyyyy = 1 -> Jade.Sdl.DateFormat
+Jade.Sdl.DateFormat.Mmddyyyy = 2 -> Jade.Sdl.DateFormat
+Jade.Sdl.DateFormat.Yyyymmdd = 0 -> Jade.Sdl.DateFormat
+Jade.Sdl.DateTime
+Jade.Sdl.DateTime.DateTime() -> void
+Jade.Sdl.DateTime.Day -> int
+Jade.Sdl.DateTime.DayOfWeek -> int
+Jade.Sdl.DateTime.Hour -> int
+Jade.Sdl.DateTime.Minute -> int
+Jade.Sdl.DateTime.Month -> int
+Jade.Sdl.DateTime.Nanosecond -> int
+Jade.Sdl.DateTime.Second -> int
+Jade.Sdl.DateTime.UtcOffset -> int
+Jade.Sdl.DateTime.Year -> int
+Jade.Sdl.DisplayEvent
+Jade.Sdl.DisplayEvent.Data1 -> int
+Jade.Sdl.DisplayEvent.Data2 -> int
+Jade.Sdl.DisplayEvent.DisplayEvent() -> void
+Jade.Sdl.DisplayEvent.DisplayId -> uint
+Jade.Sdl.DisplayEvent.Reserved -> uint
+Jade.Sdl.DisplayEvent.Timestamp -> ulong
+Jade.Sdl.DisplayEvent.Type -> Jade.Sdl.EventType
+Jade.Sdl.DisplayMode
+Jade.Sdl.DisplayMode.DisplayId -> uint
+Jade.Sdl.DisplayMode.DisplayMode() -> void
+Jade.Sdl.DisplayMode.Format -> Jade.Sdl.PixelFormat
+Jade.Sdl.DisplayMode.H -> int
+Jade.Sdl.DisplayMode.Internal -> Jade.Sdl.DisplayModeData
+Jade.Sdl.DisplayMode.PixelDensity -> float
+Jade.Sdl.DisplayMode.RefreshRate -> float
+Jade.Sdl.DisplayMode.RefreshRateDenominator -> int
+Jade.Sdl.DisplayMode.RefreshRateNumerator -> int
+Jade.Sdl.DisplayMode.W -> int
+Jade.Sdl.DisplayModeData
+Jade.Sdl.DisplayModeData.DisplayModeData() -> void
+Jade.Sdl.DisplayModeData.DisplayModeData(nint handle) -> void
+Jade.Sdl.DisplayModeData.Equals(Jade.Sdl.DisplayModeData other) -> bool
+Jade.Sdl.DisplayModeData.Handle.get -> nint
+Jade.Sdl.DisplayOrientation
+Jade.Sdl.DisplayOrientation.Landscape = 1 -> Jade.Sdl.DisplayOrientation
+Jade.Sdl.DisplayOrientation.LandscapeFlipped = 2 -> Jade.Sdl.DisplayOrientation
+Jade.Sdl.DisplayOrientation.Portrait = 3 -> Jade.Sdl.DisplayOrientation
+Jade.Sdl.DisplayOrientation.PortraitFlipped = 4 -> Jade.Sdl.DisplayOrientation
+Jade.Sdl.DisplayOrientation.Unknown = 0 -> Jade.Sdl.DisplayOrientation
+Jade.Sdl.EnumerationResult
+Jade.Sdl.EnumerationResult.Continue = 0 -> Jade.Sdl.EnumerationResult
+Jade.Sdl.EnumerationResult.Failure = 2 -> Jade.Sdl.EnumerationResult
+Jade.Sdl.EnumerationResult.Success = 1 -> Jade.Sdl.EnumerationResult
+Jade.Sdl.Environment
+Jade.Sdl.Environment.Environment() -> void
+Jade.Sdl.Environment.Environment(nint handle) -> void
+Jade.Sdl.Environment.Equals(Jade.Sdl.Environment other) -> bool
+Jade.Sdl.Environment.Handle.get -> nint
+Jade.Sdl.EventAction
+Jade.Sdl.EventAction.Addevent = 0 -> Jade.Sdl.EventAction
+Jade.Sdl.EventAction.Getevent = 2 -> Jade.Sdl.EventAction
+Jade.Sdl.EventAction.Peekevent = 1 -> Jade.Sdl.EventAction
+Jade.Sdl.EventType
+Jade.Sdl.EventType.AudioDeviceAdded = 4352 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.AudioDeviceFormatChanged = 4354 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.AudioDeviceRemoved = 4353 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.CameraDeviceAdded = 5120 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.CameraDeviceApproved = 5122 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.CameraDeviceDenied = 5123 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.CameraDeviceRemoved = 5121 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.ClipboardUpdate = 2304 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.DidEnterBackground = 260 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.DidEnterForeground = 262 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.DisplayAdded = 338 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.DisplayContentScaleChanged = 343 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.DisplayCurrentModeChanged = 342 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.DisplayDesktopModeChanged = 341 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.DisplayFirst = 337 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.DisplayLast = 344 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.DisplayMoved = 340 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.DisplayOrientation = 337 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.DisplayRemoved = 339 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.DisplayUsableBoundsChanged = 344 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.DropBegin = 4098 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.DropComplete = 4099 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.DropFile = 4096 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.DropPosition = 4100 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.DropText = 4097 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.EnumPadding = 2147483647 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.FingerCanceled = 1795 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.FingerDown = 1792 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.FingerMotion = 1794 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.FingerUp = 1793 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.First = 0 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.GamepadAdded = 1619 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.GamepadAxisMotion = 1616 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.GamepadButtonDown = 1617 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.GamepadButtonUp = 1618 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.GamepadRemapped = 1621 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.GamepadRemoved = 1620 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.GamepadSensorUpdate = 1625 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.GamepadSteamHandleUpdated = 1627 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.GamepadTouchpadDown = 1622 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.GamepadTouchpadMotion = 1623 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.GamepadTouchpadUp = 1624 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.GamepadUpdateComplete = 1626 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.JoystickAdded = 1541 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.JoystickAxisMotion = 1536 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.JoystickBallMotion = 1537 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.JoystickBatteryUpdated = 1543 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.JoystickButtonDown = 1539 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.JoystickButtonUp = 1540 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.JoystickHatMotion = 1538 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.JoystickRemoved = 1542 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.JoystickUpdateComplete = 1544 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.KeyboardAdded = 773 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.KeyboardRemoved = 774 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.KeyDown = 768 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.KeymapChanged = 772 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.KeyUp = 769 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.Last = 65535 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.LocaleChanged = 263 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.LowMemory = 258 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.MouseAdded = 1028 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.MouseButtonDown = 1025 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.MouseButtonUp = 1026 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.MouseMotion = 1024 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.MouseRemoved = 1029 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.MouseWheel = 1027 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.PenAxis = 4871 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.PenButtonDown = 4868 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.PenButtonUp = 4869 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.PenDown = 4866 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.PenMotion = 4870 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.PenProximityIn = 4864 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.PenProximityOut = 4865 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.PenUp = 4867 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.PinchBegin = 1808 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.PinchEnd = 1810 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.PinchUpdate = 1809 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.PollSentinel = 32512 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.Private0 = 16384 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.Private1 = 16385 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.Private2 = 16386 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.Private3 = 16387 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.Quit = 256 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.RenderDeviceLost = 8194 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.RenderDeviceReset = 8193 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.RenderTargetsReset = 8192 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.ScreenKeyboardHidden = 777 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.ScreenKeyboardShown = 776 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.SensorUpdate = 4608 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.SystemThemeChanged = 264 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.Terminating = 257 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.TextEditing = 770 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.TextEditingCandidates = 775 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.TextInput = 771 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.User = 32768 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.WillEnterBackground = 259 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.WillEnterForeground = 261 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.WindowCloseRequested = 528 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.WindowDestroyed = 537 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.WindowDisplayChanged = 531 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.WindowDisplayScaleChanged = 532 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.WindowEnterFullscreen = 535 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.WindowExposed = 516 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.WindowFirst = 514 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.WindowFocusGained = 526 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.WindowFocusLost = 527 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.WindowHdrStateChanged = 538 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.WindowHidden = 515 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.WindowHitTest = 529 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.WindowIccprofChanged = 530 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.WindowLast = 538 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.WindowLeaveFullscreen = 536 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.WindowMaximized = 522 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.WindowMetalViewResized = 520 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.WindowMinimized = 521 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.WindowMouseEnter = 524 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.WindowMouseLeave = 525 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.WindowMoved = 517 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.WindowOccluded = 534 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.WindowPixelSizeChanged = 519 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.WindowResized = 518 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.WindowRestored = 523 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.WindowSafeAreaChanged = 533 -> Jade.Sdl.EventType
+Jade.Sdl.EventType.WindowShown = 514 -> Jade.Sdl.EventType
+Jade.Sdl.FColor
+Jade.Sdl.FColor.A -> float
+Jade.Sdl.FColor.B -> float
+Jade.Sdl.FColor.FColor() -> void
+Jade.Sdl.FColor.G -> float
+Jade.Sdl.FColor.R -> float
+Jade.Sdl.FileDialogType
+Jade.Sdl.FileDialogType.Openfile = 0 -> Jade.Sdl.FileDialogType
+Jade.Sdl.FileDialogType.Openfolder = 2 -> Jade.Sdl.FileDialogType
+Jade.Sdl.FileDialogType.Savefile = 1 -> Jade.Sdl.FileDialogType
+Jade.Sdl.Finger
+Jade.Sdl.Finger.Finger() -> void
+Jade.Sdl.Finger.Id -> ulong
+Jade.Sdl.Finger.Pressure -> float
+Jade.Sdl.Finger.X -> float
+Jade.Sdl.Finger.Y -> float
+Jade.Sdl.FlashOperation
+Jade.Sdl.FlashOperation.Briefly = 1 -> Jade.Sdl.FlashOperation
+Jade.Sdl.FlashOperation.Cancel = 0 -> Jade.Sdl.FlashOperation
+Jade.Sdl.FlashOperation.UntilFocused = 2 -> Jade.Sdl.FlashOperation
+Jade.Sdl.FlipMode
+Jade.Sdl.FlipMode.Horizontal = 1 -> Jade.Sdl.FlipMode
+Jade.Sdl.FlipMode.HorizontalAndVertical = 3 -> Jade.Sdl.FlipMode
+Jade.Sdl.FlipMode.None = 0 -> Jade.Sdl.FlipMode
+Jade.Sdl.FlipMode.Vertical = 2 -> Jade.Sdl.FlipMode
+Jade.Sdl.Folder
+Jade.Sdl.Folder.Count = 11 -> Jade.Sdl.Folder
+Jade.Sdl.Folder.Desktop = 1 -> Jade.Sdl.Folder
+Jade.Sdl.Folder.Documents = 2 -> Jade.Sdl.Folder
+Jade.Sdl.Folder.Downloads = 3 -> Jade.Sdl.Folder
+Jade.Sdl.Folder.Home = 0 -> Jade.Sdl.Folder
+Jade.Sdl.Folder.Music = 4 -> Jade.Sdl.Folder
+Jade.Sdl.Folder.Pictures = 5 -> Jade.Sdl.Folder
+Jade.Sdl.Folder.Publicshare = 6 -> Jade.Sdl.Folder
+Jade.Sdl.Folder.Savedgames = 7 -> Jade.Sdl.Folder
+Jade.Sdl.Folder.Screenshots = 8 -> Jade.Sdl.Folder
+Jade.Sdl.Folder.Templates = 9 -> Jade.Sdl.Folder
+Jade.Sdl.Folder.Videos = 10 -> Jade.Sdl.Folder
+Jade.Sdl.FPoint
+Jade.Sdl.FPoint.FPoint() -> void
+Jade.Sdl.FPoint.X -> float
+Jade.Sdl.FPoint.Y -> float
+Jade.Sdl.FRect
+Jade.Sdl.FRect.FRect() -> void
+Jade.Sdl.FRect.H -> float
+Jade.Sdl.FRect.W -> float
+Jade.Sdl.FRect.X -> float
+Jade.Sdl.FRect.Y -> float
+Jade.Sdl.Gamepad
+Jade.Sdl.Gamepad.Equals(Jade.Sdl.Gamepad other) -> bool
+Jade.Sdl.Gamepad.Gamepad() -> void
+Jade.Sdl.Gamepad.Gamepad(nint handle) -> void
+Jade.Sdl.Gamepad.Handle.get -> nint
+Jade.Sdl.GamepadAxis
+Jade.Sdl.GamepadAxis.Count = 6 -> Jade.Sdl.GamepadAxis
+Jade.Sdl.GamepadAxis.Invalid = -1 -> Jade.Sdl.GamepadAxis
+Jade.Sdl.GamepadAxis.LeftTrigger = 4 -> Jade.Sdl.GamepadAxis
+Jade.Sdl.GamepadAxis.Leftx = 0 -> Jade.Sdl.GamepadAxis
+Jade.Sdl.GamepadAxis.Lefty = 1 -> Jade.Sdl.GamepadAxis
+Jade.Sdl.GamepadAxis.RightTrigger = 5 -> Jade.Sdl.GamepadAxis
+Jade.Sdl.GamepadAxis.Rightx = 2 -> Jade.Sdl.GamepadAxis
+Jade.Sdl.GamepadAxis.Righty = 3 -> Jade.Sdl.GamepadAxis
+Jade.Sdl.GamepadAxisEvent
+Jade.Sdl.GamepadAxisEvent.Axis -> byte
+Jade.Sdl.GamepadAxisEvent.GamepadAxisEvent() -> void
+Jade.Sdl.GamepadAxisEvent.Padding1 -> byte
+Jade.Sdl.GamepadAxisEvent.Padding2 -> byte
+Jade.Sdl.GamepadAxisEvent.Padding3 -> byte
+Jade.Sdl.GamepadAxisEvent.Padding4 -> ushort
+Jade.Sdl.GamepadAxisEvent.Reserved -> uint
+Jade.Sdl.GamepadAxisEvent.Timestamp -> ulong
+Jade.Sdl.GamepadAxisEvent.Type -> Jade.Sdl.EventType
+Jade.Sdl.GamepadAxisEvent.Value -> short
+Jade.Sdl.GamepadAxisEvent.Which -> uint
+Jade.Sdl.GamepadBinding
+Jade.Sdl.GamepadBinding.GamepadBinding() -> void
+Jade.Sdl.GamepadBinding.Input -> Jade.Sdl.GamepadBindingInput
+Jade.Sdl.GamepadBinding.InputType -> Jade.Sdl.GamepadBindingType
+Jade.Sdl.GamepadBinding.Output -> Jade.Sdl.GamepadBindingOutput
+Jade.Sdl.GamepadBinding.OutputType -> Jade.Sdl.GamepadBindingType
+Jade.Sdl.GamepadBindingInput
+Jade.Sdl.GamepadBindingInput.Axis -> Jade.Sdl.GamepadBindingInputAxis
+Jade.Sdl.GamepadBindingInput.Button -> int
+Jade.Sdl.GamepadBindingInput.GamepadBindingInput() -> void
+Jade.Sdl.GamepadBindingInput.Hat -> Jade.Sdl.GamepadBindingInputHat
+Jade.Sdl.GamepadBindingInputAxis
+Jade.Sdl.GamepadBindingInputAxis.Axis -> int
+Jade.Sdl.GamepadBindingInputAxis.AxisMax -> int
+Jade.Sdl.GamepadBindingInputAxis.AxisMin -> int
+Jade.Sdl.GamepadBindingInputAxis.GamepadBindingInputAxis() -> void
+Jade.Sdl.GamepadBindingInputHat
+Jade.Sdl.GamepadBindingInputHat.GamepadBindingInputHat() -> void
+Jade.Sdl.GamepadBindingInputHat.Hat -> int
+Jade.Sdl.GamepadBindingInputHat.HatMask -> int
+Jade.Sdl.GamepadBindingOutput
+Jade.Sdl.GamepadBindingOutput.Axis -> Jade.Sdl.GamepadBindingOutputAxis
+Jade.Sdl.GamepadBindingOutput.Button -> Jade.Sdl.GamepadButton
+Jade.Sdl.GamepadBindingOutput.GamepadBindingOutput() -> void
+Jade.Sdl.GamepadBindingOutputAxis
+Jade.Sdl.GamepadBindingOutputAxis.Axis -> Jade.Sdl.GamepadAxis
+Jade.Sdl.GamepadBindingOutputAxis.AxisMax -> int
+Jade.Sdl.GamepadBindingOutputAxis.AxisMin -> int
+Jade.Sdl.GamepadBindingOutputAxis.GamepadBindingOutputAxis() -> void
+Jade.Sdl.GamepadBindingType
+Jade.Sdl.GamepadBindingType.Axis = 2 -> Jade.Sdl.GamepadBindingType
+Jade.Sdl.GamepadBindingType.Button = 1 -> Jade.Sdl.GamepadBindingType
+Jade.Sdl.GamepadBindingType.Hat = 3 -> Jade.Sdl.GamepadBindingType
+Jade.Sdl.GamepadBindingType.None = 0 -> Jade.Sdl.GamepadBindingType
+Jade.Sdl.GamepadButton
+Jade.Sdl.GamepadButton.Back = 4 -> Jade.Sdl.GamepadButton
+Jade.Sdl.GamepadButton.Count = 26 -> Jade.Sdl.GamepadButton
+Jade.Sdl.GamepadButton.DpadDown = 12 -> Jade.Sdl.GamepadButton
+Jade.Sdl.GamepadButton.DpadLeft = 13 -> Jade.Sdl.GamepadButton
+Jade.Sdl.GamepadButton.DpadRight = 14 -> Jade.Sdl.GamepadButton
+Jade.Sdl.GamepadButton.DpadUp = 11 -> Jade.Sdl.GamepadButton
+Jade.Sdl.GamepadButton.East = 1 -> Jade.Sdl.GamepadButton
+Jade.Sdl.GamepadButton.Guide = 5 -> Jade.Sdl.GamepadButton
+Jade.Sdl.GamepadButton.Invalid = -1 -> Jade.Sdl.GamepadButton
+Jade.Sdl.GamepadButton.LeftPaddle1 = 17 -> Jade.Sdl.GamepadButton
+Jade.Sdl.GamepadButton.LeftPaddle2 = 19 -> Jade.Sdl.GamepadButton
+Jade.Sdl.GamepadButton.LeftShoulder = 9 -> Jade.Sdl.GamepadButton
+Jade.Sdl.GamepadButton.LeftStick = 7 -> Jade.Sdl.GamepadButton
+Jade.Sdl.GamepadButton.Misc1 = 15 -> Jade.Sdl.GamepadButton
+Jade.Sdl.GamepadButton.Misc2 = 21 -> Jade.Sdl.GamepadButton
+Jade.Sdl.GamepadButton.Misc3 = 22 -> Jade.Sdl.GamepadButton
+Jade.Sdl.GamepadButton.Misc4 = 23 -> Jade.Sdl.GamepadButton
+Jade.Sdl.GamepadButton.Misc5 = 24 -> Jade.Sdl.GamepadButton
+Jade.Sdl.GamepadButton.Misc6 = 25 -> Jade.Sdl.GamepadButton
+Jade.Sdl.GamepadButton.North = 3 -> Jade.Sdl.GamepadButton
+Jade.Sdl.GamepadButton.RightPaddle1 = 16 -> Jade.Sdl.GamepadButton
+Jade.Sdl.GamepadButton.RightPaddle2 = 18 -> Jade.Sdl.GamepadButton
+Jade.Sdl.GamepadButton.RightShoulder = 10 -> Jade.Sdl.GamepadButton
+Jade.Sdl.GamepadButton.RightStick = 8 -> Jade.Sdl.GamepadButton
+Jade.Sdl.GamepadButton.South = 0 -> Jade.Sdl.GamepadButton
+Jade.Sdl.GamepadButton.Start = 6 -> Jade.Sdl.GamepadButton
+Jade.Sdl.GamepadButton.Touchpad = 20 -> Jade.Sdl.GamepadButton
+Jade.Sdl.GamepadButton.West = 2 -> Jade.Sdl.GamepadButton
+Jade.Sdl.GamepadButtonEvent
+Jade.Sdl.GamepadButtonEvent.Button -> byte
+Jade.Sdl.GamepadButtonEvent.Down -> bool
+Jade.Sdl.GamepadButtonEvent.GamepadButtonEvent() -> void
+Jade.Sdl.GamepadButtonEvent.Padding1 -> byte
+Jade.Sdl.GamepadButtonEvent.Padding2 -> byte
+Jade.Sdl.GamepadButtonEvent.Reserved -> uint
+Jade.Sdl.GamepadButtonEvent.Timestamp -> ulong
+Jade.Sdl.GamepadButtonEvent.Type -> Jade.Sdl.EventType
+Jade.Sdl.GamepadButtonEvent.Which -> uint
+Jade.Sdl.GamepadButtonLabel
+Jade.Sdl.GamepadButtonLabel.A = 1 -> Jade.Sdl.GamepadButtonLabel
+Jade.Sdl.GamepadButtonLabel.B = 2 -> Jade.Sdl.GamepadButtonLabel
+Jade.Sdl.GamepadButtonLabel.Circle = 6 -> Jade.Sdl.GamepadButtonLabel
+Jade.Sdl.GamepadButtonLabel.Cross = 5 -> Jade.Sdl.GamepadButtonLabel
+Jade.Sdl.GamepadButtonLabel.Square = 7 -> Jade.Sdl.GamepadButtonLabel
+Jade.Sdl.GamepadButtonLabel.Triangle = 8 -> Jade.Sdl.GamepadButtonLabel
+Jade.Sdl.GamepadButtonLabel.Unknown = 0 -> Jade.Sdl.GamepadButtonLabel
+Jade.Sdl.GamepadButtonLabel.X = 3 -> Jade.Sdl.GamepadButtonLabel
+Jade.Sdl.GamepadButtonLabel.Y = 4 -> Jade.Sdl.GamepadButtonLabel
+Jade.Sdl.GamepadDeviceEvent
+Jade.Sdl.GamepadDeviceEvent.GamepadDeviceEvent() -> void
+Jade.Sdl.GamepadDeviceEvent.Reserved -> uint
+Jade.Sdl.GamepadDeviceEvent.Timestamp -> ulong
+Jade.Sdl.GamepadDeviceEvent.Type -> Jade.Sdl.EventType
+Jade.Sdl.GamepadDeviceEvent.Which -> uint
+Jade.Sdl.GamepadSensorEvent
+Jade.Sdl.GamepadSensorEvent.Data -> Jade.Sdl.GamepadSensorEventData
+Jade.Sdl.GamepadSensorEvent.GamepadSensorEvent() -> void
+Jade.Sdl.GamepadSensorEvent.Reserved -> uint
+Jade.Sdl.GamepadSensorEvent.Sensor -> int
+Jade.Sdl.GamepadSensorEvent.SensorTimestamp -> ulong
+Jade.Sdl.GamepadSensorEvent.Timestamp -> ulong
+Jade.Sdl.GamepadSensorEvent.Type -> Jade.Sdl.EventType
+Jade.Sdl.GamepadSensorEvent.Which -> uint
+Jade.Sdl.GamepadSensorEventData
+Jade.Sdl.GamepadSensorEventData.GamepadSensorEventData() -> void
+Jade.Sdl.GamepadTouchpadEvent
+Jade.Sdl.GamepadTouchpadEvent.Finger -> int
+Jade.Sdl.GamepadTouchpadEvent.GamepadTouchpadEvent() -> void
+Jade.Sdl.GamepadTouchpadEvent.Pressure -> float
+Jade.Sdl.GamepadTouchpadEvent.Reserved -> uint
+Jade.Sdl.GamepadTouchpadEvent.Timestamp -> ulong
+Jade.Sdl.GamepadTouchpadEvent.Touchpad -> int
+Jade.Sdl.GamepadTouchpadEvent.Type -> Jade.Sdl.EventType
+Jade.Sdl.GamepadTouchpadEvent.Which -> uint
+Jade.Sdl.GamepadTouchpadEvent.X -> float
+Jade.Sdl.GamepadTouchpadEvent.Y -> float
+Jade.Sdl.GamepadType
+Jade.Sdl.GamepadType.Count = 13 -> Jade.Sdl.GamepadType
+Jade.Sdl.GamepadType.GameCube = 11 -> Jade.Sdl.GamepadType
+Jade.Sdl.GamepadType.NintendoSwitchJoyConLeft = 8 -> Jade.Sdl.GamepadType
+Jade.Sdl.GamepadType.NintendoSwitchJoyConPair = 10 -> Jade.Sdl.GamepadType
+Jade.Sdl.GamepadType.NintendoSwitchJoyConRight = 9 -> Jade.Sdl.GamepadType
+Jade.Sdl.GamepadType.NintendoSwitchPro = 7 -> Jade.Sdl.GamepadType
+Jade.Sdl.GamepadType.Ps3 = 4 -> Jade.Sdl.GamepadType
+Jade.Sdl.GamepadType.Ps4 = 5 -> Jade.Sdl.GamepadType
+Jade.Sdl.GamepadType.Ps5 = 6 -> Jade.Sdl.GamepadType
+Jade.Sdl.GamepadType.Standard = 1 -> Jade.Sdl.GamepadType
+Jade.Sdl.GamepadType.Steam = 12 -> Jade.Sdl.GamepadType
+Jade.Sdl.GamepadType.Unknown = 0 -> Jade.Sdl.GamepadType
+Jade.Sdl.GamepadType.Xbox360 = 2 -> Jade.Sdl.GamepadType
+Jade.Sdl.GamepadType.XboxOne = 3 -> Jade.Sdl.GamepadType
+Jade.Sdl.GLAttr
+Jade.Sdl.GLAttr.AcceleratedVisual = 15 -> Jade.Sdl.GLAttr
+Jade.Sdl.GLAttr.AccumAlphaSize = 11 -> Jade.Sdl.GLAttr
+Jade.Sdl.GLAttr.AccumBlueSize = 10 -> Jade.Sdl.GLAttr
+Jade.Sdl.GLAttr.AccumGreenSize = 9 -> Jade.Sdl.GLAttr
+Jade.Sdl.GLAttr.AccumRedSize = 8 -> Jade.Sdl.GLAttr
+Jade.Sdl.GLAttr.AlphaSize = 3 -> Jade.Sdl.GLAttr
+Jade.Sdl.GLAttr.BlueSize = 2 -> Jade.Sdl.GLAttr
+Jade.Sdl.GLAttr.BufferSize = 4 -> Jade.Sdl.GLAttr
+Jade.Sdl.GLAttr.ContextFlags = 19 -> Jade.Sdl.GLAttr
+Jade.Sdl.GLAttr.ContextMajorVersion = 17 -> Jade.Sdl.GLAttr
+Jade.Sdl.GLAttr.ContextMinorVersion = 18 -> Jade.Sdl.GLAttr
+Jade.Sdl.GLAttr.ContextNoError = 25 -> Jade.Sdl.GLAttr
+Jade.Sdl.GLAttr.ContextProfileMask = 20 -> Jade.Sdl.GLAttr
+Jade.Sdl.GLAttr.ContextReleaseBehavior = 23 -> Jade.Sdl.GLAttr
+Jade.Sdl.GLAttr.ContextResetNotification = 24 -> Jade.Sdl.GLAttr
+Jade.Sdl.GLAttr.DepthSize = 6 -> Jade.Sdl.GLAttr
+Jade.Sdl.GLAttr.Doublebuffer = 5 -> Jade.Sdl.GLAttr
+Jade.Sdl.GLAttr.EglPlatform = 27 -> Jade.Sdl.GLAttr
+Jade.Sdl.GLAttr.Floatbuffers = 26 -> Jade.Sdl.GLAttr
+Jade.Sdl.GLAttr.FramebufferSrgbCapable = 22 -> Jade.Sdl.GLAttr
+Jade.Sdl.GLAttr.GreenSize = 1 -> Jade.Sdl.GLAttr
+Jade.Sdl.GLAttr.Multisamplebuffers = 13 -> Jade.Sdl.GLAttr
+Jade.Sdl.GLAttr.Multisamplesamples = 14 -> Jade.Sdl.GLAttr
+Jade.Sdl.GLAttr.RedSize = 0 -> Jade.Sdl.GLAttr
+Jade.Sdl.GLAttr.RetainedBacking = 16 -> Jade.Sdl.GLAttr
+Jade.Sdl.GLAttr.ShareWithCurrentContext = 21 -> Jade.Sdl.GLAttr
+Jade.Sdl.GLAttr.StencilSize = 7 -> Jade.Sdl.GLAttr
+Jade.Sdl.GLAttr.Stereo = 12 -> Jade.Sdl.GLAttr
+Jade.Sdl.GLContext
+Jade.Sdl.GLContext.Equals(Jade.Sdl.GLContext other) -> bool
+Jade.Sdl.GLContext.GLContext() -> void
+Jade.Sdl.GLContext.GLContext(nint handle) -> void
+Jade.Sdl.GLContext.Handle.get -> nint
+Jade.Sdl.GLContextFlag
+Jade.Sdl.GLContextFlag.DebugFlag = 1 -> Jade.Sdl.GLContextFlag
+Jade.Sdl.GLContextFlag.ForwardCompatibleFlag = 2 -> Jade.Sdl.GLContextFlag
+Jade.Sdl.GLContextFlag.ResetIsolationFlag = 8 -> Jade.Sdl.GLContextFlag
+Jade.Sdl.GLContextFlag.RobustAccessFlag = 4 -> Jade.Sdl.GLContextFlag
+Jade.Sdl.GLContextReleaseFlag
+Jade.Sdl.GLContextReleaseFlag.Flush = 1 -> Jade.Sdl.GLContextReleaseFlag
+Jade.Sdl.GLContextReleaseFlag.None = 0 -> Jade.Sdl.GLContextReleaseFlag
+Jade.Sdl.GLContextResetNotification
+Jade.Sdl.GLContextResetNotification.LoseContext = 1 -> Jade.Sdl.GLContextResetNotification
+Jade.Sdl.GLContextResetNotification.NoNotification = 0 -> Jade.Sdl.GLContextResetNotification
+Jade.Sdl.GlobFlags
+Jade.Sdl.GlobFlags.Caseinsensitive = 1 -> Jade.Sdl.GlobFlags
+Jade.Sdl.GLProfile
+Jade.Sdl.GLProfile.Compatibility = 2 -> Jade.Sdl.GLProfile
+Jade.Sdl.GLProfile.Core = 1 -> Jade.Sdl.GLProfile
+Jade.Sdl.GLProfile.Es = 4 -> Jade.Sdl.GLProfile
+Jade.Sdl.GpuBlendFactor
+Jade.Sdl.GpuBlendFactor.ConstantColor = 11 -> Jade.Sdl.GpuBlendFactor
+Jade.Sdl.GpuBlendFactor.DstAlpha = 9 -> Jade.Sdl.GpuBlendFactor
+Jade.Sdl.GpuBlendFactor.DstColor = 5 -> Jade.Sdl.GpuBlendFactor
+Jade.Sdl.GpuBlendFactor.Invalid = 0 -> Jade.Sdl.GpuBlendFactor
+Jade.Sdl.GpuBlendFactor.One = 2 -> Jade.Sdl.GpuBlendFactor
+Jade.Sdl.GpuBlendFactor.OneMinusConstantColor = 12 -> Jade.Sdl.GpuBlendFactor
+Jade.Sdl.GpuBlendFactor.OneMinusDstAlpha = 10 -> Jade.Sdl.GpuBlendFactor
+Jade.Sdl.GpuBlendFactor.OneMinusDstColor = 6 -> Jade.Sdl.GpuBlendFactor
+Jade.Sdl.GpuBlendFactor.OneMinusSrcAlpha = 8 -> Jade.Sdl.GpuBlendFactor
+Jade.Sdl.GpuBlendFactor.OneMinusSrcColor = 4 -> Jade.Sdl.GpuBlendFactor
+Jade.Sdl.GpuBlendFactor.SrcAlpha = 7 -> Jade.Sdl.GpuBlendFactor
+Jade.Sdl.GpuBlendFactor.SrcAlphaSaturate = 13 -> Jade.Sdl.GpuBlendFactor
+Jade.Sdl.GpuBlendFactor.SrcColor = 3 -> Jade.Sdl.GpuBlendFactor
+Jade.Sdl.GpuBlendFactor.Zero = 1 -> Jade.Sdl.GpuBlendFactor
+Jade.Sdl.GpuBlendOp
+Jade.Sdl.GpuBlendOp.Add = 1 -> Jade.Sdl.GpuBlendOp
+Jade.Sdl.GpuBlendOp.Invalid = 0 -> Jade.Sdl.GpuBlendOp
+Jade.Sdl.GpuBlendOp.Max = 5 -> Jade.Sdl.GpuBlendOp
+Jade.Sdl.GpuBlendOp.Min = 4 -> Jade.Sdl.GpuBlendOp
+Jade.Sdl.GpuBlendOp.ReverseSubtract = 3 -> Jade.Sdl.GpuBlendOp
+Jade.Sdl.GpuBlendOp.Subtract = 2 -> Jade.Sdl.GpuBlendOp
+Jade.Sdl.GpuBlitInfo
+Jade.Sdl.GpuBlitInfo.ClearColor -> Jade.Sdl.FColor
+Jade.Sdl.GpuBlitInfo.Cycle -> bool
+Jade.Sdl.GpuBlitInfo.Destination -> Jade.Sdl.GpuBlitRegion
+Jade.Sdl.GpuBlitInfo.Filter -> Jade.Sdl.GpuFilter
+Jade.Sdl.GpuBlitInfo.FlipMode -> Jade.Sdl.FlipMode
+Jade.Sdl.GpuBlitInfo.GpuBlitInfo() -> void
+Jade.Sdl.GpuBlitInfo.LoadOp -> Jade.Sdl.GpuLoadOp
+Jade.Sdl.GpuBlitInfo.Padding1 -> byte
+Jade.Sdl.GpuBlitInfo.Padding2 -> byte
+Jade.Sdl.GpuBlitInfo.Padding3 -> byte
+Jade.Sdl.GpuBlitInfo.Source -> Jade.Sdl.GpuBlitRegion
+Jade.Sdl.GpuBlitRegion
+Jade.Sdl.GpuBlitRegion.GpuBlitRegion() -> void
+Jade.Sdl.GpuBlitRegion.H -> uint
+Jade.Sdl.GpuBlitRegion.LayerOrDepthPlane -> uint
+Jade.Sdl.GpuBlitRegion.MipLevel -> uint
+Jade.Sdl.GpuBlitRegion.Texture -> Jade.Sdl.GpuTexture
+Jade.Sdl.GpuBlitRegion.W -> uint
+Jade.Sdl.GpuBlitRegion.X -> uint
+Jade.Sdl.GpuBlitRegion.Y -> uint
+Jade.Sdl.GpuBuffer
+Jade.Sdl.GpuBuffer.Equals(Jade.Sdl.GpuBuffer other) -> bool
+Jade.Sdl.GpuBuffer.GpuBuffer() -> void
+Jade.Sdl.GpuBuffer.GpuBuffer(nint handle) -> void
+Jade.Sdl.GpuBuffer.Handle.get -> nint
+Jade.Sdl.GpuBufferBinding
+Jade.Sdl.GpuBufferBinding.Buffer -> Jade.Sdl.GpuBuffer
+Jade.Sdl.GpuBufferBinding.GpuBufferBinding() -> void
+Jade.Sdl.GpuBufferBinding.Offset -> uint
+Jade.Sdl.GpuBufferCreateInfo
+Jade.Sdl.GpuBufferCreateInfo.GpuBufferCreateInfo() -> void
+Jade.Sdl.GpuBufferCreateInfo.Props -> uint
+Jade.Sdl.GpuBufferCreateInfo.Size -> uint
+Jade.Sdl.GpuBufferCreateInfo.Usage -> Jade.Sdl.GpuBufferUsageFlags
+Jade.Sdl.GpuBufferLocation
+Jade.Sdl.GpuBufferLocation.Buffer -> Jade.Sdl.GpuBuffer
+Jade.Sdl.GpuBufferLocation.GpuBufferLocation() -> void
+Jade.Sdl.GpuBufferLocation.Offset -> uint
+Jade.Sdl.GpuBufferRegion
+Jade.Sdl.GpuBufferRegion.Buffer -> Jade.Sdl.GpuBuffer
+Jade.Sdl.GpuBufferRegion.GpuBufferRegion() -> void
+Jade.Sdl.GpuBufferRegion.Offset -> uint
+Jade.Sdl.GpuBufferRegion.Size -> uint
+Jade.Sdl.GpuBufferUsageFlags
+Jade.Sdl.GpuBufferUsageFlags.ComputeStorageRead = 16 -> Jade.Sdl.GpuBufferUsageFlags
+Jade.Sdl.GpuBufferUsageFlags.ComputeStorageWrite = 32 -> Jade.Sdl.GpuBufferUsageFlags
+Jade.Sdl.GpuBufferUsageFlags.GraphicsStorageRead = 8 -> Jade.Sdl.GpuBufferUsageFlags
+Jade.Sdl.GpuBufferUsageFlags.Index = 2 -> Jade.Sdl.GpuBufferUsageFlags
+Jade.Sdl.GpuBufferUsageFlags.Indirect = 4 -> Jade.Sdl.GpuBufferUsageFlags
+Jade.Sdl.GpuBufferUsageFlags.Vertex = 1 -> Jade.Sdl.GpuBufferUsageFlags
+Jade.Sdl.GpuColorComponentFlags
+Jade.Sdl.GpuColorComponentFlags.A = 8 -> Jade.Sdl.GpuColorComponentFlags
+Jade.Sdl.GpuColorComponentFlags.B = 4 -> Jade.Sdl.GpuColorComponentFlags
+Jade.Sdl.GpuColorComponentFlags.G = 2 -> Jade.Sdl.GpuColorComponentFlags
+Jade.Sdl.GpuColorComponentFlags.R = 1 -> Jade.Sdl.GpuColorComponentFlags
+Jade.Sdl.GpuColorTargetBlendState
+Jade.Sdl.GpuColorTargetBlendState.AlphaBlendOp -> Jade.Sdl.GpuBlendOp
+Jade.Sdl.GpuColorTargetBlendState.ColorBlendOp -> Jade.Sdl.GpuBlendOp
+Jade.Sdl.GpuColorTargetBlendState.ColorWriteMask -> Jade.Sdl.GpuColorComponentFlags
+Jade.Sdl.GpuColorTargetBlendState.DstAlphaBlendfactor -> Jade.Sdl.GpuBlendFactor
+Jade.Sdl.GpuColorTargetBlendState.DstColorBlendfactor -> Jade.Sdl.GpuBlendFactor
+Jade.Sdl.GpuColorTargetBlendState.EnableBlend -> bool
+Jade.Sdl.GpuColorTargetBlendState.EnableColorWriteMask -> bool
+Jade.Sdl.GpuColorTargetBlendState.GpuColorTargetBlendState() -> void
+Jade.Sdl.GpuColorTargetBlendState.Padding1 -> byte
+Jade.Sdl.GpuColorTargetBlendState.Padding2 -> byte
+Jade.Sdl.GpuColorTargetBlendState.SrcAlphaBlendfactor -> Jade.Sdl.GpuBlendFactor
+Jade.Sdl.GpuColorTargetBlendState.SrcColorBlendfactor -> Jade.Sdl.GpuBlendFactor
+Jade.Sdl.GpuColorTargetDescription
+Jade.Sdl.GpuColorTargetDescription.BlendState -> Jade.Sdl.GpuColorTargetBlendState
+Jade.Sdl.GpuColorTargetDescription.Format -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuColorTargetDescription.GpuColorTargetDescription() -> void
+Jade.Sdl.GpuColorTargetInfo
+Jade.Sdl.GpuColorTargetInfo.ClearColor -> Jade.Sdl.FColor
+Jade.Sdl.GpuColorTargetInfo.Cycle -> bool
+Jade.Sdl.GpuColorTargetInfo.CycleResolveTexture -> bool
+Jade.Sdl.GpuColorTargetInfo.GpuColorTargetInfo() -> void
+Jade.Sdl.GpuColorTargetInfo.LayerOrDepthPlane -> uint
+Jade.Sdl.GpuColorTargetInfo.LoadOp -> Jade.Sdl.GpuLoadOp
+Jade.Sdl.GpuColorTargetInfo.MipLevel -> uint
+Jade.Sdl.GpuColorTargetInfo.Padding1 -> byte
+Jade.Sdl.GpuColorTargetInfo.Padding2 -> byte
+Jade.Sdl.GpuColorTargetInfo.ResolveLayer -> uint
+Jade.Sdl.GpuColorTargetInfo.ResolveMipLevel -> uint
+Jade.Sdl.GpuColorTargetInfo.ResolveTexture -> Jade.Sdl.GpuTexture
+Jade.Sdl.GpuColorTargetInfo.StoreOp -> Jade.Sdl.GpuStoreOp
+Jade.Sdl.GpuColorTargetInfo.Texture -> Jade.Sdl.GpuTexture
+Jade.Sdl.GpuCommandBuffer
+Jade.Sdl.GpuCommandBuffer.Equals(Jade.Sdl.GpuCommandBuffer other) -> bool
+Jade.Sdl.GpuCommandBuffer.GpuCommandBuffer() -> void
+Jade.Sdl.GpuCommandBuffer.GpuCommandBuffer(nint handle) -> void
+Jade.Sdl.GpuCommandBuffer.Handle.get -> nint
+Jade.Sdl.GpuCompareOp
+Jade.Sdl.GpuCompareOp.Always = 8 -> Jade.Sdl.GpuCompareOp
+Jade.Sdl.GpuCompareOp.Equal = 3 -> Jade.Sdl.GpuCompareOp
+Jade.Sdl.GpuCompareOp.Greater = 5 -> Jade.Sdl.GpuCompareOp
+Jade.Sdl.GpuCompareOp.GreaterOrEqual = 7 -> Jade.Sdl.GpuCompareOp
+Jade.Sdl.GpuCompareOp.Invalid = 0 -> Jade.Sdl.GpuCompareOp
+Jade.Sdl.GpuCompareOp.Less = 2 -> Jade.Sdl.GpuCompareOp
+Jade.Sdl.GpuCompareOp.LessOrEqual = 4 -> Jade.Sdl.GpuCompareOp
+Jade.Sdl.GpuCompareOp.Never = 1 -> Jade.Sdl.GpuCompareOp
+Jade.Sdl.GpuCompareOp.NotEqual = 6 -> Jade.Sdl.GpuCompareOp
+Jade.Sdl.GpuComputePass
+Jade.Sdl.GpuComputePass.Equals(Jade.Sdl.GpuComputePass other) -> bool
+Jade.Sdl.GpuComputePass.GpuComputePass() -> void
+Jade.Sdl.GpuComputePass.GpuComputePass(nint handle) -> void
+Jade.Sdl.GpuComputePass.Handle.get -> nint
+Jade.Sdl.GpuComputePipeline
+Jade.Sdl.GpuComputePipeline.Equals(Jade.Sdl.GpuComputePipeline other) -> bool
+Jade.Sdl.GpuComputePipeline.GpuComputePipeline() -> void
+Jade.Sdl.GpuComputePipeline.GpuComputePipeline(nint handle) -> void
+Jade.Sdl.GpuComputePipeline.Handle.get -> nint
+Jade.Sdl.GpuCopyPass
+Jade.Sdl.GpuCopyPass.Equals(Jade.Sdl.GpuCopyPass other) -> bool
+Jade.Sdl.GpuCopyPass.GpuCopyPass() -> void
+Jade.Sdl.GpuCopyPass.GpuCopyPass(nint handle) -> void
+Jade.Sdl.GpuCopyPass.Handle.get -> nint
+Jade.Sdl.GpuCubeMapFace
+Jade.Sdl.GpuCubeMapFace.Negativex = 1 -> Jade.Sdl.GpuCubeMapFace
+Jade.Sdl.GpuCubeMapFace.Negativey = 3 -> Jade.Sdl.GpuCubeMapFace
+Jade.Sdl.GpuCubeMapFace.Negativez = 5 -> Jade.Sdl.GpuCubeMapFace
+Jade.Sdl.GpuCubeMapFace.Positivex = 0 -> Jade.Sdl.GpuCubeMapFace
+Jade.Sdl.GpuCubeMapFace.Positivey = 2 -> Jade.Sdl.GpuCubeMapFace
+Jade.Sdl.GpuCubeMapFace.Positivez = 4 -> Jade.Sdl.GpuCubeMapFace
+Jade.Sdl.GpuCullMode
+Jade.Sdl.GpuCullMode.Back = 2 -> Jade.Sdl.GpuCullMode
+Jade.Sdl.GpuCullMode.Front = 1 -> Jade.Sdl.GpuCullMode
+Jade.Sdl.GpuCullMode.None = 0 -> Jade.Sdl.GpuCullMode
+Jade.Sdl.GpuDepthStencilState
+Jade.Sdl.GpuDepthStencilState.BackStencilState -> Jade.Sdl.GpuStencilOpState
+Jade.Sdl.GpuDepthStencilState.CompareMask -> byte
+Jade.Sdl.GpuDepthStencilState.CompareOp -> Jade.Sdl.GpuCompareOp
+Jade.Sdl.GpuDepthStencilState.EnableDepthTest -> bool
+Jade.Sdl.GpuDepthStencilState.EnableDepthWrite -> bool
+Jade.Sdl.GpuDepthStencilState.EnableStencilTest -> bool
+Jade.Sdl.GpuDepthStencilState.FrontStencilState -> Jade.Sdl.GpuStencilOpState
+Jade.Sdl.GpuDepthStencilState.GpuDepthStencilState() -> void
+Jade.Sdl.GpuDepthStencilState.Padding1 -> byte
+Jade.Sdl.GpuDepthStencilState.Padding2 -> byte
+Jade.Sdl.GpuDepthStencilState.Padding3 -> byte
+Jade.Sdl.GpuDepthStencilState.WriteMask -> byte
+Jade.Sdl.GpuDepthStencilTargetInfo
+Jade.Sdl.GpuDepthStencilTargetInfo.ClearDepth -> float
+Jade.Sdl.GpuDepthStencilTargetInfo.ClearStencil -> byte
+Jade.Sdl.GpuDepthStencilTargetInfo.Cycle -> bool
+Jade.Sdl.GpuDepthStencilTargetInfo.GpuDepthStencilTargetInfo() -> void
+Jade.Sdl.GpuDepthStencilTargetInfo.Layer -> byte
+Jade.Sdl.GpuDepthStencilTargetInfo.LoadOp -> Jade.Sdl.GpuLoadOp
+Jade.Sdl.GpuDepthStencilTargetInfo.MipLevel -> byte
+Jade.Sdl.GpuDepthStencilTargetInfo.StencilLoadOp -> Jade.Sdl.GpuLoadOp
+Jade.Sdl.GpuDepthStencilTargetInfo.StencilStoreOp -> Jade.Sdl.GpuStoreOp
+Jade.Sdl.GpuDepthStencilTargetInfo.StoreOp -> Jade.Sdl.GpuStoreOp
+Jade.Sdl.GpuDepthStencilTargetInfo.Texture -> Jade.Sdl.GpuTexture
+Jade.Sdl.GpuDevice
+Jade.Sdl.GpuDevice.Equals(Jade.Sdl.GpuDevice other) -> bool
+Jade.Sdl.GpuDevice.GpuDevice() -> void
+Jade.Sdl.GpuDevice.GpuDevice(nint handle) -> void
+Jade.Sdl.GpuDevice.Handle.get -> nint
+Jade.Sdl.GpuFence
+Jade.Sdl.GpuFence.Equals(Jade.Sdl.GpuFence other) -> bool
+Jade.Sdl.GpuFence.GpuFence() -> void
+Jade.Sdl.GpuFence.GpuFence(nint handle) -> void
+Jade.Sdl.GpuFence.Handle.get -> nint
+Jade.Sdl.GpuFillMode
+Jade.Sdl.GpuFillMode.Fill = 0 -> Jade.Sdl.GpuFillMode
+Jade.Sdl.GpuFillMode.Line = 1 -> Jade.Sdl.GpuFillMode
+Jade.Sdl.GpuFilter
+Jade.Sdl.GpuFilter.Linear = 1 -> Jade.Sdl.GpuFilter
+Jade.Sdl.GpuFilter.Nearest = 0 -> Jade.Sdl.GpuFilter
+Jade.Sdl.GpuFrontFace
+Jade.Sdl.GpuFrontFace.Clockwise = 1 -> Jade.Sdl.GpuFrontFace
+Jade.Sdl.GpuFrontFace.CounterClockwise = 0 -> Jade.Sdl.GpuFrontFace
+Jade.Sdl.GpuGraphicsPipeline
+Jade.Sdl.GpuGraphicsPipeline.Equals(Jade.Sdl.GpuGraphicsPipeline other) -> bool
+Jade.Sdl.GpuGraphicsPipeline.GpuGraphicsPipeline() -> void
+Jade.Sdl.GpuGraphicsPipeline.GpuGraphicsPipeline(nint handle) -> void
+Jade.Sdl.GpuGraphicsPipeline.Handle.get -> nint
+Jade.Sdl.GpuIndexedIndirectDrawCommand
+Jade.Sdl.GpuIndexedIndirectDrawCommand.FirstIndex -> uint
+Jade.Sdl.GpuIndexedIndirectDrawCommand.FirstInstance -> uint
+Jade.Sdl.GpuIndexedIndirectDrawCommand.GpuIndexedIndirectDrawCommand() -> void
+Jade.Sdl.GpuIndexedIndirectDrawCommand.NumIndices -> uint
+Jade.Sdl.GpuIndexedIndirectDrawCommand.NumInstances -> uint
+Jade.Sdl.GpuIndexedIndirectDrawCommand.VertexOffset -> int
+Jade.Sdl.GpuIndexElementSize
+Jade.Sdl.GpuIndexElementSize.Size16bit = 0 -> Jade.Sdl.GpuIndexElementSize
+Jade.Sdl.GpuIndexElementSize.Size32bit = 1 -> Jade.Sdl.GpuIndexElementSize
+Jade.Sdl.GpuIndirectDispatchCommand
+Jade.Sdl.GpuIndirectDispatchCommand.GpuIndirectDispatchCommand() -> void
+Jade.Sdl.GpuIndirectDispatchCommand.GroupcountX -> uint
+Jade.Sdl.GpuIndirectDispatchCommand.GroupcountY -> uint
+Jade.Sdl.GpuIndirectDispatchCommand.GroupcountZ -> uint
+Jade.Sdl.GpuIndirectDrawCommand
+Jade.Sdl.GpuIndirectDrawCommand.FirstInstance -> uint
+Jade.Sdl.GpuIndirectDrawCommand.FirstVertex -> uint
+Jade.Sdl.GpuIndirectDrawCommand.GpuIndirectDrawCommand() -> void
+Jade.Sdl.GpuIndirectDrawCommand.NumInstances -> uint
+Jade.Sdl.GpuIndirectDrawCommand.NumVertices -> uint
+Jade.Sdl.GpuLoadOp
+Jade.Sdl.GpuLoadOp.Clear = 1 -> Jade.Sdl.GpuLoadOp
+Jade.Sdl.GpuLoadOp.DontCare = 2 -> Jade.Sdl.GpuLoadOp
+Jade.Sdl.GpuLoadOp.Load = 0 -> Jade.Sdl.GpuLoadOp
+Jade.Sdl.GpuMultisampleState
+Jade.Sdl.GpuMultisampleState.EnableAlphaToCoverage -> bool
+Jade.Sdl.GpuMultisampleState.EnableMask -> bool
+Jade.Sdl.GpuMultisampleState.GpuMultisampleState() -> void
+Jade.Sdl.GpuMultisampleState.Padding2 -> byte
+Jade.Sdl.GpuMultisampleState.Padding3 -> byte
+Jade.Sdl.GpuMultisampleState.SampleCount -> Jade.Sdl.GpuSampleCount
+Jade.Sdl.GpuMultisampleState.SampleMask -> uint
+Jade.Sdl.GpuPresentMode
+Jade.Sdl.GpuPresentMode.Immediate = 1 -> Jade.Sdl.GpuPresentMode
+Jade.Sdl.GpuPresentMode.Mailbox = 2 -> Jade.Sdl.GpuPresentMode
+Jade.Sdl.GpuPresentMode.Vsync = 0 -> Jade.Sdl.GpuPresentMode
+Jade.Sdl.GpuPrimitiveType
+Jade.Sdl.GpuPrimitiveType.Linelist = 2 -> Jade.Sdl.GpuPrimitiveType
+Jade.Sdl.GpuPrimitiveType.Linestrip = 3 -> Jade.Sdl.GpuPrimitiveType
+Jade.Sdl.GpuPrimitiveType.Pointlist = 4 -> Jade.Sdl.GpuPrimitiveType
+Jade.Sdl.GpuPrimitiveType.Trianglelist = 0 -> Jade.Sdl.GpuPrimitiveType
+Jade.Sdl.GpuPrimitiveType.Trianglestrip = 1 -> Jade.Sdl.GpuPrimitiveType
+Jade.Sdl.GpuRasterizerState
+Jade.Sdl.GpuRasterizerState.CullMode -> Jade.Sdl.GpuCullMode
+Jade.Sdl.GpuRasterizerState.DepthBiasClamp -> float
+Jade.Sdl.GpuRasterizerState.DepthBiasConstantFactor -> float
+Jade.Sdl.GpuRasterizerState.DepthBiasSlopeFactor -> float
+Jade.Sdl.GpuRasterizerState.EnableDepthBias -> bool
+Jade.Sdl.GpuRasterizerState.EnableDepthClip -> bool
+Jade.Sdl.GpuRasterizerState.FillMode -> Jade.Sdl.GpuFillMode
+Jade.Sdl.GpuRasterizerState.FrontFace -> Jade.Sdl.GpuFrontFace
+Jade.Sdl.GpuRasterizerState.GpuRasterizerState() -> void
+Jade.Sdl.GpuRasterizerState.Padding1 -> byte
+Jade.Sdl.GpuRasterizerState.Padding2 -> byte
+Jade.Sdl.GpuRenderPass
+Jade.Sdl.GpuRenderPass.Equals(Jade.Sdl.GpuRenderPass other) -> bool
+Jade.Sdl.GpuRenderPass.GpuRenderPass() -> void
+Jade.Sdl.GpuRenderPass.GpuRenderPass(nint handle) -> void
+Jade.Sdl.GpuRenderPass.Handle.get -> nint
+Jade.Sdl.GpuRenderState
+Jade.Sdl.GpuRenderState.Equals(Jade.Sdl.GpuRenderState other) -> bool
+Jade.Sdl.GpuRenderState.GpuRenderState() -> void
+Jade.Sdl.GpuRenderState.GpuRenderState(nint handle) -> void
+Jade.Sdl.GpuRenderState.Handle.get -> nint
+Jade.Sdl.GpuSampleCount
+Jade.Sdl.GpuSampleCount.Count1 = 0 -> Jade.Sdl.GpuSampleCount
+Jade.Sdl.GpuSampleCount.Count2 = 1 -> Jade.Sdl.GpuSampleCount
+Jade.Sdl.GpuSampleCount.Count4 = 2 -> Jade.Sdl.GpuSampleCount
+Jade.Sdl.GpuSampleCount.Count8 = 3 -> Jade.Sdl.GpuSampleCount
+Jade.Sdl.GpuSampler
+Jade.Sdl.GpuSampler.Equals(Jade.Sdl.GpuSampler other) -> bool
+Jade.Sdl.GpuSampler.GpuSampler() -> void
+Jade.Sdl.GpuSampler.GpuSampler(nint handle) -> void
+Jade.Sdl.GpuSampler.Handle.get -> nint
+Jade.Sdl.GpuSamplerAddressMode
+Jade.Sdl.GpuSamplerAddressMode.ClampToEdge = 2 -> Jade.Sdl.GpuSamplerAddressMode
+Jade.Sdl.GpuSamplerAddressMode.MirroredRepeat = 1 -> Jade.Sdl.GpuSamplerAddressMode
+Jade.Sdl.GpuSamplerAddressMode.Repeat = 0 -> Jade.Sdl.GpuSamplerAddressMode
+Jade.Sdl.GpuSamplerCreateInfo
+Jade.Sdl.GpuSamplerCreateInfo.AddressModeU -> Jade.Sdl.GpuSamplerAddressMode
+Jade.Sdl.GpuSamplerCreateInfo.AddressModeV -> Jade.Sdl.GpuSamplerAddressMode
+Jade.Sdl.GpuSamplerCreateInfo.AddressModeW -> Jade.Sdl.GpuSamplerAddressMode
+Jade.Sdl.GpuSamplerCreateInfo.CompareOp -> Jade.Sdl.GpuCompareOp
+Jade.Sdl.GpuSamplerCreateInfo.EnableAnisotropy -> bool
+Jade.Sdl.GpuSamplerCreateInfo.EnableCompare -> bool
+Jade.Sdl.GpuSamplerCreateInfo.GpuSamplerCreateInfo() -> void
+Jade.Sdl.GpuSamplerCreateInfo.MagFilter -> Jade.Sdl.GpuFilter
+Jade.Sdl.GpuSamplerCreateInfo.MaxAnisotropy -> float
+Jade.Sdl.GpuSamplerCreateInfo.MaxLod -> float
+Jade.Sdl.GpuSamplerCreateInfo.MinFilter -> Jade.Sdl.GpuFilter
+Jade.Sdl.GpuSamplerCreateInfo.MinLod -> float
+Jade.Sdl.GpuSamplerCreateInfo.MipLodBias -> float
+Jade.Sdl.GpuSamplerCreateInfo.MipmapMode -> Jade.Sdl.GpuSamplerMipmapMode
+Jade.Sdl.GpuSamplerCreateInfo.Padding1 -> byte
+Jade.Sdl.GpuSamplerCreateInfo.Padding2 -> byte
+Jade.Sdl.GpuSamplerCreateInfo.Props -> uint
+Jade.Sdl.GpuSamplerMipmapMode
+Jade.Sdl.GpuSamplerMipmapMode.Linear = 1 -> Jade.Sdl.GpuSamplerMipmapMode
+Jade.Sdl.GpuSamplerMipmapMode.Nearest = 0 -> Jade.Sdl.GpuSamplerMipmapMode
+Jade.Sdl.GpuShader
+Jade.Sdl.GpuShader.Equals(Jade.Sdl.GpuShader other) -> bool
+Jade.Sdl.GpuShader.GpuShader() -> void
+Jade.Sdl.GpuShader.GpuShader(nint handle) -> void
+Jade.Sdl.GpuShader.Handle.get -> nint
+Jade.Sdl.GpuShaderFormat
+Jade.Sdl.GpuShaderFormat.Dxbc = 4 -> Jade.Sdl.GpuShaderFormat
+Jade.Sdl.GpuShaderFormat.Dxil = 8 -> Jade.Sdl.GpuShaderFormat
+Jade.Sdl.GpuShaderFormat.Invalid = 0 -> Jade.Sdl.GpuShaderFormat
+Jade.Sdl.GpuShaderFormat.Metallib = 32 -> Jade.Sdl.GpuShaderFormat
+Jade.Sdl.GpuShaderFormat.Msl = 16 -> Jade.Sdl.GpuShaderFormat
+Jade.Sdl.GpuShaderFormat.Private = 1 -> Jade.Sdl.GpuShaderFormat
+Jade.Sdl.GpuShaderFormat.Spirv = 2 -> Jade.Sdl.GpuShaderFormat
+Jade.Sdl.GpuShaderStage
+Jade.Sdl.GpuShaderStage.Fragment = 1 -> Jade.Sdl.GpuShaderStage
+Jade.Sdl.GpuShaderStage.Vertex = 0 -> Jade.Sdl.GpuShaderStage
+Jade.Sdl.GpuStencilOp
+Jade.Sdl.GpuStencilOp.DecrementAndClamp = 5 -> Jade.Sdl.GpuStencilOp
+Jade.Sdl.GpuStencilOp.DecrementAndWrap = 8 -> Jade.Sdl.GpuStencilOp
+Jade.Sdl.GpuStencilOp.IncrementAndClamp = 4 -> Jade.Sdl.GpuStencilOp
+Jade.Sdl.GpuStencilOp.IncrementAndWrap = 7 -> Jade.Sdl.GpuStencilOp
+Jade.Sdl.GpuStencilOp.Invalid = 0 -> Jade.Sdl.GpuStencilOp
+Jade.Sdl.GpuStencilOp.Invert = 6 -> Jade.Sdl.GpuStencilOp
+Jade.Sdl.GpuStencilOp.Keep = 1 -> Jade.Sdl.GpuStencilOp
+Jade.Sdl.GpuStencilOp.Replace = 3 -> Jade.Sdl.GpuStencilOp
+Jade.Sdl.GpuStencilOp.Zero = 2 -> Jade.Sdl.GpuStencilOp
+Jade.Sdl.GpuStencilOpState
+Jade.Sdl.GpuStencilOpState.CompareOp -> Jade.Sdl.GpuCompareOp
+Jade.Sdl.GpuStencilOpState.DepthFailOp -> Jade.Sdl.GpuStencilOp
+Jade.Sdl.GpuStencilOpState.FailOp -> Jade.Sdl.GpuStencilOp
+Jade.Sdl.GpuStencilOpState.GpuStencilOpState() -> void
+Jade.Sdl.GpuStencilOpState.PassOp -> Jade.Sdl.GpuStencilOp
+Jade.Sdl.GpuStorageBufferReadWriteBinding
+Jade.Sdl.GpuStorageBufferReadWriteBinding.Buffer -> Jade.Sdl.GpuBuffer
+Jade.Sdl.GpuStorageBufferReadWriteBinding.Cycle -> bool
+Jade.Sdl.GpuStorageBufferReadWriteBinding.GpuStorageBufferReadWriteBinding() -> void
+Jade.Sdl.GpuStorageBufferReadWriteBinding.Padding1 -> byte
+Jade.Sdl.GpuStorageBufferReadWriteBinding.Padding2 -> byte
+Jade.Sdl.GpuStorageBufferReadWriteBinding.Padding3 -> byte
+Jade.Sdl.GpuStorageTextureReadWriteBinding
+Jade.Sdl.GpuStorageTextureReadWriteBinding.Cycle -> bool
+Jade.Sdl.GpuStorageTextureReadWriteBinding.GpuStorageTextureReadWriteBinding() -> void
+Jade.Sdl.GpuStorageTextureReadWriteBinding.Layer -> uint
+Jade.Sdl.GpuStorageTextureReadWriteBinding.MipLevel -> uint
+Jade.Sdl.GpuStorageTextureReadWriteBinding.Padding1 -> byte
+Jade.Sdl.GpuStorageTextureReadWriteBinding.Padding2 -> byte
+Jade.Sdl.GpuStorageTextureReadWriteBinding.Padding3 -> byte
+Jade.Sdl.GpuStorageTextureReadWriteBinding.Texture -> Jade.Sdl.GpuTexture
+Jade.Sdl.GpuStoreOp
+Jade.Sdl.GpuStoreOp.DontCare = 1 -> Jade.Sdl.GpuStoreOp
+Jade.Sdl.GpuStoreOp.Resolve = 2 -> Jade.Sdl.GpuStoreOp
+Jade.Sdl.GpuStoreOp.ResolveAndStore = 3 -> Jade.Sdl.GpuStoreOp
+Jade.Sdl.GpuStoreOp.Store = 0 -> Jade.Sdl.GpuStoreOp
+Jade.Sdl.GpuSwapchainComposition
+Jade.Sdl.GpuSwapchainComposition.Hdr10St2084 = 3 -> Jade.Sdl.GpuSwapchainComposition
+Jade.Sdl.GpuSwapchainComposition.HdrExtendedLinear = 2 -> Jade.Sdl.GpuSwapchainComposition
+Jade.Sdl.GpuSwapchainComposition.Sdr = 0 -> Jade.Sdl.GpuSwapchainComposition
+Jade.Sdl.GpuSwapchainComposition.SdrLinear = 1 -> Jade.Sdl.GpuSwapchainComposition
+Jade.Sdl.GpuTexture
+Jade.Sdl.GpuTexture.Equals(Jade.Sdl.GpuTexture other) -> bool
+Jade.Sdl.GpuTexture.GpuTexture() -> void
+Jade.Sdl.GpuTexture.GpuTexture(nint handle) -> void
+Jade.Sdl.GpuTexture.Handle.get -> nint
+Jade.Sdl.GpuTextureCreateInfo
+Jade.Sdl.GpuTextureCreateInfo.Format -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureCreateInfo.GpuTextureCreateInfo() -> void
+Jade.Sdl.GpuTextureCreateInfo.Height -> uint
+Jade.Sdl.GpuTextureCreateInfo.LayerCountOrDepth -> uint
+Jade.Sdl.GpuTextureCreateInfo.NumLevels -> uint
+Jade.Sdl.GpuTextureCreateInfo.Props -> uint
+Jade.Sdl.GpuTextureCreateInfo.SampleCount -> Jade.Sdl.GpuSampleCount
+Jade.Sdl.GpuTextureCreateInfo.Type -> Jade.Sdl.GpuTextureType
+Jade.Sdl.GpuTextureCreateInfo.Usage -> Jade.Sdl.GpuTextureUsageFlags
+Jade.Sdl.GpuTextureCreateInfo.Width -> uint
+Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.A8Unorm = 1 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc10x10Float = 102 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc10x10Unorm = 74 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc10x10UnormSrgb = 88 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc10x5Float = 99 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc10x5Unorm = 71 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc10x5UnormSrgb = 85 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc10x6Float = 100 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc10x6Unorm = 72 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc10x6UnormSrgb = 86 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc10x8Float = 101 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc10x8Unorm = 73 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc10x8UnormSrgb = 87 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc12x10Float = 103 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc12x10Unorm = 75 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc12x10UnormSrgb = 89 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc12x12Float = 104 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc12x12Unorm = 76 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc12x12UnormSrgb = 90 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc4x4Float = 91 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc4x4Unorm = 63 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc4x4UnormSrgb = 77 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc5x4Float = 92 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc5x4Unorm = 64 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc5x4UnormSrgb = 78 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc5x5Float = 93 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc5x5Unorm = 65 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc5x5UnormSrgb = 79 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc6x5Float = 94 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc6x5Unorm = 66 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc6x5UnormSrgb = 80 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc6x6Float = 95 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc6x6Unorm = 67 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc6x6UnormSrgb = 81 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc8x5Float = 96 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc8x5Unorm = 68 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc8x5UnormSrgb = 82 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc8x6Float = 97 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc8x6Unorm = 69 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc8x6UnormSrgb = 83 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc8x8Float = 98 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc8x8Unorm = 70 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Astc8x8UnormSrgb = 84 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.B4g4r4a4Unorm = 11 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.B5g5r5a1Unorm = 10 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.B5g6r5Unorm = 9 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.B8g8r8a8Unorm = 12 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.B8g8r8a8UnormSrgb = 53 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Bc1RgbaUnorm = 13 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Bc1RgbaUnormSrgb = 54 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Bc2RgbaUnorm = 14 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Bc2RgbaUnormSrgb = 55 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Bc3RgbaUnorm = 15 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Bc3RgbaUnormSrgb = 56 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Bc4RUnorm = 16 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Bc5RgUnorm = 17 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Bc6hRgbFloat = 19 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Bc6hRgbUfloat = 20 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Bc7RgbaUnorm = 18 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Bc7RgbaUnormSrgb = 57 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.D16Unorm = 58 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.D24Unorm = 59 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.D24UnormS8Uint = 61 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.D32Float = 60 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.D32FloatS8Uint = 62 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.Invalid = 0 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R10g10b10a2Unorm = 8 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R11g11b10Ufloat = 33 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R16Float = 27 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R16g16b16a16Float = 29 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R16g16b16a16Int = 48 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R16g16b16a16Snorm = 26 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R16g16b16a16Uint = 39 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R16g16b16a16Unorm = 7 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R16g16Float = 28 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R16g16Int = 47 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R16g16Snorm = 25 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R16g16Uint = 38 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R16g16Unorm = 6 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R16Int = 46 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R16Snorm = 24 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R16Uint = 37 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R16Unorm = 5 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R32Float = 30 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R32g32b32a32Float = 32 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R32g32b32a32Int = 51 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R32g32b32a32Uint = 42 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R32g32Float = 31 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R32g32Int = 50 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R32g32Uint = 41 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R32Int = 49 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R32Uint = 40 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R8g8b8a8Int = 45 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R8g8b8a8Snorm = 23 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R8g8b8a8Uint = 36 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R8g8b8a8Unorm = 4 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R8g8b8a8UnormSrgb = 52 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R8g8Int = 44 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R8g8Snorm = 22 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R8g8Uint = 35 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R8g8Unorm = 3 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R8Int = 43 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R8Snorm = 21 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R8Uint = 34 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureFormat.R8Unorm = 2 -> Jade.Sdl.GpuTextureFormat
+Jade.Sdl.GpuTextureLocation
+Jade.Sdl.GpuTextureLocation.GpuTextureLocation() -> void
+Jade.Sdl.GpuTextureLocation.Layer -> uint
+Jade.Sdl.GpuTextureLocation.MipLevel -> uint
+Jade.Sdl.GpuTextureLocation.Texture -> Jade.Sdl.GpuTexture
+Jade.Sdl.GpuTextureLocation.X -> uint
+Jade.Sdl.GpuTextureLocation.Y -> uint
+Jade.Sdl.GpuTextureLocation.Z -> uint
+Jade.Sdl.GpuTextureRegion
+Jade.Sdl.GpuTextureRegion.D -> uint
+Jade.Sdl.GpuTextureRegion.GpuTextureRegion() -> void
+Jade.Sdl.GpuTextureRegion.H -> uint
+Jade.Sdl.GpuTextureRegion.Layer -> uint
+Jade.Sdl.GpuTextureRegion.MipLevel -> uint
+Jade.Sdl.GpuTextureRegion.Texture -> Jade.Sdl.GpuTexture
+Jade.Sdl.GpuTextureRegion.W -> uint
+Jade.Sdl.GpuTextureRegion.X -> uint
+Jade.Sdl.GpuTextureRegion.Y -> uint
+Jade.Sdl.GpuTextureRegion.Z -> uint
+Jade.Sdl.GpuTextureSamplerBinding
+Jade.Sdl.GpuTextureSamplerBinding.GpuTextureSamplerBinding() -> void
+Jade.Sdl.GpuTextureSamplerBinding.Sampler -> Jade.Sdl.GpuSampler
+Jade.Sdl.GpuTextureSamplerBinding.Texture -> Jade.Sdl.GpuTexture
+Jade.Sdl.GpuTextureTransferInfo
+Jade.Sdl.GpuTextureTransferInfo.GpuTextureTransferInfo() -> void
+Jade.Sdl.GpuTextureTransferInfo.Offset -> uint
+Jade.Sdl.GpuTextureTransferInfo.PixelsPerRow -> uint
+Jade.Sdl.GpuTextureTransferInfo.RowsPerLayer -> uint
+Jade.Sdl.GpuTextureTransferInfo.TransferBuffer -> Jade.Sdl.GpuTransferBuffer
+Jade.Sdl.GpuTextureType
+Jade.Sdl.GpuTextureType.Cube = 3 -> Jade.Sdl.GpuTextureType
+Jade.Sdl.GpuTextureType.CubeArray = 4 -> Jade.Sdl.GpuTextureType
+Jade.Sdl.GpuTextureType.Type2d = 0 -> Jade.Sdl.GpuTextureType
+Jade.Sdl.GpuTextureType.Type2dArray = 1 -> Jade.Sdl.GpuTextureType
+Jade.Sdl.GpuTextureType.Type3d = 2 -> Jade.Sdl.GpuTextureType
+Jade.Sdl.GpuTextureUsageFlags
+Jade.Sdl.GpuTextureUsageFlags.ColorTarget = 2 -> Jade.Sdl.GpuTextureUsageFlags
+Jade.Sdl.GpuTextureUsageFlags.ComputeStorageRead = 16 -> Jade.Sdl.GpuTextureUsageFlags
+Jade.Sdl.GpuTextureUsageFlags.ComputeStorageSimultaneousReadWrite = 64 -> Jade.Sdl.GpuTextureUsageFlags
+Jade.Sdl.GpuTextureUsageFlags.ComputeStorageWrite = 32 -> Jade.Sdl.GpuTextureUsageFlags
+Jade.Sdl.GpuTextureUsageFlags.DepthStencilTarget = 4 -> Jade.Sdl.GpuTextureUsageFlags
+Jade.Sdl.GpuTextureUsageFlags.GraphicsStorageRead = 8 -> Jade.Sdl.GpuTextureUsageFlags
+Jade.Sdl.GpuTextureUsageFlags.Sampler = 1 -> Jade.Sdl.GpuTextureUsageFlags
+Jade.Sdl.GpuTransferBuffer
+Jade.Sdl.GpuTransferBuffer.Equals(Jade.Sdl.GpuTransferBuffer other) -> bool
+Jade.Sdl.GpuTransferBuffer.GpuTransferBuffer() -> void
+Jade.Sdl.GpuTransferBuffer.GpuTransferBuffer(nint handle) -> void
+Jade.Sdl.GpuTransferBuffer.Handle.get -> nint
+Jade.Sdl.GpuTransferBufferCreateInfo
+Jade.Sdl.GpuTransferBufferCreateInfo.GpuTransferBufferCreateInfo() -> void
+Jade.Sdl.GpuTransferBufferCreateInfo.Props -> uint
+Jade.Sdl.GpuTransferBufferCreateInfo.Size -> uint
+Jade.Sdl.GpuTransferBufferCreateInfo.Usage -> Jade.Sdl.GpuTransferBufferUsage
+Jade.Sdl.GpuTransferBufferLocation
+Jade.Sdl.GpuTransferBufferLocation.GpuTransferBufferLocation() -> void
+Jade.Sdl.GpuTransferBufferLocation.Offset -> uint
+Jade.Sdl.GpuTransferBufferLocation.TransferBuffer -> Jade.Sdl.GpuTransferBuffer
+Jade.Sdl.GpuTransferBufferUsage
+Jade.Sdl.GpuTransferBufferUsage.Download = 1 -> Jade.Sdl.GpuTransferBufferUsage
+Jade.Sdl.GpuTransferBufferUsage.Upload = 0 -> Jade.Sdl.GpuTransferBufferUsage
+Jade.Sdl.GpuVertexAttribute
+Jade.Sdl.GpuVertexAttribute.BufferSlot -> uint
+Jade.Sdl.GpuVertexAttribute.Format -> Jade.Sdl.GpuVertexElementFormat
+Jade.Sdl.GpuVertexAttribute.GpuVertexAttribute() -> void
+Jade.Sdl.GpuVertexAttribute.Location -> uint
+Jade.Sdl.GpuVertexAttribute.Offset -> uint
+Jade.Sdl.GpuVertexBufferDescription
+Jade.Sdl.GpuVertexBufferDescription.GpuVertexBufferDescription() -> void
+Jade.Sdl.GpuVertexBufferDescription.InputRate -> Jade.Sdl.GpuVertexInputRate
+Jade.Sdl.GpuVertexBufferDescription.InstanceStepRate -> uint
+Jade.Sdl.GpuVertexBufferDescription.Pitch -> uint
+Jade.Sdl.GpuVertexBufferDescription.Slot -> uint
+Jade.Sdl.GpuVertexElementFormat
+Jade.Sdl.GpuVertexElementFormat.Byte2 = 13 -> Jade.Sdl.GpuVertexElementFormat
+Jade.Sdl.GpuVertexElementFormat.Byte2Norm = 17 -> Jade.Sdl.GpuVertexElementFormat
+Jade.Sdl.GpuVertexElementFormat.Byte4 = 14 -> Jade.Sdl.GpuVertexElementFormat
+Jade.Sdl.GpuVertexElementFormat.Byte4Norm = 18 -> Jade.Sdl.GpuVertexElementFormat
+Jade.Sdl.GpuVertexElementFormat.Float = 9 -> Jade.Sdl.GpuVertexElementFormat
+Jade.Sdl.GpuVertexElementFormat.Float2 = 10 -> Jade.Sdl.GpuVertexElementFormat
+Jade.Sdl.GpuVertexElementFormat.Float3 = 11 -> Jade.Sdl.GpuVertexElementFormat
+Jade.Sdl.GpuVertexElementFormat.Float4 = 12 -> Jade.Sdl.GpuVertexElementFormat
+Jade.Sdl.GpuVertexElementFormat.Half2 = 29 -> Jade.Sdl.GpuVertexElementFormat
+Jade.Sdl.GpuVertexElementFormat.Half4 = 30 -> Jade.Sdl.GpuVertexElementFormat
+Jade.Sdl.GpuVertexElementFormat.Int = 1 -> Jade.Sdl.GpuVertexElementFormat
+Jade.Sdl.GpuVertexElementFormat.Int2 = 2 -> Jade.Sdl.GpuVertexElementFormat
+Jade.Sdl.GpuVertexElementFormat.Int3 = 3 -> Jade.Sdl.GpuVertexElementFormat
+Jade.Sdl.GpuVertexElementFormat.Int4 = 4 -> Jade.Sdl.GpuVertexElementFormat
+Jade.Sdl.GpuVertexElementFormat.Invalid = 0 -> Jade.Sdl.GpuVertexElementFormat
+Jade.Sdl.GpuVertexElementFormat.Short2 = 21 -> Jade.Sdl.GpuVertexElementFormat
+Jade.Sdl.GpuVertexElementFormat.Short2Norm = 25 -> Jade.Sdl.GpuVertexElementFormat
+Jade.Sdl.GpuVertexElementFormat.Short4 = 22 -> Jade.Sdl.GpuVertexElementFormat
+Jade.Sdl.GpuVertexElementFormat.Short4Norm = 26 -> Jade.Sdl.GpuVertexElementFormat
+Jade.Sdl.GpuVertexElementFormat.Ubyte2 = 15 -> Jade.Sdl.GpuVertexElementFormat
+Jade.Sdl.GpuVertexElementFormat.Ubyte2Norm = 19 -> Jade.Sdl.GpuVertexElementFormat
+Jade.Sdl.GpuVertexElementFormat.Ubyte4 = 16 -> Jade.Sdl.GpuVertexElementFormat
+Jade.Sdl.GpuVertexElementFormat.Ubyte4Norm = 20 -> Jade.Sdl.GpuVertexElementFormat
+Jade.Sdl.GpuVertexElementFormat.Uint = 5 -> Jade.Sdl.GpuVertexElementFormat
+Jade.Sdl.GpuVertexElementFormat.Uint2 = 6 -> Jade.Sdl.GpuVertexElementFormat
+Jade.Sdl.GpuVertexElementFormat.Uint3 = 7 -> Jade.Sdl.GpuVertexElementFormat
+Jade.Sdl.GpuVertexElementFormat.Uint4 = 8 -> Jade.Sdl.GpuVertexElementFormat
+Jade.Sdl.GpuVertexElementFormat.Ushort2 = 23 -> Jade.Sdl.GpuVertexElementFormat
+Jade.Sdl.GpuVertexElementFormat.Ushort2Norm = 27 -> Jade.Sdl.GpuVertexElementFormat
+Jade.Sdl.GpuVertexElementFormat.Ushort4 = 24 -> Jade.Sdl.GpuVertexElementFormat
+Jade.Sdl.GpuVertexElementFormat.Ushort4Norm = 28 -> Jade.Sdl.GpuVertexElementFormat
+Jade.Sdl.GpuVertexInputRate
+Jade.Sdl.GpuVertexInputRate.Instance = 1 -> Jade.Sdl.GpuVertexInputRate
+Jade.Sdl.GpuVertexInputRate.Vertex = 0 -> Jade.Sdl.GpuVertexInputRate
+Jade.Sdl.GpuViewport
+Jade.Sdl.GpuViewport.GpuViewport() -> void
+Jade.Sdl.GpuViewport.H -> float
+Jade.Sdl.GpuViewport.MaxDepth -> float
+Jade.Sdl.GpuViewport.MinDepth -> float
+Jade.Sdl.GpuViewport.W -> float
+Jade.Sdl.GpuViewport.X -> float
+Jade.Sdl.GpuViewport.Y -> float
+Jade.Sdl.Guid
+Jade.Sdl.Guid.Data -> Jade.Sdl.GuidData
+Jade.Sdl.Guid.Guid() -> void
+Jade.Sdl.GuidData
+Jade.Sdl.GuidData.GuidData() -> void
+Jade.Sdl.Haptic
+Jade.Sdl.Haptic.Equals(Jade.Sdl.Haptic other) -> bool
+Jade.Sdl.Haptic.Handle.get -> nint
+Jade.Sdl.Haptic.Haptic() -> void
+Jade.Sdl.Haptic.Haptic(nint handle) -> void
+Jade.Sdl.HapticCondition
+Jade.Sdl.HapticCondition.Button -> ushort
+Jade.Sdl.HapticCondition.Center -> Jade.Sdl.HapticConditionCenter
+Jade.Sdl.HapticCondition.Deadband -> Jade.Sdl.HapticConditionDeadband
+Jade.Sdl.HapticCondition.Delay -> ushort
+Jade.Sdl.HapticCondition.Direction -> Jade.Sdl.HapticDirection
+Jade.Sdl.HapticCondition.HapticCondition() -> void
+Jade.Sdl.HapticCondition.Interval -> ushort
+Jade.Sdl.HapticCondition.LeftCoeff -> Jade.Sdl.HapticConditionLeftCoeff
+Jade.Sdl.HapticCondition.LeftSat -> Jade.Sdl.HapticConditionLeftSat
+Jade.Sdl.HapticCondition.Length -> uint
+Jade.Sdl.HapticCondition.RightCoeff -> Jade.Sdl.HapticConditionRightCoeff
+Jade.Sdl.HapticCondition.RightSat -> Jade.Sdl.HapticConditionRightSat
+Jade.Sdl.HapticCondition.Type -> Jade.Sdl.HapticEffectType
+Jade.Sdl.HapticConditionCenter
+Jade.Sdl.HapticConditionCenter.HapticConditionCenter() -> void
+Jade.Sdl.HapticConditionDeadband
+Jade.Sdl.HapticConditionDeadband.HapticConditionDeadband() -> void
+Jade.Sdl.HapticConditionLeftCoeff
+Jade.Sdl.HapticConditionLeftCoeff.HapticConditionLeftCoeff() -> void
+Jade.Sdl.HapticConditionLeftSat
+Jade.Sdl.HapticConditionLeftSat.HapticConditionLeftSat() -> void
+Jade.Sdl.HapticConditionRightCoeff
+Jade.Sdl.HapticConditionRightCoeff.HapticConditionRightCoeff() -> void
+Jade.Sdl.HapticConditionRightSat
+Jade.Sdl.HapticConditionRightSat.HapticConditionRightSat() -> void
+Jade.Sdl.HapticConstant
+Jade.Sdl.HapticConstant.AttackLength -> ushort
+Jade.Sdl.HapticConstant.AttackLevel -> ushort
+Jade.Sdl.HapticConstant.Button -> ushort
+Jade.Sdl.HapticConstant.Delay -> ushort
+Jade.Sdl.HapticConstant.Direction -> Jade.Sdl.HapticDirection
+Jade.Sdl.HapticConstant.FadeLength -> ushort
+Jade.Sdl.HapticConstant.FadeLevel -> ushort
+Jade.Sdl.HapticConstant.HapticConstant() -> void
+Jade.Sdl.HapticConstant.Interval -> ushort
+Jade.Sdl.HapticConstant.Length -> uint
+Jade.Sdl.HapticConstant.Level -> short
+Jade.Sdl.HapticConstant.Type -> Jade.Sdl.HapticEffectType
+Jade.Sdl.HapticDirection
+Jade.Sdl.HapticDirection.Dir -> Jade.Sdl.HapticDirectionDir
+Jade.Sdl.HapticDirection.HapticDirection() -> void
+Jade.Sdl.HapticDirection.Type -> Jade.Sdl.HapticDirectionType
+Jade.Sdl.HapticDirectionDir
+Jade.Sdl.HapticDirectionDir.HapticDirectionDir() -> void
+Jade.Sdl.HapticDirectionType
+Jade.Sdl.HapticDirectionType.Cartesian = 1 -> Jade.Sdl.HapticDirectionType
+Jade.Sdl.HapticDirectionType.Polar = 0 -> Jade.Sdl.HapticDirectionType
+Jade.Sdl.HapticDirectionType.Spherical = 2 -> Jade.Sdl.HapticDirectionType
+Jade.Sdl.HapticDirectionType.SteeringAxis = 3 -> Jade.Sdl.HapticDirectionType
+Jade.Sdl.HapticEffectType
+Jade.Sdl.HapticEffectType.Constant = 1 -> Jade.Sdl.HapticEffectType
+Jade.Sdl.HapticEffectType.Custom = 32768 -> Jade.Sdl.HapticEffectType
+Jade.Sdl.HapticEffectType.Damper = 256 -> Jade.Sdl.HapticEffectType
+Jade.Sdl.HapticEffectType.Friction = 1024 -> Jade.Sdl.HapticEffectType
+Jade.Sdl.HapticEffectType.Inertia = 512 -> Jade.Sdl.HapticEffectType
+Jade.Sdl.HapticEffectType.Leftright = 2048 -> Jade.Sdl.HapticEffectType
+Jade.Sdl.HapticEffectType.Ramp = 64 -> Jade.Sdl.HapticEffectType
+Jade.Sdl.HapticEffectType.Reserved1 = 4096 -> Jade.Sdl.HapticEffectType
+Jade.Sdl.HapticEffectType.Reserved2 = 8192 -> Jade.Sdl.HapticEffectType
+Jade.Sdl.HapticEffectType.Reserved3 = 16384 -> Jade.Sdl.HapticEffectType
+Jade.Sdl.HapticEffectType.Sawtoothdown = 32 -> Jade.Sdl.HapticEffectType
+Jade.Sdl.HapticEffectType.Sawtoothup = 16 -> Jade.Sdl.HapticEffectType
+Jade.Sdl.HapticEffectType.Sine = 2 -> Jade.Sdl.HapticEffectType
+Jade.Sdl.HapticEffectType.Spring = 128 -> Jade.Sdl.HapticEffectType
+Jade.Sdl.HapticEffectType.Square = 4 -> Jade.Sdl.HapticEffectType
+Jade.Sdl.HapticEffectType.Triangle = 8 -> Jade.Sdl.HapticEffectType
+Jade.Sdl.HapticLeftRight
+Jade.Sdl.HapticLeftRight.HapticLeftRight() -> void
+Jade.Sdl.HapticLeftRight.LargeMagnitude -> ushort
+Jade.Sdl.HapticLeftRight.Length -> uint
+Jade.Sdl.HapticLeftRight.SmallMagnitude -> ushort
+Jade.Sdl.HapticLeftRight.Type -> Jade.Sdl.HapticEffectType
+Jade.Sdl.HapticPeriodic
+Jade.Sdl.HapticPeriodic.AttackLength -> ushort
+Jade.Sdl.HapticPeriodic.AttackLevel -> ushort
+Jade.Sdl.HapticPeriodic.Button -> ushort
+Jade.Sdl.HapticPeriodic.Delay -> ushort
+Jade.Sdl.HapticPeriodic.Direction -> Jade.Sdl.HapticDirection
+Jade.Sdl.HapticPeriodic.FadeLength -> ushort
+Jade.Sdl.HapticPeriodic.FadeLevel -> ushort
+Jade.Sdl.HapticPeriodic.HapticPeriodic() -> void
+Jade.Sdl.HapticPeriodic.Interval -> ushort
+Jade.Sdl.HapticPeriodic.Length -> uint
+Jade.Sdl.HapticPeriodic.Magnitude -> short
+Jade.Sdl.HapticPeriodic.Offset -> short
+Jade.Sdl.HapticPeriodic.Period -> ushort
+Jade.Sdl.HapticPeriodic.Phase -> ushort
+Jade.Sdl.HapticPeriodic.Type -> Jade.Sdl.HapticEffectType
+Jade.Sdl.HapticRamp
+Jade.Sdl.HapticRamp.AttackLength -> ushort
+Jade.Sdl.HapticRamp.AttackLevel -> ushort
+Jade.Sdl.HapticRamp.Button -> ushort
+Jade.Sdl.HapticRamp.Delay -> ushort
+Jade.Sdl.HapticRamp.Direction -> Jade.Sdl.HapticDirection
+Jade.Sdl.HapticRamp.End -> short
+Jade.Sdl.HapticRamp.FadeLength -> ushort
+Jade.Sdl.HapticRamp.FadeLevel -> ushort
+Jade.Sdl.HapticRamp.HapticRamp() -> void
+Jade.Sdl.HapticRamp.Interval -> ushort
+Jade.Sdl.HapticRamp.Length -> uint
+Jade.Sdl.HapticRamp.Start -> short
+Jade.Sdl.HapticRamp.Type -> Jade.Sdl.HapticEffectType
+Jade.Sdl.HidBusType
+Jade.Sdl.HidBusType.Bluetooth = 2 -> Jade.Sdl.HidBusType
+Jade.Sdl.HidBusType.I2c = 3 -> Jade.Sdl.HidBusType
+Jade.Sdl.HidBusType.Spi = 4 -> Jade.Sdl.HidBusType
+Jade.Sdl.HidBusType.Unknown = 0 -> Jade.Sdl.HidBusType
+Jade.Sdl.HidBusType.Usb = 1 -> Jade.Sdl.HidBusType
+Jade.Sdl.HidDevice
+Jade.Sdl.HidDevice.Equals(Jade.Sdl.HidDevice other) -> bool
+Jade.Sdl.HidDevice.Handle.get -> nint
+Jade.Sdl.HidDevice.HidDevice() -> void
+Jade.Sdl.HidDevice.HidDevice(nint handle) -> void
+Jade.Sdl.HintPriority
+Jade.Sdl.HintPriority.Default = 0 -> Jade.Sdl.HintPriority
+Jade.Sdl.HintPriority.Normal = 1 -> Jade.Sdl.HintPriority
+Jade.Sdl.HintPriority.Override = 2 -> Jade.Sdl.HintPriority
+Jade.Sdl.HitTestResult
+Jade.Sdl.HitTestResult.Draggable = 1 -> Jade.Sdl.HitTestResult
+Jade.Sdl.HitTestResult.Normal = 0 -> Jade.Sdl.HitTestResult
+Jade.Sdl.HitTestResult.ResizeBottom = 7 -> Jade.Sdl.HitTestResult
+Jade.Sdl.HitTestResult.ResizeBottomleft = 8 -> Jade.Sdl.HitTestResult
+Jade.Sdl.HitTestResult.ResizeBottomright = 6 -> Jade.Sdl.HitTestResult
+Jade.Sdl.HitTestResult.ResizeLeft = 9 -> Jade.Sdl.HitTestResult
+Jade.Sdl.HitTestResult.ResizeRight = 5 -> Jade.Sdl.HitTestResult
+Jade.Sdl.HitTestResult.ResizeTop = 3 -> Jade.Sdl.HitTestResult
+Jade.Sdl.HitTestResult.ResizeTopleft = 2 -> Jade.Sdl.HitTestResult
+Jade.Sdl.HitTestResult.ResizeTopright = 4 -> Jade.Sdl.HitTestResult
+Jade.Sdl.Iconv
+Jade.Sdl.Iconv.Equals(Jade.Sdl.Iconv other) -> bool
+Jade.Sdl.Iconv.Handle.get -> nint
+Jade.Sdl.Iconv.Iconv() -> void
+Jade.Sdl.Iconv.Iconv(nint handle) -> void
+Jade.Sdl.InitFlags
+Jade.Sdl.InitFlags.Audio = 16 -> Jade.Sdl.InitFlags
+Jade.Sdl.InitFlags.Camera = 65536 -> Jade.Sdl.InitFlags
+Jade.Sdl.InitFlags.Events = 16384 -> Jade.Sdl.InitFlags
+Jade.Sdl.InitFlags.Gamepad = 8192 -> Jade.Sdl.InitFlags
+Jade.Sdl.InitFlags.Haptic = 4096 -> Jade.Sdl.InitFlags
+Jade.Sdl.InitFlags.Joystick = 512 -> Jade.Sdl.InitFlags
+Jade.Sdl.InitFlags.Sensor = 32768 -> Jade.Sdl.InitFlags
+Jade.Sdl.InitFlags.Video = 32 -> Jade.Sdl.InitFlags
+Jade.Sdl.InitStatus
+Jade.Sdl.InitStatus.Initialized = 2 -> Jade.Sdl.InitStatus
+Jade.Sdl.InitStatus.Initializing = 1 -> Jade.Sdl.InitStatus
+Jade.Sdl.InitStatus.Uninitialized = 0 -> Jade.Sdl.InitStatus
+Jade.Sdl.InitStatus.Uninitializing = 3 -> Jade.Sdl.InitStatus
+Jade.Sdl.IOStatus
+Jade.Sdl.IOStatus.Eof = 2 -> Jade.Sdl.IOStatus
+Jade.Sdl.IOStatus.Error = 1 -> Jade.Sdl.IOStatus
+Jade.Sdl.IOStatus.NotReady = 3 -> Jade.Sdl.IOStatus
+Jade.Sdl.IOStatus.Readonly = 4 -> Jade.Sdl.IOStatus
+Jade.Sdl.IOStatus.Ready = 0 -> Jade.Sdl.IOStatus
+Jade.Sdl.IOStatus.Writeonly = 5 -> Jade.Sdl.IOStatus
+Jade.Sdl.IOStream
+Jade.Sdl.IOStream.Equals(Jade.Sdl.IOStream other) -> bool
+Jade.Sdl.IOStream.Handle.get -> nint
+Jade.Sdl.IOStream.IOStream() -> void
+Jade.Sdl.IOStream.IOStream(nint handle) -> void
+Jade.Sdl.IOWhence
+Jade.Sdl.IOWhence.Cur = 1 -> Jade.Sdl.IOWhence
+Jade.Sdl.IOWhence.End = 2 -> Jade.Sdl.IOWhence
+Jade.Sdl.IOWhence.Set = 0 -> Jade.Sdl.IOWhence
+Jade.Sdl.JoyAxisEvent
+Jade.Sdl.JoyAxisEvent.Axis -> byte
+Jade.Sdl.JoyAxisEvent.JoyAxisEvent() -> void
+Jade.Sdl.JoyAxisEvent.Padding1 -> byte
+Jade.Sdl.JoyAxisEvent.Padding2 -> byte
+Jade.Sdl.JoyAxisEvent.Padding3 -> byte
+Jade.Sdl.JoyAxisEvent.Padding4 -> ushort
+Jade.Sdl.JoyAxisEvent.Reserved -> uint
+Jade.Sdl.JoyAxisEvent.Timestamp -> ulong
+Jade.Sdl.JoyAxisEvent.Type -> Jade.Sdl.EventType
+Jade.Sdl.JoyAxisEvent.Value -> short
+Jade.Sdl.JoyAxisEvent.Which -> uint
+Jade.Sdl.JoyBallEvent
+Jade.Sdl.JoyBallEvent.Ball -> byte
+Jade.Sdl.JoyBallEvent.JoyBallEvent() -> void
+Jade.Sdl.JoyBallEvent.Padding1 -> byte
+Jade.Sdl.JoyBallEvent.Padding2 -> byte
+Jade.Sdl.JoyBallEvent.Padding3 -> byte
+Jade.Sdl.JoyBallEvent.Reserved -> uint
+Jade.Sdl.JoyBallEvent.Timestamp -> ulong
+Jade.Sdl.JoyBallEvent.Type -> Jade.Sdl.EventType
+Jade.Sdl.JoyBallEvent.Which -> uint
+Jade.Sdl.JoyBallEvent.Xrel -> short
+Jade.Sdl.JoyBallEvent.Yrel -> short
+Jade.Sdl.JoyBatteryEvent
+Jade.Sdl.JoyBatteryEvent.JoyBatteryEvent() -> void
+Jade.Sdl.JoyBatteryEvent.Percent -> int
+Jade.Sdl.JoyBatteryEvent.Reserved -> uint
+Jade.Sdl.JoyBatteryEvent.State -> Jade.Sdl.PowerState
+Jade.Sdl.JoyBatteryEvent.Timestamp -> ulong
+Jade.Sdl.JoyBatteryEvent.Type -> Jade.Sdl.EventType
+Jade.Sdl.JoyBatteryEvent.Which -> uint
+Jade.Sdl.JoyButtonEvent
+Jade.Sdl.JoyButtonEvent.Button -> byte
+Jade.Sdl.JoyButtonEvent.Down -> bool
+Jade.Sdl.JoyButtonEvent.JoyButtonEvent() -> void
+Jade.Sdl.JoyButtonEvent.Padding1 -> byte
+Jade.Sdl.JoyButtonEvent.Padding2 -> byte
+Jade.Sdl.JoyButtonEvent.Reserved -> uint
+Jade.Sdl.JoyButtonEvent.Timestamp -> ulong
+Jade.Sdl.JoyButtonEvent.Type -> Jade.Sdl.EventType
+Jade.Sdl.JoyButtonEvent.Which -> uint
+Jade.Sdl.JoyDeviceEvent
+Jade.Sdl.JoyDeviceEvent.JoyDeviceEvent() -> void
+Jade.Sdl.JoyDeviceEvent.Reserved -> uint
+Jade.Sdl.JoyDeviceEvent.Timestamp -> ulong
+Jade.Sdl.JoyDeviceEvent.Type -> Jade.Sdl.EventType
+Jade.Sdl.JoyDeviceEvent.Which -> uint
+Jade.Sdl.JoyHatEvent
+Jade.Sdl.JoyHatEvent.Hat -> byte
+Jade.Sdl.JoyHatEvent.JoyHatEvent() -> void
+Jade.Sdl.JoyHatEvent.Padding1 -> byte
+Jade.Sdl.JoyHatEvent.Padding2 -> byte
+Jade.Sdl.JoyHatEvent.Reserved -> uint
+Jade.Sdl.JoyHatEvent.Timestamp -> ulong
+Jade.Sdl.JoyHatEvent.Type -> Jade.Sdl.EventType
+Jade.Sdl.JoyHatEvent.Value -> byte
+Jade.Sdl.JoyHatEvent.Which -> uint
+Jade.Sdl.Joystick
+Jade.Sdl.Joystick.Equals(Jade.Sdl.Joystick other) -> bool
+Jade.Sdl.Joystick.Handle.get -> nint
+Jade.Sdl.Joystick.Joystick() -> void
+Jade.Sdl.Joystick.Joystick(nint handle) -> void
+Jade.Sdl.JoystickConnectionState
+Jade.Sdl.JoystickConnectionState.Invalid = -1 -> Jade.Sdl.JoystickConnectionState
+Jade.Sdl.JoystickConnectionState.Unknown = 0 -> Jade.Sdl.JoystickConnectionState
+Jade.Sdl.JoystickConnectionState.Wired = 1 -> Jade.Sdl.JoystickConnectionState
+Jade.Sdl.JoystickConnectionState.Wireless = 2 -> Jade.Sdl.JoystickConnectionState
+Jade.Sdl.JoystickType
+Jade.Sdl.JoystickType.ArcadePad = 8 -> Jade.Sdl.JoystickType
+Jade.Sdl.JoystickType.ArcadeStick = 3 -> Jade.Sdl.JoystickType
+Jade.Sdl.JoystickType.Count = 10 -> Jade.Sdl.JoystickType
+Jade.Sdl.JoystickType.DancePad = 5 -> Jade.Sdl.JoystickType
+Jade.Sdl.JoystickType.DrumKit = 7 -> Jade.Sdl.JoystickType
+Jade.Sdl.JoystickType.FlightStick = 4 -> Jade.Sdl.JoystickType
+Jade.Sdl.JoystickType.Gamepad = 1 -> Jade.Sdl.JoystickType
+Jade.Sdl.JoystickType.Guitar = 6 -> Jade.Sdl.JoystickType
+Jade.Sdl.JoystickType.Throttle = 9 -> Jade.Sdl.JoystickType
+Jade.Sdl.JoystickType.Unknown = 0 -> Jade.Sdl.JoystickType
+Jade.Sdl.JoystickType.Wheel = 2 -> Jade.Sdl.JoystickType
+Jade.Sdl.KeyboardDeviceEvent
+Jade.Sdl.KeyboardDeviceEvent.KeyboardDeviceEvent() -> void
+Jade.Sdl.KeyboardDeviceEvent.Reserved -> uint
+Jade.Sdl.KeyboardDeviceEvent.Timestamp -> ulong
+Jade.Sdl.KeyboardDeviceEvent.Type -> Jade.Sdl.EventType
+Jade.Sdl.KeyboardDeviceEvent.Which -> uint
+Jade.Sdl.KeyboardEvent
+Jade.Sdl.KeyboardEvent.Down -> bool
+Jade.Sdl.KeyboardEvent.Key -> Jade.Sdl.Keycode
+Jade.Sdl.KeyboardEvent.KeyboardEvent() -> void
+Jade.Sdl.KeyboardEvent.Mod -> Jade.Sdl.Keymod
+Jade.Sdl.KeyboardEvent.Raw -> ushort
+Jade.Sdl.KeyboardEvent.Repeat -> bool
+Jade.Sdl.KeyboardEvent.Reserved -> uint
+Jade.Sdl.KeyboardEvent.Scancode -> Jade.Sdl.Scancode
+Jade.Sdl.KeyboardEvent.Timestamp -> ulong
+Jade.Sdl.KeyboardEvent.Type -> Jade.Sdl.EventType
+Jade.Sdl.KeyboardEvent.Which -> uint
+Jade.Sdl.KeyboardEvent.WindowId -> uint
+Jade.Sdl.Keycode
+Jade.Sdl.Keycode.A = 97 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.AcBack = 1073742106 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.AcBookmarks = 1073742110 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.AcClose = 1073742099 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.AcExit = 1073742100 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.AcForward = 1073742107 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.AcHome = 1073742105 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.AcNew = 1073742097 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.AcOpen = 1073742098 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.AcPrint = 1073742102 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.AcProperties = 1073742103 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.AcRefresh = 1073742109 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.AcSave = 1073742101 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.AcSearch = 1073742104 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.AcStop = 1073742108 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Again = 1073741945 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Alterase = 1073741977 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Ampersand = 38 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Apostrophe = 39 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Application = 1073741925 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Asterisk = 42 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.At = 64 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.B = 98 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Backslash = 92 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Backspace = 8 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.C = 99 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Call = 1073742113 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Cancel = 1073741979 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Capslock = 1073741881 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Caret = 94 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.ChannelDecrement = 1073742085 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.ChannelIncrement = 1073742084 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Clear = 1073741980 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Clearagain = 1073741986 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Colon = 58 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Comma = 44 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Copy = 1073741948 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Crsel = 1073741987 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Currencysubunit = 1073742005 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Currencyunit = 1073742004 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Cut = 1073741947 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.D = 100 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Dblapostrophe = 34 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Decimalseparator = 1073742003 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Delete = 127 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Dollar = 36 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Down = 1073741905 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.E = 101 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.End = 1073741901 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Endcall = 1073742114 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Equals = 61 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Escape = 27 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Exclaim = 33 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Execute = 1073741940 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Exsel = 1073741988 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.ExtendedMask = 536870912 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.F = 102 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.F1 = 1073741882 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.F10 = 1073741891 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.F11 = 1073741892 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.F12 = 1073741893 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.F13 = 1073741928 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.F14 = 1073741929 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.F15 = 1073741930 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.F16 = 1073741931 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.F17 = 1073741932 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.F18 = 1073741933 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.F19 = 1073741934 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.F2 = 1073741883 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.F20 = 1073741935 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.F21 = 1073741936 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.F22 = 1073741937 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.F23 = 1073741938 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.F24 = 1073741939 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.F3 = 1073741884 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.F4 = 1073741885 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.F5 = 1073741886 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.F6 = 1073741887 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.F7 = 1073741888 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.F8 = 1073741889 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.F9 = 1073741890 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Find = 1073741950 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Front = 1073741989 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.G = 103 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Grave = 96 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Greater = 62 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.H = 104 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Hash = 35 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Help = 1073741941 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Home = 1073741898 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.I = 105 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Insert = 1073741897 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.J = 106 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.K = 107 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Keycode0 = 48 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Keycode1 = 49 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Keycode2 = 50 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Keycode3 = 51 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Keycode4 = 52 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Keycode5 = 53 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Keycode6 = 54 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Keycode7 = 55 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Keycode8 = 56 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Keycode9 = 57 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Kp0 = 1073741922 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Kp00 = 1073742000 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Kp000 = 1073742001 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Kp1 = 1073741913 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Kp2 = 1073741914 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Kp3 = 1073741915 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Kp4 = 1073741916 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Kp5 = 1073741917 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Kp6 = 1073741918 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Kp7 = 1073741919 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Kp8 = 1073741920 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Kp9 = 1073741921 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpA = 1073742012 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpAmpersand = 1073742023 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpAt = 1073742030 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpB = 1073742013 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpBackspace = 1073742011 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpBinary = 1073742042 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpC = 1073742014 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpClear = 1073742040 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpClearentry = 1073742041 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpColon = 1073742027 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpComma = 1073741957 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpD = 1073742015 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpDblampersand = 1073742024 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpDblverticalbar = 1073742026 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpDecimal = 1073742044 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpDivide = 1073741908 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpE = 1073742016 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpEnter = 1073741912 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpEquals = 1073741927 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpEqualsas400 = 1073741958 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpExclam = 1073742031 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpF = 1073742017 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpGreater = 1073742022 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpHash = 1073742028 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpHexadecimal = 1073742045 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpLeftbrace = 1073742008 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpLeftparen = 1073742006 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpLess = 1073742021 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpMemadd = 1073742035 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpMemclear = 1073742034 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpMemdivide = 1073742038 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpMemmultiply = 1073742037 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpMemrecall = 1073742033 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpMemstore = 1073742032 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpMemsubtract = 1073742036 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpMinus = 1073741910 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpMultiply = 1073741909 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpOctal = 1073742043 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpPercent = 1073742020 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpPeriod = 1073741923 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpPlus = 1073741911 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpPlusminus = 1073742039 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpPower = 1073742019 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpRightbrace = 1073742009 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpRightparen = 1073742007 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpSpace = 1073742029 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpTab = 1073742010 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpVerticalbar = 1073742025 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.KpXor = 1073742018 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.L = 108 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.LAlt = 1073742050 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.LCtrl = 1073742048 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Left = 1073741904 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Leftbrace = 123 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Leftbracket = 91 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Leftparen = 40 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.LeftTab = 536870913 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Less = 60 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Level5Shift = 536870914 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.LGui = 1073742051 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Lhyper = 536870918 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Lmeta = 536870916 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.LShift = 1073742049 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.M = 109 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.MediaEject = 1073742094 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.MediaFastForward = 1073742089 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.MediaNextTrack = 1073742091 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.MediaPause = 1073742087 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.MediaPlay = 1073742086 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.MediaPlayPause = 1073742095 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.MediaPreviousTrack = 1073742092 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.MediaRecord = 1073742088 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.MediaRewind = 1073742090 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.MediaSelect = 1073742096 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.MediaStop = 1073742093 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Menu = 1073741942 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Minus = 45 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Mode = 1073742081 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.MultiKeyCompose = 536870915 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Mute = 1073741951 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.N = 110 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Numlockclear = 1073741907 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.O = 111 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Oper = 1073741985 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Out = 1073741984 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.P = 112 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Pagedown = 1073741902 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Pageup = 1073741899 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Paste = 1073741949 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Pause = 1073741896 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Percent = 37 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Period = 46 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Pipe = 124 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Plus = 43 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Plusminus = 177 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Power = 1073741926 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Printscreen = 1073741894 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Prior = 1073741981 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Q = 113 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Question = 63 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.R = 114 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.RAlt = 1073742054 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.RCtrl = 1073742052 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Return = 13 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Return2 = 1073741982 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.RGui = 1073742055 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Rhyper = 536870919 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Right = 1073741903 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Rightbrace = 125 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Rightbracket = 93 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Rightparen = 41 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Rmeta = 536870917 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.RShift = 1073742053 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.S = 115 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.ScancodeMask = 1073741824 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Scrolllock = 1073741895 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Select = 1073741943 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Semicolon = 59 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Separator = 1073741983 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Slash = 47 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Sleep = 1073742082 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Softleft = 1073742111 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Softright = 1073742112 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Space = 32 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Stop = 1073741944 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Sysreq = 1073741978 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.T = 116 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Tab = 9 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Thousandsseparator = 1073742002 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Tilde = 126 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.U = 117 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Underscore = 95 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Undo = 1073741946 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Unknown = 0 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Up = 1073741906 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.V = 118 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Volumedown = 1073741953 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Volumeup = 1073741952 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.W = 119 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Wake = 1073742083 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.X = 120 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Y = 121 -> Jade.Sdl.Keycode
+Jade.Sdl.Keycode.Z = 122 -> Jade.Sdl.Keycode
+Jade.Sdl.Keymod
+Jade.Sdl.Keymod.Alt = Jade.Sdl.Keymod.LAlt | Jade.Sdl.Keymod.RAlt -> Jade.Sdl.Keymod
+Jade.Sdl.Keymod.Caps = 8192 -> Jade.Sdl.Keymod
+Jade.Sdl.Keymod.Ctrl = Jade.Sdl.Keymod.LCtrl | Jade.Sdl.Keymod.RCtrl -> Jade.Sdl.Keymod
+Jade.Sdl.Keymod.Gui = Jade.Sdl.Keymod.LGui | Jade.Sdl.Keymod.RGui -> Jade.Sdl.Keymod
+Jade.Sdl.Keymod.LAlt = 256 -> Jade.Sdl.Keymod
+Jade.Sdl.Keymod.LCtrl = 64 -> Jade.Sdl.Keymod
+Jade.Sdl.Keymod.Level5 = 4 -> Jade.Sdl.Keymod
+Jade.Sdl.Keymod.LGui = 1024 -> Jade.Sdl.Keymod
+Jade.Sdl.Keymod.LShift = 1 -> Jade.Sdl.Keymod
+Jade.Sdl.Keymod.Mode = 16384 -> Jade.Sdl.Keymod
+Jade.Sdl.Keymod.None = 0 -> Jade.Sdl.Keymod
+Jade.Sdl.Keymod.Num = 4096 -> Jade.Sdl.Keymod
+Jade.Sdl.Keymod.RAlt = 512 -> Jade.Sdl.Keymod
+Jade.Sdl.Keymod.RCtrl = 128 -> Jade.Sdl.Keymod
+Jade.Sdl.Keymod.RGui = 2048 -> Jade.Sdl.Keymod
+Jade.Sdl.Keymod.RShift = 2 -> Jade.Sdl.Keymod
+Jade.Sdl.Keymod.Scroll = 32768 -> Jade.Sdl.Keymod
+Jade.Sdl.Keymod.Shift = Jade.Sdl.Keymod.LShift | Jade.Sdl.Keymod.RShift -> Jade.Sdl.Keymod
+Jade.Sdl.LogCategory
+Jade.Sdl.LogCategory.Application = 0 -> Jade.Sdl.LogCategory
+Jade.Sdl.LogCategory.Assert = 2 -> Jade.Sdl.LogCategory
+Jade.Sdl.LogCategory.Audio = 4 -> Jade.Sdl.LogCategory
+Jade.Sdl.LogCategory.Custom = 19 -> Jade.Sdl.LogCategory
+Jade.Sdl.LogCategory.Error = 1 -> Jade.Sdl.LogCategory
+Jade.Sdl.LogCategory.Gpu = 9 -> Jade.Sdl.LogCategory
+Jade.Sdl.LogCategory.Input = 7 -> Jade.Sdl.LogCategory
+Jade.Sdl.LogCategory.Render = 6 -> Jade.Sdl.LogCategory
+Jade.Sdl.LogCategory.Reserved10 = 18 -> Jade.Sdl.LogCategory
+Jade.Sdl.LogCategory.Reserved2 = 10 -> Jade.Sdl.LogCategory
+Jade.Sdl.LogCategory.Reserved3 = 11 -> Jade.Sdl.LogCategory
+Jade.Sdl.LogCategory.Reserved4 = 12 -> Jade.Sdl.LogCategory
+Jade.Sdl.LogCategory.Reserved5 = 13 -> Jade.Sdl.LogCategory
+Jade.Sdl.LogCategory.Reserved6 = 14 -> Jade.Sdl.LogCategory
+Jade.Sdl.LogCategory.Reserved7 = 15 -> Jade.Sdl.LogCategory
+Jade.Sdl.LogCategory.Reserved8 = 16 -> Jade.Sdl.LogCategory
+Jade.Sdl.LogCategory.Reserved9 = 17 -> Jade.Sdl.LogCategory
+Jade.Sdl.LogCategory.System = 3 -> Jade.Sdl.LogCategory
+Jade.Sdl.LogCategory.Test = 8 -> Jade.Sdl.LogCategory
+Jade.Sdl.LogCategory.Video = 5 -> Jade.Sdl.LogCategory
+Jade.Sdl.LogPriority
+Jade.Sdl.LogPriority.Count = 8 -> Jade.Sdl.LogPriority
+Jade.Sdl.LogPriority.Critical = 7 -> Jade.Sdl.LogPriority
+Jade.Sdl.LogPriority.Debug = 3 -> Jade.Sdl.LogPriority
+Jade.Sdl.LogPriority.Error = 6 -> Jade.Sdl.LogPriority
+Jade.Sdl.LogPriority.Info = 4 -> Jade.Sdl.LogPriority
+Jade.Sdl.LogPriority.Invalid = 0 -> Jade.Sdl.LogPriority
+Jade.Sdl.LogPriority.Trace = 1 -> Jade.Sdl.LogPriority
+Jade.Sdl.LogPriority.Verbose = 2 -> Jade.Sdl.LogPriority
+Jade.Sdl.LogPriority.Warn = 5 -> Jade.Sdl.LogPriority
+Jade.Sdl.MatrixCoefficients
+Jade.Sdl.MatrixCoefficients.Bt2020Cl = 10 -> Jade.Sdl.MatrixCoefficients
+Jade.Sdl.MatrixCoefficients.Bt2020Ncl = 9 -> Jade.Sdl.MatrixCoefficients
+Jade.Sdl.MatrixCoefficients.Bt470bg = 5 -> Jade.Sdl.MatrixCoefficients
+Jade.Sdl.MatrixCoefficients.Bt601 = 6 -> Jade.Sdl.MatrixCoefficients
+Jade.Sdl.MatrixCoefficients.Bt709 = 1 -> Jade.Sdl.MatrixCoefficients
+Jade.Sdl.MatrixCoefficients.ChromaDerivedCl = 13 -> Jade.Sdl.MatrixCoefficients
+Jade.Sdl.MatrixCoefficients.ChromaDerivedNcl = 12 -> Jade.Sdl.MatrixCoefficients
+Jade.Sdl.MatrixCoefficients.Custom = 31 -> Jade.Sdl.MatrixCoefficients
+Jade.Sdl.MatrixCoefficients.Fcc = 4 -> Jade.Sdl.MatrixCoefficients
+Jade.Sdl.MatrixCoefficients.Ictcp = 14 -> Jade.Sdl.MatrixCoefficients
+Jade.Sdl.MatrixCoefficients.Identity = 0 -> Jade.Sdl.MatrixCoefficients
+Jade.Sdl.MatrixCoefficients.Smpte2085 = 11 -> Jade.Sdl.MatrixCoefficients
+Jade.Sdl.MatrixCoefficients.Smpte240 = 7 -> Jade.Sdl.MatrixCoefficients
+Jade.Sdl.MatrixCoefficients.Unspecified = 2 -> Jade.Sdl.MatrixCoefficients
+Jade.Sdl.MatrixCoefficients.Ycgco = 8 -> Jade.Sdl.MatrixCoefficients
+Jade.Sdl.MessageBoxButtonFlags
+Jade.Sdl.MessageBoxButtonFlags.EscapekeyDefault = 2 -> Jade.Sdl.MessageBoxButtonFlags
+Jade.Sdl.MessageBoxButtonFlags.ReturnkeyDefault = 1 -> Jade.Sdl.MessageBoxButtonFlags
+Jade.Sdl.MessageBoxColor
+Jade.Sdl.MessageBoxColor.B -> byte
+Jade.Sdl.MessageBoxColor.G -> byte
+Jade.Sdl.MessageBoxColor.MessageBoxColor() -> void
+Jade.Sdl.MessageBoxColor.R -> byte
+Jade.Sdl.MessageBoxColorScheme
+Jade.Sdl.MessageBoxColorScheme.Colors -> Jade.Sdl.MessageBoxColorSchemeColors
+Jade.Sdl.MessageBoxColorScheme.MessageBoxColorScheme() -> void
+Jade.Sdl.MessageBoxColorSchemeColors
+Jade.Sdl.MessageBoxColorSchemeColors.MessageBoxColorSchemeColors() -> void
+Jade.Sdl.MessageBoxColorType
+Jade.Sdl.MessageBoxColorType.Background = 0 -> Jade.Sdl.MessageBoxColorType
+Jade.Sdl.MessageBoxColorType.ButtonBackground = 3 -> Jade.Sdl.MessageBoxColorType
+Jade.Sdl.MessageBoxColorType.ButtonBorder = 2 -> Jade.Sdl.MessageBoxColorType
+Jade.Sdl.MessageBoxColorType.ButtonSelected = 4 -> Jade.Sdl.MessageBoxColorType
+Jade.Sdl.MessageBoxColorType.Count = 5 -> Jade.Sdl.MessageBoxColorType
+Jade.Sdl.MessageBoxColorType.Text = 1 -> Jade.Sdl.MessageBoxColorType
+Jade.Sdl.MessageBoxFlags
+Jade.Sdl.MessageBoxFlags.ButtonsLeftToRight = 128 -> Jade.Sdl.MessageBoxFlags
+Jade.Sdl.MessageBoxFlags.ButtonsRightToLeft = 256 -> Jade.Sdl.MessageBoxFlags
+Jade.Sdl.MessageBoxFlags.Error = 16 -> Jade.Sdl.MessageBoxFlags
+Jade.Sdl.MessageBoxFlags.Information = 64 -> Jade.Sdl.MessageBoxFlags
+Jade.Sdl.MessageBoxFlags.Warning = 32 -> Jade.Sdl.MessageBoxFlags
+Jade.Sdl.MouseButtonEvent
+Jade.Sdl.MouseButtonEvent.Button -> byte
+Jade.Sdl.MouseButtonEvent.Clicks -> byte
+Jade.Sdl.MouseButtonEvent.Down -> bool
+Jade.Sdl.MouseButtonEvent.MouseButtonEvent() -> void
+Jade.Sdl.MouseButtonEvent.Padding -> byte
+Jade.Sdl.MouseButtonEvent.Reserved -> uint
+Jade.Sdl.MouseButtonEvent.Timestamp -> ulong
+Jade.Sdl.MouseButtonEvent.Type -> Jade.Sdl.EventType
+Jade.Sdl.MouseButtonEvent.Which -> uint
+Jade.Sdl.MouseButtonEvent.WindowId -> uint
+Jade.Sdl.MouseButtonEvent.X -> float
+Jade.Sdl.MouseButtonEvent.Y -> float
+Jade.Sdl.MouseButtonFlags
+Jade.Sdl.MouseButtonFlags.Lmask = 1 -> Jade.Sdl.MouseButtonFlags
+Jade.Sdl.MouseButtonFlags.Mmask = 2 -> Jade.Sdl.MouseButtonFlags
+Jade.Sdl.MouseButtonFlags.Rmask = 4 -> Jade.Sdl.MouseButtonFlags
+Jade.Sdl.MouseButtonFlags.X1mask = 8 -> Jade.Sdl.MouseButtonFlags
+Jade.Sdl.MouseButtonFlags.X2mask = 16 -> Jade.Sdl.MouseButtonFlags
+Jade.Sdl.MouseDeviceEvent
+Jade.Sdl.MouseDeviceEvent.MouseDeviceEvent() -> void
+Jade.Sdl.MouseDeviceEvent.Reserved -> uint
+Jade.Sdl.MouseDeviceEvent.Timestamp -> ulong
+Jade.Sdl.MouseDeviceEvent.Type -> Jade.Sdl.EventType
+Jade.Sdl.MouseDeviceEvent.Which -> uint
+Jade.Sdl.MouseMotionEvent
+Jade.Sdl.MouseMotionEvent.MouseMotionEvent() -> void
+Jade.Sdl.MouseMotionEvent.Reserved -> uint
+Jade.Sdl.MouseMotionEvent.State -> Jade.Sdl.MouseButtonFlags
+Jade.Sdl.MouseMotionEvent.Timestamp -> ulong
+Jade.Sdl.MouseMotionEvent.Type -> Jade.Sdl.EventType
+Jade.Sdl.MouseMotionEvent.Which -> uint
+Jade.Sdl.MouseMotionEvent.WindowId -> uint
+Jade.Sdl.MouseMotionEvent.X -> float
+Jade.Sdl.MouseMotionEvent.Xrel -> float
+Jade.Sdl.MouseMotionEvent.Y -> float
+Jade.Sdl.MouseMotionEvent.Yrel -> float
+Jade.Sdl.MouseWheelDirection
+Jade.Sdl.MouseWheelDirection.Flipped = 1 -> Jade.Sdl.MouseWheelDirection
+Jade.Sdl.MouseWheelDirection.Normal = 0 -> Jade.Sdl.MouseWheelDirection
+Jade.Sdl.MouseWheelEvent
+Jade.Sdl.MouseWheelEvent.Direction -> Jade.Sdl.MouseWheelDirection
+Jade.Sdl.MouseWheelEvent.IntegerX -> int
+Jade.Sdl.MouseWheelEvent.IntegerY -> int
+Jade.Sdl.MouseWheelEvent.MouseWheelEvent() -> void
+Jade.Sdl.MouseWheelEvent.MouseX -> float
+Jade.Sdl.MouseWheelEvent.MouseY -> float
+Jade.Sdl.MouseWheelEvent.Reserved -> uint
+Jade.Sdl.MouseWheelEvent.Timestamp -> ulong
+Jade.Sdl.MouseWheelEvent.Type -> Jade.Sdl.EventType
+Jade.Sdl.MouseWheelEvent.Which -> uint
+Jade.Sdl.MouseWheelEvent.WindowId -> uint
+Jade.Sdl.MouseWheelEvent.X -> float
+Jade.Sdl.MouseWheelEvent.Y -> float
+Jade.Sdl.Mutex
+Jade.Sdl.Mutex.Equals(Jade.Sdl.Mutex other) -> bool
+Jade.Sdl.Mutex.Handle.get -> nint
+Jade.Sdl.Mutex.Mutex() -> void
+Jade.Sdl.Mutex.Mutex(nint handle) -> void
+Jade.Sdl.PackedLayout
+Jade.Sdl.PackedLayout.Layout1010102 = 8 -> Jade.Sdl.PackedLayout
+Jade.Sdl.PackedLayout.Layout1555 = 3 -> Jade.Sdl.PackedLayout
+Jade.Sdl.PackedLayout.Layout2101010 = 7 -> Jade.Sdl.PackedLayout
+Jade.Sdl.PackedLayout.Layout332 = 1 -> Jade.Sdl.PackedLayout
+Jade.Sdl.PackedLayout.Layout4444 = 2 -> Jade.Sdl.PackedLayout
+Jade.Sdl.PackedLayout.Layout5551 = 4 -> Jade.Sdl.PackedLayout
+Jade.Sdl.PackedLayout.Layout565 = 5 -> Jade.Sdl.PackedLayout
+Jade.Sdl.PackedLayout.Layout8888 = 6 -> Jade.Sdl.PackedLayout
+Jade.Sdl.PackedLayout.None = 0 -> Jade.Sdl.PackedLayout
+Jade.Sdl.PackedOrder
+Jade.Sdl.PackedOrder.Abgr = 7 -> Jade.Sdl.PackedOrder
+Jade.Sdl.PackedOrder.Argb = 3 -> Jade.Sdl.PackedOrder
+Jade.Sdl.PackedOrder.Bgra = 8 -> Jade.Sdl.PackedOrder
+Jade.Sdl.PackedOrder.Bgrx = 6 -> Jade.Sdl.PackedOrder
+Jade.Sdl.PackedOrder.None = 0 -> Jade.Sdl.PackedOrder
+Jade.Sdl.PackedOrder.Rgba = 4 -> Jade.Sdl.PackedOrder
+Jade.Sdl.PackedOrder.Rgbx = 2 -> Jade.Sdl.PackedOrder
+Jade.Sdl.PackedOrder.Xbgr = 5 -> Jade.Sdl.PackedOrder
+Jade.Sdl.PackedOrder.Xrgb = 1 -> Jade.Sdl.PackedOrder
+Jade.Sdl.PathInfo
+Jade.Sdl.PathInfo.AccessTime -> long
+Jade.Sdl.PathInfo.CreateTime -> long
+Jade.Sdl.PathInfo.ModifyTime -> long
+Jade.Sdl.PathInfo.PathInfo() -> void
+Jade.Sdl.PathInfo.Size -> ulong
+Jade.Sdl.PathInfo.Type -> Jade.Sdl.PathType
+Jade.Sdl.PathType
+Jade.Sdl.PathType.Directory = 2 -> Jade.Sdl.PathType
+Jade.Sdl.PathType.File = 1 -> Jade.Sdl.PathType
+Jade.Sdl.PathType.None = 0 -> Jade.Sdl.PathType
+Jade.Sdl.PathType.Other = 3 -> Jade.Sdl.PathType
+Jade.Sdl.PenAxis
+Jade.Sdl.PenAxis.Count = 7 -> Jade.Sdl.PenAxis
+Jade.Sdl.PenAxis.Distance = 3 -> Jade.Sdl.PenAxis
+Jade.Sdl.PenAxis.Pressure = 0 -> Jade.Sdl.PenAxis
+Jade.Sdl.PenAxis.Rotation = 4 -> Jade.Sdl.PenAxis
+Jade.Sdl.PenAxis.Slider = 5 -> Jade.Sdl.PenAxis
+Jade.Sdl.PenAxis.TangentialPressure = 6 -> Jade.Sdl.PenAxis
+Jade.Sdl.PenAxis.Xtilt = 1 -> Jade.Sdl.PenAxis
+Jade.Sdl.PenAxis.Ytilt = 2 -> Jade.Sdl.PenAxis
+Jade.Sdl.PenAxisEvent
+Jade.Sdl.PenAxisEvent.Axis -> Jade.Sdl.PenAxis
+Jade.Sdl.PenAxisEvent.DeviceType -> Jade.Sdl.PenDeviceType
+Jade.Sdl.PenAxisEvent.PenAxisEvent() -> void
+Jade.Sdl.PenAxisEvent.PenState -> Jade.Sdl.PenInputFlags
+Jade.Sdl.PenAxisEvent.Reserved -> uint
+Jade.Sdl.PenAxisEvent.Timestamp -> ulong
+Jade.Sdl.PenAxisEvent.Type -> Jade.Sdl.EventType
+Jade.Sdl.PenAxisEvent.Value -> float
+Jade.Sdl.PenAxisEvent.Which -> uint
+Jade.Sdl.PenAxisEvent.WindowId -> uint
+Jade.Sdl.PenAxisEvent.X -> float
+Jade.Sdl.PenAxisEvent.Y -> float
+Jade.Sdl.PenButtonEvent
+Jade.Sdl.PenButtonEvent.Button -> byte
+Jade.Sdl.PenButtonEvent.DeviceType -> Jade.Sdl.PenDeviceType
+Jade.Sdl.PenButtonEvent.Down -> bool
+Jade.Sdl.PenButtonEvent.PenButtonEvent() -> void
+Jade.Sdl.PenButtonEvent.PenState -> Jade.Sdl.PenInputFlags
+Jade.Sdl.PenButtonEvent.Reserved -> uint
+Jade.Sdl.PenButtonEvent.Timestamp -> ulong
+Jade.Sdl.PenButtonEvent.Type -> Jade.Sdl.EventType
+Jade.Sdl.PenButtonEvent.Which -> uint
+Jade.Sdl.PenButtonEvent.WindowId -> uint
+Jade.Sdl.PenButtonEvent.X -> float
+Jade.Sdl.PenButtonEvent.Y -> float
+Jade.Sdl.PenDeviceType
+Jade.Sdl.PenDeviceType.Direct = 1 -> Jade.Sdl.PenDeviceType
+Jade.Sdl.PenDeviceType.Indirect = 2 -> Jade.Sdl.PenDeviceType
+Jade.Sdl.PenDeviceType.Invalid = -1 -> Jade.Sdl.PenDeviceType
+Jade.Sdl.PenDeviceType.Unknown = 0 -> Jade.Sdl.PenDeviceType
+Jade.Sdl.PenInputFlags
+Jade.Sdl.PenInputFlags.Button1 = 2 -> Jade.Sdl.PenInputFlags
+Jade.Sdl.PenInputFlags.Button2 = 4 -> Jade.Sdl.PenInputFlags
+Jade.Sdl.PenInputFlags.Button3 = 8 -> Jade.Sdl.PenInputFlags
+Jade.Sdl.PenInputFlags.Button4 = 16 -> Jade.Sdl.PenInputFlags
+Jade.Sdl.PenInputFlags.Button5 = 32 -> Jade.Sdl.PenInputFlags
+Jade.Sdl.PenInputFlags.Down = 1 -> Jade.Sdl.PenInputFlags
+Jade.Sdl.PenInputFlags.EraserTip = 1073741824 -> Jade.Sdl.PenInputFlags
+Jade.Sdl.PenInputFlags.InProximity = 2147483648 -> Jade.Sdl.PenInputFlags
+Jade.Sdl.PenMotionEvent
+Jade.Sdl.PenMotionEvent.DeviceType -> Jade.Sdl.PenDeviceType
+Jade.Sdl.PenMotionEvent.PenMotionEvent() -> void
+Jade.Sdl.PenMotionEvent.PenState -> Jade.Sdl.PenInputFlags
+Jade.Sdl.PenMotionEvent.Reserved -> uint
+Jade.Sdl.PenMotionEvent.Timestamp -> ulong
+Jade.Sdl.PenMotionEvent.Type -> Jade.Sdl.EventType
+Jade.Sdl.PenMotionEvent.Which -> uint
+Jade.Sdl.PenMotionEvent.WindowId -> uint
+Jade.Sdl.PenMotionEvent.X -> float
+Jade.Sdl.PenMotionEvent.Y -> float
+Jade.Sdl.PenProximityEvent
+Jade.Sdl.PenProximityEvent.DeviceType -> Jade.Sdl.PenDeviceType
+Jade.Sdl.PenProximityEvent.PenProximityEvent() -> void
+Jade.Sdl.PenProximityEvent.PenState -> Jade.Sdl.PenInputFlags
+Jade.Sdl.PenProximityEvent.Reserved -> uint
+Jade.Sdl.PenProximityEvent.Timestamp -> ulong
+Jade.Sdl.PenProximityEvent.Type -> Jade.Sdl.EventType
+Jade.Sdl.PenProximityEvent.Which -> uint
+Jade.Sdl.PenProximityEvent.WindowId -> uint
+Jade.Sdl.PenTouchEvent
+Jade.Sdl.PenTouchEvent.DeviceType -> Jade.Sdl.PenDeviceType
+Jade.Sdl.PenTouchEvent.Down -> bool
+Jade.Sdl.PenTouchEvent.Eraser -> bool
+Jade.Sdl.PenTouchEvent.PenState -> Jade.Sdl.PenInputFlags
+Jade.Sdl.PenTouchEvent.PenTouchEvent() -> void
+Jade.Sdl.PenTouchEvent.Reserved -> uint
+Jade.Sdl.PenTouchEvent.Timestamp -> ulong
+Jade.Sdl.PenTouchEvent.Type -> Jade.Sdl.EventType
+Jade.Sdl.PenTouchEvent.Which -> uint
+Jade.Sdl.PenTouchEvent.WindowId -> uint
+Jade.Sdl.PenTouchEvent.X -> float
+Jade.Sdl.PenTouchEvent.Y -> float
+Jade.Sdl.PinchFingerEvent
+Jade.Sdl.PinchFingerEvent.PinchFingerEvent() -> void
+Jade.Sdl.PinchFingerEvent.Reserved -> uint
+Jade.Sdl.PinchFingerEvent.Scale -> float
+Jade.Sdl.PinchFingerEvent.Timestamp -> ulong
+Jade.Sdl.PinchFingerEvent.Type -> Jade.Sdl.EventType
+Jade.Sdl.PinchFingerEvent.WindowId -> uint
+Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Abgr128Float = 459309072 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Abgr1555 = 359862274 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Abgr2101010 = 376905732 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Abgr32 = 373694468 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Abgr4444 = 359796738 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Abgr64 = 408961032 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Abgr64Float = 442515464 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Abgr8888 = 376840196 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Argb128Float = 456163344 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Argb1555 = 355667970 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Argb2101010 = 372711428 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Argb32 = 377888772 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Argb4444 = 355602434 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Argb64 = 405815304 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Argb64Float = 439369736 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Argb8888 = 372645892 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Bgr24 = 390076419 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Bgr48 = 406859782 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Bgr48Float = 440414214 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Bgr565 = 357896194 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Bgr96Float = 457203724 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Bgra128Float = 458260496 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Bgra32 = 372645892 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Bgra4444 = 360845314 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Bgra5551 = 360976386 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Bgra64 = 407912456 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Bgra64Float = 441466888 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Bgra8888 = 377888772 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Bgrx32 = 370546692 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Bgrx8888 = 375789572 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.ExternalOes = 542328143 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Index1lsb = 286261504 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Index1msb = 287310080 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Index2lsb = 470811136 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Index2msb = 471859712 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Index4lsb = 303039488 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Index4msb = 304088064 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Index8 = 318769153 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Iyuv = 1448433993 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Mjpg = 1196444237 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Nv12 = 842094158 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Nv21 = 825382478 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.P010 = 808530000 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Rgb24 = 386930691 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Rgb332 = 336660481 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Rgb48 = 403714054 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Rgb48Float = 437268486 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Rgb565 = 353701890 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Rgb96Float = 454057996 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Rgba128Float = 455114768 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Rgba32 = 376840196 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Rgba4444 = 356651010 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Rgba5551 = 356782082 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Rgba64 = 404766728 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Rgba64Float = 438321160 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Rgba8888 = 373694468 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Rgbx32 = 374740996 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Rgbx8888 = 371595268 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Unknown = 0 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Uyvy = 1498831189 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Xbgr1555 = 357764866 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Xbgr2101010 = 374808580 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Xbgr32 = 371595268 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Xbgr4444 = 357698562 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Xbgr8888 = 374740996 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Xrgb1555 = 353570562 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Xrgb2101010 = 370614276 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Xrgb32 = 375789572 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Xrgb4444 = 353504258 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Xrgb8888 = 370546692 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Yuy2 = 844715353 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Yv12 = 842094169 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormat.Yvyu = 1431918169 -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormatDetails
+Jade.Sdl.PixelFormatDetails.Abits -> byte
+Jade.Sdl.PixelFormatDetails.Amask -> uint
+Jade.Sdl.PixelFormatDetails.Ashift -> byte
+Jade.Sdl.PixelFormatDetails.Bbits -> byte
+Jade.Sdl.PixelFormatDetails.BitsPerPixel -> byte
+Jade.Sdl.PixelFormatDetails.Bmask -> uint
+Jade.Sdl.PixelFormatDetails.Bshift -> byte
+Jade.Sdl.PixelFormatDetails.BytesPerPixel -> byte
+Jade.Sdl.PixelFormatDetails.Format -> Jade.Sdl.PixelFormat
+Jade.Sdl.PixelFormatDetails.Gbits -> byte
+Jade.Sdl.PixelFormatDetails.Gmask -> uint
+Jade.Sdl.PixelFormatDetails.Gshift -> byte
+Jade.Sdl.PixelFormatDetails.Padding -> Jade.Sdl.PixelFormatDetailsPadding
+Jade.Sdl.PixelFormatDetails.PixelFormatDetails() -> void
+Jade.Sdl.PixelFormatDetails.Rbits -> byte
+Jade.Sdl.PixelFormatDetails.Rmask -> uint
+Jade.Sdl.PixelFormatDetails.Rshift -> byte
+Jade.Sdl.PixelFormatDetailsPadding
+Jade.Sdl.PixelFormatDetailsPadding.PixelFormatDetailsPadding() -> void
+Jade.Sdl.PixelType
+Jade.Sdl.PixelType.Arrayf16 = 10 -> Jade.Sdl.PixelType
+Jade.Sdl.PixelType.Arrayf32 = 11 -> Jade.Sdl.PixelType
+Jade.Sdl.PixelType.Arrayu16 = 8 -> Jade.Sdl.PixelType
+Jade.Sdl.PixelType.Arrayu32 = 9 -> Jade.Sdl.PixelType
+Jade.Sdl.PixelType.Arrayu8 = 7 -> Jade.Sdl.PixelType
+Jade.Sdl.PixelType.Index1 = 1 -> Jade.Sdl.PixelType
+Jade.Sdl.PixelType.Index2 = 12 -> Jade.Sdl.PixelType
+Jade.Sdl.PixelType.Index4 = 2 -> Jade.Sdl.PixelType
+Jade.Sdl.PixelType.Index8 = 3 -> Jade.Sdl.PixelType
+Jade.Sdl.PixelType.Packed16 = 5 -> Jade.Sdl.PixelType
+Jade.Sdl.PixelType.Packed32 = 6 -> Jade.Sdl.PixelType
+Jade.Sdl.PixelType.Packed8 = 4 -> Jade.Sdl.PixelType
+Jade.Sdl.PixelType.Unknown = 0 -> Jade.Sdl.PixelType
+Jade.Sdl.Point
+Jade.Sdl.Point.Point() -> void
+Jade.Sdl.Point.X -> int
+Jade.Sdl.Point.Y -> int
+Jade.Sdl.PowerState
+Jade.Sdl.PowerState.Charged = 4 -> Jade.Sdl.PowerState
+Jade.Sdl.PowerState.Charging = 3 -> Jade.Sdl.PowerState
+Jade.Sdl.PowerState.Error = -1 -> Jade.Sdl.PowerState
+Jade.Sdl.PowerState.NoBattery = 2 -> Jade.Sdl.PowerState
+Jade.Sdl.PowerState.OnBattery = 1 -> Jade.Sdl.PowerState
+Jade.Sdl.PowerState.Unknown = 0 -> Jade.Sdl.PowerState
+Jade.Sdl.Process
+Jade.Sdl.Process.Equals(Jade.Sdl.Process other) -> bool
+Jade.Sdl.Process.Handle.get -> nint
+Jade.Sdl.Process.Process() -> void
+Jade.Sdl.Process.Process(nint handle) -> void
+Jade.Sdl.ProcessIO
+Jade.Sdl.ProcessIO.App = 2 -> Jade.Sdl.ProcessIO
+Jade.Sdl.ProcessIO.Inherited = 0 -> Jade.Sdl.ProcessIO
+Jade.Sdl.ProcessIO.Null = 1 -> Jade.Sdl.ProcessIO
+Jade.Sdl.ProcessIO.Redirect = 3 -> Jade.Sdl.ProcessIO
+Jade.Sdl.ProgressState
+Jade.Sdl.ProgressState.Error = 4 -> Jade.Sdl.ProgressState
+Jade.Sdl.ProgressState.Indeterminate = 1 -> Jade.Sdl.ProgressState
+Jade.Sdl.ProgressState.Invalid = -1 -> Jade.Sdl.ProgressState
+Jade.Sdl.ProgressState.None = 0 -> Jade.Sdl.ProgressState
+Jade.Sdl.ProgressState.Normal = 2 -> Jade.Sdl.ProgressState
+Jade.Sdl.ProgressState.Paused = 3 -> Jade.Sdl.ProgressState
+Jade.Sdl.PropertyType
+Jade.Sdl.PropertyType.Boolean = 5 -> Jade.Sdl.PropertyType
+Jade.Sdl.PropertyType.Float = 4 -> Jade.Sdl.PropertyType
+Jade.Sdl.PropertyType.Invalid = 0 -> Jade.Sdl.PropertyType
+Jade.Sdl.PropertyType.Number = 3 -> Jade.Sdl.PropertyType
+Jade.Sdl.PropertyType.Pointer = 1 -> Jade.Sdl.PropertyType
+Jade.Sdl.PropertyType.String = 2 -> Jade.Sdl.PropertyType
+Jade.Sdl.QuitEvent
+Jade.Sdl.QuitEvent.QuitEvent() -> void
+Jade.Sdl.QuitEvent.Reserved -> uint
+Jade.Sdl.QuitEvent.Timestamp -> ulong
+Jade.Sdl.QuitEvent.Type -> Jade.Sdl.EventType
+Jade.Sdl.Rect
+Jade.Sdl.Rect.H -> int
+Jade.Sdl.Rect.Rect() -> void
+Jade.Sdl.Rect.W -> int
+Jade.Sdl.Rect.X -> int
+Jade.Sdl.Rect.Y -> int
+Jade.Sdl.Renderer
+Jade.Sdl.Renderer.Equals(Jade.Sdl.Renderer other) -> bool
+Jade.Sdl.Renderer.Handle.get -> nint
+Jade.Sdl.Renderer.Renderer() -> void
+Jade.Sdl.Renderer.Renderer(nint handle) -> void
+Jade.Sdl.RendererLogicalPresentation
+Jade.Sdl.RendererLogicalPresentation.Disabled = 0 -> Jade.Sdl.RendererLogicalPresentation
+Jade.Sdl.RendererLogicalPresentation.IntegerScale = 4 -> Jade.Sdl.RendererLogicalPresentation
+Jade.Sdl.RendererLogicalPresentation.Letterbox = 2 -> Jade.Sdl.RendererLogicalPresentation
+Jade.Sdl.RendererLogicalPresentation.Overscan = 3 -> Jade.Sdl.RendererLogicalPresentation
+Jade.Sdl.RendererLogicalPresentation.Stretch = 1 -> Jade.Sdl.RendererLogicalPresentation
+Jade.Sdl.RenderEvent
+Jade.Sdl.RenderEvent.RenderEvent() -> void
+Jade.Sdl.RenderEvent.Reserved -> uint
+Jade.Sdl.RenderEvent.Timestamp -> ulong
+Jade.Sdl.RenderEvent.Type -> Jade.Sdl.EventType
+Jade.Sdl.RenderEvent.WindowId -> uint
+Jade.Sdl.RWLock
+Jade.Sdl.RWLock.Equals(Jade.Sdl.RWLock other) -> bool
+Jade.Sdl.RWLock.Handle.get -> nint
+Jade.Sdl.RWLock.RWLock() -> void
+Jade.Sdl.RWLock.RWLock(nint handle) -> void
+Jade.Sdl.Sandbox
+Jade.Sdl.Sandbox.Flatpak = 2 -> Jade.Sdl.Sandbox
+Jade.Sdl.Sandbox.Macos = 4 -> Jade.Sdl.Sandbox
+Jade.Sdl.Sandbox.None = 0 -> Jade.Sdl.Sandbox
+Jade.Sdl.Sandbox.Snap = 3 -> Jade.Sdl.Sandbox
+Jade.Sdl.Sandbox.UnknownContainer = 1 -> Jade.Sdl.Sandbox
+Jade.Sdl.ScaleMode
+Jade.Sdl.ScaleMode.Invalid = -1 -> Jade.Sdl.ScaleMode
+Jade.Sdl.ScaleMode.Linear = 1 -> Jade.Sdl.ScaleMode
+Jade.Sdl.ScaleMode.Nearest = 0 -> Jade.Sdl.ScaleMode
+Jade.Sdl.ScaleMode.Pixelart = 2 -> Jade.Sdl.ScaleMode
+Jade.Sdl.Scancode
+Jade.Sdl.Scancode.A = 4 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.AcBack = 282 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.AcBookmarks = 286 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.AcClose = 275 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.AcExit = 276 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.AcForward = 283 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.AcHome = 281 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.AcNew = 273 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.AcOpen = 274 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.AcPrint = 278 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.AcProperties = 279 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.AcRefresh = 285 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.AcSave = 277 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.AcSearch = 280 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.AcStop = 284 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Again = 121 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Alterase = 153 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Apostrophe = 52 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Application = 101 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.B = 5 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Backslash = 49 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Backspace = 42 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.C = 6 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Call = 289 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Cancel = 155 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Capslock = 57 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.ChannelDecrement = 261 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.ChannelIncrement = 260 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Clear = 156 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Clearagain = 162 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Comma = 54 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Copy = 124 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Count = 512 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Crsel = 163 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Currencysubunit = 181 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Currencyunit = 180 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Cut = 123 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.D = 7 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Decimalseparator = 179 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Delete = 76 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Down = 81 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.E = 8 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.End = 77 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Endcall = 290 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Equals = 46 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Escape = 41 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Execute = 116 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Exsel = 164 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.F = 9 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.F1 = 58 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.F10 = 67 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.F11 = 68 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.F12 = 69 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.F13 = 104 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.F14 = 105 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.F15 = 106 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.F16 = 107 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.F17 = 108 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.F18 = 109 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.F19 = 110 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.F2 = 59 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.F20 = 111 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.F21 = 112 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.F22 = 113 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.F23 = 114 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.F24 = 115 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.F3 = 60 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.F4 = 61 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.F5 = 62 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.F6 = 63 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.F7 = 64 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.F8 = 65 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.F9 = 66 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Find = 126 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Front = 165 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.G = 10 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Grave = 53 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.H = 11 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Help = 117 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Home = 74 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.I = 12 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Insert = 73 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.International1 = 135 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.International2 = 136 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.International3 = 137 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.International4 = 138 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.International5 = 139 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.International6 = 140 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.International7 = 141 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.International8 = 142 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.International9 = 143 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.J = 13 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.K = 14 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Kp0 = 98 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Kp00 = 176 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Kp000 = 177 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Kp1 = 89 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Kp2 = 90 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Kp3 = 91 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Kp4 = 92 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Kp5 = 93 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Kp6 = 94 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Kp7 = 95 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Kp8 = 96 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Kp9 = 97 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpA = 188 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpAmpersand = 199 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpAt = 206 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpB = 189 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpBackspace = 187 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpBinary = 218 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpC = 190 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpClear = 216 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpClearentry = 217 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpColon = 203 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpComma = 133 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpD = 191 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpDblampersand = 200 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpDblverticalbar = 202 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpDecimal = 220 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpDivide = 84 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpE = 192 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpEnter = 88 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpEquals = 103 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpEqualsas400 = 134 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpExclam = 207 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpF = 193 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpGreater = 198 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpHash = 204 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpHexadecimal = 221 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpLeftbrace = 184 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpLeftparen = 182 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpLess = 197 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpMemadd = 211 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpMemclear = 210 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpMemdivide = 214 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpMemmultiply = 213 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpMemrecall = 209 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpMemstore = 208 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpMemsubtract = 212 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpMinus = 86 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpMultiply = 85 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpOctal = 219 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpPercent = 196 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpPeriod = 99 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpPlus = 87 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpPlusminus = 215 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpPower = 195 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpRightbrace = 185 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpRightparen = 183 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpSpace = 205 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpTab = 186 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpVerticalbar = 201 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.KpXor = 194 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.L = 15 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.LAlt = 226 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Lang1 = 144 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Lang2 = 145 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Lang3 = 146 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Lang4 = 147 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Lang5 = 148 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Lang6 = 149 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Lang7 = 150 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Lang8 = 151 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Lang9 = 152 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.LCtrl = 224 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Left = 80 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Leftbracket = 47 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.LGui = 227 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.LShift = 225 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.M = 16 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.MediaEject = 270 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.MediaFastForward = 265 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.MediaNextTrack = 267 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.MediaPause = 263 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.MediaPlay = 262 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.MediaPlayPause = 271 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.MediaPreviousTrack = 268 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.MediaRecord = 264 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.MediaRewind = 266 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.MediaSelect = 272 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.MediaStop = 269 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Menu = 118 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Minus = 45 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Mode = 257 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Mute = 127 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.N = 17 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Nonusbackslash = 100 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Nonushash = 50 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Numlockclear = 83 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.O = 18 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Oper = 161 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Out = 160 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.P = 19 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Pagedown = 78 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Pageup = 75 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Paste = 125 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Pause = 72 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Period = 55 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Power = 102 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Printscreen = 70 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Prior = 157 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Q = 20 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.R = 21 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.RAlt = 230 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.RCtrl = 228 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Reserved = 400 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Return = 40 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Return2 = 158 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.RGui = 231 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Right = 79 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Rightbracket = 48 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.RShift = 229 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.S = 22 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Scancode0 = 39 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Scancode1 = 30 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Scancode2 = 31 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Scancode3 = 32 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Scancode4 = 33 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Scancode5 = 34 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Scancode6 = 35 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Scancode7 = 36 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Scancode8 = 37 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Scancode9 = 38 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Scrolllock = 71 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Select = 119 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Semicolon = 51 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Separator = 159 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Slash = 56 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Sleep = 258 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Softleft = 287 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Softright = 288 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Space = 44 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Stop = 120 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Sysreq = 154 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.T = 23 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Tab = 43 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Thousandsseparator = 178 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.U = 24 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Undo = 122 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Unknown = 0 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Up = 82 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.V = 25 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Volumedown = 129 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Volumeup = 128 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.W = 26 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Wake = 259 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.X = 27 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Y = 28 -> Jade.Sdl.Scancode
+Jade.Sdl.Scancode.Z = 29 -> Jade.Sdl.Scancode
+Jade.Sdl.Semaphore
+Jade.Sdl.Semaphore.Equals(Jade.Sdl.Semaphore other) -> bool
+Jade.Sdl.Semaphore.Handle.get -> nint
+Jade.Sdl.Semaphore.Semaphore() -> void
+Jade.Sdl.Semaphore.Semaphore(nint handle) -> void
+Jade.Sdl.Sensor
+Jade.Sdl.Sensor.Equals(Jade.Sdl.Sensor other) -> bool
+Jade.Sdl.Sensor.Handle.get -> nint
+Jade.Sdl.Sensor.Sensor() -> void
+Jade.Sdl.Sensor.Sensor(nint handle) -> void
+Jade.Sdl.SensorEvent
+Jade.Sdl.SensorEvent.Data -> Jade.Sdl.SensorEventData
+Jade.Sdl.SensorEvent.Reserved -> uint
+Jade.Sdl.SensorEvent.SensorEvent() -> void
+Jade.Sdl.SensorEvent.SensorTimestamp -> ulong
+Jade.Sdl.SensorEvent.Timestamp -> ulong
+Jade.Sdl.SensorEvent.Type -> Jade.Sdl.EventType
+Jade.Sdl.SensorEvent.Which -> uint
+Jade.Sdl.SensorEventData
+Jade.Sdl.SensorEventData.SensorEventData() -> void
+Jade.Sdl.SensorType
+Jade.Sdl.SensorType.Accel = 1 -> Jade.Sdl.SensorType
+Jade.Sdl.SensorType.AccelL = 3 -> Jade.Sdl.SensorType
+Jade.Sdl.SensorType.AccelR = 5 -> Jade.Sdl.SensorType
+Jade.Sdl.SensorType.Count = 7 -> Jade.Sdl.SensorType
+Jade.Sdl.SensorType.Gyro = 2 -> Jade.Sdl.SensorType
+Jade.Sdl.SensorType.GyroL = 4 -> Jade.Sdl.SensorType
+Jade.Sdl.SensorType.GyroR = 6 -> Jade.Sdl.SensorType
+Jade.Sdl.SensorType.Invalid = -1 -> Jade.Sdl.SensorType
+Jade.Sdl.SensorType.Unknown = 0 -> Jade.Sdl.SensorType
+Jade.Sdl.SharedObject
+Jade.Sdl.SharedObject.Equals(Jade.Sdl.SharedObject other) -> bool
+Jade.Sdl.SharedObject.Handle.get -> nint
+Jade.Sdl.SharedObject.SharedObject() -> void
+Jade.Sdl.SharedObject.SharedObject(nint handle) -> void
+Jade.Sdl.Storage
+Jade.Sdl.Storage.Equals(Jade.Sdl.Storage other) -> bool
+Jade.Sdl.Storage.Handle.get -> nint
+Jade.Sdl.Storage.Storage() -> void
+Jade.Sdl.Storage.Storage(nint handle) -> void
+Jade.Sdl.SurfaceFlags
+Jade.Sdl.SurfaceFlags.Locked = 4 -> Jade.Sdl.SurfaceFlags
+Jade.Sdl.SurfaceFlags.LockNeeded = 2 -> Jade.Sdl.SurfaceFlags
+Jade.Sdl.SurfaceFlags.Preallocated = 1 -> Jade.Sdl.SurfaceFlags
+Jade.Sdl.SurfaceFlags.SimdAligned = 8 -> Jade.Sdl.SurfaceFlags
+Jade.Sdl.SystemCursor
+Jade.Sdl.SystemCursor.Count = 20 -> Jade.Sdl.SystemCursor
+Jade.Sdl.SystemCursor.Crosshair = 3 -> Jade.Sdl.SystemCursor
+Jade.Sdl.SystemCursor.Default = 0 -> Jade.Sdl.SystemCursor
+Jade.Sdl.SystemCursor.EResize = 15 -> Jade.Sdl.SystemCursor
+Jade.Sdl.SystemCursor.EwResize = 7 -> Jade.Sdl.SystemCursor
+Jade.Sdl.SystemCursor.Move = 9 -> Jade.Sdl.SystemCursor
+Jade.Sdl.SystemCursor.NeResize = 14 -> Jade.Sdl.SystemCursor
+Jade.Sdl.SystemCursor.NeswResize = 6 -> Jade.Sdl.SystemCursor
+Jade.Sdl.SystemCursor.NotAllowed = 10 -> Jade.Sdl.SystemCursor
+Jade.Sdl.SystemCursor.NResize = 13 -> Jade.Sdl.SystemCursor
+Jade.Sdl.SystemCursor.NsResize = 8 -> Jade.Sdl.SystemCursor
+Jade.Sdl.SystemCursor.NwResize = 12 -> Jade.Sdl.SystemCursor
+Jade.Sdl.SystemCursor.NwseResize = 5 -> Jade.Sdl.SystemCursor
+Jade.Sdl.SystemCursor.Pointer = 11 -> Jade.Sdl.SystemCursor
+Jade.Sdl.SystemCursor.Progress = 4 -> Jade.Sdl.SystemCursor
+Jade.Sdl.SystemCursor.SeResize = 16 -> Jade.Sdl.SystemCursor
+Jade.Sdl.SystemCursor.SResize = 17 -> Jade.Sdl.SystemCursor
+Jade.Sdl.SystemCursor.SwResize = 18 -> Jade.Sdl.SystemCursor
+Jade.Sdl.SystemCursor.Text = 1 -> Jade.Sdl.SystemCursor
+Jade.Sdl.SystemCursor.Wait = 2 -> Jade.Sdl.SystemCursor
+Jade.Sdl.SystemCursor.WResize = 19 -> Jade.Sdl.SystemCursor
+Jade.Sdl.SystemTheme
+Jade.Sdl.SystemTheme.Dark = 2 -> Jade.Sdl.SystemTheme
+Jade.Sdl.SystemTheme.Light = 1 -> Jade.Sdl.SystemTheme
+Jade.Sdl.SystemTheme.Unknown = 0 -> Jade.Sdl.SystemTheme
+Jade.Sdl.TextInputType
+Jade.Sdl.TextInputType.Number = 6 -> Jade.Sdl.TextInputType
+Jade.Sdl.TextInputType.NumberPasswordHidden = 7 -> Jade.Sdl.TextInputType
+Jade.Sdl.TextInputType.NumberPasswordVisible = 8 -> Jade.Sdl.TextInputType
+Jade.Sdl.TextInputType.Text = 0 -> Jade.Sdl.TextInputType
+Jade.Sdl.TextInputType.TextEmail = 2 -> Jade.Sdl.TextInputType
+Jade.Sdl.TextInputType.TextName = 1 -> Jade.Sdl.TextInputType
+Jade.Sdl.TextInputType.TextPasswordHidden = 4 -> Jade.Sdl.TextInputType
+Jade.Sdl.TextInputType.TextPasswordVisible = 5 -> Jade.Sdl.TextInputType
+Jade.Sdl.TextInputType.TextUsername = 3 -> Jade.Sdl.TextInputType
+Jade.Sdl.Texture
+Jade.Sdl.Texture.Format -> Jade.Sdl.PixelFormat
+Jade.Sdl.Texture.H -> int
+Jade.Sdl.Texture.Refcount -> int
+Jade.Sdl.Texture.Texture() -> void
+Jade.Sdl.Texture.W -> int
+Jade.Sdl.TextureAccess
+Jade.Sdl.TextureAccess.Static = 0 -> Jade.Sdl.TextureAccess
+Jade.Sdl.TextureAccess.Streaming = 1 -> Jade.Sdl.TextureAccess
+Jade.Sdl.TextureAccess.Target = 2 -> Jade.Sdl.TextureAccess
+Jade.Sdl.TextureAddressMode
+Jade.Sdl.TextureAddressMode.Auto = 0 -> Jade.Sdl.TextureAddressMode
+Jade.Sdl.TextureAddressMode.Clamp = 1 -> Jade.Sdl.TextureAddressMode
+Jade.Sdl.TextureAddressMode.Invalid = -1 -> Jade.Sdl.TextureAddressMode
+Jade.Sdl.TextureAddressMode.Wrap = 2 -> Jade.Sdl.TextureAddressMode
+Jade.Sdl.Thread
+Jade.Sdl.Thread.Equals(Jade.Sdl.Thread other) -> bool
+Jade.Sdl.Thread.Handle.get -> nint
+Jade.Sdl.Thread.Thread() -> void
+Jade.Sdl.Thread.Thread(nint handle) -> void
+Jade.Sdl.ThreadPriority
+Jade.Sdl.ThreadPriority.High = 2 -> Jade.Sdl.ThreadPriority
+Jade.Sdl.ThreadPriority.Low = 0 -> Jade.Sdl.ThreadPriority
+Jade.Sdl.ThreadPriority.Normal = 1 -> Jade.Sdl.ThreadPriority
+Jade.Sdl.ThreadPriority.TimeCritical = 3 -> Jade.Sdl.ThreadPriority
+Jade.Sdl.ThreadState
+Jade.Sdl.ThreadState.Alive = 1 -> Jade.Sdl.ThreadState
+Jade.Sdl.ThreadState.Complete = 3 -> Jade.Sdl.ThreadState
+Jade.Sdl.ThreadState.Detached = 2 -> Jade.Sdl.ThreadState
+Jade.Sdl.ThreadState.Unknown = 0 -> Jade.Sdl.ThreadState
+Jade.Sdl.TimeFormat
+Jade.Sdl.TimeFormat.Format12hr = 1 -> Jade.Sdl.TimeFormat
+Jade.Sdl.TimeFormat.Format24hr = 0 -> Jade.Sdl.TimeFormat
+Jade.Sdl.TouchDeviceType
+Jade.Sdl.TouchDeviceType.Direct = 0 -> Jade.Sdl.TouchDeviceType
+Jade.Sdl.TouchDeviceType.IndirectAbsolute = 1 -> Jade.Sdl.TouchDeviceType
+Jade.Sdl.TouchDeviceType.IndirectRelative = 2 -> Jade.Sdl.TouchDeviceType
+Jade.Sdl.TouchDeviceType.Invalid = -1 -> Jade.Sdl.TouchDeviceType
+Jade.Sdl.TouchFingerEvent
+Jade.Sdl.TouchFingerEvent.Dx -> float
+Jade.Sdl.TouchFingerEvent.Dy -> float
+Jade.Sdl.TouchFingerEvent.FingerId -> ulong
+Jade.Sdl.TouchFingerEvent.Pressure -> float
+Jade.Sdl.TouchFingerEvent.Reserved -> uint
+Jade.Sdl.TouchFingerEvent.Timestamp -> ulong
+Jade.Sdl.TouchFingerEvent.TouchFingerEvent() -> void
+Jade.Sdl.TouchFingerEvent.TouchId -> ulong
+Jade.Sdl.TouchFingerEvent.Type -> Jade.Sdl.EventType
+Jade.Sdl.TouchFingerEvent.WindowId -> uint
+Jade.Sdl.TouchFingerEvent.X -> float
+Jade.Sdl.TouchFingerEvent.Y -> float
+Jade.Sdl.TransferCharacteristics
+Jade.Sdl.TransferCharacteristics.Bt1361 = 12 -> Jade.Sdl.TransferCharacteristics
+Jade.Sdl.TransferCharacteristics.Bt202010bit = 14 -> Jade.Sdl.TransferCharacteristics
+Jade.Sdl.TransferCharacteristics.Bt202012bit = 15 -> Jade.Sdl.TransferCharacteristics
+Jade.Sdl.TransferCharacteristics.Bt601 = 6 -> Jade.Sdl.TransferCharacteristics
+Jade.Sdl.TransferCharacteristics.Bt709 = 1 -> Jade.Sdl.TransferCharacteristics
+Jade.Sdl.TransferCharacteristics.Custom = 31 -> Jade.Sdl.TransferCharacteristics
+Jade.Sdl.TransferCharacteristics.Gamma22 = 4 -> Jade.Sdl.TransferCharacteristics
+Jade.Sdl.TransferCharacteristics.Gamma28 = 5 -> Jade.Sdl.TransferCharacteristics
+Jade.Sdl.TransferCharacteristics.Hlg = 18 -> Jade.Sdl.TransferCharacteristics
+Jade.Sdl.TransferCharacteristics.Iec61966 = 11 -> Jade.Sdl.TransferCharacteristics
+Jade.Sdl.TransferCharacteristics.Linear = 8 -> Jade.Sdl.TransferCharacteristics
+Jade.Sdl.TransferCharacteristics.Log100 = 9 -> Jade.Sdl.TransferCharacteristics
+Jade.Sdl.TransferCharacteristics.Log100Sqrt10 = 10 -> Jade.Sdl.TransferCharacteristics
+Jade.Sdl.TransferCharacteristics.Pq = 16 -> Jade.Sdl.TransferCharacteristics
+Jade.Sdl.TransferCharacteristics.Smpte240 = 7 -> Jade.Sdl.TransferCharacteristics
+Jade.Sdl.TransferCharacteristics.Smpte428 = 17 -> Jade.Sdl.TransferCharacteristics
+Jade.Sdl.TransferCharacteristics.Srgb = 13 -> Jade.Sdl.TransferCharacteristics
+Jade.Sdl.TransferCharacteristics.Unknown = 0 -> Jade.Sdl.TransferCharacteristics
+Jade.Sdl.TransferCharacteristics.Unspecified = 2 -> Jade.Sdl.TransferCharacteristics
+Jade.Sdl.Tray
+Jade.Sdl.Tray.Equals(Jade.Sdl.Tray other) -> bool
+Jade.Sdl.Tray.Handle.get -> nint
+Jade.Sdl.Tray.Tray() -> void
+Jade.Sdl.Tray.Tray(nint handle) -> void
+Jade.Sdl.TrayEntry
+Jade.Sdl.TrayEntry.Equals(Jade.Sdl.TrayEntry other) -> bool
+Jade.Sdl.TrayEntry.Handle.get -> nint
+Jade.Sdl.TrayEntry.TrayEntry() -> void
+Jade.Sdl.TrayEntry.TrayEntry(nint handle) -> void
+Jade.Sdl.TrayEntryFlags
+Jade.Sdl.TrayEntryFlags.Button = 1 -> Jade.Sdl.TrayEntryFlags
+Jade.Sdl.TrayEntryFlags.Checkbox = 2 -> Jade.Sdl.TrayEntryFlags
+Jade.Sdl.TrayEntryFlags.Checked = 1073741824 -> Jade.Sdl.TrayEntryFlags
+Jade.Sdl.TrayEntryFlags.Disabled = 2147483648 -> Jade.Sdl.TrayEntryFlags
+Jade.Sdl.TrayEntryFlags.Submenu = 4 -> Jade.Sdl.TrayEntryFlags
+Jade.Sdl.TrayMenu
+Jade.Sdl.TrayMenu.Equals(Jade.Sdl.TrayMenu other) -> bool
+Jade.Sdl.TrayMenu.Handle.get -> nint
+Jade.Sdl.TrayMenu.TrayMenu() -> void
+Jade.Sdl.TrayMenu.TrayMenu(nint handle) -> void
+Jade.Sdl.Vertex
+Jade.Sdl.Vertex.Color -> Jade.Sdl.FColor
+Jade.Sdl.Vertex.Position -> Jade.Sdl.FPoint
+Jade.Sdl.Vertex.TexCoord -> Jade.Sdl.FPoint
+Jade.Sdl.Vertex.Vertex() -> void
+Jade.Sdl.VirtualJoystickSensorDesc
+Jade.Sdl.VirtualJoystickSensorDesc.Rate -> float
+Jade.Sdl.VirtualJoystickSensorDesc.Type -> Jade.Sdl.SensorType
+Jade.Sdl.VirtualJoystickSensorDesc.VirtualJoystickSensorDesc() -> void
+Jade.Sdl.VirtualJoystickTouchpadDesc
+Jade.Sdl.VirtualJoystickTouchpadDesc.Nfingers -> ushort
+Jade.Sdl.VirtualJoystickTouchpadDesc.Padding -> Jade.Sdl.VirtualJoystickTouchpadDescPadding
+Jade.Sdl.VirtualJoystickTouchpadDesc.VirtualJoystickTouchpadDesc() -> void
+Jade.Sdl.VirtualJoystickTouchpadDescPadding
+Jade.Sdl.VirtualJoystickTouchpadDescPadding.VirtualJoystickTouchpadDescPadding() -> void
+Jade.Sdl.Window
+Jade.Sdl.Window.Equals(Jade.Sdl.Window other) -> bool
+Jade.Sdl.Window.Handle.get -> nint
+Jade.Sdl.Window.Window() -> void
+Jade.Sdl.Window.Window(nint handle) -> void
+Jade.Sdl.WindowEvent
+Jade.Sdl.WindowEvent.Data1 -> int
+Jade.Sdl.WindowEvent.Data2 -> int
+Jade.Sdl.WindowEvent.Reserved -> uint
+Jade.Sdl.WindowEvent.Timestamp -> ulong
+Jade.Sdl.WindowEvent.Type -> Jade.Sdl.EventType
+Jade.Sdl.WindowEvent.WindowEvent() -> void
+Jade.Sdl.WindowEvent.WindowId -> uint
+Jade.Sdl.WindowFlags
+Jade.Sdl.WindowFlags.AlwaysOnTop = 65536 -> Jade.Sdl.WindowFlags
+Jade.Sdl.WindowFlags.Borderless = 16 -> Jade.Sdl.WindowFlags
+Jade.Sdl.WindowFlags.External = 2048 -> Jade.Sdl.WindowFlags
+Jade.Sdl.WindowFlags.FillDocument = 2097152 -> Jade.Sdl.WindowFlags
+Jade.Sdl.WindowFlags.Fullscreen = 1 -> Jade.Sdl.WindowFlags
+Jade.Sdl.WindowFlags.Hidden = 8 -> Jade.Sdl.WindowFlags
+Jade.Sdl.WindowFlags.HighPixelDensity = 8192 -> Jade.Sdl.WindowFlags
+Jade.Sdl.WindowFlags.InputFocus = 512 -> Jade.Sdl.WindowFlags
+Jade.Sdl.WindowFlags.KeyboardGrabbed = 1048576 -> Jade.Sdl.WindowFlags
+Jade.Sdl.WindowFlags.Maximized = 128 -> Jade.Sdl.WindowFlags
+Jade.Sdl.WindowFlags.Metal = 536870912 -> Jade.Sdl.WindowFlags
+Jade.Sdl.WindowFlags.Minimized = 64 -> Jade.Sdl.WindowFlags
+Jade.Sdl.WindowFlags.Modal = 4096 -> Jade.Sdl.WindowFlags
+Jade.Sdl.WindowFlags.MouseCapture = 16384 -> Jade.Sdl.WindowFlags
+Jade.Sdl.WindowFlags.MouseFocus = 1024 -> Jade.Sdl.WindowFlags
+Jade.Sdl.WindowFlags.MouseGrabbed = 256 -> Jade.Sdl.WindowFlags
+Jade.Sdl.WindowFlags.MouseRelativeMode = 32768 -> Jade.Sdl.WindowFlags
+Jade.Sdl.WindowFlags.NotFocusable = 2147483648 -> Jade.Sdl.WindowFlags
+Jade.Sdl.WindowFlags.Occluded = 4 -> Jade.Sdl.WindowFlags
+Jade.Sdl.WindowFlags.OpenGL = 2 -> Jade.Sdl.WindowFlags
+Jade.Sdl.WindowFlags.PopupMenu = 524288 -> Jade.Sdl.WindowFlags
+Jade.Sdl.WindowFlags.Resizable = 32 -> Jade.Sdl.WindowFlags
+Jade.Sdl.WindowFlags.Tooltip = 262144 -> Jade.Sdl.WindowFlags
+Jade.Sdl.WindowFlags.Transparent = 1073741824 -> Jade.Sdl.WindowFlags
+Jade.Sdl.WindowFlags.Utility = 131072 -> Jade.Sdl.WindowFlags
+Jade.Sdl.WindowFlags.Vulkan = 268435456 -> Jade.Sdl.WindowFlags
+Jade.Sdl.WindowsMessage
+Jade.Sdl.WindowsMessage.Equals(Jade.Sdl.WindowsMessage other) -> bool
+Jade.Sdl.WindowsMessage.Handle.get -> nint
+Jade.Sdl.WindowsMessage.WindowsMessage() -> void
+Jade.Sdl.WindowsMessage.WindowsMessage(nint handle) -> void
+Jade.Sdl.XEvent
+Jade.Sdl.XEvent.Equals(Jade.Sdl.XEvent other) -> bool
+Jade.Sdl.XEvent.Handle.get -> nint
+Jade.Sdl.XEvent.XEvent() -> void
+Jade.Sdl.XEvent.XEvent(nint handle) -> void
+override Jade.Sdl.AsyncIO.Equals(object? obj) -> bool
+override Jade.Sdl.AsyncIO.GetHashCode() -> int
+override Jade.Sdl.AsyncIOQueue.Equals(object? obj) -> bool
+override Jade.Sdl.AsyncIOQueue.GetHashCode() -> int
+override Jade.Sdl.Camera.Equals(object? obj) -> bool
+override Jade.Sdl.Camera.GetHashCode() -> int
+override Jade.Sdl.Condition.Equals(object? obj) -> bool
+override Jade.Sdl.Condition.GetHashCode() -> int
+override Jade.Sdl.Cursor.Equals(object? obj) -> bool
+override Jade.Sdl.Cursor.GetHashCode() -> int
+override Jade.Sdl.DisplayModeData.Equals(object? obj) -> bool
+override Jade.Sdl.DisplayModeData.GetHashCode() -> int
+override Jade.Sdl.Environment.Equals(object? obj) -> bool
+override Jade.Sdl.Environment.GetHashCode() -> int
+override Jade.Sdl.Gamepad.Equals(object? obj) -> bool
+override Jade.Sdl.Gamepad.GetHashCode() -> int
+override Jade.Sdl.GLContext.Equals(object? obj) -> bool
+override Jade.Sdl.GLContext.GetHashCode() -> int
+override Jade.Sdl.GpuBuffer.Equals(object? obj) -> bool
+override Jade.Sdl.GpuBuffer.GetHashCode() -> int
+override Jade.Sdl.GpuCommandBuffer.Equals(object? obj) -> bool
+override Jade.Sdl.GpuCommandBuffer.GetHashCode() -> int
+override Jade.Sdl.GpuComputePass.Equals(object? obj) -> bool
+override Jade.Sdl.GpuComputePass.GetHashCode() -> int
+override Jade.Sdl.GpuComputePipeline.Equals(object? obj) -> bool
+override Jade.Sdl.GpuComputePipeline.GetHashCode() -> int
+override Jade.Sdl.GpuCopyPass.Equals(object? obj) -> bool
+override Jade.Sdl.GpuCopyPass.GetHashCode() -> int
+override Jade.Sdl.GpuDevice.Equals(object? obj) -> bool
+override Jade.Sdl.GpuDevice.GetHashCode() -> int
+override Jade.Sdl.GpuFence.Equals(object? obj) -> bool
+override Jade.Sdl.GpuFence.GetHashCode() -> int
+override Jade.Sdl.GpuGraphicsPipeline.Equals(object? obj) -> bool
+override Jade.Sdl.GpuGraphicsPipeline.GetHashCode() -> int
+override Jade.Sdl.GpuRenderPass.Equals(object? obj) -> bool
+override Jade.Sdl.GpuRenderPass.GetHashCode() -> int
+override Jade.Sdl.GpuRenderState.Equals(object? obj) -> bool
+override Jade.Sdl.GpuRenderState.GetHashCode() -> int
+override Jade.Sdl.GpuSampler.Equals(object? obj) -> bool
+override Jade.Sdl.GpuSampler.GetHashCode() -> int
+override Jade.Sdl.GpuShader.Equals(object? obj) -> bool
+override Jade.Sdl.GpuShader.GetHashCode() -> int
+override Jade.Sdl.GpuTexture.Equals(object? obj) -> bool
+override Jade.Sdl.GpuTexture.GetHashCode() -> int
+override Jade.Sdl.GpuTransferBuffer.Equals(object? obj) -> bool
+override Jade.Sdl.GpuTransferBuffer.GetHashCode() -> int
+override Jade.Sdl.Haptic.Equals(object? obj) -> bool
+override Jade.Sdl.Haptic.GetHashCode() -> int
+override Jade.Sdl.HidDevice.Equals(object? obj) -> bool
+override Jade.Sdl.HidDevice.GetHashCode() -> int
+override Jade.Sdl.Iconv.Equals(object? obj) -> bool
+override Jade.Sdl.Iconv.GetHashCode() -> int
+override Jade.Sdl.IOStream.Equals(object? obj) -> bool
+override Jade.Sdl.IOStream.GetHashCode() -> int
+override Jade.Sdl.Joystick.Equals(object? obj) -> bool
+override Jade.Sdl.Joystick.GetHashCode() -> int
+override Jade.Sdl.Mutex.Equals(object? obj) -> bool
+override Jade.Sdl.Mutex.GetHashCode() -> int
+override Jade.Sdl.Process.Equals(object? obj) -> bool
+override Jade.Sdl.Process.GetHashCode() -> int
+override Jade.Sdl.Renderer.Equals(object? obj) -> bool
+override Jade.Sdl.Renderer.GetHashCode() -> int
+override Jade.Sdl.RWLock.Equals(object? obj) -> bool
+override Jade.Sdl.RWLock.GetHashCode() -> int
+override Jade.Sdl.Semaphore.Equals(object? obj) -> bool
+override Jade.Sdl.Semaphore.GetHashCode() -> int
+override Jade.Sdl.Sensor.Equals(object? obj) -> bool
+override Jade.Sdl.Sensor.GetHashCode() -> int
+override Jade.Sdl.SharedObject.Equals(object? obj) -> bool
+override Jade.Sdl.SharedObject.GetHashCode() -> int
+override Jade.Sdl.Storage.Equals(object? obj) -> bool
+override Jade.Sdl.Storage.GetHashCode() -> int
+override Jade.Sdl.Thread.Equals(object? obj) -> bool
+override Jade.Sdl.Thread.GetHashCode() -> int
+override Jade.Sdl.Tray.Equals(object? obj) -> bool
+override Jade.Sdl.Tray.GetHashCode() -> int
+override Jade.Sdl.TrayEntry.Equals(object? obj) -> bool
+override Jade.Sdl.TrayEntry.GetHashCode() -> int
+override Jade.Sdl.TrayMenu.Equals(object? obj) -> bool
+override Jade.Sdl.TrayMenu.GetHashCode() -> int
+override Jade.Sdl.Window.Equals(object? obj) -> bool
+override Jade.Sdl.Window.GetHashCode() -> int
+override Jade.Sdl.WindowsMessage.Equals(object? obj) -> bool
+override Jade.Sdl.WindowsMessage.GetHashCode() -> int
+override Jade.Sdl.XEvent.Equals(object? obj) -> bool
+override Jade.Sdl.XEvent.GetHashCode() -> int
+static Jade.Sdl.AsyncIO.operator !=(Jade.Sdl.AsyncIO left, Jade.Sdl.AsyncIO right) -> bool
+static Jade.Sdl.AsyncIO.operator ==(Jade.Sdl.AsyncIO left, Jade.Sdl.AsyncIO right) -> bool
+static Jade.Sdl.AsyncIOQueue.operator !=(Jade.Sdl.AsyncIOQueue left, Jade.Sdl.AsyncIOQueue right) -> bool
+static Jade.Sdl.AsyncIOQueue.operator ==(Jade.Sdl.AsyncIOQueue left, Jade.Sdl.AsyncIOQueue right) -> bool
+static Jade.Sdl.Camera.operator !=(Jade.Sdl.Camera left, Jade.Sdl.Camera right) -> bool
+static Jade.Sdl.Camera.operator ==(Jade.Sdl.Camera left, Jade.Sdl.Camera right) -> bool
+static Jade.Sdl.Condition.operator !=(Jade.Sdl.Condition left, Jade.Sdl.Condition right) -> bool
+static Jade.Sdl.Condition.operator ==(Jade.Sdl.Condition left, Jade.Sdl.Condition right) -> bool
+static Jade.Sdl.Cursor.operator !=(Jade.Sdl.Cursor left, Jade.Sdl.Cursor right) -> bool
+static Jade.Sdl.Cursor.operator ==(Jade.Sdl.Cursor left, Jade.Sdl.Cursor right) -> bool
+static Jade.Sdl.DisplayModeData.operator !=(Jade.Sdl.DisplayModeData left, Jade.Sdl.DisplayModeData right) -> bool
+static Jade.Sdl.DisplayModeData.operator ==(Jade.Sdl.DisplayModeData left, Jade.Sdl.DisplayModeData right) -> bool
+static Jade.Sdl.Environment.operator !=(Jade.Sdl.Environment left, Jade.Sdl.Environment right) -> bool
+static Jade.Sdl.Environment.operator ==(Jade.Sdl.Environment left, Jade.Sdl.Environment right) -> bool
+static Jade.Sdl.Gamepad.operator !=(Jade.Sdl.Gamepad left, Jade.Sdl.Gamepad right) -> bool
+static Jade.Sdl.Gamepad.operator ==(Jade.Sdl.Gamepad left, Jade.Sdl.Gamepad right) -> bool
+static Jade.Sdl.GLContext.operator !=(Jade.Sdl.GLContext left, Jade.Sdl.GLContext right) -> bool
+static Jade.Sdl.GLContext.operator ==(Jade.Sdl.GLContext left, Jade.Sdl.GLContext right) -> bool
+static Jade.Sdl.GpuBuffer.operator !=(Jade.Sdl.GpuBuffer left, Jade.Sdl.GpuBuffer right) -> bool
+static Jade.Sdl.GpuBuffer.operator ==(Jade.Sdl.GpuBuffer left, Jade.Sdl.GpuBuffer right) -> bool
+static Jade.Sdl.GpuCommandBuffer.operator !=(Jade.Sdl.GpuCommandBuffer left, Jade.Sdl.GpuCommandBuffer right) -> bool
+static Jade.Sdl.GpuCommandBuffer.operator ==(Jade.Sdl.GpuCommandBuffer left, Jade.Sdl.GpuCommandBuffer right) -> bool
+static Jade.Sdl.GpuComputePass.operator !=(Jade.Sdl.GpuComputePass left, Jade.Sdl.GpuComputePass right) -> bool
+static Jade.Sdl.GpuComputePass.operator ==(Jade.Sdl.GpuComputePass left, Jade.Sdl.GpuComputePass right) -> bool
+static Jade.Sdl.GpuComputePipeline.operator !=(Jade.Sdl.GpuComputePipeline left, Jade.Sdl.GpuComputePipeline right) -> bool
+static Jade.Sdl.GpuComputePipeline.operator ==(Jade.Sdl.GpuComputePipeline left, Jade.Sdl.GpuComputePipeline right) -> bool
+static Jade.Sdl.GpuCopyPass.operator !=(Jade.Sdl.GpuCopyPass left, Jade.Sdl.GpuCopyPass right) -> bool
+static Jade.Sdl.GpuCopyPass.operator ==(Jade.Sdl.GpuCopyPass left, Jade.Sdl.GpuCopyPass right) -> bool
+static Jade.Sdl.GpuDevice.operator !=(Jade.Sdl.GpuDevice left, Jade.Sdl.GpuDevice right) -> bool
+static Jade.Sdl.GpuDevice.operator ==(Jade.Sdl.GpuDevice left, Jade.Sdl.GpuDevice right) -> bool
+static Jade.Sdl.GpuFence.operator !=(Jade.Sdl.GpuFence left, Jade.Sdl.GpuFence right) -> bool
+static Jade.Sdl.GpuFence.operator ==(Jade.Sdl.GpuFence left, Jade.Sdl.GpuFence right) -> bool
+static Jade.Sdl.GpuGraphicsPipeline.operator !=(Jade.Sdl.GpuGraphicsPipeline left, Jade.Sdl.GpuGraphicsPipeline right) -> bool
+static Jade.Sdl.GpuGraphicsPipeline.operator ==(Jade.Sdl.GpuGraphicsPipeline left, Jade.Sdl.GpuGraphicsPipeline right) -> bool
+static Jade.Sdl.GpuRenderPass.operator !=(Jade.Sdl.GpuRenderPass left, Jade.Sdl.GpuRenderPass right) -> bool
+static Jade.Sdl.GpuRenderPass.operator ==(Jade.Sdl.GpuRenderPass left, Jade.Sdl.GpuRenderPass right) -> bool
+static Jade.Sdl.GpuRenderState.operator !=(Jade.Sdl.GpuRenderState left, Jade.Sdl.GpuRenderState right) -> bool
+static Jade.Sdl.GpuRenderState.operator ==(Jade.Sdl.GpuRenderState left, Jade.Sdl.GpuRenderState right) -> bool
+static Jade.Sdl.GpuSampler.operator !=(Jade.Sdl.GpuSampler left, Jade.Sdl.GpuSampler right) -> bool
+static Jade.Sdl.GpuSampler.operator ==(Jade.Sdl.GpuSampler left, Jade.Sdl.GpuSampler right) -> bool
+static Jade.Sdl.GpuShader.operator !=(Jade.Sdl.GpuShader left, Jade.Sdl.GpuShader right) -> bool
+static Jade.Sdl.GpuShader.operator ==(Jade.Sdl.GpuShader left, Jade.Sdl.GpuShader right) -> bool
+static Jade.Sdl.GpuTexture.operator !=(Jade.Sdl.GpuTexture left, Jade.Sdl.GpuTexture right) -> bool
+static Jade.Sdl.GpuTexture.operator ==(Jade.Sdl.GpuTexture left, Jade.Sdl.GpuTexture right) -> bool
+static Jade.Sdl.GpuTransferBuffer.operator !=(Jade.Sdl.GpuTransferBuffer left, Jade.Sdl.GpuTransferBuffer right) -> bool
+static Jade.Sdl.GpuTransferBuffer.operator ==(Jade.Sdl.GpuTransferBuffer left, Jade.Sdl.GpuTransferBuffer right) -> bool
+static Jade.Sdl.Haptic.operator !=(Jade.Sdl.Haptic left, Jade.Sdl.Haptic right) -> bool
+static Jade.Sdl.Haptic.operator ==(Jade.Sdl.Haptic left, Jade.Sdl.Haptic right) -> bool
+static Jade.Sdl.HidDevice.operator !=(Jade.Sdl.HidDevice left, Jade.Sdl.HidDevice right) -> bool
+static Jade.Sdl.HidDevice.operator ==(Jade.Sdl.HidDevice left, Jade.Sdl.HidDevice right) -> bool
+static Jade.Sdl.Iconv.operator !=(Jade.Sdl.Iconv left, Jade.Sdl.Iconv right) -> bool
+static Jade.Sdl.Iconv.operator ==(Jade.Sdl.Iconv left, Jade.Sdl.Iconv right) -> bool
+static Jade.Sdl.IOStream.operator !=(Jade.Sdl.IOStream left, Jade.Sdl.IOStream right) -> bool
+static Jade.Sdl.IOStream.operator ==(Jade.Sdl.IOStream left, Jade.Sdl.IOStream right) -> bool
+static Jade.Sdl.Joystick.operator !=(Jade.Sdl.Joystick left, Jade.Sdl.Joystick right) -> bool
+static Jade.Sdl.Joystick.operator ==(Jade.Sdl.Joystick left, Jade.Sdl.Joystick right) -> bool
+static Jade.Sdl.Mutex.operator !=(Jade.Sdl.Mutex left, Jade.Sdl.Mutex right) -> bool
+static Jade.Sdl.Mutex.operator ==(Jade.Sdl.Mutex left, Jade.Sdl.Mutex right) -> bool
+static Jade.Sdl.Process.operator !=(Jade.Sdl.Process left, Jade.Sdl.Process right) -> bool
+static Jade.Sdl.Process.operator ==(Jade.Sdl.Process left, Jade.Sdl.Process right) -> bool
+static Jade.Sdl.Renderer.operator !=(Jade.Sdl.Renderer left, Jade.Sdl.Renderer right) -> bool
+static Jade.Sdl.Renderer.operator ==(Jade.Sdl.Renderer left, Jade.Sdl.Renderer right) -> bool
+static Jade.Sdl.RWLock.operator !=(Jade.Sdl.RWLock left, Jade.Sdl.RWLock right) -> bool
+static Jade.Sdl.RWLock.operator ==(Jade.Sdl.RWLock left, Jade.Sdl.RWLock right) -> bool
+static Jade.Sdl.Semaphore.operator !=(Jade.Sdl.Semaphore left, Jade.Sdl.Semaphore right) -> bool
+static Jade.Sdl.Semaphore.operator ==(Jade.Sdl.Semaphore left, Jade.Sdl.Semaphore right) -> bool
+static Jade.Sdl.Sensor.operator !=(Jade.Sdl.Sensor left, Jade.Sdl.Sensor right) -> bool
+static Jade.Sdl.Sensor.operator ==(Jade.Sdl.Sensor left, Jade.Sdl.Sensor right) -> bool
+static Jade.Sdl.SharedObject.operator !=(Jade.Sdl.SharedObject left, Jade.Sdl.SharedObject right) -> bool
+static Jade.Sdl.SharedObject.operator ==(Jade.Sdl.SharedObject left, Jade.Sdl.SharedObject right) -> bool
+static Jade.Sdl.Storage.operator !=(Jade.Sdl.Storage left, Jade.Sdl.Storage right) -> bool
+static Jade.Sdl.Storage.operator ==(Jade.Sdl.Storage left, Jade.Sdl.Storage right) -> bool
+static Jade.Sdl.Thread.operator !=(Jade.Sdl.Thread left, Jade.Sdl.Thread right) -> bool
+static Jade.Sdl.Thread.operator ==(Jade.Sdl.Thread left, Jade.Sdl.Thread right) -> bool
+static Jade.Sdl.Tray.operator !=(Jade.Sdl.Tray left, Jade.Sdl.Tray right) -> bool
+static Jade.Sdl.Tray.operator ==(Jade.Sdl.Tray left, Jade.Sdl.Tray right) -> bool
+static Jade.Sdl.TrayEntry.operator !=(Jade.Sdl.TrayEntry left, Jade.Sdl.TrayEntry right) -> bool
+static Jade.Sdl.TrayEntry.operator ==(Jade.Sdl.TrayEntry left, Jade.Sdl.TrayEntry right) -> bool
+static Jade.Sdl.TrayMenu.operator !=(Jade.Sdl.TrayMenu left, Jade.Sdl.TrayMenu right) -> bool
+static Jade.Sdl.TrayMenu.operator ==(Jade.Sdl.TrayMenu left, Jade.Sdl.TrayMenu right) -> bool
+static Jade.Sdl.Window.operator !=(Jade.Sdl.Window left, Jade.Sdl.Window right) -> bool
+static Jade.Sdl.Window.operator ==(Jade.Sdl.Window left, Jade.Sdl.Window right) -> bool
+static Jade.Sdl.WindowsMessage.operator !=(Jade.Sdl.WindowsMessage left, Jade.Sdl.WindowsMessage right) -> bool
+static Jade.Sdl.WindowsMessage.operator ==(Jade.Sdl.WindowsMessage left, Jade.Sdl.WindowsMessage right) -> bool
+static Jade.Sdl.XEvent.operator !=(Jade.Sdl.XEvent left, Jade.Sdl.XEvent right) -> bool
+static Jade.Sdl.XEvent.operator ==(Jade.Sdl.XEvent left, Jade.Sdl.XEvent right) -> bool

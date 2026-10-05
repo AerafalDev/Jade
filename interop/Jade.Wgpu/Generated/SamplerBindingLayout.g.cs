@@ -12,7 +12,7 @@ namespace Jade.Wgpu;
 public unsafe partial struct SamplerBindingLayout
 {
     /// <summary>Maps <c>WGPUSamplerBindingLayout.nextInChain</c>.</summary>
-    internal WGPUChainedStruct* NextInChain;
+    internal Raw.ChainedStruct* NextInChain;
 
     /// <summary>Maps <c>WGPUSamplerBindingLayout.type</c>.</summary>
     public SamplerBindingType Type;

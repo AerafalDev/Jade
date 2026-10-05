@@ -12,7 +12,7 @@ namespace Jade.Wgpu;
 public unsafe partial struct TextureBindingLayout
 {
     /// <summary>Maps <c>WGPUTextureBindingLayout.nextInChain</c>.</summary>
-    internal WGPUChainedStruct* NextInChain;
+    internal Raw.ChainedStruct* NextInChain;
 
     /// <summary>Maps <c>WGPUTextureBindingLayout.sampleType</c>.</summary>
     public TextureSampleType SampleType;

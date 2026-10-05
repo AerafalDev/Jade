@@ -76,7 +76,14 @@ internal sealed record LibraryConfiguration
 
         var sourcePaths = Sources
             .Concat(DawnJson is null ? [] : [DawnJson])
-            .Concat(Clang?.IncludeDirectories ?? []);
+            .Concat(Clang?.IncludeDirectories ?? [])
+            .Concat(Clang?.ForcedIncludes ?? [])
+            .Concat(Clang?.Shims ?? []);
+
+        if (Clang is { Prefixes.Count: 0 })
+        {
+            throw new InvalidDataException($"'{path}': 'clang' must list at least one prefix.");
+        }
 
         if (sourcePaths.FirstOrDefault(static sourcePath => !IsRelativeSourcePath(sourcePath)) is { } invalid)
         {

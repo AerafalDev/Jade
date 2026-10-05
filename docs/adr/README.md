@@ -32,8 +32,11 @@ Important or hard-to-reverse decisions are recorded here, one per file, as descr
 | [0025](0025-browser-natives-with-workload-emscripten.md) | Browser natives built with the .NET workload's Emscripten toolchain | Accepted |
 | [0026](0026-binding-generator-pipeline.md) | Binding generator pipeline and intermediate representation | Accepted |
 | [0027](0027-interop-mapping-rules.md) | Remaining interop mapping rules | Accepted |
-| [0028](0028-internal-raw-interop-layer.md) | Internal raw interop layer | Accepted |
+| [0028](0028-internal-raw-interop-layer.md) | Internal raw interop layer | Superseded by [0034](0034-raw-layer-with-dotnet-names.md) |
 | [0029](0029-descriptors-and-chained-structs.md) | Descriptors and chained structures in the idiomatic layer | Accepted |
 | [0030](0030-d3d12-shader-compilers.md) | D3D12 shader compilers: a built DXC is shipped, FXC comes from the system | Accepted |
 | [0031](0031-native-build-definitions.md) | Native build definitions and the host build | Accepted |
 | [0032](0032-webgpu-raw-layer-generation.md) | WebGPU raw layer generation | Accepted |
+| [0033](0033-c-header-raw-layer-generation.md) | SDL3 and miniaudio raw layer generation from their C headers | Accepted |
+| [0034](0034-raw-layer-with-dotnet-names.md) | Raw interop layer with .NET names in a `Raw` namespace | Accepted |
+| [0035](0035-emscripten-interop-generation.md) | Emscripten interop generated from its C headers | Accepted |

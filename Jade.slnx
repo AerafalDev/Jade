@@ -16,6 +16,8 @@
     <Project Path="src/Jade/Jade.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/Jade.MiniAudio.Tests/Jade.MiniAudio.Tests.csproj" />
+    <Project Path="tests/Jade.Sdl.Tests/Jade.Sdl.Tests.csproj" />
     <Project Path="tests/Jade.Tests/Jade.Tests.csproj" />
     <Project Path="tests/Jade.Wgpu.Tests/Jade.Wgpu.Tests.csproj" />
   </Folder>

@@ -62,6 +62,13 @@ internal static class InputReport
 
         yield return FormattableString.Invariant($"  {headers.Targets.Count} targets, {headers.AllDeclarations.Count} declarations, {groups.Sum(static group => group.Declarations.Count)} not on every target");
 
+        // Function-like macros are never bound and object-like ones only when the configuration
+        // selects them (ADR 0027), so they are counted rather than listed.
+        var macros = headers.ByTarget.SelectMany(static target => target.Macros).Select(static macro => macro.Name).Distinct(StringComparer.Ordinal).Count();
+        var evaluated = headers.ByTarget.SelectMany(static target => target.MacroValues.Keys).Distinct(StringComparer.Ordinal).Count();
+
+        yield return FormattableString.Invariant($"  macros: {macros} object-like, {evaluated} of them evaluated for enums and constants; {headers.ByTarget.Max(static target => target.FunctionLikeMacroCount)} function-like, never bound");
+
         foreach (var group in groups)
         {
             var targets = string.Join(", ", group.Targets.Select(static target => target.RuntimeIdentifier));

@@ -12,7 +12,7 @@ namespace Jade.Wgpu;
 public unsafe partial struct RenderPassColorAttachment
 {
     /// <summary>Maps <c>WGPURenderPassColorAttachment.nextInChain</c>.</summary>
-    internal WGPUChainedStruct* NextInChain;
+    internal Raw.ChainedStruct* NextInChain;
 
     /// <summary>Maps <c>WGPURenderPassColorAttachment.view</c>.</summary>
     public TextureView View;
@@ -35,6 +35,6 @@ public unsafe partial struct RenderPassColorAttachment
     /// <summary>Initializes a new instance of the <see cref="RenderPassColorAttachment"/> struct with the defaults of <c>WGPU_RENDER_PASS_COLOR_ATTACHMENT_INIT</c>.</summary>
     public RenderPassColorAttachment()
     {
-        DepthSlice = NativeMethods.WGPU_DEPTH_SLICE_UNDEFINED;
+        DepthSlice = Raw.NativeMethods.DepthSliceUndefined;
     }
 }

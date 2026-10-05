@@ -13,11 +13,11 @@ namespace Jade.Wgpu;
 public partial struct DawnFakeDeviceInitializeErrorForTesting
 {
     /// <summary>Maps <c>WGPUDawnFakeDeviceInitializeErrorForTesting.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Initializes a new instance of the <see cref="DawnFakeDeviceInitializeErrorForTesting"/> struct with the defaults of <c>WGPU_DAWN_FAKE_DEVICE_INITIALIZE_ERROR_FOR_TESTING_INIT</c>.</summary>
     public DawnFakeDeviceInitializeErrorForTesting()
     {
-        Chain.sType = SType.DawnFakeDeviceInitializeErrorForTesting;
+        Chain.SType = SType.DawnFakeDeviceInitializeErrorForTesting;
     }
 }

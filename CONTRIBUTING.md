@@ -36,9 +36,11 @@ Run the commands from the repository root; `global.json` selects the SDK and the
 | Declare generated public APIs | `dotnet format analyzers interop/<project>/<project>.csproj --diagnostics RS0016 --severity info --include-generated` |
 
 Outputs go to `artifacts/`. Tests use MSTest on Microsoft.Testing.Platform
-([0018](docs/adr/0018-test-framework.md)). The smoke tests of the interop projects
-(`tests/Jade.Wgpu.Tests`) call the native libraries of `artifacts/native/bin/<rid>/`, built as
-described below; without them they are reported as skipped.
+([0018](docs/adr/0018-test-framework.md)). The export and smoke tests of the interop projects
+(`tests/Jade.Wgpu.Tests`, `tests/Jade.Sdl.Tests`, `tests/Jade.MiniAudio.Tests`) call the native
+libraries of `artifacts/native/bin/<rid>/`, built as described below; without them they are
+reported as skipped. Rebuild the natives after changing `build/`: the export tests fail on a stale
+library.
 
 ## Native libraries
 

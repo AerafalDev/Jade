@@ -22,6 +22,8 @@ internal sealed class BuildConventionTests
 
     [TestMethod]
     [DataRow("Jade.Wgpu")]
+    [DataRow("Jade.Sdl")]
+    [DataRow("Jade.MiniAudio")]
     public void InteropLibraryDisablesRuntimeMarshalling(string assemblyName)
     {
         Assert.IsNotNull(Assembly.Load(assemblyName).GetCustomAttribute<DisableRuntimeMarshallingAttribute>());

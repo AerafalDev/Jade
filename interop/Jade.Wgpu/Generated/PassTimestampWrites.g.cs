@@ -12,7 +12,7 @@ namespace Jade.Wgpu;
 public unsafe partial struct PassTimestampWrites
 {
     /// <summary>Maps <c>WGPUPassTimestampWrites.nextInChain</c>.</summary>
-    internal WGPUChainedStruct* NextInChain;
+    internal Raw.ChainedStruct* NextInChain;
 
     /// <summary>Maps <c>WGPUPassTimestampWrites.querySet</c>.</summary>
     public QuerySet QuerySet;
@@ -26,7 +26,7 @@ public unsafe partial struct PassTimestampWrites
     /// <summary>Initializes a new instance of the <see cref="PassTimestampWrites"/> struct with the defaults of <c>WGPU_PASS_TIMESTAMP_WRITES_INIT</c>.</summary>
     public PassTimestampWrites()
     {
-        BeginningOfPassWriteIndex = NativeMethods.WGPU_QUERY_SET_INDEX_UNDEFINED;
-        EndOfPassWriteIndex = NativeMethods.WGPU_QUERY_SET_INDEX_UNDEFINED;
+        BeginningOfPassWriteIndex = Raw.NativeMethods.QuerySetIndexUndefined;
+        EndOfPassWriteIndex = Raw.NativeMethods.QuerySetIndexUndefined;
     }
 }

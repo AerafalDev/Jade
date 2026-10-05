@@ -12,7 +12,7 @@ namespace Jade.Wgpu;
 public unsafe partial struct DepthStencilState
 {
     /// <summary>Maps <c>WGPUDepthStencilState.nextInChain</c>.</summary>
-    internal WGPUChainedStruct* NextInChain;
+    internal Raw.ChainedStruct* NextInChain;
 
     /// <summary>Maps <c>WGPUDepthStencilState.format</c>.</summary>
     public TextureFormat Format;

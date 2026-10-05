@@ -12,7 +12,7 @@ namespace Jade.Wgpu;
 public partial struct DawnCompilationMessageUtf16
 {
     /// <summary>Maps <c>WGPUDawnCompilationMessageUtf16.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUDawnCompilationMessageUtf16.linePos</c>.</summary>
     public ulong LinePos;
@@ -26,6 +26,6 @@ public partial struct DawnCompilationMessageUtf16
     /// <summary>Initializes a new instance of the <see cref="DawnCompilationMessageUtf16"/> struct with the defaults of <c>WGPU_DAWN_COMPILATION_MESSAGE_UTF16_INIT</c>.</summary>
     public DawnCompilationMessageUtf16()
     {
-        Chain.sType = SType.DawnCompilationMessageUtf16;
+        Chain.SType = SType.DawnCompilationMessageUtf16;
     }
 }

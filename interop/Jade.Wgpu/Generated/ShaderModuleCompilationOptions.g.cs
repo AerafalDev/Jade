@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public partial struct ShaderModuleCompilationOptions
 {
     /// <summary>Maps <c>WGPUShaderModuleCompilationOptions.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUShaderModuleCompilationOptions.strictMath</c>.</summary>
     public Bool32 StrictMath;
@@ -21,6 +21,6 @@ public partial struct ShaderModuleCompilationOptions
     /// <summary>Initializes a new instance of the <see cref="ShaderModuleCompilationOptions"/> struct with the defaults of <c>WGPU_SHADER_MODULE_COMPILATION_OPTIONS_INIT</c>.</summary>
     public ShaderModuleCompilationOptions()
     {
-        Chain.sType = SType.ShaderModuleCompilationOptions;
+        Chain.SType = SType.ShaderModuleCompilationOptions;
     }
 }

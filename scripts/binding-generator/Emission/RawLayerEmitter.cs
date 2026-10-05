@@ -22,6 +22,13 @@ internal static class RawLayerEmitter
     /// <summary>The attribute that every generated type carries (ADR 0009).</summary>
     private const string GeneratedCodeAttribute = $"[global::System.CodeDom.Compiler.GeneratedCode(\"{Tool}\", \"{ToolVersion}\")]";
 
+    /// <summary>
+    /// The attribute of a C <c>bool</c> parameter or result: the runtime passes <c>bool</c> as one byte
+    /// when its marshalling is disabled, but the <c>LibraryImport</c> generator still asks for the
+    /// native form (SYSLIB1051), and converts it in its stub (ADR 0033).
+    /// </summary>
+    private const string BooleanMarshalAttribute = "global::System.Runtime.InteropServices.MarshalAs(global::System.Runtime.InteropServices.UnmanagedType.U1)";
+
     /// <summary>The platform names of the platform attributes, in the order of ADR 0012.</summary>
     private static readonly (Platforms Platform, string Name)[] _platformNames =
     [
@@ -36,19 +43,39 @@ internal static class RawLayerEmitter
     /// <summary>Writes the files of a library's raw layer.</summary>
     /// <param name="library">The projected library.</param>
     /// <returns>The files, ordered by name.</returns>
+    /// <remarks>
+    /// The constants and functions of a C header library go into one partial file of
+    /// <c>NativeMethods</c> per header (ADR 0027); the main file declares the class.
+    /// </remarks>
     public static IReadOnlyList<GeneratedFile> Emit(ProjectedLibrary library)
     {
+        var headers = library.Constants.Select(static constant => constant.Header)
+            .Concat(library.Functions.Select(static function => function.Header))
+            .OfType<string>()
+            .Distinct(StringComparer.Ordinal);
+
         return [.. library.Types
-            .Select(type => new GeneratedFile($"{type.Name}.g.cs", EmitFile(library, writer => EmitType(writer, type))))
-            .Append(new GeneratedFile($"{RawProjection.NativeMethodsClass}.g.cs", EmitFile(library, writer => EmitNativeMethods(writer, library))))
+            .Select(type => new GeneratedFile(GetPath(type.IsPublic, type.Name), EmitFile(library, type.IsPublic, writer => EmitType(writer, type))))
+            .Append(new GeneratedFile(GetPath(isPublic: false, RawProjection.NativeMethodsClass), EmitFile(library, isPublic: false, writer => EmitNativeMethods(writer, library, null))))
+            .Concat(headers.Select(header => new GeneratedFile(GetPath(isPublic: false, $"{RawProjection.NativeMethodsClass}.{header}"), EmitFile(library, isPublic: false, writer => EmitNativeMethods(writer, library, header)))))
             .OrderBy(static file => file.Name, StringComparer.Ordinal)];
+    }
+
+    /// <summary>Gets the path of a generated file in the <c>Generated/</c> directory.</summary>
+    /// <param name="isPublic">Whether the file declares a public type; internal ones go to <c>Raw/</c>, after their namespace (ADR 0034).</param>
+    /// <param name="name">The name of the file without the <c>.g.cs</c> extension.</param>
+    /// <returns>The relative path, with <c>/</c> separators.</returns>
+    private static string GetPath(bool isPublic, string name)
+    {
+        return isPublic ? $"{name}.g.cs" : $"{RawProjection.RawNamespace}/{name}.g.cs";
     }
 
     /// <summary>Writes a file: its header, its namespace and one type.</summary>
     /// <param name="library">The projected library.</param>
+    /// <param name="isPublic">Whether the type is public; an internal one goes to the <c>Raw</c> namespace.</param>
     /// <param name="emitType">Writes the type.</param>
     /// <returns>The source text.</returns>
-    private static string EmitFile(ProjectedLibrary library, Action<CSharpWriter> emitType)
+    private static string EmitFile(ProjectedLibrary library, bool isPublic, Action<CSharpWriter> emitType)
     {
         var writer = new CSharpWriter();
 
@@ -60,7 +87,7 @@ internal static class RawLayerEmitter
         // Generated files start with nullable annotations disabled.
         writer.Line("#nullable enable");
         writer.Line();
-        writer.Line($"namespace {library.Namespace};");
+        writer.Line(isPublic ? $"namespace {library.Namespace};" : $"namespace {library.Namespace}.{RawProjection.RawNamespace};");
         writer.Line();
         emitType(writer);
 
@@ -88,6 +115,10 @@ internal static class RawLayerEmitter
 
             case ProjectedStructure structure:
                 EmitStructure(writer, structure);
+                break;
+
+            case ProjectedInlineArray array:
+                EmitInlineArray(writer, array);
                 break;
 
             default:
@@ -126,13 +157,17 @@ internal static class RawLayerEmitter
                 EmitPlatformAttributes(writer, value.Availability);
             }
 
-            writer.Line(string.Create(CultureInfo.InvariantCulture, $"{value.Name} = 0x{value.Value.ToString($"X{type.Size * 2}", CultureInfo.InvariantCulture)},"));
+            // Flags are bit patterns, written in hexadecimal; the values of a signed enum, and any
+            // negative value, are written in decimal so that a negative one reads as such.
+            writer.Line(RawProjection.IsSigned(type.UnderlyingType) && (!type.IsFlags || unchecked((long)value.Value) < 0)
+                ? string.Create(CultureInfo.InvariantCulture, $"{value.Name} = {unchecked((long)value.Value)},")
+                : string.Create(CultureInfo.InvariantCulture, $"{value.Name} = 0x{value.Value.ToString($"X{type.Size * 2}", CultureInfo.InvariantCulture)},"));
         }
 
         writer.CloseBlock();
     }
 
-    /// <summary>Writes a handle: a <c>readonly</c> structure over the native pointer, with value equality (ADR 0009 and 0028).</summary>
+    /// <summary>Writes a handle: a <c>readonly</c> structure over the native pointer, with value equality (ADR 0009 and 0034).</summary>
     /// <param name="writer">The writer.</param>
     /// <param name="type">The handle.</param>
     private static void EmitHandle(CSharpWriter writer, ProjectedHandle type)
@@ -217,7 +252,7 @@ internal static class RawLayerEmitter
         writer.CloseBlock();
     }
 
-    /// <summary>Writes a structure: a public value structure, or an internal raw structure without member comments (ADR 0028).</summary>
+    /// <summary>Writes a structure: a public value structure, or an internal raw structure (ADR 0034).</summary>
     /// <param name="writer">The writer.</param>
     /// <param name="type">The structure.</param>
     private static void EmitStructure(CSharpWriter writer, ProjectedStructure type)
@@ -228,20 +263,23 @@ internal static class RawLayerEmitter
 
         // The explicit layout states the C contract; the compiler also takes it as the mark of an
         // interop type, whose fields native code writes, and does not report them as never assigned.
-        writer.Line("[global::System.Runtime.InteropServices.StructLayout(global::System.Runtime.InteropServices.LayoutKind.Sequential)]");
+        // A union is the only explicit layout, with every field at offset 0 (ADR 0009).
+        writer.Line($"[global::System.Runtime.InteropServices.StructLayout(global::System.Runtime.InteropServices.LayoutKind.{(type.IsUnion ? "Explicit" : "Sequential")})]");
         writer.Line($"{GetAccessibility(type.IsPublic)} {(isUnsafe ? "unsafe " : string.Empty)}partial struct {type.Name}");
         writer.OpenBlock();
 
         foreach (var field in type.Fields)
         {
-            if (type.IsPublic)
+            if (field != type.Fields[0])
             {
-                if (field != type.Fields[0])
-                {
-                    writer.Line();
-                }
+                writer.Line();
+            }
 
-                writer.Line($"/// <summary>Maps <c>{type.CName}.{field.CName}</c>.</summary>");
+            writer.Line($"/// <summary>Maps <c>{type.CName}.{field.CName}</c>.</summary>");
+
+            if (type.IsUnion)
+            {
+                writer.Line("[global::System.Runtime.InteropServices.FieldOffset(0)]");
             }
 
             writer.Line($"{GetAccessibility(field.IsPublic || !type.IsPublic)} {field.Type} {field.Name};");
@@ -267,36 +305,81 @@ internal static class RawLayerEmitter
         writer.CloseBlock();
     }
 
-    /// <summary>Writes the internal class of the constants and the functions, which keep their C names (ADR 0028).</summary>
+    /// <summary>Writes an inline array: a structure whose single field stands for the elements of a fixed-size C array (ADR 0009).</summary>
+    /// <param name="writer">The writer.</param>
+    /// <param name="type">The inline array.</param>
+    private static void EmitInlineArray(CSharpWriter writer, ProjectedInlineArray type)
+    {
+        EmitTypeHeader(writer, type, string.Create(CultureInfo.InvariantCulture, $"Maps the {type.Length} elements of <c>{type.CName}</c>."));
+        writer.Line(string.Create(CultureInfo.InvariantCulture, $"[global::System.Runtime.CompilerServices.InlineArray({type.Length})]"));
+        writer.Line($"{GetAccessibility(type.IsPublic)} partial struct {type.Name}");
+        writer.OpenBlock();
+        writer.Line("/// <summary>The first element; the runtime lays the others out after it.</summary>");
+        writer.Line($"private {type.ElementType} _element0;");
+        writer.CloseBlock();
+    }
+
+    /// <summary>Writes the internal class of the constants and the functions, with .NET names that map the C names (ADR 0034).</summary>
     /// <param name="writer">The writer.</param>
     /// <param name="library">The projected library.</param>
-    private static void EmitNativeMethods(CSharpWriter writer, ProjectedLibrary library)
+    /// <param name="header">The header whose declarations the partial file holds, or <see langword="null"/> for the main file.</param>
+    /// <remarks>The main file declares the class with its attribute and the library name; the files of the headers only add members.</remarks>
+    private static void EmitNativeMethods(CSharpWriter writer, ProjectedLibrary library, string? header)
     {
-        writer.Line("/// <summary>The constants and functions of the C API, with their C names.</summary>");
-        writer.Line(GeneratedCodeAttribute);
+        var isMainFile = header is null;
+
+        if (isMainFile)
+        {
+            writer.Line("/// <summary>The constants and functions of the C API, with their C names.</summary>");
+            writer.Line(GeneratedCodeAttribute);
+        }
+
         writer.Line($"internal static unsafe partial class {RawProjection.NativeMethodsClass}");
         writer.OpenBlock();
-        writer.Line("/// <summary>The name the functions are imported from.</summary>");
-        writer.Line($"private const string LibraryName = \"{library.LibraryName}\";");
 
-        foreach (var constant in library.Constants)
+        var isFirstMember = true;
+
+        if (isMainFile)
         {
-            writer.Line();
+            writer.Line("/// <summary>The name the functions are imported from.</summary>");
+            writer.Line($"private const string LibraryName = \"{library.LibraryName}\";");
+            isFirstMember = false;
+        }
+
+        foreach (var constant in library.Constants.Where(constant => constant.Header == header))
+        {
+            if (!isFirstMember)
+            {
+                writer.Line();
+            }
+
+            isFirstMember = false;
             writer.Line($"/// <summary>Maps <c>{constant.CName}</c>.</summary>");
             EmitPlatformAttributes(writer, constant.Availability);
             writer.Line(constant.IsConst
-                ? $"public const {constant.Type} {constant.CName} = {constant.Value};"
-                : $"public static {constant.Type} {constant.CName} => {constant.Value};");
+                ? $"public const {constant.Type} {constant.Name} = {constant.Value};"
+                : $"public static {constant.Type} {constant.Name} => {constant.Value};");
         }
 
-        foreach (var function in library.Functions)
+        foreach (var function in library.Functions.Where(function => function.Header == header))
         {
-            writer.Line();
+            if (!isFirstMember)
+            {
+                writer.Line();
+            }
+
+            isFirstMember = false;
             writer.Line($"/// <summary>Maps <c>{function.CName}</c>.</summary>");
-            writer.Line("[global::System.Runtime.InteropServices.LibraryImport(LibraryName)]");
+            writer.Line($"[global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = \"{function.CName}\")]");
             writer.Line("[global::System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(global::System.Runtime.CompilerServices.CallConvCdecl)])]");
             EmitPlatformAttributes(writer, function.Availability);
-            writer.Line($"public static partial {function.ReturnType} {function.CName}({string.Join(", ", function.Parameters.Select(static parameter => $"{parameter.Type} {parameter.Name}"))});");
+
+            if (function.ReturnType == "bool")
+            {
+                writer.Line($"[return: {BooleanMarshalAttribute}]");
+            }
+
+            writer.Line($"public static partial {function.ReturnType} {function.Name}({string.Join(", ", function.Parameters.Select(static parameter => parameter.Type == "bool" ? $"[{BooleanMarshalAttribute}] bool {parameter.Name}" : $"{parameter.Type} {parameter.Name}"))});");
         }
 
         writer.CloseBlock();

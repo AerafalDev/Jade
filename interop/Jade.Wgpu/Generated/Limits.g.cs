@@ -12,7 +12,7 @@ namespace Jade.Wgpu;
 public unsafe partial struct Limits
 {
     /// <summary>Maps <c>WGPULimits.nextInChain</c>.</summary>
-    internal WGPUChainedStruct* NextInChain;
+    internal Raw.ChainedStruct* NextInChain;
 
     /// <summary>Maps <c>WGPULimits.maxTextureDimension1D</c>.</summary>
     public uint MaxTextureDimension1D;
@@ -113,37 +113,37 @@ public unsafe partial struct Limits
     /// <summary>Initializes a new instance of the <see cref="Limits"/> struct with the defaults of <c>WGPU_LIMITS_INIT</c>.</summary>
     public Limits()
     {
-        MaxTextureDimension1D = NativeMethods.WGPU_LIMIT_U32_UNDEFINED;
-        MaxTextureDimension2D = NativeMethods.WGPU_LIMIT_U32_UNDEFINED;
-        MaxTextureDimension3D = NativeMethods.WGPU_LIMIT_U32_UNDEFINED;
-        MaxTextureArrayLayers = NativeMethods.WGPU_LIMIT_U32_UNDEFINED;
-        MaxBindGroups = NativeMethods.WGPU_LIMIT_U32_UNDEFINED;
-        MaxBindGroupsPlusVertexBuffers = NativeMethods.WGPU_LIMIT_U32_UNDEFINED;
-        MaxBindingsPerBindGroup = NativeMethods.WGPU_LIMIT_U32_UNDEFINED;
-        MaxDynamicUniformBuffersPerPipelineLayout = NativeMethods.WGPU_LIMIT_U32_UNDEFINED;
-        MaxDynamicStorageBuffersPerPipelineLayout = NativeMethods.WGPU_LIMIT_U32_UNDEFINED;
-        MaxSampledTexturesPerShaderStage = NativeMethods.WGPU_LIMIT_U32_UNDEFINED;
-        MaxSamplersPerShaderStage = NativeMethods.WGPU_LIMIT_U32_UNDEFINED;
-        MaxStorageBuffersPerShaderStage = NativeMethods.WGPU_LIMIT_U32_UNDEFINED;
-        MaxStorageTexturesPerShaderStage = NativeMethods.WGPU_LIMIT_U32_UNDEFINED;
-        MaxUniformBuffersPerShaderStage = NativeMethods.WGPU_LIMIT_U32_UNDEFINED;
-        MaxUniformBufferBindingSize = NativeMethods.WGPU_LIMIT_U64_UNDEFINED;
-        MaxStorageBufferBindingSize = NativeMethods.WGPU_LIMIT_U64_UNDEFINED;
-        MinUniformBufferOffsetAlignment = NativeMethods.WGPU_LIMIT_U32_UNDEFINED;
-        MinStorageBufferOffsetAlignment = NativeMethods.WGPU_LIMIT_U32_UNDEFINED;
-        MaxVertexBuffers = NativeMethods.WGPU_LIMIT_U32_UNDEFINED;
-        MaxBufferSize = NativeMethods.WGPU_LIMIT_U64_UNDEFINED;
-        MaxVertexAttributes = NativeMethods.WGPU_LIMIT_U32_UNDEFINED;
-        MaxVertexBufferArrayStride = NativeMethods.WGPU_LIMIT_U32_UNDEFINED;
-        MaxInterStageShaderVariables = NativeMethods.WGPU_LIMIT_U32_UNDEFINED;
-        MaxColorAttachments = NativeMethods.WGPU_LIMIT_U32_UNDEFINED;
-        MaxColorAttachmentBytesPerSample = NativeMethods.WGPU_LIMIT_U32_UNDEFINED;
-        MaxComputeWorkgroupStorageSize = NativeMethods.WGPU_LIMIT_U32_UNDEFINED;
-        MaxComputeInvocationsPerWorkgroup = NativeMethods.WGPU_LIMIT_U32_UNDEFINED;
-        MaxComputeWorkgroupSizeX = NativeMethods.WGPU_LIMIT_U32_UNDEFINED;
-        MaxComputeWorkgroupSizeY = NativeMethods.WGPU_LIMIT_U32_UNDEFINED;
-        MaxComputeWorkgroupSizeZ = NativeMethods.WGPU_LIMIT_U32_UNDEFINED;
-        MaxComputeWorkgroupsPerDimension = NativeMethods.WGPU_LIMIT_U32_UNDEFINED;
-        MaxImmediateSize = NativeMethods.WGPU_LIMIT_U32_UNDEFINED;
+        MaxTextureDimension1D = Raw.NativeMethods.LimitU32Undefined;
+        MaxTextureDimension2D = Raw.NativeMethods.LimitU32Undefined;
+        MaxTextureDimension3D = Raw.NativeMethods.LimitU32Undefined;
+        MaxTextureArrayLayers = Raw.NativeMethods.LimitU32Undefined;
+        MaxBindGroups = Raw.NativeMethods.LimitU32Undefined;
+        MaxBindGroupsPlusVertexBuffers = Raw.NativeMethods.LimitU32Undefined;
+        MaxBindingsPerBindGroup = Raw.NativeMethods.LimitU32Undefined;
+        MaxDynamicUniformBuffersPerPipelineLayout = Raw.NativeMethods.LimitU32Undefined;
+        MaxDynamicStorageBuffersPerPipelineLayout = Raw.NativeMethods.LimitU32Undefined;
+        MaxSampledTexturesPerShaderStage = Raw.NativeMethods.LimitU32Undefined;
+        MaxSamplersPerShaderStage = Raw.NativeMethods.LimitU32Undefined;
+        MaxStorageBuffersPerShaderStage = Raw.NativeMethods.LimitU32Undefined;
+        MaxStorageTexturesPerShaderStage = Raw.NativeMethods.LimitU32Undefined;
+        MaxUniformBuffersPerShaderStage = Raw.NativeMethods.LimitU32Undefined;
+        MaxUniformBufferBindingSize = Raw.NativeMethods.LimitU64Undefined;
+        MaxStorageBufferBindingSize = Raw.NativeMethods.LimitU64Undefined;
+        MinUniformBufferOffsetAlignment = Raw.NativeMethods.LimitU32Undefined;
+        MinStorageBufferOffsetAlignment = Raw.NativeMethods.LimitU32Undefined;
+        MaxVertexBuffers = Raw.NativeMethods.LimitU32Undefined;
+        MaxBufferSize = Raw.NativeMethods.LimitU64Undefined;
+        MaxVertexAttributes = Raw.NativeMethods.LimitU32Undefined;
+        MaxVertexBufferArrayStride = Raw.NativeMethods.LimitU32Undefined;
+        MaxInterStageShaderVariables = Raw.NativeMethods.LimitU32Undefined;
+        MaxColorAttachments = Raw.NativeMethods.LimitU32Undefined;
+        MaxColorAttachmentBytesPerSample = Raw.NativeMethods.LimitU32Undefined;
+        MaxComputeWorkgroupStorageSize = Raw.NativeMethods.LimitU32Undefined;
+        MaxComputeInvocationsPerWorkgroup = Raw.NativeMethods.LimitU32Undefined;
+        MaxComputeWorkgroupSizeX = Raw.NativeMethods.LimitU32Undefined;
+        MaxComputeWorkgroupSizeY = Raw.NativeMethods.LimitU32Undefined;
+        MaxComputeWorkgroupSizeZ = Raw.NativeMethods.LimitU32Undefined;
+        MaxComputeWorkgroupsPerDimension = Raw.NativeMethods.LimitU32Undefined;
+        MaxImmediateSize = Raw.NativeMethods.LimitU32Undefined;
     }
 }

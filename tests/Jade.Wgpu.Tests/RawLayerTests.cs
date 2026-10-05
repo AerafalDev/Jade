@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using Jade.Wgpu.Raw;
 
 namespace Jade.Wgpu.Tests;
 
@@ -17,8 +18,8 @@ internal sealed unsafe class RawLayerTests
         Assert.AreEqual(1u, extent.Height);
         Assert.AreEqual(1u, extent.DepthOrArrayLayers);
         Assert.AreEqual(0ul, layout.Offset);
-        Assert.AreEqual(NativeMethods.WGPU_COPY_STRIDE_UNDEFINED, layout.BytesPerRow);
-        Assert.AreEqual(NativeMethods.WGPU_COPY_STRIDE_UNDEFINED, layout.RowsPerImage);
+        Assert.AreEqual(NativeMethods.CopyStrideUndefined, layout.BytesPerRow);
+        Assert.AreEqual(NativeMethods.CopyStrideUndefined, layout.RowsPerImage);
     }
 
     [TestMethod]
@@ -26,17 +27,17 @@ internal sealed unsafe class RawLayerTests
     {
         var extension = new TextureBindingViewDimension();
 
-        Assert.AreEqual(SType.TextureBindingViewDimension, extension.Chain.sType);
-        Assert.IsTrue(extension.Chain.next is null);
+        Assert.AreEqual(SType.TextureBindingViewDimension, extension.Chain.SType);
+        Assert.IsTrue(extension.Chain.Next is null);
     }
 
     [TestMethod]
     public void StringViewsDefaultToTheNullString()
     {
-        var view = new WGPUStringView();
+        var view = new StringView();
 
-        Assert.IsTrue(view.data is null);
-        Assert.AreEqual(nuint.MaxValue, view.length);
+        Assert.IsTrue(view.Data is null);
+        Assert.AreEqual(nuint.MaxValue, view.Length);
     }
 
     [TestMethod]

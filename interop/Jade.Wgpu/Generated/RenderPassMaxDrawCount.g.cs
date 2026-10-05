@@ -12,7 +12,7 @@ namespace Jade.Wgpu;
 public partial struct RenderPassMaxDrawCount
 {
     /// <summary>Maps <c>WGPURenderPassMaxDrawCount.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPURenderPassMaxDrawCount.maxDrawCount</c>.</summary>
     public ulong MaxDrawCount;
@@ -20,7 +20,7 @@ public partial struct RenderPassMaxDrawCount
     /// <summary>Initializes a new instance of the <see cref="RenderPassMaxDrawCount"/> struct with the defaults of <c>WGPU_RENDER_PASS_MAX_DRAW_COUNT_INIT</c>.</summary>
     public RenderPassMaxDrawCount()
     {
-        Chain.sType = SType.RenderPassMaxDrawCount;
+        Chain.SType = SType.RenderPassMaxDrawCount;
         MaxDrawCount = 50000000;
     }
 }

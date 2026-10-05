@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public partial struct DawnEncoderInternalUsageDescriptor
 {
     /// <summary>Maps <c>WGPUDawnEncoderInternalUsageDescriptor.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUDawnEncoderInternalUsageDescriptor.useInternalUsages</c>.</summary>
     public Bool32 UseInternalUsages;
@@ -21,6 +21,6 @@ public partial struct DawnEncoderInternalUsageDescriptor
     /// <summary>Initializes a new instance of the <see cref="DawnEncoderInternalUsageDescriptor"/> struct with the defaults of <c>WGPU_DAWN_ENCODER_INTERNAL_USAGE_DESCRIPTOR_INIT</c>.</summary>
     public DawnEncoderInternalUsageDescriptor()
     {
-        Chain.sType = SType.DawnEncoderInternalUsageDescriptor;
+        Chain.SType = SType.DawnEncoderInternalUsageDescriptor;
     }
 }

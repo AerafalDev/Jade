@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public partial struct DawnTexelCopyBufferRowAlignmentLimits
 {
     /// <summary>Maps <c>WGPUDawnTexelCopyBufferRowAlignmentLimits.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUDawnTexelCopyBufferRowAlignmentLimits.minTexelCopyBufferRowAlignment</c>.</summary>
     public uint MinTexelCopyBufferRowAlignment;
@@ -21,7 +21,7 @@ public partial struct DawnTexelCopyBufferRowAlignmentLimits
     /// <summary>Initializes a new instance of the <see cref="DawnTexelCopyBufferRowAlignmentLimits"/> struct with the defaults of <c>WGPU_DAWN_TEXEL_COPY_BUFFER_ROW_ALIGNMENT_LIMITS_INIT</c>.</summary>
     public DawnTexelCopyBufferRowAlignmentLimits()
     {
-        Chain.sType = SType.DawnTexelCopyBufferRowAlignmentLimits;
-        MinTexelCopyBufferRowAlignment = NativeMethods.WGPU_LIMIT_U32_UNDEFINED;
+        Chain.SType = SType.DawnTexelCopyBufferRowAlignmentLimits;
+        MinTexelCopyBufferRowAlignment = Raw.NativeMethods.LimitU32Undefined;
     }
 }

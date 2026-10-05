@@ -13,5 +13,5 @@ namespace Jade.Wgpu;
 public unsafe partial struct DawnFormatCapabilities
 {
     /// <summary>Maps <c>WGPUDawnFormatCapabilities.nextInChain</c>.</summary>
-    internal WGPUChainedStruct* NextInChain;
+    internal Raw.ChainedStruct* NextInChain;
 }

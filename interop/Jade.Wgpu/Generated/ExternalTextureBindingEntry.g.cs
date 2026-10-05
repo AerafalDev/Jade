@@ -12,7 +12,7 @@ namespace Jade.Wgpu;
 public partial struct ExternalTextureBindingEntry
 {
     /// <summary>Maps <c>WGPUExternalTextureBindingEntry.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUExternalTextureBindingEntry.externalTexture</c>.</summary>
     public ExternalTexture ExternalTexture;
@@ -20,6 +20,6 @@ public partial struct ExternalTextureBindingEntry
     /// <summary>Initializes a new instance of the <see cref="ExternalTextureBindingEntry"/> struct with the defaults of <c>WGPU_EXTERNAL_TEXTURE_BINDING_ENTRY_INIT</c>.</summary>
     public ExternalTextureBindingEntry()
     {
-        Chain.sType = SType.ExternalTextureBindingEntry;
+        Chain.SType = SType.ExternalTextureBindingEntry;
     }
 }

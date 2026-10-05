@@ -4,6 +4,6 @@ namespace Jade.BindingGenerator.Model;
 /// <remarks>Its <see cref="Declaration.Words"/> do not repeat the enum's name (ADR 0027).</remarks>
 internal sealed record EnumValueDeclaration : Declaration
 {
-    /// <summary>Gets the numeric value, as the C header defines it.</summary>
+    /// <summary>Gets the numeric value, as the C header defines it; a negative value is stored sign-extended.</summary>
     public required ulong Value { get; init; }
 }

@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public partial struct DawnShaderModuleSpirvOptionsDescriptor
 {
     /// <summary>Maps <c>WGPUDawnShaderModuleSPIRVOptionsDescriptor.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUDawnShaderModuleSPIRVOptionsDescriptor.allowNonUniformDerivatives</c>.</summary>
     public Bool32 AllowNonUniformDerivatives;
@@ -21,6 +21,6 @@ public partial struct DawnShaderModuleSpirvOptionsDescriptor
     /// <summary>Initializes a new instance of the <see cref="DawnShaderModuleSpirvOptionsDescriptor"/> struct with the defaults of <c>WGPU_DAWN_SHADER_MODULE_SPIRV_OPTIONS_DESCRIPTOR_INIT</c>.</summary>
     public DawnShaderModuleSpirvOptionsDescriptor()
     {
-        Chain.sType = SType.DawnShaderModuleSpirvOptionsDescriptor;
+        Chain.SType = SType.DawnShaderModuleSpirvOptionsDescriptor;
     }
 }

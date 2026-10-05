@@ -13,7 +13,7 @@ namespace Jade.Wgpu;
 public partial struct AdapterPropertiesWgpu
 {
     /// <summary>Maps <c>WGPUAdapterPropertiesWGPU.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUAdapterPropertiesWGPU.backendType</c>.</summary>
     public BackendType BackendType;
@@ -21,6 +21,6 @@ public partial struct AdapterPropertiesWgpu
     /// <summary>Initializes a new instance of the <see cref="AdapterPropertiesWgpu"/> struct with the defaults of <c>WGPU_ADAPTER_PROPERTIES_WGPU_INIT</c>.</summary>
     public AdapterPropertiesWgpu()
     {
-        Chain.sType = SType.AdapterPropertiesWgpu;
+        Chain.SType = SType.AdapterPropertiesWgpu;
     }
 }

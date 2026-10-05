@@ -69,9 +69,11 @@ tools are out of scope for now.
 | Interop mapping | `LibraryImport`, `CLong`/`nuint`, `InlineArray`, unions at offset 0, function-pointer callbacks, handles, descriptors, layout tests | [0009](docs/adr/0009-interop-mapping-conventions.md) |
 | Generator pipeline | Inputs fetched at the pinned commits, `dawn.json` and clang front-ends, one intermediate representation with per-platform availability, annotations from `interop/<project>/bindings.json`, then projection and emitters; C headers parsed for the 12 RID triples with the ClangSharp package's libclang, `-nostdinc` and the generator's own C runtime headers; `MA_*` defines in `build/miniaudio/config.h` | [0026](docs/adr/0026-binding-generator-pipeline.md) |
 | Mapping rules | .NET names without C prefixes, typedefs mapped by name, dedicated integer booleans, macros evaluated by clang, no variadic or inline functions, platform attributes from availability, XML comments on generated members | [0027](docs/adr/0027-interop-mapping-rules.md) |
-| Raw layer | Internal with C names; types identical in both layers are public; handles expose their `nint` | [0028](docs/adr/0028-internal-raw-interop-layer.md) |
+| Raw layer | .NET names everywhere, C names in the summaries; types identical in both layers are public, the rest internal in `Jade.<Library>.Raw` (`Generated/Raw/`); functions imported through `EntryPoint`; handles expose their `nint` | [0034](docs/adr/0034-raw-layer-with-dotnet-names.md) |
 | Descriptors and chains | Value structures shared and pinned, `ref struct` descriptor mirrors, element mirrors with `ReadOnlyMemory<T>`, stack-based arena for nested data, `IChainedExtension<TSelf, TRoot>` generic overloads | [0029](docs/adr/0029-descriptors-and-chained-structs.md) |
 | WebGPU raw layer | IR in `Model/`, Dawn front-end reproducing `api.h` (added members, enum offsets, `*_INIT` defaults); `library`/`exclude`/`names`/`words` in `bindings.json`; public enums, flags, handles, `Bool32`, value structures, internal rest in `NativeMethods`; parameterless constructors apply `*_INIT`; `[StructLayout(Sequential)]`; `DefaultDllImportSearchPaths(AssemblyDirectory \| SafeDirectories)` with CA5393 suppressed on `NativeMethods`; PublicAPI files through the analyzer's fix; regeneration checked by the CI `build` jobs; `tests/Jade.Wgpu.Tests` | [0032](docs/adr/0032-webgpu-raw-layer-generation.md) |
+| C header raw layers | Each target's parse merged into availability; divergences fail unless `opaque` or `exclude`; layouts checked against clang's; macros evaluated by clang into `enums` and `constants`; `types` mapped by name (`ma_vec3f` to `Vector3`, `wchar_t` to `void`); C `bool` with `MarshalAs(U1)` in imports; unions, one `InlineArray` per array member, one `NativeMethods` file per header; SDL3 from `SDL.h` and `SDL_main.h` without `SDL_audio.h`; every opaque miniaudio type allocated by the shim (`opaqueAllocators`) | [0033](docs/adr/0033-c-header-raw-layer-generation.md) |
+| Emscripten interop | Generated from its C headers through the same front-end; header source and targets decided by roadmap task 20 | [0035](docs/adr/0035-emscripten-interop-generation.md) |
 | Natives | Built by us with xmake (CMake for Dawn and SDL3); `build/versions.json` is the single source of versions, each citing its source | [0010](docs/adr/0010-native-builds-with-xmake.md), [0023](docs/adr/0023-repository-layout-and-conventions.md) |
 | Native build | `build/xmake.lua` with one definition per dependency; `scripts/build-native.cs` checks the pinned xmake and CMake, fetches sources with git at the pinned commits (Dawn's `DEPS` entries listed in `build/dawn/deps.json`), runs xmake isolated under `artifacts/native/`; SDL3 without audio and with a required feature list per platform; `MA_API` and Apple `MA_NO_RUNTIME_LINKING` only; upstream library names | [0031](docs/adr/0031-native-build-definitions.md) |
 | D3D12 compilers | DXC built by Dawn and shipped as `dxcompiler.dll`; `d3dcompiler_47.dll` is the system's, never redistributed | [0030](docs/adr/0030-d3d12-shader-compilers.md) |
@@ -92,7 +94,8 @@ Open decisions and the order of the next tasks are in the [roadmap](docs/roadmap
 
 - MSBuild files (`.csproj`, `.props`, `.targets`) and `Jade.slnx` contain no comments.
 - Repository scripts are .NET file-based apps in `scripts/` and start with a `#!` line.
-- Generated code goes to `Generated/*.g.cs` in each interop project and is never edited by hand.
+- Generated code goes to `Generated/*.g.cs` (public types) and `Generated/Raw/*.g.cs` (internal
+  declarations, namespace `Jade.<Library>.Raw`) in each interop project and is never edited by hand.
 - The binding generator is `scripts/binding-generator.cs`; its code is in
   `scripts/binding-generator/`, one type per file in a folder per concern, each type and member
   with an XML comment. Each generated interop project has a `bindings.json`.
@@ -103,8 +106,10 @@ Open decisions and the order of the next tasks are in the [roadmap](docs/roadmap
   analyzer's fix (see Commands) and remove by hand the lines RS0017 reports; never write generated
   declarations into it by hand.
 - Each generated interop project has a test project `tests/<project>.Tests` with
-  `InternalsVisibleTo`; its smoke tests use the host's natives copied from `artifacts/native/bin/`
-  and are skipped (`Assert.Inconclusive`) when they are not built.
+  `InternalsVisibleTo`; its export and smoke tests use the host's natives copied from
+  `artifacts/native/bin/` and are skipped (`Assert.Inconclusive`) when they are not built. After a
+  change to `build/` (the miniaudio shim, for instance), rebuild the natives: the export tests fail
+  on a stale library.
 - `build/versions.json`: every entry has a `source` saying where its value was verified, and
   dependencies are pinned to full commit hashes; `Jade.Tests` checks both. `THIRD-PARTY-NOTICES.md`
   follows it.
@@ -173,6 +178,13 @@ Re-check these at every SDK or dependency update.
 | Dawn reads its commit with `git rev-parse` for the key of its device cache (empty outside a git checkout); `DAWN_FETCH_DEPENDENCIES` clones 19 fixed `DEPS` entries and ignores git failures; its C++20 module check accepts GCC 13, which CMake cannot scan | `generator/dawn_version_generator.py`, `tools/fetch_dawn_dependencies.py`, `src/cmake/DawnCompilerChecks.cmake` at `b1236a9`; GCC 13.3 build | 2026-10-05 |
 | SDL3's CMake build silently drops a feature whose development files are missing; with `SDL_AUDIO=OFF` it also skips the PipeWire check (no PipeWire camera) | `cmake/sdlchecks.cmake` and `CMakeLists.txt` at `release-3.4.18`; build without `ibus` headers | 2026-10-05 |
 | DirectXShaderCompiler `9757d44` (Dawn's `DEPS`) signs DXIL with its open-source validator inside `dxcompiler`; Dawn never loads `dxil.dll` | `tools/clang/tools/dxcvalidator/dxcvalidator.cpp`; search of Dawn's `src/` | 2026-10-05 |
+| The `LibraryImport` generator rejects a `bool` parameter or result without marshalling information (SYSLIB1051) even under `DisableRuntimeMarshalling`, while the runtime then passes `bool` as one byte | build of `Jade.Sdl`; "Disabled runtime marshalling" in the .NET documentation | 2026-10-05 |
+| libclang evaluates a macro through `const __typeof__(M) v = M;` and `clang_Cursor_Evaluate` (integers, floats, and `CXEval_StrLiteral` for a `char` array); it reports a parameter declared as an array with its array type, not the adjusted pointer | `dotnet run scripts/binding-generator.cs` (1,007 macros of SDL3 and miniaudio) | 2026-10-05 |
+| clang does not define `__GNUC__` for the MSVC triples, so miniaudio's `ma_proc` is `void*` there and a function pointer elsewhere | `clang -dM -E` for `x86_64-pc-windows-msvc`; the generator's merge of miniaudio | 2026-10-05 |
+| SDL3 built with `SDL_AUDIO=OFF` still compiles `src/audio/*.c` but no driver, and `SDL_Init(SDL_INIT_AUDIO)` fails; `SDL_oldnames.h` turns SDL2 names into undeclared identifiers unless `SDL_DISABLE_OLD_NAMES` is defined; SDL3's main thread is the one that initialized video (`SDL_IsMainThread`) | `CMakeLists.txt`, `src/SDL.c` and `include/SDL3/SDL_oldnames.h` at `release-3.4.18` | 2026-10-05 |
+| C# looks up the enclosing namespaces before the using directives: in `Jade.Wgpu.Raw`, `Buffer` names `Jade.Wgpu.Buffer`; in `Jade.Sdl.Tests`, `Environment` names `Jade.Sdl.Environment` | builds of the interop and test projects | 2026-10-05 |
+| MSTEST0025 reports `Assert.AreEqual` between two compile-time constants as an always-failing assertion | build of `Jade.Sdl.Tests` (MSTest.Analyzers 4.4.1) | 2026-10-05 |
+| `System.Numerics.Vector3` receives an `ma_vec3f` (three `float`) returned by value on `linux-x64` | `Jade.MiniAudio.Tests` | 2026-10-05 |
 
 ## GitHub repository state
 

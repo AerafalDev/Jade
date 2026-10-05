@@ -12,7 +12,7 @@ namespace Jade.Wgpu;
 public partial struct CompatibilityModeLimits
 {
     /// <summary>Maps <c>WGPUCompatibilityModeLimits.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUCompatibilityModeLimits.maxStorageBuffersInVertexStage</c>.</summary>
     public uint MaxStorageBuffersInVertexStage;
@@ -29,10 +29,10 @@ public partial struct CompatibilityModeLimits
     /// <summary>Initializes a new instance of the <see cref="CompatibilityModeLimits"/> struct with the defaults of <c>WGPU_COMPATIBILITY_MODE_LIMITS_INIT</c>.</summary>
     public CompatibilityModeLimits()
     {
-        Chain.sType = SType.CompatibilityModeLimits;
-        MaxStorageBuffersInVertexStage = NativeMethods.WGPU_LIMIT_U32_UNDEFINED;
-        MaxStorageTexturesInVertexStage = NativeMethods.WGPU_LIMIT_U32_UNDEFINED;
-        MaxStorageBuffersInFragmentStage = NativeMethods.WGPU_LIMIT_U32_UNDEFINED;
-        MaxStorageTexturesInFragmentStage = NativeMethods.WGPU_LIMIT_U32_UNDEFINED;
+        Chain.SType = SType.CompatibilityModeLimits;
+        MaxStorageBuffersInVertexStage = Raw.NativeMethods.LimitU32Undefined;
+        MaxStorageTexturesInVertexStage = Raw.NativeMethods.LimitU32Undefined;
+        MaxStorageBuffersInFragmentStage = Raw.NativeMethods.LimitU32Undefined;
+        MaxStorageTexturesInFragmentStage = Raw.NativeMethods.LimitU32Undefined;
     }
 }

@@ -1,6 +1,6 @@
 # 0028. Internal raw interop layer
 
-- Status: Accepted
+- Status: Superseded by [0034](0034-raw-layer-with-dotnet-names.md)
 - Date: 2026-10-05
 
 ## Context

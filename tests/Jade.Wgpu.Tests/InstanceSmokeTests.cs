@@ -1,6 +1,7 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
+using Jade.Wgpu.Raw;
 
 namespace Jade.Wgpu.Tests;
 
@@ -18,12 +19,12 @@ internal sealed unsafe class InstanceSmokeTests
     {
         RequireNativeLibrary();
 
-        var descriptor = new WGPUInstanceDescriptor();
-        var instance = NativeMethods.wgpuCreateInstance(&descriptor);
+        var descriptor = new InstanceDescriptor();
+        var instance = NativeMethods.CreateInstance(&descriptor);
 
         Assert.AreNotEqual(default, instance);
 
-        NativeMethods.wgpuInstanceRelease(instance);
+        NativeMethods.InstanceRelease(instance);
     }
 
     [TestMethod]
@@ -31,20 +32,20 @@ internal sealed unsafe class InstanceSmokeTests
     {
         RequireNativeLibrary();
 
-        var features = new WGPUSupportedInstanceFeatures();
+        var features = new SupportedInstanceFeatures();
 
-        NativeMethods.wgpuGetInstanceFeatures(&features);
+        NativeMethods.GetInstanceFeatures(&features);
 
         try
         {
-            var names = new ReadOnlySpan<InstanceFeatureName>(features.features, checked((int)features.featureCount));
+            var names = new ReadOnlySpan<InstanceFeatureName>(features.Features, checked((int)features.FeatureCount));
 
             Assert.Contains(InstanceFeatureName.TimedWaitAny, names.ToArray());
-            Assert.IsTrue(NativeMethods.wgpuHasInstanceFeature(InstanceFeatureName.TimedWaitAny));
+            Assert.IsTrue(NativeMethods.HasInstanceFeature(InstanceFeatureName.TimedWaitAny));
         }
         finally
         {
-            NativeMethods.wgpuSupportedInstanceFeaturesFreeMembers(features);
+            NativeMethods.SupportedInstanceFeaturesFreeMembers(features);
         }
     }
 
@@ -55,8 +56,8 @@ internal sealed unsafe class InstanceSmokeTests
 
         // Waiting with a timeout needs the timed wait feature.
         var requiredFeatures = stackalloc InstanceFeatureName[] { InstanceFeatureName.TimedWaitAny };
-        var descriptor = new WGPUInstanceDescriptor { requiredFeatureCount = 1, requiredFeatures = requiredFeatures };
-        var instance = NativeMethods.wgpuCreateInstance(&descriptor);
+        var descriptor = new InstanceDescriptor { RequiredFeatureCount = 1, RequiredFeatures = requiredFeatures };
+        var instance = NativeMethods.CreateInstance(&descriptor);
         var request = new AdapterRequest();
         var requestHandle = GCHandle.Alloc(request);
 
@@ -65,15 +66,15 @@ internal sealed unsafe class InstanceSmokeTests
         try
         {
             var options = new RequestAdapterOptions();
-            var callbackInfo = new WGPURequestAdapterCallbackInfo
+            var callbackInfo = new RequestAdapterCallbackInfo
             {
-                mode = CallbackMode.WaitAnyOnly,
-                callback = &OnAdapterRequested,
-                userdata1 = (void*)GCHandle.ToIntPtr(requestHandle),
+                Mode = CallbackMode.WaitAnyOnly,
+                Callback = &OnAdapterRequested,
+                Userdata1 = (void*)GCHandle.ToIntPtr(requestHandle),
             };
-            var wait = new FutureWaitInfo { Future = NativeMethods.wgpuInstanceRequestAdapter(instance, &options, callbackInfo) };
+            var wait = new FutureWaitInfo { Future = NativeMethods.InstanceRequestAdapter(instance, &options, callbackInfo) };
 
-            Assert.AreEqual(WaitStatus.Success, NativeMethods.wgpuInstanceWaitAny(instance, 1, &wait, ulong.MaxValue));
+            Assert.AreEqual(WaitStatus.Success, NativeMethods.InstanceWaitAny(instance, 1, &wait, ulong.MaxValue));
             Assert.IsTrue(wait.Completed);
             Assert.AreEqual(1, request.Calls);
 
@@ -89,33 +90,33 @@ internal sealed unsafe class InstanceSmokeTests
         {
             if (request.Adapter != default)
             {
-                NativeMethods.wgpuAdapterRelease(request.Adapter);
+                NativeMethods.AdapterRelease(request.Adapter);
             }
 
             requestHandle.Free();
-            NativeMethods.wgpuInstanceRelease(instance);
+            NativeMethods.InstanceRelease(instance);
         }
     }
 
     private static void CheckAdapterInfo(Adapter adapter)
     {
-        var info = new WGPUAdapterInfo();
+        var info = new AdapterInfo();
 
-        Assert.AreEqual(Status.Success, NativeMethods.wgpuAdapterGetInfo(adapter, &info));
+        Assert.AreEqual(Status.Success, NativeMethods.AdapterGetInfo(adapter, &info));
 
         try
         {
-            Assert.AreNotEqual(BackendType.Undefined, info.backendType);
-            Assert.IsFalse(string.IsNullOrEmpty(ToString(info.device)));
+            Assert.AreNotEqual(BackendType.Undefined, info.BackendType);
+            Assert.IsFalse(string.IsNullOrEmpty(ToString(info.Device)));
         }
         finally
         {
-            NativeMethods.wgpuAdapterInfoFreeMembers(info);
+            NativeMethods.AdapterInfoFreeMembers(info);
         }
     }
 
     [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
-    private static void OnAdapterRequested(RequestAdapterStatus status, Adapter adapter, WGPUStringView message, void* userdata1, void* userdata2)
+    private static void OnAdapterRequested(RequestAdapterStatus status, Adapter adapter, StringView message, void* userdata1, void* userdata2)
     {
         var request = (AdapterRequest)GCHandle.FromIntPtr((nint)userdata1).Target!;
 
@@ -125,13 +126,13 @@ internal sealed unsafe class InstanceSmokeTests
         request.Message = ToString(message);
     }
 
-    private static string? ToString(WGPUStringView view)
+    private static string? ToString(StringView view)
     {
-        return view.data is null
+        return view.Data is null
             ? null
-            : view.length == NativeMethods.WGPU_STRLEN
-                ? Marshal.PtrToStringUTF8((nint)view.data)
-                : Encoding.UTF8.GetString(view.data, checked((int)view.length));
+            : view.Length == NativeMethods.Strlen
+                ? Marshal.PtrToStringUTF8((nint)view.Data)
+                : Encoding.UTF8.GetString(view.Data, checked((int)view.Length));
     }
 
     private static void RequireNativeLibrary()

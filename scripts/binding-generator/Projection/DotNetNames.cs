@@ -38,6 +38,27 @@ internal sealed partial class DotNetNames(IReadOnlyDictionary<string, string> na
             : name;
     }
 
+    /// <summary>Gets the camel-case .NET name of a parameter.</summary>
+    /// <param name="cName">The key of a replacement, <c>function.parameter</c>.</param>
+    /// <param name="words">The words of the name.</param>
+    /// <returns>The .NET name, whose first word is lowered whole when it is an acronym: <c>IOStream</c> gives <c>ioStream</c>.</returns>
+    /// <exception cref="InvalidDataException">The name would start with a digit.</exception>
+    public string GetParameterName(string cName, IReadOnlyList<string> words)
+    {
+        if (GetReplacement(cName) is { } replacement)
+        {
+            return replacement;
+        }
+
+        var first = ConvertWord(words[0]);
+        var head = first.All(char.IsAsciiLetterUpper) ? AsciiText.ToLower(first) : char.ToLowerInvariant(first[0]) + first[1..];
+        var name = head + string.Concat(words.Skip(1).Select(ConvertWord));
+
+        return char.IsAsciiDigit(name[0])
+            ? throw new InvalidDataException($"The .NET name of '{cName}' would be '{name}', which starts with a digit: add it to 'names'.")
+            : name;
+    }
+
     /// <summary>Gets the .NET name of an enum value, which does not repeat its enum's name.</summary>
     /// <param name="cName">The C name of the value.</param>
     /// <param name="words">The words of the value.</param>

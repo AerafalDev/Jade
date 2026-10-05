@@ -12,7 +12,7 @@ namespace Jade.Wgpu;
 public partial struct TextureBindingViewDimension
 {
     /// <summary>Maps <c>WGPUTextureBindingViewDimension.chain</c>.</summary>
-    internal WGPUChainedStruct Chain;
+    internal Raw.ChainedStruct Chain;
 
     /// <summary>Maps <c>WGPUTextureBindingViewDimension.textureBindingViewDimension</c>.</summary>
     public TextureViewDimension ViewDimension;
@@ -20,6 +20,6 @@ public partial struct TextureBindingViewDimension
     /// <summary>Initializes a new instance of the <see cref="TextureBindingViewDimension"/> struct with the defaults of <c>WGPU_TEXTURE_BINDING_VIEW_DIMENSION_INIT</c>.</summary>
     public TextureBindingViewDimension()
     {
-        Chain.sType = SType.TextureBindingViewDimension;
+        Chain.SType = SType.TextureBindingViewDimension;
     }
 }
