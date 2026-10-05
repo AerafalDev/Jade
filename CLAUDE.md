@@ -60,18 +60,20 @@ tools are out of scope for now.
 | Process | One ADR per important decision; accepted ADRs are superseded, not rewritten | [0001](docs/adr/0001-record-architecture-decisions.md) |
 | Identity | MIT; public texts are generic and never name the underlying libraries | [0002](docs/adr/0002-license-and-public-identity.md) |
 | Language and runtime | C# 15, .NET 11, SDK pinned in `global.json`, no preview features; Roslyn components on `netstandard2.0` | [0003](docs/adr/0003-csharp-15-and-dotnet-11.md) |
+| Targeting | `Jade.Emscripten` is `net11.0` without RID, browser-only through `[SupportedOSPlatform("browser")]`; Roslyn components set `LangVersion` 15.0 and reference a Roslyn no newer than the SDK's compiler | [0019](docs/adr/0019-browser-and-roslyn-component-targeting.md) |
 | GPU | WebGPU through Dawn at one pinned commit; Emdawnwebgpu from the same commit; projects keep the "Wgpu" name | [0004](docs/adr/0004-webgpu-via-dawn.md) |
 | Platform | SDL3; its audio subsystem is never initialized | [0005](docs/adr/0005-sdl3-platform-layer.md) |
 | Audio | miniaudio; platform-dependent structs are opaque and allocated by a C shim | [0006](docs/adr/0006-miniaudio-for-audio.md) |
 | Generator | In-house file-based app; `dawn.json` and libclang (ClangSharp, parser only); output committed and checked by CI | [0007](docs/adr/0007-in-house-binding-generator.md) |
 | Interop layers | Raw blittable layer plus idiomatic layer | [0008](docs/adr/0008-two-layer-interop.md) |
 | Interop mapping | `LibraryImport`, `CLong`/`nuint`, `InlineArray`, unions at offset 0, function-pointer callbacks, handles, descriptors, layout tests | [0009](docs/adr/0009-interop-mapping-conventions.md) |
-| Natives | Built by us with xmake (CMake for Dawn and SDL3); `native/versions.json` is the single source of versions | [0010](docs/adr/0010-native-builds-with-xmake.md) |
+| Natives | Built by us with xmake (CMake for Dawn and SDL3); `build/versions.json` is the single source of versions | [0010](docs/adr/0010-native-builds-with-xmake.md), [0020](docs/adr/0020-repository-layout-and-conventions.md) |
 | Native packages | `runtimes/{rid}/native`; `buildTransitive/` for iOS and the browser | [0011](docs/adr/0011-native-package-layout.md) |
 | Targets | 12 RIDs, universal macOS and iOS simulator binaries, old glibc; adding a RID needs an ADR | [0012](docs/adr/0012-supported-targets.md) |
 | Browser | Natives built with the workload's exact Emscripten version; no `--use-port`; non-blocking main loop | [0013](docs/adr/0013-browser-native-toolchain.md) |
-| Repository | Layout, file-based scripts, `Generated/*.g.cs`, English only, no comments in MSBuild files | [0014](docs/adr/0014-repository-layout-and-conventions.md) |
-| Build | Analysis, AOT compatibility, central packages with lock files, package validation, public API tracking, Microsoft.Testing.Platform | [0015](docs/adr/0015-build-and-packaging-conventions.md) |
+| Repository | Layout (`src/`, `native/` packaging projects, `build/` native builds), file-based scripts inheriting the MSBuild settings, `Generated/*.g.cs`, English only, no comments in MSBuild files | [0020](docs/adr/0020-repository-layout-and-conventions.md) |
+| Build | Analysis, AOT compatibility, central packages without lock files, exact SDK pin, package validation, public API tracking, Microsoft.Testing.Platform | [0021](docs/adr/0021-build-and-packaging-conventions.md) |
+| Tests | MSTest on Microsoft.Testing.Platform, plain packages under central management; `internal sealed` test classes with `DiscoverInternals` | [0018](docs/adr/0018-test-framework.md) |
 | Public API | `params ReadOnlySpan<T>`, UTF-8 plus `string` overloads, extension members, platform attributes, feature switches | [0016](docs/adr/0016-public-api-conventions.md) |
 | GitHub | Squash only, ruleset on `main`, secret scanning, Dependabot, CodeQL, Scorecard, SHA-pinned actions | [0017](docs/adr/0017-github-repository-baseline.md) |
 
@@ -82,9 +84,11 @@ Open decisions and the order of the next tasks are in the [roadmap](docs/roadmap
 - MSBuild files (`.csproj`, `.props`, `.targets`) and `Jade.slnx` contain no comments.
 - Repository scripts are .NET file-based apps in `scripts/` and start with a `#!` line.
 - Generated code goes to `Generated/*.g.cs` in each interop project and is never edited by hand.
+- Assembly- and module-level attributes go in `Properties/AssemblyInfo.cs`, never in
+  `AssemblyAttribute` items.
 - Interop rules: [0009](docs/adr/0009-interop-mapping-conventions.md). Public API rules:
   [0016](docs/adr/0016-public-api-conventions.md). Build rules:
-  [0015](docs/adr/0015-build-and-packaging-conventions.md).
+  [0021](docs/adr/0021-build-and-packaging-conventions.md).
 - Public texts (repository description, README introduction, NuGet descriptions and tags) never
   name Dawn, WebGPU, SDL3 or miniaudio; only `CONTRIBUTING.md`, `docs/` and
   `THIRD-PARTY-NOTICES.md` do.
@@ -99,6 +103,17 @@ Re-check these at every SDK or dependency update.
 | Default `LangVersion` for `net11.0` is 15.0 | `Roslyn/Microsoft.CSharp.Core.targets` of SDK `11.0.100-rc.1.26425.128` | 2026-10-05 |
 | File-based apps support `#:include` without preview flags | ran a two-file app with SDK `11.0.100-rc.1.26425.128` | 2026-10-05 |
 | CA2266 warns when a file-based entry point does not start with `#!` | same run | 2026-10-05 |
+| File-based apps in `scripts/` import the root `Directory.Build.props`, `Directory.Build.targets` and `Directory.Packages.props`, build into `artifacts/`, set `FileBasedProgram=true`, `MSBuildProjectName=<file>.cs` and `PublishAot=true`; `#:property` works | `dotnet build probe.cs -getProperty:...` on a throwaway script | 2026-10-05 |
+| Under central package management, `#:package Name@Version` fails with NU1008; `#:package Name` takes the version from `Directory.Packages.props` | same throwaway script | 2026-10-05 |
+| `net11.0-browser` is a valid TFM (declared by the `microsoft.net.workload.mono.toolchain.current` manifest); the `wasmbrowser` template targets `net11.0` with an implicit `browser-wasm` RID; `net11.0` cannot reference `net11.0-browser` (NU1201) | manifest `WorkloadManifest.targets`, `dotnet new wasmbrowser`, scratch projects | 2026-10-05 |
+| `netstandard2.0` defaults to `LangVersion` 7.3, and `Nullable=enable` then fails with CS8630 | `dotnet msbuild -getProperty:LangVersion` and a build of `Jade.Analyzers` | 2026-10-05 |
+| The SDK's compiler is Roslyn `5.11.0-1.26425.128`; Roslyn component packages must not be newer | `csc.dll -version` of SDK `11.0.100-rc.1.26425.128` | 2026-10-05 |
+| `dotnet sln add` fails with "already contains a project" when a referenced project is already in the solution; pass `--include-references false` | adding `src/Jade/Jade.csproj` to `Jade.slnx` | 2026-10-05 |
+| `global.json` `"test": {"runner": "Microsoft.Testing.Platform"}` makes `dotnet test` run MTP; the MSTest packages import `Microsoft.VisualStudio.TestTools.UnitTesting` globally under `ImplicitUsings` | `dotnet test -c Release` on `tests/Jade.Tests` (6 passed) and IDE0005 on an explicit `using` | 2026-10-05 |
+| Microsoft.CodeAnalysis.PublicApiAnalyzers adds `PublicAPI.Shipped.txt` and `PublicAPI.Unshipped.txt` as `AdditionalFiles` itself | its `buildTransitive` targets (5.6.0) | 2026-10-05 |
+| No MSBuild property exists for `SkipLocalsInit`; it is `[module: SkipLocalsInit]` | search of the SDK's `.props`/`.targets` | 2026-10-05 |
+| A packaging project without build output fails to pack a symbol package (NU5017) | `dotnet pack` of `Jade.Native.*` with `IncludeSymbols` | 2026-10-05 |
+| xmake 3.1.1 writes `.xmake/` and `build/` next to `xmake.lua` (so `build/.xmake/` and `build/build/` here) | throwaway xmake project | 2026-10-05 |
 
 ## GitHub repository state
 
@@ -127,5 +142,21 @@ in the repository settings; the REST API has no endpoint for it.
 
 ## Commands
 
-No project exists yet; build and test commands are added with the solution scaffolding (roadmap
-task 2).
+Run from the repository root; `global.json` selects the SDK and the test runner.
+
+| Purpose | Command |
+| --- | --- |
+| Restore | `dotnet restore` |
+| Build as CI does | `dotnet build -c Release -p:TreatWarningsAsErrors=true -p:ContinuousIntegrationBuild=true` |
+| Test (MSTest on MTP) | `dotnet test -c Release` |
+| Pack (with package validation) | `dotnet pack -c Release -p:TreatWarningsAsErrors=true -p:ContinuousIntegrationBuild=true` |
+| Run a script | `dotnet run scripts/<name>.cs` |
+
+- Outputs go to `artifacts/` (`bin/`, `obj/`, `package/release/`, `test/`).
+- SDK RC 1 bug: `dotnet test` with a relative project path can fail to load the project
+  (dotnet/sdk#56196); pass an absolute path or run it from the root without a path.
+- New projects go into `Jade.slnx` with `dotnet sln Jade.slnx add --include-references false
+  <path>`.
+- Package versions are added with `dotnet add <project> package <id> --version <version>` (the
+  version checked on nuget.org first), then moved to the right file if the reference belongs in
+  `Directory.Build.targets`.

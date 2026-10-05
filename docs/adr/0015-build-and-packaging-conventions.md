@@ -1,6 +1,6 @@
 # 0015. Build and packaging conventions
 
-- Status: Accepted
+- Status: Superseded by [0021](0021-build-and-packaging-conventions.md)
 - Date: 2026-10-05
 
 ## Context
