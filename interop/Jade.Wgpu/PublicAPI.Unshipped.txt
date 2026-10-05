@@ -1,1 +1,1475 @@
 #nullable enable
+Jade.Wgpu.Adapter
+Jade.Wgpu.Adapter.Adapter() -> void
+Jade.Wgpu.Adapter.Adapter(nint handle) -> void
+Jade.Wgpu.Adapter.Equals(Jade.Wgpu.Adapter other) -> bool
+Jade.Wgpu.Adapter.Handle.get -> nint
+Jade.Wgpu.AdapterPropertiesD3D
+Jade.Wgpu.AdapterPropertiesD3D.AdapterLuidHighPart -> uint
+Jade.Wgpu.AdapterPropertiesD3D.AdapterLuidLowPart -> uint
+Jade.Wgpu.AdapterPropertiesD3D.AdapterPropertiesD3D() -> void
+Jade.Wgpu.AdapterPropertiesD3D.ShaderModel -> uint
+Jade.Wgpu.AdapterPropertiesDrm
+Jade.Wgpu.AdapterPropertiesDrm.AdapterPropertiesDrm() -> void
+Jade.Wgpu.AdapterPropertiesDrm.HasPrimary -> Jade.Wgpu.Bool32
+Jade.Wgpu.AdapterPropertiesDrm.HasRender -> Jade.Wgpu.Bool32
+Jade.Wgpu.AdapterPropertiesDrm.PrimaryMajor -> ulong
+Jade.Wgpu.AdapterPropertiesDrm.PrimaryMinor -> ulong
+Jade.Wgpu.AdapterPropertiesDrm.RenderMajor -> ulong
+Jade.Wgpu.AdapterPropertiesDrm.RenderMinor -> ulong
+Jade.Wgpu.AdapterPropertiesVk
+Jade.Wgpu.AdapterPropertiesVk.AdapterPropertiesVk() -> void
+Jade.Wgpu.AdapterPropertiesVk.DriverVersion -> uint
+Jade.Wgpu.AdapterPropertiesWgpu
+Jade.Wgpu.AdapterPropertiesWgpu.AdapterPropertiesWgpu() -> void
+Jade.Wgpu.AdapterPropertiesWgpu.BackendType -> Jade.Wgpu.BackendType
+Jade.Wgpu.AdapterType
+Jade.Wgpu.AdapterType.Cpu = 3 -> Jade.Wgpu.AdapterType
+Jade.Wgpu.AdapterType.DiscreteGpu = 1 -> Jade.Wgpu.AdapterType
+Jade.Wgpu.AdapterType.IntegratedGpu = 2 -> Jade.Wgpu.AdapterType
+Jade.Wgpu.AdapterType.Unknown = 4 -> Jade.Wgpu.AdapterType
+Jade.Wgpu.AddressMode
+Jade.Wgpu.AddressMode.ClampToEdge = 1 -> Jade.Wgpu.AddressMode
+Jade.Wgpu.AddressMode.MirrorRepeat = 3 -> Jade.Wgpu.AddressMode
+Jade.Wgpu.AddressMode.Repeat = 2 -> Jade.Wgpu.AddressMode
+Jade.Wgpu.AddressMode.Undefined = 0 -> Jade.Wgpu.AddressMode
+Jade.Wgpu.AHardwareBufferProperties
+Jade.Wgpu.AHardwareBufferProperties.AHardwareBufferProperties() -> void
+Jade.Wgpu.AHardwareBufferProperties.YCbCrInfo -> Jade.Wgpu.YCbCrVkDescriptor
+Jade.Wgpu.AlphaMode
+Jade.Wgpu.AlphaMode.Opaque = 1 -> Jade.Wgpu.AlphaMode
+Jade.Wgpu.AlphaMode.Premultiplied = 2 -> Jade.Wgpu.AlphaMode
+Jade.Wgpu.AlphaMode.Unpremultiplied = 3 -> Jade.Wgpu.AlphaMode
+Jade.Wgpu.BackendType
+Jade.Wgpu.BackendType.D3D11 = 3 -> Jade.Wgpu.BackendType
+Jade.Wgpu.BackendType.D3D12 = 4 -> Jade.Wgpu.BackendType
+Jade.Wgpu.BackendType.Metal = 5 -> Jade.Wgpu.BackendType
+Jade.Wgpu.BackendType.Null = 1 -> Jade.Wgpu.BackendType
+Jade.Wgpu.BackendType.OpenGL = 7 -> Jade.Wgpu.BackendType
+Jade.Wgpu.BackendType.OpenGles = 8 -> Jade.Wgpu.BackendType
+Jade.Wgpu.BackendType.Undefined = 0 -> Jade.Wgpu.BackendType
+Jade.Wgpu.BackendType.Vulkan = 6 -> Jade.Wgpu.BackendType
+Jade.Wgpu.BackendType.WebGpu = 2 -> Jade.Wgpu.BackendType
+Jade.Wgpu.BindGroup
+Jade.Wgpu.BindGroup.BindGroup() -> void
+Jade.Wgpu.BindGroup.BindGroup(nint handle) -> void
+Jade.Wgpu.BindGroup.Equals(Jade.Wgpu.BindGroup other) -> bool
+Jade.Wgpu.BindGroup.Handle.get -> nint
+Jade.Wgpu.BindGroupEntry
+Jade.Wgpu.BindGroupEntry.BindGroupEntry() -> void
+Jade.Wgpu.BindGroupEntry.Binding -> uint
+Jade.Wgpu.BindGroupEntry.Buffer -> Jade.Wgpu.Buffer
+Jade.Wgpu.BindGroupEntry.Offset -> ulong
+Jade.Wgpu.BindGroupEntry.Sampler -> Jade.Wgpu.Sampler
+Jade.Wgpu.BindGroupEntry.Size -> ulong
+Jade.Wgpu.BindGroupEntry.TextureView -> Jade.Wgpu.TextureView
+Jade.Wgpu.BindGroupLayout
+Jade.Wgpu.BindGroupLayout.BindGroupLayout() -> void
+Jade.Wgpu.BindGroupLayout.BindGroupLayout(nint handle) -> void
+Jade.Wgpu.BindGroupLayout.Equals(Jade.Wgpu.BindGroupLayout other) -> bool
+Jade.Wgpu.BindGroupLayout.Handle.get -> nint
+Jade.Wgpu.BindGroupLayoutEntry
+Jade.Wgpu.BindGroupLayoutEntry.BindGroupLayoutEntry() -> void
+Jade.Wgpu.BindGroupLayoutEntry.Binding -> uint
+Jade.Wgpu.BindGroupLayoutEntry.BindingArraySize -> uint
+Jade.Wgpu.BindGroupLayoutEntry.Buffer -> Jade.Wgpu.BufferBindingLayout
+Jade.Wgpu.BindGroupLayoutEntry.Sampler -> Jade.Wgpu.SamplerBindingLayout
+Jade.Wgpu.BindGroupLayoutEntry.StorageTexture -> Jade.Wgpu.StorageTextureBindingLayout
+Jade.Wgpu.BindGroupLayoutEntry.Texture -> Jade.Wgpu.TextureBindingLayout
+Jade.Wgpu.BindGroupLayoutEntry.Visibility -> Jade.Wgpu.ShaderStage
+Jade.Wgpu.BindingResource
+Jade.Wgpu.BindingResource.BindingResource() -> void
+Jade.Wgpu.BindingResource.Buffer -> Jade.Wgpu.Buffer
+Jade.Wgpu.BindingResource.Offset -> ulong
+Jade.Wgpu.BindingResource.Sampler -> Jade.Wgpu.Sampler
+Jade.Wgpu.BindingResource.Size -> ulong
+Jade.Wgpu.BindingResource.TextureView -> Jade.Wgpu.TextureView
+Jade.Wgpu.BlendComponent
+Jade.Wgpu.BlendComponent.BlendComponent() -> void
+Jade.Wgpu.BlendComponent.DstFactor -> Jade.Wgpu.BlendFactor
+Jade.Wgpu.BlendComponent.Operation -> Jade.Wgpu.BlendOperation
+Jade.Wgpu.BlendComponent.SrcFactor -> Jade.Wgpu.BlendFactor
+Jade.Wgpu.BlendFactor
+Jade.Wgpu.BlendFactor.Constant = 12 -> Jade.Wgpu.BlendFactor
+Jade.Wgpu.BlendFactor.Dst = 7 -> Jade.Wgpu.BlendFactor
+Jade.Wgpu.BlendFactor.DstAlpha = 9 -> Jade.Wgpu.BlendFactor
+Jade.Wgpu.BlendFactor.One = 2 -> Jade.Wgpu.BlendFactor
+Jade.Wgpu.BlendFactor.OneMinusConstant = 13 -> Jade.Wgpu.BlendFactor
+Jade.Wgpu.BlendFactor.OneMinusDst = 8 -> Jade.Wgpu.BlendFactor
+Jade.Wgpu.BlendFactor.OneMinusDstAlpha = 10 -> Jade.Wgpu.BlendFactor
+Jade.Wgpu.BlendFactor.OneMinusSrc = 4 -> Jade.Wgpu.BlendFactor
+Jade.Wgpu.BlendFactor.OneMinusSrc1 = 15 -> Jade.Wgpu.BlendFactor
+Jade.Wgpu.BlendFactor.OneMinusSrc1Alpha = 17 -> Jade.Wgpu.BlendFactor
+Jade.Wgpu.BlendFactor.OneMinusSrcAlpha = 6 -> Jade.Wgpu.BlendFactor
+Jade.Wgpu.BlendFactor.Src = 3 -> Jade.Wgpu.BlendFactor
+Jade.Wgpu.BlendFactor.Src1 = 14 -> Jade.Wgpu.BlendFactor
+Jade.Wgpu.BlendFactor.Src1Alpha = 16 -> Jade.Wgpu.BlendFactor
+Jade.Wgpu.BlendFactor.SrcAlpha = 5 -> Jade.Wgpu.BlendFactor
+Jade.Wgpu.BlendFactor.SrcAlphaSaturated = 11 -> Jade.Wgpu.BlendFactor
+Jade.Wgpu.BlendFactor.Undefined = 0 -> Jade.Wgpu.BlendFactor
+Jade.Wgpu.BlendFactor.Zero = 1 -> Jade.Wgpu.BlendFactor
+Jade.Wgpu.BlendOperation
+Jade.Wgpu.BlendOperation.Add = 1 -> Jade.Wgpu.BlendOperation
+Jade.Wgpu.BlendOperation.Max = 5 -> Jade.Wgpu.BlendOperation
+Jade.Wgpu.BlendOperation.Min = 4 -> Jade.Wgpu.BlendOperation
+Jade.Wgpu.BlendOperation.ReverseSubtract = 3 -> Jade.Wgpu.BlendOperation
+Jade.Wgpu.BlendOperation.Subtract = 2 -> Jade.Wgpu.BlendOperation
+Jade.Wgpu.BlendOperation.Undefined = 0 -> Jade.Wgpu.BlendOperation
+Jade.Wgpu.BlendState
+Jade.Wgpu.BlendState.Alpha -> Jade.Wgpu.BlendComponent
+Jade.Wgpu.BlendState.BlendState() -> void
+Jade.Wgpu.BlendState.Color -> Jade.Wgpu.BlendComponent
+Jade.Wgpu.Bool32
+Jade.Wgpu.Bool32.Bool32() -> void
+Jade.Wgpu.Bool32.Bool32(bool value) -> void
+Jade.Wgpu.Bool32.Equals(Jade.Wgpu.Bool32 other) -> bool
+Jade.Wgpu.Bool32.Value.get -> bool
+Jade.Wgpu.Buffer
+Jade.Wgpu.Buffer.Buffer() -> void
+Jade.Wgpu.Buffer.Buffer(nint handle) -> void
+Jade.Wgpu.Buffer.Equals(Jade.Wgpu.Buffer other) -> bool
+Jade.Wgpu.Buffer.Handle.get -> nint
+Jade.Wgpu.BufferBindingLayout
+Jade.Wgpu.BufferBindingLayout.BufferBindingLayout() -> void
+Jade.Wgpu.BufferBindingLayout.HasDynamicOffset -> Jade.Wgpu.Bool32
+Jade.Wgpu.BufferBindingLayout.MinBindingSize -> ulong
+Jade.Wgpu.BufferBindingLayout.Type -> Jade.Wgpu.BufferBindingType
+Jade.Wgpu.BufferBindingType
+Jade.Wgpu.BufferBindingType.BindingNotUsed = 0 -> Jade.Wgpu.BufferBindingType
+Jade.Wgpu.BufferBindingType.ReadOnlyStorage = 4 -> Jade.Wgpu.BufferBindingType
+Jade.Wgpu.BufferBindingType.Storage = 3 -> Jade.Wgpu.BufferBindingType
+Jade.Wgpu.BufferBindingType.Undefined = 1 -> Jade.Wgpu.BufferBindingType
+Jade.Wgpu.BufferBindingType.Uniform = 2 -> Jade.Wgpu.BufferBindingType
+Jade.Wgpu.BufferMapState
+Jade.Wgpu.BufferMapState.Mapped = 3 -> Jade.Wgpu.BufferMapState
+Jade.Wgpu.BufferMapState.Pending = 2 -> Jade.Wgpu.BufferMapState
+Jade.Wgpu.BufferMapState.Unmapped = 1 -> Jade.Wgpu.BufferMapState
+Jade.Wgpu.BufferUsage
+Jade.Wgpu.BufferUsage.CopyDst = 8 -> Jade.Wgpu.BufferUsage
+Jade.Wgpu.BufferUsage.CopySrc = 4 -> Jade.Wgpu.BufferUsage
+Jade.Wgpu.BufferUsage.Index = 16 -> Jade.Wgpu.BufferUsage
+Jade.Wgpu.BufferUsage.Indirect = 256 -> Jade.Wgpu.BufferUsage
+Jade.Wgpu.BufferUsage.MapRead = 1 -> Jade.Wgpu.BufferUsage
+Jade.Wgpu.BufferUsage.MapWrite = 2 -> Jade.Wgpu.BufferUsage
+Jade.Wgpu.BufferUsage.None = 0 -> Jade.Wgpu.BufferUsage
+Jade.Wgpu.BufferUsage.QueryResolve = 512 -> Jade.Wgpu.BufferUsage
+Jade.Wgpu.BufferUsage.Storage = 128 -> Jade.Wgpu.BufferUsage
+Jade.Wgpu.BufferUsage.TexelBuffer = 1024 -> Jade.Wgpu.BufferUsage
+Jade.Wgpu.BufferUsage.Uniform = 64 -> Jade.Wgpu.BufferUsage
+Jade.Wgpu.BufferUsage.Vertex = 32 -> Jade.Wgpu.BufferUsage
+Jade.Wgpu.CallbackMode
+Jade.Wgpu.CallbackMode.AllowProcessEvents = 2 -> Jade.Wgpu.CallbackMode
+Jade.Wgpu.CallbackMode.AllowSpontaneous = 3 -> Jade.Wgpu.CallbackMode
+Jade.Wgpu.CallbackMode.WaitAnyOnly = 1 -> Jade.Wgpu.CallbackMode
+Jade.Wgpu.CallbackStatus
+Jade.Wgpu.CallbackStatus.Error = 2 -> Jade.Wgpu.CallbackStatus
+Jade.Wgpu.CallbackStatus.Success = 1 -> Jade.Wgpu.CallbackStatus
+Jade.Wgpu.Color
+Jade.Wgpu.Color.A -> double
+Jade.Wgpu.Color.B -> double
+Jade.Wgpu.Color.Color() -> void
+Jade.Wgpu.Color.G -> double
+Jade.Wgpu.Color.R -> double
+Jade.Wgpu.ColorSpaceDawn
+Jade.Wgpu.ColorSpaceDawn.ColorSpaceDawn() -> void
+Jade.Wgpu.ColorSpaceDawn.HdrReferenceWhiteLuminance -> float
+Jade.Wgpu.ColorSpaceDawn.Primaries -> Jade.Wgpu.ColorSpacePrimariesDawn
+Jade.Wgpu.ColorSpaceDawn.Transfer -> Jade.Wgpu.ColorSpaceTransferDawn
+Jade.Wgpu.ColorSpaceDawn.YCbCrMatrix -> Jade.Wgpu.ColorSpaceYCbCrMatrixDawn
+Jade.Wgpu.ColorSpaceDawn.YCbCrRange -> Jade.Wgpu.ColorSpaceYCbCrRangeDawn
+Jade.Wgpu.ColorSpacePrimariesDawn
+Jade.Wgpu.ColorSpacePrimariesDawn.DisplayP3 = 4 -> Jade.Wgpu.ColorSpacePrimariesDawn
+Jade.Wgpu.ColorSpacePrimariesDawn.Rec2020 = 3 -> Jade.Wgpu.ColorSpacePrimariesDawn
+Jade.Wgpu.ColorSpacePrimariesDawn.Rec601 = 2 -> Jade.Wgpu.ColorSpacePrimariesDawn
+Jade.Wgpu.ColorSpacePrimariesDawn.Rec709 = 1 -> Jade.Wgpu.ColorSpacePrimariesDawn
+Jade.Wgpu.ColorSpacePrimariesDawn.Srgb = 1 -> Jade.Wgpu.ColorSpacePrimariesDawn
+Jade.Wgpu.ColorSpaceTransferDawn
+Jade.Wgpu.ColorSpaceTransferDawn.BT_1886 = 7 -> Jade.Wgpu.ColorSpaceTransferDawn
+Jade.Wgpu.ColorSpaceTransferDawn.DisplayP3 = 3 -> Jade.Wgpu.ColorSpaceTransferDawn
+Jade.Wgpu.ColorSpaceTransferDawn.Hlg = 5 -> Jade.Wgpu.ColorSpaceTransferDawn
+Jade.Wgpu.ColorSpaceTransferDawn.Identity = 1 -> Jade.Wgpu.ColorSpaceTransferDawn
+Jade.Wgpu.ColorSpaceTransferDawn.PQ = 6 -> Jade.Wgpu.ColorSpaceTransferDawn
+Jade.Wgpu.ColorSpaceTransferDawn.Smpte_170M = 4 -> Jade.Wgpu.ColorSpaceTransferDawn
+Jade.Wgpu.ColorSpaceTransferDawn.Srgb = 2 -> Jade.Wgpu.ColorSpaceTransferDawn
+Jade.Wgpu.ColorSpaceYCbCrMatrixDawn
+Jade.Wgpu.ColorSpaceYCbCrMatrixDawn.Identity = 1 -> Jade.Wgpu.ColorSpaceYCbCrMatrixDawn
+Jade.Wgpu.ColorSpaceYCbCrMatrixDawn.Rec2020 = 4 -> Jade.Wgpu.ColorSpaceYCbCrMatrixDawn
+Jade.Wgpu.ColorSpaceYCbCrMatrixDawn.Rec601 = 2 -> Jade.Wgpu.ColorSpaceYCbCrMatrixDawn
+Jade.Wgpu.ColorSpaceYCbCrMatrixDawn.Rec709 = 3 -> Jade.Wgpu.ColorSpaceYCbCrMatrixDawn
+Jade.Wgpu.ColorSpaceYCbCrRangeDawn
+Jade.Wgpu.ColorSpaceYCbCrRangeDawn.Full = 3 -> Jade.Wgpu.ColorSpaceYCbCrRangeDawn
+Jade.Wgpu.ColorSpaceYCbCrRangeDawn.Identity = 1 -> Jade.Wgpu.ColorSpaceYCbCrRangeDawn
+Jade.Wgpu.ColorSpaceYCbCrRangeDawn.Narrow = 2 -> Jade.Wgpu.ColorSpaceYCbCrRangeDawn
+Jade.Wgpu.ColorTargetStateExpandResolveTextureDawn
+Jade.Wgpu.ColorTargetStateExpandResolveTextureDawn.ColorTargetStateExpandResolveTextureDawn() -> void
+Jade.Wgpu.ColorTargetStateExpandResolveTextureDawn.Enabled -> Jade.Wgpu.Bool32
+Jade.Wgpu.ColorWriteMask
+Jade.Wgpu.ColorWriteMask.All = Jade.Wgpu.ColorWriteMask.Red | Jade.Wgpu.ColorWriteMask.Green | Jade.Wgpu.ColorWriteMask.Blue | Jade.Wgpu.ColorWriteMask.Alpha -> Jade.Wgpu.ColorWriteMask
+Jade.Wgpu.ColorWriteMask.Alpha = 8 -> Jade.Wgpu.ColorWriteMask
+Jade.Wgpu.ColorWriteMask.Blue = 4 -> Jade.Wgpu.ColorWriteMask
+Jade.Wgpu.ColorWriteMask.Green = 2 -> Jade.Wgpu.ColorWriteMask
+Jade.Wgpu.ColorWriteMask.None = 0 -> Jade.Wgpu.ColorWriteMask
+Jade.Wgpu.ColorWriteMask.Red = 1 -> Jade.Wgpu.ColorWriteMask
+Jade.Wgpu.CommandBuffer
+Jade.Wgpu.CommandBuffer.CommandBuffer() -> void
+Jade.Wgpu.CommandBuffer.CommandBuffer(nint handle) -> void
+Jade.Wgpu.CommandBuffer.Equals(Jade.Wgpu.CommandBuffer other) -> bool
+Jade.Wgpu.CommandBuffer.Handle.get -> nint
+Jade.Wgpu.CommandEncoder
+Jade.Wgpu.CommandEncoder.CommandEncoder() -> void
+Jade.Wgpu.CommandEncoder.CommandEncoder(nint handle) -> void
+Jade.Wgpu.CommandEncoder.Equals(Jade.Wgpu.CommandEncoder other) -> bool
+Jade.Wgpu.CommandEncoder.Handle.get -> nint
+Jade.Wgpu.CompareFunction
+Jade.Wgpu.CompareFunction.Always = 8 -> Jade.Wgpu.CompareFunction
+Jade.Wgpu.CompareFunction.Equal = 3 -> Jade.Wgpu.CompareFunction
+Jade.Wgpu.CompareFunction.Greater = 5 -> Jade.Wgpu.CompareFunction
+Jade.Wgpu.CompareFunction.GreaterEqual = 7 -> Jade.Wgpu.CompareFunction
+Jade.Wgpu.CompareFunction.Less = 2 -> Jade.Wgpu.CompareFunction
+Jade.Wgpu.CompareFunction.LessEqual = 4 -> Jade.Wgpu.CompareFunction
+Jade.Wgpu.CompareFunction.Never = 1 -> Jade.Wgpu.CompareFunction
+Jade.Wgpu.CompareFunction.NotEqual = 6 -> Jade.Wgpu.CompareFunction
+Jade.Wgpu.CompareFunction.Undefined = 0 -> Jade.Wgpu.CompareFunction
+Jade.Wgpu.CompatibilityModeLimits
+Jade.Wgpu.CompatibilityModeLimits.CompatibilityModeLimits() -> void
+Jade.Wgpu.CompatibilityModeLimits.MaxStorageBuffersInFragmentStage -> uint
+Jade.Wgpu.CompatibilityModeLimits.MaxStorageBuffersInVertexStage -> uint
+Jade.Wgpu.CompatibilityModeLimits.MaxStorageTexturesInFragmentStage -> uint
+Jade.Wgpu.CompatibilityModeLimits.MaxStorageTexturesInVertexStage -> uint
+Jade.Wgpu.CompilationInfoRequestStatus
+Jade.Wgpu.CompilationInfoRequestStatus.CallbackCancelled = 2 -> Jade.Wgpu.CompilationInfoRequestStatus
+Jade.Wgpu.CompilationInfoRequestStatus.Success = 1 -> Jade.Wgpu.CompilationInfoRequestStatus
+Jade.Wgpu.CompilationMessageType
+Jade.Wgpu.CompilationMessageType.Error = 1 -> Jade.Wgpu.CompilationMessageType
+Jade.Wgpu.CompilationMessageType.Info = 3 -> Jade.Wgpu.CompilationMessageType
+Jade.Wgpu.CompilationMessageType.Warning = 2 -> Jade.Wgpu.CompilationMessageType
+Jade.Wgpu.ComponentSwizzle
+Jade.Wgpu.ComponentSwizzle.A = 6 -> Jade.Wgpu.ComponentSwizzle
+Jade.Wgpu.ComponentSwizzle.B = 5 -> Jade.Wgpu.ComponentSwizzle
+Jade.Wgpu.ComponentSwizzle.G = 4 -> Jade.Wgpu.ComponentSwizzle
+Jade.Wgpu.ComponentSwizzle.One = 2 -> Jade.Wgpu.ComponentSwizzle
+Jade.Wgpu.ComponentSwizzle.R = 3 -> Jade.Wgpu.ComponentSwizzle
+Jade.Wgpu.ComponentSwizzle.Undefined = 0 -> Jade.Wgpu.ComponentSwizzle
+Jade.Wgpu.ComponentSwizzle.Zero = 1 -> Jade.Wgpu.ComponentSwizzle
+Jade.Wgpu.CompositeAlphaMode
+Jade.Wgpu.CompositeAlphaMode.Auto = 0 -> Jade.Wgpu.CompositeAlphaMode
+Jade.Wgpu.CompositeAlphaMode.Inherit = 4 -> Jade.Wgpu.CompositeAlphaMode
+Jade.Wgpu.CompositeAlphaMode.Opaque = 1 -> Jade.Wgpu.CompositeAlphaMode
+Jade.Wgpu.CompositeAlphaMode.Premultiplied = 2 -> Jade.Wgpu.CompositeAlphaMode
+Jade.Wgpu.CompositeAlphaMode.Unpremultiplied = 3 -> Jade.Wgpu.CompositeAlphaMode
+Jade.Wgpu.ComputePassEncoder
+Jade.Wgpu.ComputePassEncoder.ComputePassEncoder() -> void
+Jade.Wgpu.ComputePassEncoder.ComputePassEncoder(nint handle) -> void
+Jade.Wgpu.ComputePassEncoder.Equals(Jade.Wgpu.ComputePassEncoder other) -> bool
+Jade.Wgpu.ComputePassEncoder.Handle.get -> nint
+Jade.Wgpu.ComputePipeline
+Jade.Wgpu.ComputePipeline.ComputePipeline() -> void
+Jade.Wgpu.ComputePipeline.ComputePipeline(nint handle) -> void
+Jade.Wgpu.ComputePipeline.Equals(Jade.Wgpu.ComputePipeline other) -> bool
+Jade.Wgpu.ComputePipeline.Handle.get -> nint
+Jade.Wgpu.CreatePipelineAsyncStatus
+Jade.Wgpu.CreatePipelineAsyncStatus.CallbackCancelled = 2 -> Jade.Wgpu.CreatePipelineAsyncStatus
+Jade.Wgpu.CreatePipelineAsyncStatus.InternalError = 4 -> Jade.Wgpu.CreatePipelineAsyncStatus
+Jade.Wgpu.CreatePipelineAsyncStatus.Success = 1 -> Jade.Wgpu.CreatePipelineAsyncStatus
+Jade.Wgpu.CreatePipelineAsyncStatus.ValidationError = 3 -> Jade.Wgpu.CreatePipelineAsyncStatus
+Jade.Wgpu.CullMode
+Jade.Wgpu.CullMode.Back = 3 -> Jade.Wgpu.CullMode
+Jade.Wgpu.CullMode.Front = 2 -> Jade.Wgpu.CullMode
+Jade.Wgpu.CullMode.None = 1 -> Jade.Wgpu.CullMode
+Jade.Wgpu.CullMode.Undefined = 0 -> Jade.Wgpu.CullMode
+Jade.Wgpu.DawnAdapterPropertiesPowerPreference
+Jade.Wgpu.DawnAdapterPropertiesPowerPreference.DawnAdapterPropertiesPowerPreference() -> void
+Jade.Wgpu.DawnAdapterPropertiesPowerPreference.PowerPreference -> Jade.Wgpu.PowerPreference
+Jade.Wgpu.DawnBufferDescriptorErrorInfoFromWireClient
+Jade.Wgpu.DawnBufferDescriptorErrorInfoFromWireClient.DawnBufferDescriptorErrorInfoFromWireClient() -> void
+Jade.Wgpu.DawnBufferDescriptorErrorInfoFromWireClient.OutOfMemory -> Jade.Wgpu.Bool32
+Jade.Wgpu.DawnCompilationMessageUtf16
+Jade.Wgpu.DawnCompilationMessageUtf16.DawnCompilationMessageUtf16() -> void
+Jade.Wgpu.DawnCompilationMessageUtf16.Length -> ulong
+Jade.Wgpu.DawnCompilationMessageUtf16.LinePos -> ulong
+Jade.Wgpu.DawnCompilationMessageUtf16.Offset -> ulong
+Jade.Wgpu.DawnConsumeAdapterDescriptor
+Jade.Wgpu.DawnConsumeAdapterDescriptor.ConsumeAdapter -> Jade.Wgpu.Bool32
+Jade.Wgpu.DawnConsumeAdapterDescriptor.DawnConsumeAdapterDescriptor() -> void
+Jade.Wgpu.DawnDeviceAllocatorControl
+Jade.Wgpu.DawnDeviceAllocatorControl.AllocatorHeapBlockSize -> nuint
+Jade.Wgpu.DawnDeviceAllocatorControl.DawnDeviceAllocatorControl() -> void
+Jade.Wgpu.DawnDrmFormatProperties
+Jade.Wgpu.DawnDrmFormatProperties.DawnDrmFormatProperties() -> void
+Jade.Wgpu.DawnDrmFormatProperties.Modifier -> ulong
+Jade.Wgpu.DawnDrmFormatProperties.ModifierPlaneCount -> uint
+Jade.Wgpu.DawnEncoderInternalUsageDescriptor
+Jade.Wgpu.DawnEncoderInternalUsageDescriptor.DawnEncoderInternalUsageDescriptor() -> void
+Jade.Wgpu.DawnEncoderInternalUsageDescriptor.UseInternalUsages -> Jade.Wgpu.Bool32
+Jade.Wgpu.DawnFakeBufferOomForTesting
+Jade.Wgpu.DawnFakeBufferOomForTesting.DawnFakeBufferOomForTesting() -> void
+Jade.Wgpu.DawnFakeBufferOomForTesting.FakeOomAtDevice -> Jade.Wgpu.Bool32
+Jade.Wgpu.DawnFakeBufferOomForTesting.FakeOomAtNativeMap -> Jade.Wgpu.Bool32
+Jade.Wgpu.DawnFakeBufferOomForTesting.FakeOomAtWireClientMap -> Jade.Wgpu.Bool32
+Jade.Wgpu.DawnFakeDeviceInitializeErrorForTesting
+Jade.Wgpu.DawnFakeDeviceInitializeErrorForTesting.DawnFakeDeviceInitializeErrorForTesting() -> void
+Jade.Wgpu.DawnFormatCapabilities
+Jade.Wgpu.DawnFormatCapabilities.DawnFormatCapabilities() -> void
+Jade.Wgpu.DawnHostMappedPointerLimits
+Jade.Wgpu.DawnHostMappedPointerLimits.DawnHostMappedPointerLimits() -> void
+Jade.Wgpu.DawnHostMappedPointerLimits.HostMappedPointerAlignment -> uint
+Jade.Wgpu.DawnInjectedInvalidSType
+Jade.Wgpu.DawnInjectedInvalidSType.DawnInjectedInvalidSType() -> void
+Jade.Wgpu.DawnInjectedInvalidSType.InvalidSType -> Jade.Wgpu.SType
+Jade.Wgpu.DawnRenderPassSampleCount
+Jade.Wgpu.DawnRenderPassSampleCount.DawnRenderPassSampleCount() -> void
+Jade.Wgpu.DawnRenderPassSampleCount.SampleCount -> uint
+Jade.Wgpu.DawnShaderModuleSpirvOptionsDescriptor
+Jade.Wgpu.DawnShaderModuleSpirvOptionsDescriptor.AllowNonUniformDerivatives -> Jade.Wgpu.Bool32
+Jade.Wgpu.DawnShaderModuleSpirvOptionsDescriptor.DawnShaderModuleSpirvOptionsDescriptor() -> void
+Jade.Wgpu.DawnTexelCopyBufferRowAlignmentLimits
+Jade.Wgpu.DawnTexelCopyBufferRowAlignmentLimits.DawnTexelCopyBufferRowAlignmentLimits() -> void
+Jade.Wgpu.DawnTexelCopyBufferRowAlignmentLimits.MinTexelCopyBufferRowAlignment -> uint
+Jade.Wgpu.DawnTextureInternalUsageDescriptor
+Jade.Wgpu.DawnTextureInternalUsageDescriptor.DawnTextureInternalUsageDescriptor() -> void
+Jade.Wgpu.DawnTextureInternalUsageDescriptor.InternalUsage -> Jade.Wgpu.TextureUsage
+Jade.Wgpu.DawnWireWgslControl
+Jade.Wgpu.DawnWireWgslControl.DawnWireWgslControl() -> void
+Jade.Wgpu.DawnWireWgslControl.EnableExperimental -> Jade.Wgpu.Bool32
+Jade.Wgpu.DawnWireWgslControl.EnableTesting -> Jade.Wgpu.Bool32
+Jade.Wgpu.DawnWireWgslControl.EnableUnsafe -> Jade.Wgpu.Bool32
+Jade.Wgpu.DepthStencilState
+Jade.Wgpu.DepthStencilState.DepthBias -> int
+Jade.Wgpu.DepthStencilState.DepthBiasClamp -> float
+Jade.Wgpu.DepthStencilState.DepthBiasSlopeScale -> float
+Jade.Wgpu.DepthStencilState.DepthCompare -> Jade.Wgpu.CompareFunction
+Jade.Wgpu.DepthStencilState.DepthStencilState() -> void
+Jade.Wgpu.DepthStencilState.DepthWriteEnabled -> Jade.Wgpu.OptionalBool
+Jade.Wgpu.DepthStencilState.Format -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.DepthStencilState.StencilBack -> Jade.Wgpu.StencilFaceState
+Jade.Wgpu.DepthStencilState.StencilFront -> Jade.Wgpu.StencilFaceState
+Jade.Wgpu.DepthStencilState.StencilReadMask -> uint
+Jade.Wgpu.DepthStencilState.StencilWriteMask -> uint
+Jade.Wgpu.Device
+Jade.Wgpu.Device.Device() -> void
+Jade.Wgpu.Device.Device(nint handle) -> void
+Jade.Wgpu.Device.Equals(Jade.Wgpu.Device other) -> bool
+Jade.Wgpu.Device.Handle.get -> nint
+Jade.Wgpu.DeviceLostReason
+Jade.Wgpu.DeviceLostReason.CallbackCancelled = 3 -> Jade.Wgpu.DeviceLostReason
+Jade.Wgpu.DeviceLostReason.Destroyed = 2 -> Jade.Wgpu.DeviceLostReason
+Jade.Wgpu.DeviceLostReason.FailedCreation = 4 -> Jade.Wgpu.DeviceLostReason
+Jade.Wgpu.DeviceLostReason.Unknown = 1 -> Jade.Wgpu.DeviceLostReason
+Jade.Wgpu.ErrorFilter
+Jade.Wgpu.ErrorFilter.Internal = 3 -> Jade.Wgpu.ErrorFilter
+Jade.Wgpu.ErrorFilter.OutOfMemory = 2 -> Jade.Wgpu.ErrorFilter
+Jade.Wgpu.ErrorFilter.Validation = 1 -> Jade.Wgpu.ErrorFilter
+Jade.Wgpu.ErrorType
+Jade.Wgpu.ErrorType.Internal = 4 -> Jade.Wgpu.ErrorType
+Jade.Wgpu.ErrorType.NoError = 1 -> Jade.Wgpu.ErrorType
+Jade.Wgpu.ErrorType.OutOfMemory = 3 -> Jade.Wgpu.ErrorType
+Jade.Wgpu.ErrorType.Unknown = 5 -> Jade.Wgpu.ErrorType
+Jade.Wgpu.ErrorType.Validation = 2 -> Jade.Wgpu.ErrorType
+Jade.Wgpu.Extent2D
+Jade.Wgpu.Extent2D.Extent2D() -> void
+Jade.Wgpu.Extent2D.Height -> uint
+Jade.Wgpu.Extent2D.Width -> uint
+Jade.Wgpu.Extent3D
+Jade.Wgpu.Extent3D.DepthOrArrayLayers -> uint
+Jade.Wgpu.Extent3D.Extent3D() -> void
+Jade.Wgpu.Extent3D.Height -> uint
+Jade.Wgpu.Extent3D.Width -> uint
+Jade.Wgpu.ExternalTexture
+Jade.Wgpu.ExternalTexture.Equals(Jade.Wgpu.ExternalTexture other) -> bool
+Jade.Wgpu.ExternalTexture.ExternalTexture() -> void
+Jade.Wgpu.ExternalTexture.ExternalTexture(nint handle) -> void
+Jade.Wgpu.ExternalTexture.Handle.get -> nint
+Jade.Wgpu.ExternalTextureBindingEntry
+Jade.Wgpu.ExternalTextureBindingEntry.ExternalTexture -> Jade.Wgpu.ExternalTexture
+Jade.Wgpu.ExternalTextureBindingEntry.ExternalTextureBindingEntry() -> void
+Jade.Wgpu.ExternalTextureBindingLayout
+Jade.Wgpu.ExternalTextureBindingLayout.ExternalTextureBindingLayout() -> void
+Jade.Wgpu.ExternalTextureRotation
+Jade.Wgpu.ExternalTextureRotation.Rotate0Degrees = 1 -> Jade.Wgpu.ExternalTextureRotation
+Jade.Wgpu.ExternalTextureRotation.Rotate180Degrees = 3 -> Jade.Wgpu.ExternalTextureRotation
+Jade.Wgpu.ExternalTextureRotation.Rotate270Degrees = 4 -> Jade.Wgpu.ExternalTextureRotation
+Jade.Wgpu.ExternalTextureRotation.Rotate90Degrees = 2 -> Jade.Wgpu.ExternalTextureRotation
+Jade.Wgpu.FeatureLevel
+Jade.Wgpu.FeatureLevel.Compatibility = 1 -> Jade.Wgpu.FeatureLevel
+Jade.Wgpu.FeatureLevel.Core = 2 -> Jade.Wgpu.FeatureLevel
+Jade.Wgpu.FeatureLevel.Undefined = 0 -> Jade.Wgpu.FeatureLevel
+Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.AdapterPropertiesD3D = 327701 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.AdapterPropertiesDrm = 327743 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.AdapterPropertiesMemoryHeaps = 327700 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.AdapterPropertiesVk = 327702 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.AdapterPropertiesWgpu = 327735 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.AngleTextureSharing = 327689 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.AtomicVec2uMinMax = 25 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.Bgra8UnormStorage = 13 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.BufferMapExtendedUsages = 327699 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.BufferMapWriteExtendedUsages = 327745 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.ChromiumExperimentalSamplingResourceTable = 327738 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.ChromiumExperimentalSubgroupMatrix = 327732 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.ChromiumExperimentalTimestampQueryInsidePasses = 327683 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.ClipDistances = 16 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.CoreFeaturesAndLimits = 1 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.D3D11MultithreadProtected = 327688 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.DawnAllowUndefinedLoadStoreOp = 327744 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.DawnDeviceAllocatorControl = 327734 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.DawnDrmFormatCapabilities = 327704 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.DawnFormatCapabilities = 327703 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.DawnInternalUsages = 327680 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.DawnLoadResolveTexture = 327727 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.DawnMultiPlanarFormats = 327681 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.DawnNative = 327682 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.DawnPartialLoadResolveTexture = 327728 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.DawnTexelCopyBufferRowAlignment = 327730 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.Depth32FloatStencil8 = 3 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.DepthClipControl = 2 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.DualSourceBlending = 17 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.FlexibleTextureViews = 327731 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.Float32Blendable = 15 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.Float32Filterable = 14 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.FramebufferFetch = 327698 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.HostMappedPointer = 327695 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.ImplicitDeviceSynchronization = 327684 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.IndirectFirstInstance = 10 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.MsaaRenderToSingleSampled = 327687 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.MultiDrawIndirect = 327729 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.MultiPlanarFormatExtendedUsages = 327693 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.MultiPlanarFormatNv12a = 327697 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.MultiPlanarFormatNv16 = 327705 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.MultiPlanarFormatNv24 = 327706 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.MultiPlanarFormatP010 = 327694 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.MultiPlanarFormatP210 = 327707 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.MultiPlanarFormatP410 = 327708 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.MultiPlanarRenderTargets = 327696 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.OpaqueYCbCrAndroidForExternalTexture = 327740 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.PixelLocalStorageCoherent = 327690 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.PixelLocalStorageNonCoherent = 327691 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.PrimitiveIndex = 21 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.RenderPassRenderArea = 327742 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.RG11B10UfloatRenderable = 12 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.ShaderF16 = 11 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.ShaderModuleCompilationOptions = 327726 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.SharedBufferMemoryD3D12Resource = 327723 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.SharedBufferMemoryFromWindowsHandle = 327736 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.SharedBufferMemoryHostPointer = 327746 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.SharedFenceDxgiSharedHandle = 327721 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.SharedFenceEglSync = 327733 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.SharedFenceMtlSharedEvent = 327722 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.SharedFenceSyncFD = 327719 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.SharedFenceVkSemaphoreOpaqueFD = 327718 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.SharedFenceVkSemaphoreZirconHandle = 327720 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.SharedTextureMemoryAHardwareBuffer = 327710 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.SharedTextureMemoryD3D11Texture2D = 327715 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.SharedTextureMemoryD3D12Resource = 327737 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.SharedTextureMemoryDmaBuf = 327711 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.SharedTextureMemoryDxgiSharedHandle = 327714 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.SharedTextureMemoryEglImage = 327717 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.SharedTextureMemoryIOSurface = 327716 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.SharedTextureMemoryOpaqueFD = 327712 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.SharedTextureMemoryVkDedicatedAllocation = 327709 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.SharedTextureMemoryZirconHandle = 327713 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.StaticSamplers = 327724 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.Subgroups = 18 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.SubgroupSizeControl = 23 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.TextureComponentSwizzle = 22 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.TextureCompressionAstc = 7 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.TextureCompressionAstcSliced3D = 8 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.TextureCompressionBC = 4 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.TextureCompressionBCSliced3D = 5 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.TextureCompressionEtc2 = 6 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.TextureCompressionUnaligned = 24 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.TextureFormatsTier1 = 19 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.TextureFormatsTier2 = 20 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.TimestampQuery = 9 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.TransientAttachments = 327686 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.Unorm16Filterable = 327741 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.Unorm16FormatsForExternalTexture = 327739 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.Unorm16TextureFormats = 327692 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FeatureName.YCbCrVulkanSamplers = 327725 -> Jade.Wgpu.FeatureName
+Jade.Wgpu.FilterMode
+Jade.Wgpu.FilterMode.Linear = 2 -> Jade.Wgpu.FilterMode
+Jade.Wgpu.FilterMode.Nearest = 1 -> Jade.Wgpu.FilterMode
+Jade.Wgpu.FilterMode.Undefined = 0 -> Jade.Wgpu.FilterMode
+Jade.Wgpu.FrontFace
+Jade.Wgpu.FrontFace.Ccw = 1 -> Jade.Wgpu.FrontFace
+Jade.Wgpu.FrontFace.CW = 2 -> Jade.Wgpu.FrontFace
+Jade.Wgpu.FrontFace.Undefined = 0 -> Jade.Wgpu.FrontFace
+Jade.Wgpu.Future
+Jade.Wgpu.Future.Future() -> void
+Jade.Wgpu.Future.Id -> ulong
+Jade.Wgpu.FutureWaitInfo
+Jade.Wgpu.FutureWaitInfo.Completed -> Jade.Wgpu.Bool32
+Jade.Wgpu.FutureWaitInfo.Future -> Jade.Wgpu.Future
+Jade.Wgpu.FutureWaitInfo.FutureWaitInfo() -> void
+Jade.Wgpu.HeapProperty
+Jade.Wgpu.HeapProperty.DeviceLocal = 1 -> Jade.Wgpu.HeapProperty
+Jade.Wgpu.HeapProperty.HostCached = 16 -> Jade.Wgpu.HeapProperty
+Jade.Wgpu.HeapProperty.HostCoherent = 4 -> Jade.Wgpu.HeapProperty
+Jade.Wgpu.HeapProperty.HostUncached = 8 -> Jade.Wgpu.HeapProperty
+Jade.Wgpu.HeapProperty.HostVisible = 2 -> Jade.Wgpu.HeapProperty
+Jade.Wgpu.HeapProperty.None = 0 -> Jade.Wgpu.HeapProperty
+Jade.Wgpu.ImageCopyExternalTexture
+Jade.Wgpu.ImageCopyExternalTexture.ExternalTexture -> Jade.Wgpu.ExternalTexture
+Jade.Wgpu.ImageCopyExternalTexture.ImageCopyExternalTexture() -> void
+Jade.Wgpu.ImageCopyExternalTexture.NaturalSize -> Jade.Wgpu.Extent2D
+Jade.Wgpu.ImageCopyExternalTexture.Origin -> Jade.Wgpu.Origin3D
+Jade.Wgpu.IndexFormat
+Jade.Wgpu.IndexFormat.Uint16 = 1 -> Jade.Wgpu.IndexFormat
+Jade.Wgpu.IndexFormat.Uint32 = 2 -> Jade.Wgpu.IndexFormat
+Jade.Wgpu.IndexFormat.Undefined = 0 -> Jade.Wgpu.IndexFormat
+Jade.Wgpu.Instance
+Jade.Wgpu.Instance.Equals(Jade.Wgpu.Instance other) -> bool
+Jade.Wgpu.Instance.Handle.get -> nint
+Jade.Wgpu.Instance.Instance() -> void
+Jade.Wgpu.Instance.Instance(nint handle) -> void
+Jade.Wgpu.InstanceFeatureName
+Jade.Wgpu.InstanceFeatureName.MultipleDevicesPerAdapter = 3 -> Jade.Wgpu.InstanceFeatureName
+Jade.Wgpu.InstanceFeatureName.ShaderSourceSpirv = 2 -> Jade.Wgpu.InstanceFeatureName
+Jade.Wgpu.InstanceFeatureName.TimedWaitAny = 1 -> Jade.Wgpu.InstanceFeatureName
+Jade.Wgpu.InstanceLimits
+Jade.Wgpu.InstanceLimits.InstanceLimits() -> void
+Jade.Wgpu.InstanceLimits.TimedWaitAnyMaxCount -> nuint
+Jade.Wgpu.Limits
+Jade.Wgpu.Limits.Limits() -> void
+Jade.Wgpu.Limits.MaxBindGroups -> uint
+Jade.Wgpu.Limits.MaxBindGroupsPlusVertexBuffers -> uint
+Jade.Wgpu.Limits.MaxBindingsPerBindGroup -> uint
+Jade.Wgpu.Limits.MaxBufferSize -> ulong
+Jade.Wgpu.Limits.MaxColorAttachmentBytesPerSample -> uint
+Jade.Wgpu.Limits.MaxColorAttachments -> uint
+Jade.Wgpu.Limits.MaxComputeInvocationsPerWorkgroup -> uint
+Jade.Wgpu.Limits.MaxComputeWorkgroupSizeX -> uint
+Jade.Wgpu.Limits.MaxComputeWorkgroupSizeY -> uint
+Jade.Wgpu.Limits.MaxComputeWorkgroupSizeZ -> uint
+Jade.Wgpu.Limits.MaxComputeWorkgroupsPerDimension -> uint
+Jade.Wgpu.Limits.MaxComputeWorkgroupStorageSize -> uint
+Jade.Wgpu.Limits.MaxDynamicStorageBuffersPerPipelineLayout -> uint
+Jade.Wgpu.Limits.MaxDynamicUniformBuffersPerPipelineLayout -> uint
+Jade.Wgpu.Limits.MaxImmediateSize -> uint
+Jade.Wgpu.Limits.MaxInterStageShaderVariables -> uint
+Jade.Wgpu.Limits.MaxSampledTexturesPerShaderStage -> uint
+Jade.Wgpu.Limits.MaxSamplersPerShaderStage -> uint
+Jade.Wgpu.Limits.MaxStorageBufferBindingSize -> ulong
+Jade.Wgpu.Limits.MaxStorageBuffersPerShaderStage -> uint
+Jade.Wgpu.Limits.MaxStorageTexturesPerShaderStage -> uint
+Jade.Wgpu.Limits.MaxTextureArrayLayers -> uint
+Jade.Wgpu.Limits.MaxTextureDimension1D -> uint
+Jade.Wgpu.Limits.MaxTextureDimension2D -> uint
+Jade.Wgpu.Limits.MaxTextureDimension3D -> uint
+Jade.Wgpu.Limits.MaxUniformBufferBindingSize -> ulong
+Jade.Wgpu.Limits.MaxUniformBuffersPerShaderStage -> uint
+Jade.Wgpu.Limits.MaxVertexAttributes -> uint
+Jade.Wgpu.Limits.MaxVertexBufferArrayStride -> uint
+Jade.Wgpu.Limits.MaxVertexBuffers -> uint
+Jade.Wgpu.Limits.MinStorageBufferOffsetAlignment -> uint
+Jade.Wgpu.Limits.MinUniformBufferOffsetAlignment -> uint
+Jade.Wgpu.LoadOp
+Jade.Wgpu.LoadOp.Clear = 2 -> Jade.Wgpu.LoadOp
+Jade.Wgpu.LoadOp.ExpandResolveTexture = 327683 -> Jade.Wgpu.LoadOp
+Jade.Wgpu.LoadOp.Load = 1 -> Jade.Wgpu.LoadOp
+Jade.Wgpu.LoadOp.Undefined = 0 -> Jade.Wgpu.LoadOp
+Jade.Wgpu.LoggingType
+Jade.Wgpu.LoggingType.Error = 4 -> Jade.Wgpu.LoggingType
+Jade.Wgpu.LoggingType.Info = 2 -> Jade.Wgpu.LoggingType
+Jade.Wgpu.LoggingType.Verbose = 1 -> Jade.Wgpu.LoggingType
+Jade.Wgpu.LoggingType.Warning = 3 -> Jade.Wgpu.LoggingType
+Jade.Wgpu.MapAsyncStatus
+Jade.Wgpu.MapAsyncStatus.Aborted = 4 -> Jade.Wgpu.MapAsyncStatus
+Jade.Wgpu.MapAsyncStatus.CallbackCancelled = 2 -> Jade.Wgpu.MapAsyncStatus
+Jade.Wgpu.MapAsyncStatus.Error = 3 -> Jade.Wgpu.MapAsyncStatus
+Jade.Wgpu.MapAsyncStatus.Success = 1 -> Jade.Wgpu.MapAsyncStatus
+Jade.Wgpu.MapMode
+Jade.Wgpu.MapMode.None = 0 -> Jade.Wgpu.MapMode
+Jade.Wgpu.MapMode.Read = 1 -> Jade.Wgpu.MapMode
+Jade.Wgpu.MapMode.Write = 2 -> Jade.Wgpu.MapMode
+Jade.Wgpu.MemoryHeapInfo
+Jade.Wgpu.MemoryHeapInfo.MemoryHeapInfo() -> void
+Jade.Wgpu.MemoryHeapInfo.Properties -> Jade.Wgpu.HeapProperty
+Jade.Wgpu.MemoryHeapInfo.Size -> ulong
+Jade.Wgpu.MipmapFilterMode
+Jade.Wgpu.MipmapFilterMode.Linear = 2 -> Jade.Wgpu.MipmapFilterMode
+Jade.Wgpu.MipmapFilterMode.Nearest = 1 -> Jade.Wgpu.MipmapFilterMode
+Jade.Wgpu.MipmapFilterMode.Undefined = 0 -> Jade.Wgpu.MipmapFilterMode
+Jade.Wgpu.MultisampleState
+Jade.Wgpu.MultisampleState.AlphaToCoverageEnabled -> Jade.Wgpu.Bool32
+Jade.Wgpu.MultisampleState.Count -> uint
+Jade.Wgpu.MultisampleState.Mask -> uint
+Jade.Wgpu.MultisampleState.MultisampleState() -> void
+Jade.Wgpu.OptionalBool
+Jade.Wgpu.OptionalBool.False = 0 -> Jade.Wgpu.OptionalBool
+Jade.Wgpu.OptionalBool.True = 1 -> Jade.Wgpu.OptionalBool
+Jade.Wgpu.OptionalBool.Undefined = 2 -> Jade.Wgpu.OptionalBool
+Jade.Wgpu.Origin2D
+Jade.Wgpu.Origin2D.Origin2D() -> void
+Jade.Wgpu.Origin2D.X -> uint
+Jade.Wgpu.Origin2D.Y -> uint
+Jade.Wgpu.Origin3D
+Jade.Wgpu.Origin3D.Origin3D() -> void
+Jade.Wgpu.Origin3D.X -> uint
+Jade.Wgpu.Origin3D.Y -> uint
+Jade.Wgpu.Origin3D.Z -> uint
+Jade.Wgpu.PassTimestampWrites
+Jade.Wgpu.PassTimestampWrites.BeginningOfPassWriteIndex -> uint
+Jade.Wgpu.PassTimestampWrites.EndOfPassWriteIndex -> uint
+Jade.Wgpu.PassTimestampWrites.PassTimestampWrites() -> void
+Jade.Wgpu.PassTimestampWrites.QuerySet -> Jade.Wgpu.QuerySet
+Jade.Wgpu.PipelineLayout
+Jade.Wgpu.PipelineLayout.Equals(Jade.Wgpu.PipelineLayout other) -> bool
+Jade.Wgpu.PipelineLayout.Handle.get -> nint
+Jade.Wgpu.PipelineLayout.PipelineLayout() -> void
+Jade.Wgpu.PipelineLayout.PipelineLayout(nint handle) -> void
+Jade.Wgpu.PipelineLayoutResourceTable
+Jade.Wgpu.PipelineLayoutResourceTable.PipelineLayoutResourceTable() -> void
+Jade.Wgpu.PipelineLayoutResourceTable.UsesResourceTable -> Jade.Wgpu.Bool32
+Jade.Wgpu.PipelineLayoutStorageAttachment
+Jade.Wgpu.PipelineLayoutStorageAttachment.Format -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.PipelineLayoutStorageAttachment.Offset -> ulong
+Jade.Wgpu.PipelineLayoutStorageAttachment.PipelineLayoutStorageAttachment() -> void
+Jade.Wgpu.PopErrorScopeStatus
+Jade.Wgpu.PopErrorScopeStatus.CallbackCancelled = 2 -> Jade.Wgpu.PopErrorScopeStatus
+Jade.Wgpu.PopErrorScopeStatus.Error = 3 -> Jade.Wgpu.PopErrorScopeStatus
+Jade.Wgpu.PopErrorScopeStatus.Success = 1 -> Jade.Wgpu.PopErrorScopeStatus
+Jade.Wgpu.PowerPreference
+Jade.Wgpu.PowerPreference.HighPerformance = 2 -> Jade.Wgpu.PowerPreference
+Jade.Wgpu.PowerPreference.LowPower = 1 -> Jade.Wgpu.PowerPreference
+Jade.Wgpu.PowerPreference.Undefined = 0 -> Jade.Wgpu.PowerPreference
+Jade.Wgpu.PredefinedColorSpace
+Jade.Wgpu.PredefinedColorSpace.DisplayP3 = 2 -> Jade.Wgpu.PredefinedColorSpace
+Jade.Wgpu.PredefinedColorSpace.DisplayP3Linear = 327684 -> Jade.Wgpu.PredefinedColorSpace
+Jade.Wgpu.PredefinedColorSpace.Rec2020Linear = 327685 -> Jade.Wgpu.PredefinedColorSpace
+Jade.Wgpu.PredefinedColorSpace.Srgb = 1 -> Jade.Wgpu.PredefinedColorSpace
+Jade.Wgpu.PredefinedColorSpace.SrgbLinear = 327683 -> Jade.Wgpu.PredefinedColorSpace
+Jade.Wgpu.PresentMode
+Jade.Wgpu.PresentMode.Fifo = 1 -> Jade.Wgpu.PresentMode
+Jade.Wgpu.PresentMode.FifoRelaxed = 2 -> Jade.Wgpu.PresentMode
+Jade.Wgpu.PresentMode.Immediate = 3 -> Jade.Wgpu.PresentMode
+Jade.Wgpu.PresentMode.Mailbox = 4 -> Jade.Wgpu.PresentMode
+Jade.Wgpu.PresentMode.Undefined = 0 -> Jade.Wgpu.PresentMode
+Jade.Wgpu.PrimitiveState
+Jade.Wgpu.PrimitiveState.CullMode -> Jade.Wgpu.CullMode
+Jade.Wgpu.PrimitiveState.FrontFace -> Jade.Wgpu.FrontFace
+Jade.Wgpu.PrimitiveState.PrimitiveState() -> void
+Jade.Wgpu.PrimitiveState.StripIndexFormat -> Jade.Wgpu.IndexFormat
+Jade.Wgpu.PrimitiveState.Topology -> Jade.Wgpu.PrimitiveTopology
+Jade.Wgpu.PrimitiveState.UnclippedDepth -> Jade.Wgpu.Bool32
+Jade.Wgpu.PrimitiveTopology
+Jade.Wgpu.PrimitiveTopology.LineList = 2 -> Jade.Wgpu.PrimitiveTopology
+Jade.Wgpu.PrimitiveTopology.LineStrip = 3 -> Jade.Wgpu.PrimitiveTopology
+Jade.Wgpu.PrimitiveTopology.PointList = 1 -> Jade.Wgpu.PrimitiveTopology
+Jade.Wgpu.PrimitiveTopology.TriangleList = 4 -> Jade.Wgpu.PrimitiveTopology
+Jade.Wgpu.PrimitiveTopology.TriangleStrip = 5 -> Jade.Wgpu.PrimitiveTopology
+Jade.Wgpu.PrimitiveTopology.Undefined = 0 -> Jade.Wgpu.PrimitiveTopology
+Jade.Wgpu.QuerySet
+Jade.Wgpu.QuerySet.Equals(Jade.Wgpu.QuerySet other) -> bool
+Jade.Wgpu.QuerySet.Handle.get -> nint
+Jade.Wgpu.QuerySet.QuerySet() -> void
+Jade.Wgpu.QuerySet.QuerySet(nint handle) -> void
+Jade.Wgpu.QueryType
+Jade.Wgpu.QueryType.Occlusion = 1 -> Jade.Wgpu.QueryType
+Jade.Wgpu.QueryType.Timestamp = 2 -> Jade.Wgpu.QueryType
+Jade.Wgpu.Queue
+Jade.Wgpu.Queue.Equals(Jade.Wgpu.Queue other) -> bool
+Jade.Wgpu.Queue.Handle.get -> nint
+Jade.Wgpu.Queue.Queue() -> void
+Jade.Wgpu.Queue.Queue(nint handle) -> void
+Jade.Wgpu.QueueWorkDoneStatus
+Jade.Wgpu.QueueWorkDoneStatus.CallbackCancelled = 2 -> Jade.Wgpu.QueueWorkDoneStatus
+Jade.Wgpu.QueueWorkDoneStatus.Error = 3 -> Jade.Wgpu.QueueWorkDoneStatus
+Jade.Wgpu.QueueWorkDoneStatus.Success = 1 -> Jade.Wgpu.QueueWorkDoneStatus
+Jade.Wgpu.RenderBundle
+Jade.Wgpu.RenderBundle.Equals(Jade.Wgpu.RenderBundle other) -> bool
+Jade.Wgpu.RenderBundle.Handle.get -> nint
+Jade.Wgpu.RenderBundle.RenderBundle() -> void
+Jade.Wgpu.RenderBundle.RenderBundle(nint handle) -> void
+Jade.Wgpu.RenderBundleEncoder
+Jade.Wgpu.RenderBundleEncoder.Equals(Jade.Wgpu.RenderBundleEncoder other) -> bool
+Jade.Wgpu.RenderBundleEncoder.Handle.get -> nint
+Jade.Wgpu.RenderBundleEncoder.RenderBundleEncoder() -> void
+Jade.Wgpu.RenderBundleEncoder.RenderBundleEncoder(nint handle) -> void
+Jade.Wgpu.RenderBundleEncoderResourceTable
+Jade.Wgpu.RenderBundleEncoderResourceTable.RenderBundleEncoderResourceTable() -> void
+Jade.Wgpu.RenderBundleEncoderResourceTable.UsesResourceTable -> Jade.Wgpu.Bool32
+Jade.Wgpu.RenderPassColorAttachment
+Jade.Wgpu.RenderPassColorAttachment.ClearValue -> Jade.Wgpu.Color
+Jade.Wgpu.RenderPassColorAttachment.DepthSlice -> uint
+Jade.Wgpu.RenderPassColorAttachment.LoadOp -> Jade.Wgpu.LoadOp
+Jade.Wgpu.RenderPassColorAttachment.RenderPassColorAttachment() -> void
+Jade.Wgpu.RenderPassColorAttachment.ResolveTarget -> Jade.Wgpu.TextureView
+Jade.Wgpu.RenderPassColorAttachment.StoreOp -> Jade.Wgpu.StoreOp
+Jade.Wgpu.RenderPassColorAttachment.View -> Jade.Wgpu.TextureView
+Jade.Wgpu.RenderPassDepthStencilAttachment
+Jade.Wgpu.RenderPassDepthStencilAttachment.DepthClearValue -> float
+Jade.Wgpu.RenderPassDepthStencilAttachment.DepthLoadOp -> Jade.Wgpu.LoadOp
+Jade.Wgpu.RenderPassDepthStencilAttachment.DepthReadOnly -> Jade.Wgpu.Bool32
+Jade.Wgpu.RenderPassDepthStencilAttachment.DepthStoreOp -> Jade.Wgpu.StoreOp
+Jade.Wgpu.RenderPassDepthStencilAttachment.RenderPassDepthStencilAttachment() -> void
+Jade.Wgpu.RenderPassDepthStencilAttachment.StencilClearValue -> uint
+Jade.Wgpu.RenderPassDepthStencilAttachment.StencilLoadOp -> Jade.Wgpu.LoadOp
+Jade.Wgpu.RenderPassDepthStencilAttachment.StencilReadOnly -> Jade.Wgpu.Bool32
+Jade.Wgpu.RenderPassDepthStencilAttachment.StencilStoreOp -> Jade.Wgpu.StoreOp
+Jade.Wgpu.RenderPassDepthStencilAttachment.View -> Jade.Wgpu.TextureView
+Jade.Wgpu.RenderPassDescriptorResolveRect
+Jade.Wgpu.RenderPassDescriptorResolveRect.ColorOffsetX -> uint
+Jade.Wgpu.RenderPassDescriptorResolveRect.ColorOffsetY -> uint
+Jade.Wgpu.RenderPassDescriptorResolveRect.Height -> uint
+Jade.Wgpu.RenderPassDescriptorResolveRect.RenderPassDescriptorResolveRect() -> void
+Jade.Wgpu.RenderPassDescriptorResolveRect.ResolveOffsetX -> uint
+Jade.Wgpu.RenderPassDescriptorResolveRect.ResolveOffsetY -> uint
+Jade.Wgpu.RenderPassDescriptorResolveRect.Width -> uint
+Jade.Wgpu.RenderPassEncoder
+Jade.Wgpu.RenderPassEncoder.Equals(Jade.Wgpu.RenderPassEncoder other) -> bool
+Jade.Wgpu.RenderPassEncoder.Handle.get -> nint
+Jade.Wgpu.RenderPassEncoder.RenderPassEncoder() -> void
+Jade.Wgpu.RenderPassEncoder.RenderPassEncoder(nint handle) -> void
+Jade.Wgpu.RenderPassMaxDrawCount
+Jade.Wgpu.RenderPassMaxDrawCount.MaxDrawCount -> ulong
+Jade.Wgpu.RenderPassMaxDrawCount.RenderPassMaxDrawCount() -> void
+Jade.Wgpu.RenderPassRenderAreaRect
+Jade.Wgpu.RenderPassRenderAreaRect.Origin -> Jade.Wgpu.Origin2D
+Jade.Wgpu.RenderPassRenderAreaRect.RenderPassRenderAreaRect() -> void
+Jade.Wgpu.RenderPassRenderAreaRect.Size -> Jade.Wgpu.Extent2D
+Jade.Wgpu.RenderPassStorageAttachment
+Jade.Wgpu.RenderPassStorageAttachment.ClearValue -> Jade.Wgpu.Color
+Jade.Wgpu.RenderPassStorageAttachment.LoadOp -> Jade.Wgpu.LoadOp
+Jade.Wgpu.RenderPassStorageAttachment.Offset -> ulong
+Jade.Wgpu.RenderPassStorageAttachment.RenderPassStorageAttachment() -> void
+Jade.Wgpu.RenderPassStorageAttachment.Storage -> Jade.Wgpu.TextureView
+Jade.Wgpu.RenderPassStorageAttachment.StoreOp -> Jade.Wgpu.StoreOp
+Jade.Wgpu.RenderPipeline
+Jade.Wgpu.RenderPipeline.Equals(Jade.Wgpu.RenderPipeline other) -> bool
+Jade.Wgpu.RenderPipeline.Handle.get -> nint
+Jade.Wgpu.RenderPipeline.RenderPipeline() -> void
+Jade.Wgpu.RenderPipeline.RenderPipeline(nint handle) -> void
+Jade.Wgpu.RequestAdapterOptions
+Jade.Wgpu.RequestAdapterOptions.BackendType -> Jade.Wgpu.BackendType
+Jade.Wgpu.RequestAdapterOptions.CompatibleSurface -> Jade.Wgpu.Surface
+Jade.Wgpu.RequestAdapterOptions.FeatureLevel -> Jade.Wgpu.FeatureLevel
+Jade.Wgpu.RequestAdapterOptions.ForceFallbackAdapter -> Jade.Wgpu.Bool32
+Jade.Wgpu.RequestAdapterOptions.PowerPreference -> Jade.Wgpu.PowerPreference
+Jade.Wgpu.RequestAdapterOptions.RequestAdapterOptions() -> void
+Jade.Wgpu.RequestAdapterStatus
+Jade.Wgpu.RequestAdapterStatus.CallbackCancelled = 2 -> Jade.Wgpu.RequestAdapterStatus
+Jade.Wgpu.RequestAdapterStatus.Error = 4 -> Jade.Wgpu.RequestAdapterStatus
+Jade.Wgpu.RequestAdapterStatus.Success = 1 -> Jade.Wgpu.RequestAdapterStatus
+Jade.Wgpu.RequestAdapterStatus.Unavailable = 3 -> Jade.Wgpu.RequestAdapterStatus
+Jade.Wgpu.RequestAdapterWebGpuBackendOptions
+Jade.Wgpu.RequestAdapterWebGpuBackendOptions.RequestAdapterWebGpuBackendOptions() -> void
+Jade.Wgpu.RequestAdapterWebXROptions
+Jade.Wgpu.RequestAdapterWebXROptions.RequestAdapterWebXROptions() -> void
+Jade.Wgpu.RequestAdapterWebXROptions.XrCompatible -> Jade.Wgpu.Bool32
+Jade.Wgpu.RequestDeviceStatus
+Jade.Wgpu.RequestDeviceStatus.CallbackCancelled = 2 -> Jade.Wgpu.RequestDeviceStatus
+Jade.Wgpu.RequestDeviceStatus.Error = 3 -> Jade.Wgpu.RequestDeviceStatus
+Jade.Wgpu.RequestDeviceStatus.Success = 1 -> Jade.Wgpu.RequestDeviceStatus
+Jade.Wgpu.ResourceTable
+Jade.Wgpu.ResourceTable.Equals(Jade.Wgpu.ResourceTable other) -> bool
+Jade.Wgpu.ResourceTable.Handle.get -> nint
+Jade.Wgpu.ResourceTable.ResourceTable() -> void
+Jade.Wgpu.ResourceTable.ResourceTable(nint handle) -> void
+Jade.Wgpu.Sampler
+Jade.Wgpu.Sampler.Equals(Jade.Wgpu.Sampler other) -> bool
+Jade.Wgpu.Sampler.Handle.get -> nint
+Jade.Wgpu.Sampler.Sampler() -> void
+Jade.Wgpu.Sampler.Sampler(nint handle) -> void
+Jade.Wgpu.SamplerBindingLayout
+Jade.Wgpu.SamplerBindingLayout.SamplerBindingLayout() -> void
+Jade.Wgpu.SamplerBindingLayout.Type -> Jade.Wgpu.SamplerBindingType
+Jade.Wgpu.SamplerBindingType
+Jade.Wgpu.SamplerBindingType.BindingNotUsed = 0 -> Jade.Wgpu.SamplerBindingType
+Jade.Wgpu.SamplerBindingType.Comparison = 4 -> Jade.Wgpu.SamplerBindingType
+Jade.Wgpu.SamplerBindingType.Filtering = 2 -> Jade.Wgpu.SamplerBindingType
+Jade.Wgpu.SamplerBindingType.NonFiltering = 3 -> Jade.Wgpu.SamplerBindingType
+Jade.Wgpu.SamplerBindingType.Undefined = 1 -> Jade.Wgpu.SamplerBindingType
+Jade.Wgpu.ShaderModule
+Jade.Wgpu.ShaderModule.Equals(Jade.Wgpu.ShaderModule other) -> bool
+Jade.Wgpu.ShaderModule.Handle.get -> nint
+Jade.Wgpu.ShaderModule.ShaderModule() -> void
+Jade.Wgpu.ShaderModule.ShaderModule(nint handle) -> void
+Jade.Wgpu.ShaderModuleCompilationOptions
+Jade.Wgpu.ShaderModuleCompilationOptions.ShaderModuleCompilationOptions() -> void
+Jade.Wgpu.ShaderModuleCompilationOptions.StrictMath -> Jade.Wgpu.Bool32
+Jade.Wgpu.ShaderStage
+Jade.Wgpu.ShaderStage.Compute = 4 -> Jade.Wgpu.ShaderStage
+Jade.Wgpu.ShaderStage.Fragment = 2 -> Jade.Wgpu.ShaderStage
+Jade.Wgpu.ShaderStage.None = 0 -> Jade.Wgpu.ShaderStage
+Jade.Wgpu.ShaderStage.Vertex = 1 -> Jade.Wgpu.ShaderStage
+Jade.Wgpu.SharedBufferMemory
+Jade.Wgpu.SharedBufferMemory.Equals(Jade.Wgpu.SharedBufferMemory other) -> bool
+Jade.Wgpu.SharedBufferMemory.Handle.get -> nint
+Jade.Wgpu.SharedBufferMemory.SharedBufferMemory() -> void
+Jade.Wgpu.SharedBufferMemory.SharedBufferMemory(nint handle) -> void
+Jade.Wgpu.SharedBufferMemoryProperties
+Jade.Wgpu.SharedBufferMemoryProperties.SharedBufferMemoryProperties() -> void
+Jade.Wgpu.SharedBufferMemoryProperties.Size -> ulong
+Jade.Wgpu.SharedBufferMemoryProperties.Usage -> Jade.Wgpu.BufferUsage
+Jade.Wgpu.SharedFence
+Jade.Wgpu.SharedFence.Equals(Jade.Wgpu.SharedFence other) -> bool
+Jade.Wgpu.SharedFence.Handle.get -> nint
+Jade.Wgpu.SharedFence.SharedFence() -> void
+Jade.Wgpu.SharedFence.SharedFence(nint handle) -> void
+Jade.Wgpu.SharedFenceExportInfo
+Jade.Wgpu.SharedFenceExportInfo.SharedFenceExportInfo() -> void
+Jade.Wgpu.SharedFenceExportInfo.Type -> Jade.Wgpu.SharedFenceType
+Jade.Wgpu.SharedFenceSyncFDDescriptor
+Jade.Wgpu.SharedFenceSyncFDDescriptor.Handle -> int
+Jade.Wgpu.SharedFenceSyncFDDescriptor.SharedFenceSyncFDDescriptor() -> void
+Jade.Wgpu.SharedFenceSyncFDExportInfo
+Jade.Wgpu.SharedFenceSyncFDExportInfo.Handle -> int
+Jade.Wgpu.SharedFenceSyncFDExportInfo.SharedFenceSyncFDExportInfo() -> void
+Jade.Wgpu.SharedFenceType
+Jade.Wgpu.SharedFenceType.DxgiSharedHandle = 4 -> Jade.Wgpu.SharedFenceType
+Jade.Wgpu.SharedFenceType.EglSync = 6 -> Jade.Wgpu.SharedFenceType
+Jade.Wgpu.SharedFenceType.MtlSharedEvent = 5 -> Jade.Wgpu.SharedFenceType
+Jade.Wgpu.SharedFenceType.SyncFD = 2 -> Jade.Wgpu.SharedFenceType
+Jade.Wgpu.SharedFenceType.VkSemaphoreOpaqueFD = 1 -> Jade.Wgpu.SharedFenceType
+Jade.Wgpu.SharedFenceType.VkSemaphoreZirconHandle = 3 -> Jade.Wgpu.SharedFenceType
+Jade.Wgpu.SharedFenceVkSemaphoreOpaqueFDDescriptor
+Jade.Wgpu.SharedFenceVkSemaphoreOpaqueFDDescriptor.Handle -> int
+Jade.Wgpu.SharedFenceVkSemaphoreOpaqueFDDescriptor.SharedFenceVkSemaphoreOpaqueFDDescriptor() -> void
+Jade.Wgpu.SharedFenceVkSemaphoreOpaqueFDExportInfo
+Jade.Wgpu.SharedFenceVkSemaphoreOpaqueFDExportInfo.Handle -> int
+Jade.Wgpu.SharedFenceVkSemaphoreOpaqueFDExportInfo.SharedFenceVkSemaphoreOpaqueFDExportInfo() -> void
+Jade.Wgpu.SharedFenceVkSemaphoreZirconHandleDescriptor
+Jade.Wgpu.SharedFenceVkSemaphoreZirconHandleDescriptor.Handle -> uint
+Jade.Wgpu.SharedFenceVkSemaphoreZirconHandleDescriptor.SharedFenceVkSemaphoreZirconHandleDescriptor() -> void
+Jade.Wgpu.SharedFenceVkSemaphoreZirconHandleExportInfo
+Jade.Wgpu.SharedFenceVkSemaphoreZirconHandleExportInfo.Handle -> uint
+Jade.Wgpu.SharedFenceVkSemaphoreZirconHandleExportInfo.SharedFenceVkSemaphoreZirconHandleExportInfo() -> void
+Jade.Wgpu.SharedTextureMemory
+Jade.Wgpu.SharedTextureMemory.Equals(Jade.Wgpu.SharedTextureMemory other) -> bool
+Jade.Wgpu.SharedTextureMemory.Handle.get -> nint
+Jade.Wgpu.SharedTextureMemory.SharedTextureMemory() -> void
+Jade.Wgpu.SharedTextureMemory.SharedTextureMemory(nint handle) -> void
+Jade.Wgpu.SharedTextureMemoryAHardwareBufferProperties
+Jade.Wgpu.SharedTextureMemoryAHardwareBufferProperties.SharedTextureMemoryAHardwareBufferProperties() -> void
+Jade.Wgpu.SharedTextureMemoryAHardwareBufferProperties.YCbCrInfo -> Jade.Wgpu.YCbCrVkDescriptor
+Jade.Wgpu.SharedTextureMemoryD3D11BeginState
+Jade.Wgpu.SharedTextureMemoryD3D11BeginState.RequiresEndAccessFence -> Jade.Wgpu.Bool32
+Jade.Wgpu.SharedTextureMemoryD3D11BeginState.SharedTextureMemoryD3D11BeginState() -> void
+Jade.Wgpu.SharedTextureMemoryD3DSwapchainBeginState
+Jade.Wgpu.SharedTextureMemoryD3DSwapchainBeginState.IsSwapchain -> Jade.Wgpu.Bool32
+Jade.Wgpu.SharedTextureMemoryD3DSwapchainBeginState.SharedTextureMemoryD3DSwapchainBeginState() -> void
+Jade.Wgpu.SharedTextureMemoryDmaBufPlane
+Jade.Wgpu.SharedTextureMemoryDmaBufPlane.Fd -> int
+Jade.Wgpu.SharedTextureMemoryDmaBufPlane.Offset -> ulong
+Jade.Wgpu.SharedTextureMemoryDmaBufPlane.SharedTextureMemoryDmaBufPlane() -> void
+Jade.Wgpu.SharedTextureMemoryDmaBufPlane.Stride -> uint
+Jade.Wgpu.SharedTextureMemoryMetalEndAccessState
+Jade.Wgpu.SharedTextureMemoryMetalEndAccessState.CommandsScheduledFuture -> Jade.Wgpu.Future
+Jade.Wgpu.SharedTextureMemoryMetalEndAccessState.SharedTextureMemoryMetalEndAccessState() -> void
+Jade.Wgpu.SharedTextureMemoryProperties
+Jade.Wgpu.SharedTextureMemoryProperties.Format -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.SharedTextureMemoryProperties.SharedTextureMemoryProperties() -> void
+Jade.Wgpu.SharedTextureMemoryProperties.Size -> Jade.Wgpu.Extent3D
+Jade.Wgpu.SharedTextureMemoryProperties.Usage -> Jade.Wgpu.TextureUsage
+Jade.Wgpu.SharedTextureMemoryVkDedicatedAllocationDescriptor
+Jade.Wgpu.SharedTextureMemoryVkDedicatedAllocationDescriptor.DedicatedAllocation -> Jade.Wgpu.Bool32
+Jade.Wgpu.SharedTextureMemoryVkDedicatedAllocationDescriptor.SharedTextureMemoryVkDedicatedAllocationDescriptor() -> void
+Jade.Wgpu.SharedTextureMemoryVkImageLayoutBeginState
+Jade.Wgpu.SharedTextureMemoryVkImageLayoutBeginState.NewLayout -> int
+Jade.Wgpu.SharedTextureMemoryVkImageLayoutBeginState.OldLayout -> int
+Jade.Wgpu.SharedTextureMemoryVkImageLayoutBeginState.SharedTextureMemoryVkImageLayoutBeginState() -> void
+Jade.Wgpu.SharedTextureMemoryVkImageLayoutEndState
+Jade.Wgpu.SharedTextureMemoryVkImageLayoutEndState.NewLayout -> int
+Jade.Wgpu.SharedTextureMemoryVkImageLayoutEndState.OldLayout -> int
+Jade.Wgpu.SharedTextureMemoryVkImageLayoutEndState.SharedTextureMemoryVkImageLayoutEndState() -> void
+Jade.Wgpu.SharedTextureMemoryZirconHandleDescriptor
+Jade.Wgpu.SharedTextureMemoryZirconHandleDescriptor.AllocationSize -> ulong
+Jade.Wgpu.SharedTextureMemoryZirconHandleDescriptor.MemoryFD -> uint
+Jade.Wgpu.SharedTextureMemoryZirconHandleDescriptor.SharedTextureMemoryZirconHandleDescriptor() -> void
+Jade.Wgpu.StaticSamplerBindingLayout
+Jade.Wgpu.StaticSamplerBindingLayout.SampledTextureBinding -> uint
+Jade.Wgpu.StaticSamplerBindingLayout.Sampler -> Jade.Wgpu.Sampler
+Jade.Wgpu.StaticSamplerBindingLayout.StaticSamplerBindingLayout() -> void
+Jade.Wgpu.Status
+Jade.Wgpu.Status.Error = 2 -> Jade.Wgpu.Status
+Jade.Wgpu.Status.Success = 1 -> Jade.Wgpu.Status
+Jade.Wgpu.StencilFaceState
+Jade.Wgpu.StencilFaceState.Compare -> Jade.Wgpu.CompareFunction
+Jade.Wgpu.StencilFaceState.DepthFailOp -> Jade.Wgpu.StencilOperation
+Jade.Wgpu.StencilFaceState.FailOp -> Jade.Wgpu.StencilOperation
+Jade.Wgpu.StencilFaceState.PassOp -> Jade.Wgpu.StencilOperation
+Jade.Wgpu.StencilFaceState.StencilFaceState() -> void
+Jade.Wgpu.StencilOperation
+Jade.Wgpu.StencilOperation.DecrementClamp = 6 -> Jade.Wgpu.StencilOperation
+Jade.Wgpu.StencilOperation.DecrementWrap = 8 -> Jade.Wgpu.StencilOperation
+Jade.Wgpu.StencilOperation.IncrementClamp = 5 -> Jade.Wgpu.StencilOperation
+Jade.Wgpu.StencilOperation.IncrementWrap = 7 -> Jade.Wgpu.StencilOperation
+Jade.Wgpu.StencilOperation.Invert = 4 -> Jade.Wgpu.StencilOperation
+Jade.Wgpu.StencilOperation.Keep = 1 -> Jade.Wgpu.StencilOperation
+Jade.Wgpu.StencilOperation.Replace = 3 -> Jade.Wgpu.StencilOperation
+Jade.Wgpu.StencilOperation.Undefined = 0 -> Jade.Wgpu.StencilOperation
+Jade.Wgpu.StencilOperation.Zero = 2 -> Jade.Wgpu.StencilOperation
+Jade.Wgpu.StorageTextureAccess
+Jade.Wgpu.StorageTextureAccess.BindingNotUsed = 0 -> Jade.Wgpu.StorageTextureAccess
+Jade.Wgpu.StorageTextureAccess.ReadOnly = 3 -> Jade.Wgpu.StorageTextureAccess
+Jade.Wgpu.StorageTextureAccess.ReadWrite = 4 -> Jade.Wgpu.StorageTextureAccess
+Jade.Wgpu.StorageTextureAccess.Undefined = 1 -> Jade.Wgpu.StorageTextureAccess
+Jade.Wgpu.StorageTextureAccess.WriteOnly = 2 -> Jade.Wgpu.StorageTextureAccess
+Jade.Wgpu.StorageTextureBindingLayout
+Jade.Wgpu.StorageTextureBindingLayout.Access -> Jade.Wgpu.StorageTextureAccess
+Jade.Wgpu.StorageTextureBindingLayout.Format -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.StorageTextureBindingLayout.StorageTextureBindingLayout() -> void
+Jade.Wgpu.StorageTextureBindingLayout.ViewDimension -> Jade.Wgpu.TextureViewDimension
+Jade.Wgpu.StoreOp
+Jade.Wgpu.StoreOp.Discard = 2 -> Jade.Wgpu.StoreOp
+Jade.Wgpu.StoreOp.Store = 1 -> Jade.Wgpu.StoreOp
+Jade.Wgpu.StoreOp.Undefined = 0 -> Jade.Wgpu.StoreOp
+Jade.Wgpu.SType
+Jade.Wgpu.SType.AdapterPropertiesD3D = 327700 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.AdapterPropertiesDrm = 327761 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.AdapterPropertiesMemoryHeaps = 327699 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.AdapterPropertiesSubgroupMatrixConfigs = 327739 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.AdapterPropertiesVk = 327701 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.AdapterPropertiesWgpu = 327756 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.AHardwareBufferProperties = 327736 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.BufferHostMappedPointer = 327698 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.ColorTargetStateExpandResolveTextureDawn = 327706 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.CompatibilityModeLimits = 15 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.DawnAdapterPropertiesPowerPreference = 327688 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.DawnBufferDescriptorErrorInfoFromWireClient = 327689 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.DawnCacheDeviceDescriptor = 327687 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.DawnCompilationMessageUtf16 = 327743 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.DawnConsumeAdapterDescriptor = 327752 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.DawnDeviceAllocatorControl = 327746 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.DawnDrmFormatCapabilities = 327704 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.DawnEncoderInternalUsageDescriptor = 327685 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.DawnFakeBufferOomForTesting = 327744 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.DawnFakeDeviceInitializeErrorForTesting = 327750 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.DawnHostMappedPointerLimits = 327747 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.DawnInjectedInvalidSType = 327742 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.DawnInstanceDescriptor = 327686 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.DawnRenderPassSampleCount = 327695 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.DawnShaderModuleSpirvOptionsDescriptor = 327691 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.DawnShaderSourceSpirv = 327763 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.DawnTexelCopyBufferRowAlignmentLimits = 327738 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.DawnTextureInternalUsageDescriptor = 327684 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.DawnTogglesDescriptor = 327690 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.DawnWgslBlocklist = 327703 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.DawnWireWgslControl = 327702 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.EmscriptenSurfaceSourceCanvasHtmlSelector = 262144 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.ExternalTextureBindingEntry = 14 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.ExternalTextureBindingLayout = 13 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.PipelineLayoutPixelLocalStorage = 327697 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.PipelineLayoutResourceTable = 327760 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.RenderBundleEncoderResourceTable = 327762 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.RenderPassDescriptorResolveRect = 327748 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.RenderPassMaxDrawCount = 3 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.RenderPassPixelLocalStorage = 327696 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.RenderPassRenderAreaRect = 327707 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.RequestAdapterOptionsAngleVirtualizationGroup = 327759 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.RequestAdapterOptionsD3D11Device = 327694 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.RequestAdapterOptionsGetGLProc = 327693 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.RequestAdapterOptionsLuid = 327692 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.RequestAdapterWebGpuBackendOptions = 327749 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.RequestAdapterWebXROptions = 11 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.ShaderModuleCompilationOptions = 327705 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.ShaderSourceSpirv = 1 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.ShaderSourceWgsl = 2 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SharedBufferMemoryD3D12ResourceDescriptor = 327732 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SharedBufferMemoryFromWindowsHandleDescriptor = 327757 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SharedBufferMemoryHostPointerDescriptor = 327764 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SharedFenceDxgiSharedHandleDescriptor = 327728 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SharedFenceDxgiSharedHandleExportInfo = 327729 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SharedFenceEglSyncDescriptor = 327740 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SharedFenceEglSyncExportInfo = 327741 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SharedFenceMtlSharedEventDescriptor = 327730 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SharedFenceMtlSharedEventExportInfo = 327731 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SharedFenceSyncFDDescriptor = 327724 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SharedFenceSyncFDExportInfo = 327725 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SharedFenceVkSemaphoreOpaqueFDDescriptor = 327722 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SharedFenceVkSemaphoreOpaqueFDExportInfo = 327723 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SharedFenceVkSemaphoreZirconHandleDescriptor = 327726 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SharedFenceVkSemaphoreZirconHandleExportInfo = 327727 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SharedTextureMemoryAHardwareBufferDescriptor = 327709 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SharedTextureMemoryAHardwareBufferProperties = 327735 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SharedTextureMemoryD3D11BeginState = 327751 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SharedTextureMemoryD3D11Texture2DDescriptor = 327714 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SharedTextureMemoryD3D12ResourceDescriptor = 327758 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SharedTextureMemoryD3DSwapchainBeginState = 327721 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SharedTextureMemoryDmaBufDescriptor = 327710 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SharedTextureMemoryDxgiSharedHandleDescriptor = 327713 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SharedTextureMemoryEglImageDescriptor = 327716 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SharedTextureMemoryInitializedBeginState = 327717 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SharedTextureMemoryInitializedEndState = 327718 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SharedTextureMemoryIOSurfaceDescriptor = 327715 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SharedTextureMemoryMetalEndAccessState = 327755 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SharedTextureMemoryOpaqueFDDescriptor = 327711 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SharedTextureMemoryVkDedicatedAllocationDescriptor = 327708 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SharedTextureMemoryVkImageLayoutBeginState = 327719 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SharedTextureMemoryVkImageLayoutEndState = 327720 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SharedTextureMemoryZirconHandleDescriptor = 327712 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.StaticSamplerBindingLayout = 327733 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SurfaceColorManagement = 10 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SurfaceDescriptorFromWindowsCoreWindow = 327680 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SurfaceDescriptorFromWindowsUwpSwapChainPanel = 327683 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SurfaceDescriptorFromWindowsWinUISwapChainPanel = 327745 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SurfaceSourceAndroidNativeWindow = 8 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SurfaceSourceMetalLayer = 4 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SurfaceSourceWaylandSurface = 7 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SurfaceSourceWindowsHwnd = 5 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SurfaceSourceXcbWindow = 9 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.SurfaceSourceXlibWindow = 6 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.TexelBufferBindingEntry = 327753 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.TexelBufferBindingLayout = 327754 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.TextureBindingViewDimension = 16 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.TextureComponentSwizzleDescriptor = 12 -> Jade.Wgpu.SType
+Jade.Wgpu.SType.YCbCrVkDescriptor = 327734 -> Jade.Wgpu.SType
+Jade.Wgpu.SubgroupMatrixComponentType
+Jade.Wgpu.SubgroupMatrixComponentType.F16 = 2 -> Jade.Wgpu.SubgroupMatrixComponentType
+Jade.Wgpu.SubgroupMatrixComponentType.F32 = 1 -> Jade.Wgpu.SubgroupMatrixComponentType
+Jade.Wgpu.SubgroupMatrixComponentType.I32 = 4 -> Jade.Wgpu.SubgroupMatrixComponentType
+Jade.Wgpu.SubgroupMatrixComponentType.I8 = 6 -> Jade.Wgpu.SubgroupMatrixComponentType
+Jade.Wgpu.SubgroupMatrixComponentType.U32 = 3 -> Jade.Wgpu.SubgroupMatrixComponentType
+Jade.Wgpu.SubgroupMatrixComponentType.U8 = 5 -> Jade.Wgpu.SubgroupMatrixComponentType
+Jade.Wgpu.SubgroupMatrixConfig
+Jade.Wgpu.SubgroupMatrixConfig.ComponentType -> Jade.Wgpu.SubgroupMatrixComponentType
+Jade.Wgpu.SubgroupMatrixConfig.K -> uint
+Jade.Wgpu.SubgroupMatrixConfig.M -> uint
+Jade.Wgpu.SubgroupMatrixConfig.MaxSubgroupSize -> uint
+Jade.Wgpu.SubgroupMatrixConfig.MinSubgroupSize -> uint
+Jade.Wgpu.SubgroupMatrixConfig.N -> uint
+Jade.Wgpu.SubgroupMatrixConfig.ResultComponentType -> Jade.Wgpu.SubgroupMatrixComponentType
+Jade.Wgpu.SubgroupMatrixConfig.SubgroupMatrixConfig() -> void
+Jade.Wgpu.Surface
+Jade.Wgpu.Surface.Equals(Jade.Wgpu.Surface other) -> bool
+Jade.Wgpu.Surface.Handle.get -> nint
+Jade.Wgpu.Surface.Surface() -> void
+Jade.Wgpu.Surface.Surface(nint handle) -> void
+Jade.Wgpu.SurfaceColorManagement
+Jade.Wgpu.SurfaceColorManagement.ColorSpace -> Jade.Wgpu.PredefinedColorSpace
+Jade.Wgpu.SurfaceColorManagement.SurfaceColorManagement() -> void
+Jade.Wgpu.SurfaceColorManagement.ToneMappingMode -> Jade.Wgpu.ToneMappingMode
+Jade.Wgpu.SurfaceGetCurrentTextureStatus
+Jade.Wgpu.SurfaceGetCurrentTextureStatus.Error = 6 -> Jade.Wgpu.SurfaceGetCurrentTextureStatus
+Jade.Wgpu.SurfaceGetCurrentTextureStatus.Lost = 5 -> Jade.Wgpu.SurfaceGetCurrentTextureStatus
+Jade.Wgpu.SurfaceGetCurrentTextureStatus.Outdated = 4 -> Jade.Wgpu.SurfaceGetCurrentTextureStatus
+Jade.Wgpu.SurfaceGetCurrentTextureStatus.SuccessOptimal = 1 -> Jade.Wgpu.SurfaceGetCurrentTextureStatus
+Jade.Wgpu.SurfaceGetCurrentTextureStatus.SuccessSuboptimal = 2 -> Jade.Wgpu.SurfaceGetCurrentTextureStatus
+Jade.Wgpu.SurfaceGetCurrentTextureStatus.Timeout = 3 -> Jade.Wgpu.SurfaceGetCurrentTextureStatus
+Jade.Wgpu.SurfaceTexture
+Jade.Wgpu.SurfaceTexture.Status -> Jade.Wgpu.SurfaceGetCurrentTextureStatus
+Jade.Wgpu.SurfaceTexture.SurfaceTexture() -> void
+Jade.Wgpu.SurfaceTexture.Texture -> Jade.Wgpu.Texture
+Jade.Wgpu.TexelBufferAccess
+Jade.Wgpu.TexelBufferAccess.ReadOnly = 1 -> Jade.Wgpu.TexelBufferAccess
+Jade.Wgpu.TexelBufferAccess.ReadWrite = 2 -> Jade.Wgpu.TexelBufferAccess
+Jade.Wgpu.TexelBufferAccess.Undefined = 0 -> Jade.Wgpu.TexelBufferAccess
+Jade.Wgpu.TexelBufferBindingEntry
+Jade.Wgpu.TexelBufferBindingEntry.TexelBufferBindingEntry() -> void
+Jade.Wgpu.TexelBufferBindingEntry.TexelBufferView -> Jade.Wgpu.TexelBufferView
+Jade.Wgpu.TexelBufferBindingLayout
+Jade.Wgpu.TexelBufferBindingLayout.Access -> Jade.Wgpu.TexelBufferAccess
+Jade.Wgpu.TexelBufferBindingLayout.Format -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TexelBufferBindingLayout.TexelBufferBindingLayout() -> void
+Jade.Wgpu.TexelBufferView
+Jade.Wgpu.TexelBufferView.Equals(Jade.Wgpu.TexelBufferView other) -> bool
+Jade.Wgpu.TexelBufferView.Handle.get -> nint
+Jade.Wgpu.TexelBufferView.TexelBufferView() -> void
+Jade.Wgpu.TexelBufferView.TexelBufferView(nint handle) -> void
+Jade.Wgpu.TexelCopyBufferInfo
+Jade.Wgpu.TexelCopyBufferInfo.Buffer -> Jade.Wgpu.Buffer
+Jade.Wgpu.TexelCopyBufferInfo.Layout -> Jade.Wgpu.TexelCopyBufferLayout
+Jade.Wgpu.TexelCopyBufferInfo.TexelCopyBufferInfo() -> void
+Jade.Wgpu.TexelCopyBufferLayout
+Jade.Wgpu.TexelCopyBufferLayout.BytesPerRow -> uint
+Jade.Wgpu.TexelCopyBufferLayout.Offset -> ulong
+Jade.Wgpu.TexelCopyBufferLayout.RowsPerImage -> uint
+Jade.Wgpu.TexelCopyBufferLayout.TexelCopyBufferLayout() -> void
+Jade.Wgpu.TexelCopyTextureInfo
+Jade.Wgpu.TexelCopyTextureInfo.Aspect -> Jade.Wgpu.TextureAspect
+Jade.Wgpu.TexelCopyTextureInfo.MipLevel -> uint
+Jade.Wgpu.TexelCopyTextureInfo.Origin -> Jade.Wgpu.Origin3D
+Jade.Wgpu.TexelCopyTextureInfo.TexelCopyTextureInfo() -> void
+Jade.Wgpu.TexelCopyTextureInfo.Texture -> Jade.Wgpu.Texture
+Jade.Wgpu.Texture
+Jade.Wgpu.Texture.Equals(Jade.Wgpu.Texture other) -> bool
+Jade.Wgpu.Texture.Handle.get -> nint
+Jade.Wgpu.Texture.Texture() -> void
+Jade.Wgpu.Texture.Texture(nint handle) -> void
+Jade.Wgpu.TextureAspect
+Jade.Wgpu.TextureAspect.All = 1 -> Jade.Wgpu.TextureAspect
+Jade.Wgpu.TextureAspect.DepthOnly = 3 -> Jade.Wgpu.TextureAspect
+Jade.Wgpu.TextureAspect.Plane0Only = 327680 -> Jade.Wgpu.TextureAspect
+Jade.Wgpu.TextureAspect.Plane1Only = 327681 -> Jade.Wgpu.TextureAspect
+Jade.Wgpu.TextureAspect.Plane2Only = 327682 -> Jade.Wgpu.TextureAspect
+Jade.Wgpu.TextureAspect.StencilOnly = 2 -> Jade.Wgpu.TextureAspect
+Jade.Wgpu.TextureAspect.Undefined = 0 -> Jade.Wgpu.TextureAspect
+Jade.Wgpu.TextureBindingLayout
+Jade.Wgpu.TextureBindingLayout.Multisampled -> Jade.Wgpu.Bool32
+Jade.Wgpu.TextureBindingLayout.SampleType -> Jade.Wgpu.TextureSampleType
+Jade.Wgpu.TextureBindingLayout.TextureBindingLayout() -> void
+Jade.Wgpu.TextureBindingLayout.ViewDimension -> Jade.Wgpu.TextureViewDimension
+Jade.Wgpu.TextureBindingViewDimension
+Jade.Wgpu.TextureBindingViewDimension.TextureBindingViewDimension() -> void
+Jade.Wgpu.TextureBindingViewDimension.ViewDimension -> Jade.Wgpu.TextureViewDimension
+Jade.Wgpu.TextureComponentSwizzle
+Jade.Wgpu.TextureComponentSwizzle.A -> Jade.Wgpu.ComponentSwizzle
+Jade.Wgpu.TextureComponentSwizzle.B -> Jade.Wgpu.ComponentSwizzle
+Jade.Wgpu.TextureComponentSwizzle.G -> Jade.Wgpu.ComponentSwizzle
+Jade.Wgpu.TextureComponentSwizzle.R -> Jade.Wgpu.ComponentSwizzle
+Jade.Wgpu.TextureComponentSwizzle.TextureComponentSwizzle() -> void
+Jade.Wgpu.TextureComponentSwizzleDescriptor
+Jade.Wgpu.TextureComponentSwizzleDescriptor.Swizzle -> Jade.Wgpu.TextureComponentSwizzle
+Jade.Wgpu.TextureComponentSwizzleDescriptor.TextureComponentSwizzleDescriptor() -> void
+Jade.Wgpu.TextureDimension
+Jade.Wgpu.TextureDimension.Dimension1D = 1 -> Jade.Wgpu.TextureDimension
+Jade.Wgpu.TextureDimension.Dimension2D = 2 -> Jade.Wgpu.TextureDimension
+Jade.Wgpu.TextureDimension.Dimension3D = 3 -> Jade.Wgpu.TextureDimension
+Jade.Wgpu.TextureDimension.Undefined = 0 -> Jade.Wgpu.TextureDimension
+Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Astc10x10Unorm = 96 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Astc10x10UnormSrgb = 97 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Astc10x5Unorm = 90 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Astc10x5UnormSrgb = 91 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Astc10x6Unorm = 92 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Astc10x6UnormSrgb = 93 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Astc10x8Unorm = 94 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Astc10x8UnormSrgb = 95 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Astc12x10Unorm = 98 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Astc12x10UnormSrgb = 99 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Astc12x12Unorm = 100 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Astc12x12UnormSrgb = 101 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Astc4x4Unorm = 74 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Astc4x4UnormSrgb = 75 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Astc5x4Unorm = 76 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Astc5x4UnormSrgb = 77 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Astc5x5Unorm = 78 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Astc5x5UnormSrgb = 79 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Astc6x5Unorm = 80 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Astc6x5UnormSrgb = 81 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Astc6x6Unorm = 82 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Astc6x6UnormSrgb = 83 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Astc8x5Unorm = 84 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Astc8x5UnormSrgb = 85 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Astc8x6Unorm = 86 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Astc8x6UnormSrgb = 87 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Astc8x8Unorm = 88 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Astc8x8UnormSrgb = 89 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.BC1RgbaUnorm = 50 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.BC1RgbaUnormSrgb = 51 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.BC2RgbaUnorm = 52 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.BC2RgbaUnormSrgb = 53 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.BC3RgbaUnorm = 54 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.BC3RgbaUnormSrgb = 55 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.BC4RSnorm = 57 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.BC4RUnorm = 56 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.BC5RGSnorm = 59 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.BC5RGUnorm = 58 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.BC6HRgbFloat = 61 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.BC6HRgbUfloat = 60 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.BC7RgbaUnorm = 62 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.BC7RgbaUnormSrgb = 63 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Bgra8Unorm = 27 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Bgra8UnormSrgb = 28 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Depth16Unorm = 45 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Depth24Plus = 46 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Depth24PlusStencil8 = 47 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Depth32Float = 48 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Depth32FloatStencil8 = 49 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.EacR11Snorm = 71 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.EacR11Unorm = 70 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.EacRG11Snorm = 73 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.EacRG11Unorm = 72 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Etc2Rgb8A1Unorm = 66 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Etc2Rgb8A1UnormSrgb = 67 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Etc2Rgb8Unorm = 64 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Etc2Rgb8UnormSrgb = 65 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Etc2Rgba8Unorm = 68 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Etc2Rgba8UnormSrgb = 69 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.OpaqueYCbCrAndroid = 327687 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.R10X6BG10X6Biplanar420Unorm = 327681 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.R10X6BG10X6Biplanar422Unorm = 327685 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.R10X6BG10X6Biplanar444Unorm = 327686 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.R16Float = 9 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.R16Sint = 8 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.R16Snorm = 6 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.R16Uint = 7 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.R16Unorm = 5 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.R32Float = 14 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.R32Sint = 16 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.R32Uint = 15 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.R8BG8A8Triplanar420Unorm = 327682 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.R8BG8Biplanar420Unorm = 327680 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.R8BG8Biplanar422Unorm = 327683 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.R8BG8Biplanar444Unorm = 327684 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.R8Sint = 4 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.R8Snorm = 2 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.R8Uint = 3 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.R8Unorm = 1 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.RG11B10Ufloat = 31 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.RG16Float = 21 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.RG16Sint = 20 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.RG16Snorm = 18 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.RG16Uint = 19 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.RG16Unorm = 17 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.RG32Float = 33 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.RG32Sint = 35 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.RG32Uint = 34 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.RG8Sint = 13 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.RG8Snorm = 11 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.RG8Uint = 12 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.RG8Unorm = 10 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Rgb10A2Uint = 29 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Rgb10A2Unorm = 30 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Rgb9E5Ufloat = 32 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Rgba16Float = 40 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Rgba16Sint = 39 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Rgba16Snorm = 37 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Rgba16Uint = 38 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Rgba16Unorm = 36 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Rgba32Float = 41 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Rgba32Sint = 43 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Rgba32Uint = 42 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Rgba8Sint = 26 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Rgba8Snorm = 24 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Rgba8Uint = 25 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Rgba8Unorm = 22 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Rgba8UnormSrgb = 23 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Stencil8 = 44 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureFormat.Undefined = 0 -> Jade.Wgpu.TextureFormat
+Jade.Wgpu.TextureSampleType
+Jade.Wgpu.TextureSampleType.BindingNotUsed = 0 -> Jade.Wgpu.TextureSampleType
+Jade.Wgpu.TextureSampleType.Depth = 4 -> Jade.Wgpu.TextureSampleType
+Jade.Wgpu.TextureSampleType.Float = 2 -> Jade.Wgpu.TextureSampleType
+Jade.Wgpu.TextureSampleType.Sint = 5 -> Jade.Wgpu.TextureSampleType
+Jade.Wgpu.TextureSampleType.Uint = 6 -> Jade.Wgpu.TextureSampleType
+Jade.Wgpu.TextureSampleType.Undefined = 1 -> Jade.Wgpu.TextureSampleType
+Jade.Wgpu.TextureSampleType.UnfilterableFloat = 3 -> Jade.Wgpu.TextureSampleType
+Jade.Wgpu.TextureUsage
+Jade.Wgpu.TextureUsage.CopyDst = 2 -> Jade.Wgpu.TextureUsage
+Jade.Wgpu.TextureUsage.CopySrc = 1 -> Jade.Wgpu.TextureUsage
+Jade.Wgpu.TextureUsage.None = 0 -> Jade.Wgpu.TextureUsage
+Jade.Wgpu.TextureUsage.RenderAttachment = 16 -> Jade.Wgpu.TextureUsage
+Jade.Wgpu.TextureUsage.StorageAttachment = 64 -> Jade.Wgpu.TextureUsage
+Jade.Wgpu.TextureUsage.StorageBinding = 8 -> Jade.Wgpu.TextureUsage
+Jade.Wgpu.TextureUsage.TextureBinding = 4 -> Jade.Wgpu.TextureUsage
+Jade.Wgpu.TextureUsage.TransientAttachment = 32 -> Jade.Wgpu.TextureUsage
+Jade.Wgpu.TextureView
+Jade.Wgpu.TextureView.Equals(Jade.Wgpu.TextureView other) -> bool
+Jade.Wgpu.TextureView.Handle.get -> nint
+Jade.Wgpu.TextureView.TextureView() -> void
+Jade.Wgpu.TextureView.TextureView(nint handle) -> void
+Jade.Wgpu.TextureViewDimension
+Jade.Wgpu.TextureViewDimension.Cube = 4 -> Jade.Wgpu.TextureViewDimension
+Jade.Wgpu.TextureViewDimension.CubeArray = 5 -> Jade.Wgpu.TextureViewDimension
+Jade.Wgpu.TextureViewDimension.Dimension1D = 1 -> Jade.Wgpu.TextureViewDimension
+Jade.Wgpu.TextureViewDimension.Dimension2D = 2 -> Jade.Wgpu.TextureViewDimension
+Jade.Wgpu.TextureViewDimension.Dimension2DArray = 3 -> Jade.Wgpu.TextureViewDimension
+Jade.Wgpu.TextureViewDimension.Dimension3D = 6 -> Jade.Wgpu.TextureViewDimension
+Jade.Wgpu.TextureViewDimension.Undefined = 0 -> Jade.Wgpu.TextureViewDimension
+Jade.Wgpu.ToneMappingMode
+Jade.Wgpu.ToneMappingMode.Extended = 2 -> Jade.Wgpu.ToneMappingMode
+Jade.Wgpu.ToneMappingMode.Standard = 1 -> Jade.Wgpu.ToneMappingMode
+Jade.Wgpu.VertexAttribute
+Jade.Wgpu.VertexAttribute.Format -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexAttribute.Offset -> ulong
+Jade.Wgpu.VertexAttribute.ShaderLocation -> uint
+Jade.Wgpu.VertexAttribute.VertexAttribute() -> void
+Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Float16 = 25 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Float16x2 = 26 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Float16x4 = 27 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Float32 = 28 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Float32x2 = 29 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Float32x3 = 30 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Float32x4 = 31 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Sint16 = 16 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Sint16x2 = 17 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Sint16x4 = 18 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Sint32 = 36 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Sint32x2 = 37 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Sint32x3 = 38 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Sint32x4 = 39 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Sint8 = 4 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Sint8x2 = 5 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Sint8x4 = 6 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Snorm10_10_10_2 = 42 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Snorm16 = 22 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Snorm16x2 = 23 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Snorm16x4 = 24 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Snorm8 = 10 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Snorm8x2 = 11 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Snorm8x4 = 12 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Uint16 = 13 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Uint16x2 = 14 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Uint16x4 = 15 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Uint32 = 32 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Uint32x2 = 33 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Uint32x3 = 34 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Uint32x4 = 35 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Uint8 = 1 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Uint8x2 = 2 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Uint8x4 = 3 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Unorm10_10_10_2 = 40 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Unorm16 = 19 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Unorm16x2 = 20 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Unorm16x4 = 21 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Unorm8 = 7 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Unorm8x2 = 8 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Unorm8x4 = 9 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexFormat.Unorm8x4Bgra = 41 -> Jade.Wgpu.VertexFormat
+Jade.Wgpu.VertexStepMode
+Jade.Wgpu.VertexStepMode.Instance = 2 -> Jade.Wgpu.VertexStepMode
+Jade.Wgpu.VertexStepMode.Undefined = 0 -> Jade.Wgpu.VertexStepMode
+Jade.Wgpu.VertexStepMode.Vertex = 1 -> Jade.Wgpu.VertexStepMode
+Jade.Wgpu.WaitStatus
+Jade.Wgpu.WaitStatus.Error = 3 -> Jade.Wgpu.WaitStatus
+Jade.Wgpu.WaitStatus.Success = 1 -> Jade.Wgpu.WaitStatus
+Jade.Wgpu.WaitStatus.TimedOut = 2 -> Jade.Wgpu.WaitStatus
+Jade.Wgpu.WgslLanguageFeatureName
+Jade.Wgpu.WgslLanguageFeatureName.BufferView = 12 -> Jade.Wgpu.WgslLanguageFeatureName
+Jade.Wgpu.WgslLanguageFeatureName.ChromiumPrint = 327687 -> Jade.Wgpu.WgslLanguageFeatureName
+Jade.Wgpu.WgslLanguageFeatureName.ChromiumTestingExperimental = 327682 -> Jade.Wgpu.WgslLanguageFeatureName
+Jade.Wgpu.WgslLanguageFeatureName.ChromiumTestingShipped = 327684 -> Jade.Wgpu.WgslLanguageFeatureName
+Jade.Wgpu.WgslLanguageFeatureName.ChromiumTestingShippedWithKillswitch = 327683 -> Jade.Wgpu.WgslLanguageFeatureName
+Jade.Wgpu.WgslLanguageFeatureName.ChromiumTestingUnimplemented = 327680 -> Jade.Wgpu.WgslLanguageFeatureName
+Jade.Wgpu.WgslLanguageFeatureName.ChromiumTestingUnsafeExperimental = 327681 -> Jade.Wgpu.WgslLanguageFeatureName
+Jade.Wgpu.WgslLanguageFeatureName.FragmentDepth = 14 -> Jade.Wgpu.WgslLanguageFeatureName
+Jade.Wgpu.WgslLanguageFeatureName.ImmediateAddressSpace = 11 -> Jade.Wgpu.WgslLanguageFeatureName
+Jade.Wgpu.WgslLanguageFeatureName.LinearIndexing = 10 -> Jade.Wgpu.WgslLanguageFeatureName
+Jade.Wgpu.WgslLanguageFeatureName.MultisampledArrayTextures = 327688 -> Jade.Wgpu.WgslLanguageFeatureName
+Jade.Wgpu.WgslLanguageFeatureName.Packed4x8IntegerDotProduct = 2 -> Jade.Wgpu.WgslLanguageFeatureName
+Jade.Wgpu.WgslLanguageFeatureName.PointerCompositeAccess = 4 -> Jade.Wgpu.WgslLanguageFeatureName
+Jade.Wgpu.WgslLanguageFeatureName.ReadonlyAndReadwriteStorageTextures = 1 -> Jade.Wgpu.WgslLanguageFeatureName
+Jade.Wgpu.WgslLanguageFeatureName.SizedBindingArray = 327685 -> Jade.Wgpu.WgslLanguageFeatureName
+Jade.Wgpu.WgslLanguageFeatureName.SubgroupId = 6 -> Jade.Wgpu.WgslLanguageFeatureName
+Jade.Wgpu.WgslLanguageFeatureName.SubgroupUniformity = 8 -> Jade.Wgpu.WgslLanguageFeatureName
+Jade.Wgpu.WgslLanguageFeatureName.SwizzleAssignment = 13 -> Jade.Wgpu.WgslLanguageFeatureName
+Jade.Wgpu.WgslLanguageFeatureName.TexelBuffers = 327686 -> Jade.Wgpu.WgslLanguageFeatureName
+Jade.Wgpu.WgslLanguageFeatureName.TextureAndSamplerLet = 7 -> Jade.Wgpu.WgslLanguageFeatureName
+Jade.Wgpu.WgslLanguageFeatureName.TextureFormatsTier1 = 9 -> Jade.Wgpu.WgslLanguageFeatureName
+Jade.Wgpu.WgslLanguageFeatureName.UniformBufferStandardLayout = 5 -> Jade.Wgpu.WgslLanguageFeatureName
+Jade.Wgpu.WgslLanguageFeatureName.UnrestrictedPointerParameters = 3 -> Jade.Wgpu.WgslLanguageFeatureName
+Jade.Wgpu.YCbCrVkDescriptor
+Jade.Wgpu.YCbCrVkDescriptor.ExternalFormat -> ulong
+Jade.Wgpu.YCbCrVkDescriptor.ForceExplicitReconstruction -> Jade.Wgpu.Bool32
+Jade.Wgpu.YCbCrVkDescriptor.VkChromaFilter -> Jade.Wgpu.FilterMode
+Jade.Wgpu.YCbCrVkDescriptor.VkComponentSwizzleAlpha -> uint
+Jade.Wgpu.YCbCrVkDescriptor.VkComponentSwizzleBlue -> uint
+Jade.Wgpu.YCbCrVkDescriptor.VkComponentSwizzleGreen -> uint
+Jade.Wgpu.YCbCrVkDescriptor.VkComponentSwizzleRed -> uint
+Jade.Wgpu.YCbCrVkDescriptor.VkFormat -> uint
+Jade.Wgpu.YCbCrVkDescriptor.VkXChromaOffset -> uint
+Jade.Wgpu.YCbCrVkDescriptor.VkYCbCrModel -> uint
+Jade.Wgpu.YCbCrVkDescriptor.VkYCbCrRange -> uint
+Jade.Wgpu.YCbCrVkDescriptor.VkYChromaOffset -> uint
+Jade.Wgpu.YCbCrVkDescriptor.YCbCrVkDescriptor() -> void
+override Jade.Wgpu.Adapter.Equals(object? obj) -> bool
+override Jade.Wgpu.Adapter.GetHashCode() -> int
+override Jade.Wgpu.BindGroup.Equals(object? obj) -> bool
+override Jade.Wgpu.BindGroup.GetHashCode() -> int
+override Jade.Wgpu.BindGroupLayout.Equals(object? obj) -> bool
+override Jade.Wgpu.BindGroupLayout.GetHashCode() -> int
+override Jade.Wgpu.Bool32.Equals(object? obj) -> bool
+override Jade.Wgpu.Bool32.GetHashCode() -> int
+override Jade.Wgpu.Bool32.ToString() -> string!
+override Jade.Wgpu.Buffer.Equals(object? obj) -> bool
+override Jade.Wgpu.Buffer.GetHashCode() -> int
+override Jade.Wgpu.CommandBuffer.Equals(object? obj) -> bool
+override Jade.Wgpu.CommandBuffer.GetHashCode() -> int
+override Jade.Wgpu.CommandEncoder.Equals(object? obj) -> bool
+override Jade.Wgpu.CommandEncoder.GetHashCode() -> int
+override Jade.Wgpu.ComputePassEncoder.Equals(object? obj) -> bool
+override Jade.Wgpu.ComputePassEncoder.GetHashCode() -> int
+override Jade.Wgpu.ComputePipeline.Equals(object? obj) -> bool
+override Jade.Wgpu.ComputePipeline.GetHashCode() -> int
+override Jade.Wgpu.Device.Equals(object? obj) -> bool
+override Jade.Wgpu.Device.GetHashCode() -> int
+override Jade.Wgpu.ExternalTexture.Equals(object? obj) -> bool
+override Jade.Wgpu.ExternalTexture.GetHashCode() -> int
+override Jade.Wgpu.Instance.Equals(object? obj) -> bool
+override Jade.Wgpu.Instance.GetHashCode() -> int
+override Jade.Wgpu.PipelineLayout.Equals(object? obj) -> bool
+override Jade.Wgpu.PipelineLayout.GetHashCode() -> int
+override Jade.Wgpu.QuerySet.Equals(object? obj) -> bool
+override Jade.Wgpu.QuerySet.GetHashCode() -> int
+override Jade.Wgpu.Queue.Equals(object? obj) -> bool
+override Jade.Wgpu.Queue.GetHashCode() -> int
+override Jade.Wgpu.RenderBundle.Equals(object? obj) -> bool
+override Jade.Wgpu.RenderBundle.GetHashCode() -> int
+override Jade.Wgpu.RenderBundleEncoder.Equals(object? obj) -> bool
+override Jade.Wgpu.RenderBundleEncoder.GetHashCode() -> int
+override Jade.Wgpu.RenderPassEncoder.Equals(object? obj) -> bool
+override Jade.Wgpu.RenderPassEncoder.GetHashCode() -> int
+override Jade.Wgpu.RenderPipeline.Equals(object? obj) -> bool
+override Jade.Wgpu.RenderPipeline.GetHashCode() -> int
+override Jade.Wgpu.ResourceTable.Equals(object? obj) -> bool
+override Jade.Wgpu.ResourceTable.GetHashCode() -> int
+override Jade.Wgpu.Sampler.Equals(object? obj) -> bool
+override Jade.Wgpu.Sampler.GetHashCode() -> int
+override Jade.Wgpu.ShaderModule.Equals(object? obj) -> bool
+override Jade.Wgpu.ShaderModule.GetHashCode() -> int
+override Jade.Wgpu.SharedBufferMemory.Equals(object? obj) -> bool
+override Jade.Wgpu.SharedBufferMemory.GetHashCode() -> int
+override Jade.Wgpu.SharedFence.Equals(object? obj) -> bool
+override Jade.Wgpu.SharedFence.GetHashCode() -> int
+override Jade.Wgpu.SharedTextureMemory.Equals(object? obj) -> bool
+override Jade.Wgpu.SharedTextureMemory.GetHashCode() -> int
+override Jade.Wgpu.Surface.Equals(object? obj) -> bool
+override Jade.Wgpu.Surface.GetHashCode() -> int
+override Jade.Wgpu.TexelBufferView.Equals(object? obj) -> bool
+override Jade.Wgpu.TexelBufferView.GetHashCode() -> int
+override Jade.Wgpu.Texture.Equals(object? obj) -> bool
+override Jade.Wgpu.Texture.GetHashCode() -> int
+override Jade.Wgpu.TextureView.Equals(object? obj) -> bool
+override Jade.Wgpu.TextureView.GetHashCode() -> int
+static Jade.Wgpu.Adapter.operator !=(Jade.Wgpu.Adapter left, Jade.Wgpu.Adapter right) -> bool
+static Jade.Wgpu.Adapter.operator ==(Jade.Wgpu.Adapter left, Jade.Wgpu.Adapter right) -> bool
+static Jade.Wgpu.BindGroup.operator !=(Jade.Wgpu.BindGroup left, Jade.Wgpu.BindGroup right) -> bool
+static Jade.Wgpu.BindGroup.operator ==(Jade.Wgpu.BindGroup left, Jade.Wgpu.BindGroup right) -> bool
+static Jade.Wgpu.BindGroupLayout.operator !=(Jade.Wgpu.BindGroupLayout left, Jade.Wgpu.BindGroupLayout right) -> bool
+static Jade.Wgpu.BindGroupLayout.operator ==(Jade.Wgpu.BindGroupLayout left, Jade.Wgpu.BindGroupLayout right) -> bool
+static Jade.Wgpu.Bool32.implicit operator bool(Jade.Wgpu.Bool32 value) -> bool
+static Jade.Wgpu.Bool32.implicit operator Jade.Wgpu.Bool32(bool value) -> Jade.Wgpu.Bool32
+static Jade.Wgpu.Bool32.operator !=(Jade.Wgpu.Bool32 left, Jade.Wgpu.Bool32 right) -> bool
+static Jade.Wgpu.Bool32.operator ==(Jade.Wgpu.Bool32 left, Jade.Wgpu.Bool32 right) -> bool
+static Jade.Wgpu.Buffer.operator !=(Jade.Wgpu.Buffer left, Jade.Wgpu.Buffer right) -> bool
+static Jade.Wgpu.Buffer.operator ==(Jade.Wgpu.Buffer left, Jade.Wgpu.Buffer right) -> bool
+static Jade.Wgpu.CommandBuffer.operator !=(Jade.Wgpu.CommandBuffer left, Jade.Wgpu.CommandBuffer right) -> bool
+static Jade.Wgpu.CommandBuffer.operator ==(Jade.Wgpu.CommandBuffer left, Jade.Wgpu.CommandBuffer right) -> bool
+static Jade.Wgpu.CommandEncoder.operator !=(Jade.Wgpu.CommandEncoder left, Jade.Wgpu.CommandEncoder right) -> bool
+static Jade.Wgpu.CommandEncoder.operator ==(Jade.Wgpu.CommandEncoder left, Jade.Wgpu.CommandEncoder right) -> bool
+static Jade.Wgpu.ComputePassEncoder.operator !=(Jade.Wgpu.ComputePassEncoder left, Jade.Wgpu.ComputePassEncoder right) -> bool
+static Jade.Wgpu.ComputePassEncoder.operator ==(Jade.Wgpu.ComputePassEncoder left, Jade.Wgpu.ComputePassEncoder right) -> bool
+static Jade.Wgpu.ComputePipeline.operator !=(Jade.Wgpu.ComputePipeline left, Jade.Wgpu.ComputePipeline right) -> bool
+static Jade.Wgpu.ComputePipeline.operator ==(Jade.Wgpu.ComputePipeline left, Jade.Wgpu.ComputePipeline right) -> bool
+static Jade.Wgpu.Device.operator !=(Jade.Wgpu.Device left, Jade.Wgpu.Device right) -> bool
+static Jade.Wgpu.Device.operator ==(Jade.Wgpu.Device left, Jade.Wgpu.Device right) -> bool
+static Jade.Wgpu.ExternalTexture.operator !=(Jade.Wgpu.ExternalTexture left, Jade.Wgpu.ExternalTexture right) -> bool
+static Jade.Wgpu.ExternalTexture.operator ==(Jade.Wgpu.ExternalTexture left, Jade.Wgpu.ExternalTexture right) -> bool
+static Jade.Wgpu.Instance.operator !=(Jade.Wgpu.Instance left, Jade.Wgpu.Instance right) -> bool
+static Jade.Wgpu.Instance.operator ==(Jade.Wgpu.Instance left, Jade.Wgpu.Instance right) -> bool
+static Jade.Wgpu.PipelineLayout.operator !=(Jade.Wgpu.PipelineLayout left, Jade.Wgpu.PipelineLayout right) -> bool
+static Jade.Wgpu.PipelineLayout.operator ==(Jade.Wgpu.PipelineLayout left, Jade.Wgpu.PipelineLayout right) -> bool
+static Jade.Wgpu.QuerySet.operator !=(Jade.Wgpu.QuerySet left, Jade.Wgpu.QuerySet right) -> bool
+static Jade.Wgpu.QuerySet.operator ==(Jade.Wgpu.QuerySet left, Jade.Wgpu.QuerySet right) -> bool
+static Jade.Wgpu.Queue.operator !=(Jade.Wgpu.Queue left, Jade.Wgpu.Queue right) -> bool
+static Jade.Wgpu.Queue.operator ==(Jade.Wgpu.Queue left, Jade.Wgpu.Queue right) -> bool
+static Jade.Wgpu.RenderBundle.operator !=(Jade.Wgpu.RenderBundle left, Jade.Wgpu.RenderBundle right) -> bool
+static Jade.Wgpu.RenderBundle.operator ==(Jade.Wgpu.RenderBundle left, Jade.Wgpu.RenderBundle right) -> bool
+static Jade.Wgpu.RenderBundleEncoder.operator !=(Jade.Wgpu.RenderBundleEncoder left, Jade.Wgpu.RenderBundleEncoder right) -> bool
+static Jade.Wgpu.RenderBundleEncoder.operator ==(Jade.Wgpu.RenderBundleEncoder left, Jade.Wgpu.RenderBundleEncoder right) -> bool
+static Jade.Wgpu.RenderPassEncoder.operator !=(Jade.Wgpu.RenderPassEncoder left, Jade.Wgpu.RenderPassEncoder right) -> bool
+static Jade.Wgpu.RenderPassEncoder.operator ==(Jade.Wgpu.RenderPassEncoder left, Jade.Wgpu.RenderPassEncoder right) -> bool
+static Jade.Wgpu.RenderPipeline.operator !=(Jade.Wgpu.RenderPipeline left, Jade.Wgpu.RenderPipeline right) -> bool
+static Jade.Wgpu.RenderPipeline.operator ==(Jade.Wgpu.RenderPipeline left, Jade.Wgpu.RenderPipeline right) -> bool
+static Jade.Wgpu.ResourceTable.operator !=(Jade.Wgpu.ResourceTable left, Jade.Wgpu.ResourceTable right) -> bool
+static Jade.Wgpu.ResourceTable.operator ==(Jade.Wgpu.ResourceTable left, Jade.Wgpu.ResourceTable right) -> bool
+static Jade.Wgpu.Sampler.operator !=(Jade.Wgpu.Sampler left, Jade.Wgpu.Sampler right) -> bool
+static Jade.Wgpu.Sampler.operator ==(Jade.Wgpu.Sampler left, Jade.Wgpu.Sampler right) -> bool
+static Jade.Wgpu.ShaderModule.operator !=(Jade.Wgpu.ShaderModule left, Jade.Wgpu.ShaderModule right) -> bool
+static Jade.Wgpu.ShaderModule.operator ==(Jade.Wgpu.ShaderModule left, Jade.Wgpu.ShaderModule right) -> bool
+static Jade.Wgpu.SharedBufferMemory.operator !=(Jade.Wgpu.SharedBufferMemory left, Jade.Wgpu.SharedBufferMemory right) -> bool
+static Jade.Wgpu.SharedBufferMemory.operator ==(Jade.Wgpu.SharedBufferMemory left, Jade.Wgpu.SharedBufferMemory right) -> bool
+static Jade.Wgpu.SharedFence.operator !=(Jade.Wgpu.SharedFence left, Jade.Wgpu.SharedFence right) -> bool
+static Jade.Wgpu.SharedFence.operator ==(Jade.Wgpu.SharedFence left, Jade.Wgpu.SharedFence right) -> bool
+static Jade.Wgpu.SharedTextureMemory.operator !=(Jade.Wgpu.SharedTextureMemory left, Jade.Wgpu.SharedTextureMemory right) -> bool
+static Jade.Wgpu.SharedTextureMemory.operator ==(Jade.Wgpu.SharedTextureMemory left, Jade.Wgpu.SharedTextureMemory right) -> bool
+static Jade.Wgpu.Surface.operator !=(Jade.Wgpu.Surface left, Jade.Wgpu.Surface right) -> bool
+static Jade.Wgpu.Surface.operator ==(Jade.Wgpu.Surface left, Jade.Wgpu.Surface right) -> bool
+static Jade.Wgpu.TexelBufferView.operator !=(Jade.Wgpu.TexelBufferView left, Jade.Wgpu.TexelBufferView right) -> bool
+static Jade.Wgpu.TexelBufferView.operator ==(Jade.Wgpu.TexelBufferView left, Jade.Wgpu.TexelBufferView right) -> bool
+static Jade.Wgpu.Texture.operator !=(Jade.Wgpu.Texture left, Jade.Wgpu.Texture right) -> bool
+static Jade.Wgpu.Texture.operator ==(Jade.Wgpu.Texture left, Jade.Wgpu.Texture right) -> bool
+static Jade.Wgpu.TextureView.operator !=(Jade.Wgpu.TextureView left, Jade.Wgpu.TextureView right) -> bool
+static Jade.Wgpu.TextureView.operator ==(Jade.Wgpu.TextureView left, Jade.Wgpu.TextureView right) -> bool

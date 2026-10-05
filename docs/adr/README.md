@@ -36,3 +36,4 @@ Important or hard-to-reverse decisions are recorded here, one per file, as descr
 | [0029](0029-descriptors-and-chained-structs.md) | Descriptors and chained structures in the idiomatic layer | Accepted |
 | [0030](0030-d3d12-shader-compilers.md) | D3D12 shader compilers: a built DXC is shipped, FXC comes from the system | Accepted |
 | [0031](0031-native-build-definitions.md) | Native build definitions and the host build | Accepted |
+| [0032](0032-webgpu-raw-layer-generation.md) | WebGPU raw layer generation | Accepted |

@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.Versioning;
 
 namespace Jade.Tests;
@@ -17,6 +18,13 @@ internal sealed class BuildConventionTests
         var metadata = Assembly.Load(assemblyName).GetCustomAttributes<AssemblyMetadataAttribute>();
 
         Assert.IsTrue(metadata.Any(static attribute => attribute is { Key: "IsAotCompatible", Value: "True" }));
+    }
+
+    [TestMethod]
+    [DataRow("Jade.Wgpu")]
+    public void InteropLibraryDisablesRuntimeMarshalling(string assemblyName)
+    {
+        Assert.IsNotNull(Assembly.Load(assemblyName).GetCustomAttribute<DisableRuntimeMarshallingAttribute>());
     }
 
     [TestMethod]

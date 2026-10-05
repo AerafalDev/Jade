@@ -16,8 +16,8 @@ Status: `done`, `next`, `planned`.
 | 4 | Pin native dependencies and minimum OS versions | 1 | done |
 | 5 | Binding generator design | 4 | done |
 | 6 | Native build for the host platform | 2, 4 | done |
-| 7 | Generator: WebGPU raw layer | 2, 5, 6 | next |
-| 8 | Generator: SDL3 and miniaudio raw layers | 5, 6 | planned |
+| 7 | Generator: WebGPU raw layer | 2, 5, 6 | done |
+| 8 | Generator: SDL3 and miniaudio raw layers | 5, 6 | next |
 | 9 | Generated layout tests on the host | 6, 7, 8 | planned |
 | 10 | Native CI matrix for every RID | 3, 6 | planned |
 | 11 | `Jade.Native.*` packaging | 10 | planned |
@@ -105,19 +105,22 @@ Windows, DirectXShaderCompiler. Decisions: [0030](adr/0030-d3d12-shader-compiler
 and shipped, FXC from the system) and [0031](adr/0031-native-build-definitions.md) (build
 definitions, sources, SDL3 features, `MA_*` defines, outputs).
 
-### 7. Generator: WebGPU raw layer
+### 7. Generator: WebGPU raw layer (done, 2026-10-05)
 
-- Raw layer of `Jade.Wgpu` generated from `dawn.json`, deterministic, with a regeneration check.
-- The intermediate representation, the projection and the raw emitter of
-  [0026](adr/0026-binding-generator-pipeline.md) to
-  [0029](adr/0029-descriptors-and-chained-structs.md); the value structures of 0029 are public, the
-  rest of the raw layer internal.
-- CI builds the generator with warnings as errors and checks the regeneration; `Jade.slnx` does not
-  contain the file-based script.
-- The smoke test loads the host's Dawn library from `artifacts/native/bin/<rid>/`, built by
-  `scripts/build-native.cs`.
-- Done when the generated code builds, regeneration produces no diff, and a smoke test creates a
-  WebGPU instance on the host.
+`scripts/binding-generator/Model/` (intermediate representation), `Dawn/DawnModelBuilder.cs` (the
+`dawn.json` front-end, which reproduces Dawn's `api.h`: added members and functions, enum value
+offsets, `WGPU_*_INIT` defaults), `Projection/` (.NET names, value structure classification, C#
+types) and `Emission/` (one file per type, deterministic, stale files deleted). `Jade.Wgpu` has its
+raw layer in `Generated/` (296 files: 71 enums, 28 handles, `Bool32`, 97 public and 98 internal
+structures, 12 constants and 276 functions in `NativeMethods`), `Properties/AssemblyInfo.cs` and
+1,474 declarations in `PublicAPI.Unshipped.txt`; `bindings.json` gained `library`, `exclude`,
+`names` and `words`. The CI `build` jobs build the generator with warnings as errors and check the
+regeneration on the three hosts. `tests/Jade.Wgpu.Tests` checks the managed side of the raw layer
+and, with the host's natives, creates an instance, lists the instance features and requests an
+adapter through a callback. A one-off comparison with Dawn's generated `webgpu.h` compiled by GCC
+matched every layout, enum value, function arity and all but one default (a NaN sign bit).
+Decision: [0032](adr/0032-webgpu-raw-layer-generation.md) (projection, defaults, emission, native
+library search paths, public API files, verification).
 
 ### 8. Generator: SDL3 and miniaudio raw layers
 
@@ -131,13 +134,20 @@ definitions, sources, SDL3 features, `MA_*` defines, outputs).
   ([0031](adr/0031-native-build-definitions.md)).
 - SDL3 is built without its audio subsystem, whose functions only return errors: decide whether
   `SDL_audio.h` is bound at all.
+- Reuse the IR, projection and emitter of [0032](adr/0032-webgpu-raw-layer-generation.md): `library`,
+  `exclude`, `names` and `words` in each `bindings.json`, the assembly attributes of `Jade.Wgpu`
+  (`DisableRuntimeMarshalling`, `DefaultDllImportSearchPaths`), `tests/Jade.Sdl.Tests` and
+  `tests/Jade.MiniAudio.Tests` like `Jade.Wgpu.Tests`, and the `DataRow`s of
+  `BuildConventionTests.InteropLibraryDisablesRuntimeMarshalling`.
 - Done when the generated code builds, regeneration produces no diff, and smoke tests initialize
   SDL3 video and a miniaudio context on the host.
 
 ### 9. Generated layout tests on the host
 
 - `sizeof`/`offsetof` comparison between C and C# for every generated struct
-  ([0009](adr/0009-interop-mapping-conventions.md)).
+  ([0009](adr/0009-interop-mapping-conventions.md)), in each interop assembly's test project; the
+  layout emitter maps C names to C# names from the projection of
+  [0032](adr/0032-webgpu-raw-layer-generation.md).
 - Done when the tests pass on the host and fail when a layout is deliberately broken.
 
 ### 10. Native CI matrix for every RID
@@ -178,6 +188,11 @@ definitions, sources, SDL3 features, `MA_*` defines, outputs).
   [0029](adr/0029-descriptors-and-chained-structs.md). **Decisions to take:** how output structures
   freed by `FreeMembers` are exposed, and how extensions of nested roots (array elements, limits)
   are passed.
+- Methods on the type they operate on, from the owner and kind of each function in the model
+  ([0032](adr/0032-webgpu-raw-layer-generation.md)). **Decisions to take:** `required` members of
+  the public value structures; which constants (`WGPU_WHOLE_SIZE`, the `*_UNDEFINED` sentinels)
+  become public; the name of the `Buffer` handle, ambiguous with `System.Buffer` under
+  `using System;`.
 - Done when the desktop smoke test clears a surface through the idiomatic API only.
 
 ### 13. SDL3 and miniaudio idiomatic layers
@@ -223,6 +238,7 @@ definitions, sources, SDL3 features, `MA_*` defines, outputs).
 | Decision | Task |
 | --- | --- |
 | Output structures and extensions of nested chain roots | 12 |
+| `required` members, public constants, the `Buffer` name | 12 |
 | Native build runners, frequency and caching; emulator tests | 10, 16 |
 | Package versioning and release workflow | 19 |
 

@@ -3,5 +3,16 @@
   "sources": [
     "src/dawn/dawn.json"
   ],
-  "dawnJson": "src/dawn/dawn.json"
+  "dawnJson": "src/dawn/dawn.json",
+  "library": "webgpu_dawn",
+  "exclude": {
+    "WGPUINTERNAL_HAVE_EMDAWNWEBGPU_HEADER": "Emdawnwebgpu's marker that its own header is in use, with a placeholder member; not part of the API."
+  },
+  "names": {
+    "WGPUBool": "Bool32",
+    "WGPUTextureBindingViewDimension.textureBindingViewDimension": "ViewDimension"
+  },
+  "words": {
+    "sRGB": "Srgb"
+  }
 }
