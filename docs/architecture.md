@@ -126,13 +126,30 @@ flowchart LR
 ```
 
 - All natives are compiled by us, for every target ([0010](adr/0010-native-builds-with-xmake.md)).
+- `build/xmake.lua` is the xmake project: Dawn (`build/dawn/`) and SDL3 (`build/sdl/`) are xmake
+  packages built through their CMake builds, miniaudio and its shim (`build/miniaudio/`) an xmake
+  target ([0031](adr/0031-native-build-definitions.md)).
+- `scripts/build-native.cs` builds the host's runtime identifier (`linux-x64` only, until roadmap
+  task 10). It checks that xmake and CMake are at their pinned versions, fetches each dependency
+  with git at its pinned commit into `artifacts/native/sources/`, with the entries of Dawn's `DEPS`
+  that `build/dawn/deps.json` lists, runs xmake with its state under `artifacts/native/`, and loads
+  the libraries of `artifacts/native/bin/<rid>/` to check their exports.
+- Dawn is its monolithic shared library `webgpu_dawn` with Dawn's default backends for the
+  platform; on Windows it also ships the `dxcompiler.dll` it builds, and FXC comes from the system
+  ([0030](adr/0030-d3d12-shader-compilers.md)). SDL3 is built without its audio subsystem, and the
+  build fails when a feature of its per-platform list is missing, so that every machine produces
+  the same library. miniaudio exports only its API and the shim's functions.
+- The libraries keep their upstream names (`libwebgpu_dawn.so`, `libSDL3.so`, `libminiaudio.so`
+  on Linux). The host build depends on the host's glibc and C++ runtime and serves local work; the
+  shipped Linux binaries come from the glibc 2.28 environment of roadmap task 10.
 - `build/versions.json` is the single source of pinned versions, read by the scripts, the
   generator and CI. The xmake package definitions and the C shims live in `build/`; the
   `Jade.Native.*` packaging projects live in `native/`
   ([0023](adr/0023-repository-layout-and-conventions.md)).
 - `THIRD-PARTY-NOTICES.md` reproduces the licenses of every third-party component compiled into
   the natives, from the license files of the pinned sources
-  ([0002](adr/0002-license-and-public-identity.md)); it changes with `build/versions.json`.
+  ([0002](adr/0002-license-and-public-identity.md)); it changes with `build/versions.json` and with
+  the build options, and is checked against the files Ninja records for each library target.
 - Package layout ([0011](adr/0011-native-package-layout.md)):
 
 | Target | Location in the package |
@@ -258,5 +275,7 @@ the workflows above, Dependabot, issue and pull request templates, `CODEOWNERS`,
 `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md`. The native dependencies, toolchains and minimum OS
 versions are pinned in `build/versions.json`, and `THIRD-PARTY-NOTICES.md` covers the pinned
 sources. The binding generator's skeleton fetches and loads the pinned inputs (`dawn.json`, and
-the SDL3 and miniaudio headers parsed for every RID) without emitting C# yet. No native build
-definition or sample exists yet. The ordered list of next tasks is in the [roadmap](roadmap.md).
+the SDL3 and miniaudio headers parsed for every RID) without emitting C# yet.
+`scripts/build-native.cs` builds Dawn, SDL3 and miniaudio for `linux-x64` from the definitions of
+`build/`; the other RIDs, CI artifacts and packaging come later. No sample exists yet. The ordered
+list of next tasks is in the [roadmap](roadmap.md).
