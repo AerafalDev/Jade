@@ -115,6 +115,10 @@ Applied on 2026-10-05 (first phase of [0017](docs/adr/0017-github-repository-bas
   required.
 - Ruleset `main` on the default branch, no bypass: pull request required (0 approvals, squash
   only), no deletion, no force push, linear history.
+- The ruleset API turned on `require_extra_approval_for_unattributed_changes` by default: a pull
+  request opened by Copilot under its own identity needs one extra approval from someone with
+  write access. It stays enabled. Declare it explicitly in every ruleset update, since an omitted
+  value is reset to `true`.
 
 Pending, for the CI setup task (roadmap task 3): `dependabot.yml`, CodeQL, required checks in the
 ruleset, OpenSSF Scorecard, attestations, label synchronization workflow, labeler, CI/CodeQL/
