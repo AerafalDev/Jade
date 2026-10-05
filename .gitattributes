@@ -1,0 +1,10 @@
+# Store text with LF in the repository and let each checkout use its platform's line endings.
+# Forcing an eol for every file makes automated commits (Dependabot) write whole-file diffs.
+* text=auto
+
+*.cs     diff=csharp
+*.g.cs   linguist-generated=true
+
+*.sh     text eol=lf
+*.cmd    text eol=crlf
+*.bat    text eol=crlf

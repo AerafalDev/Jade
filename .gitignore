@@ -1,0 +1,22 @@
+# .NET (UseArtifactsOutput puts build output under artifacts/)
+artifacts/
+bin/
+obj/
+TestResults/
+*.user
+*.binlog
+
+# Native builds (a bare build/ pattern would also hide NuGet build/ folders)
+.xmake/
+/native/build/
+
+# Editors and OS
+.vs/
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Local tool settings
+.claude/settings.local.json
