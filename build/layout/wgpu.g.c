@@ -11,1189 +11,1190 @@
 
 #include "jade_layout.h"
 
-static const jade_layout_entry entries[] = {
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUAHardwareBufferProperties", WGPUAHardwareBufferProperties),
-    JADE_LAYOUT_MEMBER("WGPUAHardwareBufferProperties.yCbCrInfo", WGPUAHardwareBufferProperties, yCbCrInfo),
-#endif
-    JADE_LAYOUT_RECORD("WGPUAdapterInfo", WGPUAdapterInfo),
-    JADE_LAYOUT_MEMBER("WGPUAdapterInfo.nextInChain", WGPUAdapterInfo, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUAdapterInfo.vendor", WGPUAdapterInfo, vendor),
-    JADE_LAYOUT_MEMBER("WGPUAdapterInfo.architecture", WGPUAdapterInfo, architecture),
-    JADE_LAYOUT_MEMBER("WGPUAdapterInfo.device", WGPUAdapterInfo, device),
-    JADE_LAYOUT_MEMBER("WGPUAdapterInfo.description", WGPUAdapterInfo, description),
-    JADE_LAYOUT_MEMBER("WGPUAdapterInfo.backendType", WGPUAdapterInfo, backendType),
-    JADE_LAYOUT_MEMBER("WGPUAdapterInfo.adapterType", WGPUAdapterInfo, adapterType),
-    JADE_LAYOUT_MEMBER("WGPUAdapterInfo.vendorID", WGPUAdapterInfo, vendorID),
-    JADE_LAYOUT_MEMBER("WGPUAdapterInfo.deviceID", WGPUAdapterInfo, deviceID),
-    JADE_LAYOUT_MEMBER("WGPUAdapterInfo.subgroupMinSize", WGPUAdapterInfo, subgroupMinSize),
-    JADE_LAYOUT_MEMBER("WGPUAdapterInfo.subgroupMaxSize", WGPUAdapterInfo, subgroupMaxSize),
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUAdapterPropertiesD3D", WGPUAdapterPropertiesD3D),
-    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesD3D.chain", WGPUAdapterPropertiesD3D, chain),
-    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesD3D.shaderModel", WGPUAdapterPropertiesD3D, shaderModel),
-    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesD3D.adapterLUIDLowPart", WGPUAdapterPropertiesD3D, adapterLUIDLowPart),
-    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesD3D.adapterLUIDHighPart", WGPUAdapterPropertiesD3D, adapterLUIDHighPart),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUAdapterPropertiesDrm", WGPUAdapterPropertiesDrm),
-    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesDrm.chain", WGPUAdapterPropertiesDrm, chain),
-    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesDrm.hasPrimary", WGPUAdapterPropertiesDrm, hasPrimary),
-    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesDrm.hasRender", WGPUAdapterPropertiesDrm, hasRender),
-    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesDrm.primaryMajor", WGPUAdapterPropertiesDrm, primaryMajor),
-    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesDrm.primaryMinor", WGPUAdapterPropertiesDrm, primaryMinor),
-    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesDrm.renderMajor", WGPUAdapterPropertiesDrm, renderMajor),
-    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesDrm.renderMinor", WGPUAdapterPropertiesDrm, renderMinor),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUAdapterPropertiesMemoryHeaps", WGPUAdapterPropertiesMemoryHeaps),
-    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesMemoryHeaps.chain", WGPUAdapterPropertiesMemoryHeaps, chain),
-    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesMemoryHeaps.heapCount", WGPUAdapterPropertiesMemoryHeaps, heapCount),
-    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesMemoryHeaps.heapInfo", WGPUAdapterPropertiesMemoryHeaps, heapInfo),
-#endif
-    JADE_LAYOUT_RECORD("WGPUAdapterPropertiesSubgroupMatrixConfigs", WGPUAdapterPropertiesSubgroupMatrixConfigs),
-    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesSubgroupMatrixConfigs.chain", WGPUAdapterPropertiesSubgroupMatrixConfigs, chain),
-    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesSubgroupMatrixConfigs.configCount", WGPUAdapterPropertiesSubgroupMatrixConfigs, configCount),
-    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesSubgroupMatrixConfigs.configs", WGPUAdapterPropertiesSubgroupMatrixConfigs, configs),
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUAdapterPropertiesVk", WGPUAdapterPropertiesVk),
-    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesVk.chain", WGPUAdapterPropertiesVk, chain),
-    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesVk.driverVersion", WGPUAdapterPropertiesVk, driverVersion),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUAdapterPropertiesWGPU", WGPUAdapterPropertiesWGPU),
-    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesWGPU.chain", WGPUAdapterPropertiesWGPU, chain),
-    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesWGPU.backendType", WGPUAdapterPropertiesWGPU, backendType),
-#endif
-    JADE_LAYOUT_RECORD("WGPUBindGroupDescriptor", WGPUBindGroupDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUBindGroupDescriptor.nextInChain", WGPUBindGroupDescriptor, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUBindGroupDescriptor.label", WGPUBindGroupDescriptor, label),
-    JADE_LAYOUT_MEMBER("WGPUBindGroupDescriptor.layout", WGPUBindGroupDescriptor, layout),
-    JADE_LAYOUT_MEMBER("WGPUBindGroupDescriptor.entryCount", WGPUBindGroupDescriptor, entryCount),
-    JADE_LAYOUT_MEMBER("WGPUBindGroupDescriptor.entries", WGPUBindGroupDescriptor, entries),
-    JADE_LAYOUT_RECORD("WGPUBindGroupEntry", WGPUBindGroupEntry),
-    JADE_LAYOUT_MEMBER("WGPUBindGroupEntry.nextInChain", WGPUBindGroupEntry, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUBindGroupEntry.binding", WGPUBindGroupEntry, binding),
-    JADE_LAYOUT_MEMBER("WGPUBindGroupEntry.buffer", WGPUBindGroupEntry, buffer),
-    JADE_LAYOUT_MEMBER("WGPUBindGroupEntry.offset", WGPUBindGroupEntry, offset),
-    JADE_LAYOUT_MEMBER("WGPUBindGroupEntry.size", WGPUBindGroupEntry, size),
-    JADE_LAYOUT_MEMBER("WGPUBindGroupEntry.sampler", WGPUBindGroupEntry, sampler),
-    JADE_LAYOUT_MEMBER("WGPUBindGroupEntry.textureView", WGPUBindGroupEntry, textureView),
-    JADE_LAYOUT_RECORD("WGPUBindGroupLayoutDescriptor", WGPUBindGroupLayoutDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUBindGroupLayoutDescriptor.nextInChain", WGPUBindGroupLayoutDescriptor, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUBindGroupLayoutDescriptor.label", WGPUBindGroupLayoutDescriptor, label),
-    JADE_LAYOUT_MEMBER("WGPUBindGroupLayoutDescriptor.entryCount", WGPUBindGroupLayoutDescriptor, entryCount),
-    JADE_LAYOUT_MEMBER("WGPUBindGroupLayoutDescriptor.entries", WGPUBindGroupLayoutDescriptor, entries),
-    JADE_LAYOUT_RECORD("WGPUBindGroupLayoutEntry", WGPUBindGroupLayoutEntry),
-    JADE_LAYOUT_MEMBER("WGPUBindGroupLayoutEntry.nextInChain", WGPUBindGroupLayoutEntry, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUBindGroupLayoutEntry.binding", WGPUBindGroupLayoutEntry, binding),
-    JADE_LAYOUT_MEMBER("WGPUBindGroupLayoutEntry.visibility", WGPUBindGroupLayoutEntry, visibility),
-    JADE_LAYOUT_MEMBER("WGPUBindGroupLayoutEntry.bindingArraySize", WGPUBindGroupLayoutEntry, bindingArraySize),
-    JADE_LAYOUT_MEMBER("WGPUBindGroupLayoutEntry.buffer", WGPUBindGroupLayoutEntry, buffer),
-    JADE_LAYOUT_MEMBER("WGPUBindGroupLayoutEntry.sampler", WGPUBindGroupLayoutEntry, sampler),
-    JADE_LAYOUT_MEMBER("WGPUBindGroupLayoutEntry.texture", WGPUBindGroupLayoutEntry, texture),
-    JADE_LAYOUT_MEMBER("WGPUBindGroupLayoutEntry.storageTexture", WGPUBindGroupLayoutEntry, storageTexture),
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUBindingResource", WGPUBindingResource),
-    JADE_LAYOUT_MEMBER("WGPUBindingResource.nextInChain", WGPUBindingResource, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUBindingResource.buffer", WGPUBindingResource, buffer),
-    JADE_LAYOUT_MEMBER("WGPUBindingResource.offset", WGPUBindingResource, offset),
-    JADE_LAYOUT_MEMBER("WGPUBindingResource.size", WGPUBindingResource, size),
-    JADE_LAYOUT_MEMBER("WGPUBindingResource.sampler", WGPUBindingResource, sampler),
-    JADE_LAYOUT_MEMBER("WGPUBindingResource.textureView", WGPUBindingResource, textureView),
-#endif
-    JADE_LAYOUT_RECORD("WGPUBlendComponent", WGPUBlendComponent),
-    JADE_LAYOUT_MEMBER("WGPUBlendComponent.operation", WGPUBlendComponent, operation),
-    JADE_LAYOUT_MEMBER("WGPUBlendComponent.srcFactor", WGPUBlendComponent, srcFactor),
-    JADE_LAYOUT_MEMBER("WGPUBlendComponent.dstFactor", WGPUBlendComponent, dstFactor),
-    JADE_LAYOUT_RECORD("WGPUBlendState", WGPUBlendState),
-    JADE_LAYOUT_MEMBER("WGPUBlendState.color", WGPUBlendState, color),
-    JADE_LAYOUT_MEMBER("WGPUBlendState.alpha", WGPUBlendState, alpha),
-    JADE_LAYOUT_RECORD("WGPUBufferBindingLayout", WGPUBufferBindingLayout),
-    JADE_LAYOUT_MEMBER("WGPUBufferBindingLayout.nextInChain", WGPUBufferBindingLayout, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUBufferBindingLayout.type", WGPUBufferBindingLayout, type),
-    JADE_LAYOUT_MEMBER("WGPUBufferBindingLayout.hasDynamicOffset", WGPUBufferBindingLayout, hasDynamicOffset),
-    JADE_LAYOUT_MEMBER("WGPUBufferBindingLayout.minBindingSize", WGPUBufferBindingLayout, minBindingSize),
-    JADE_LAYOUT_RECORD("WGPUBufferDescriptor", WGPUBufferDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUBufferDescriptor.nextInChain", WGPUBufferDescriptor, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUBufferDescriptor.label", WGPUBufferDescriptor, label),
-    JADE_LAYOUT_MEMBER("WGPUBufferDescriptor.usage", WGPUBufferDescriptor, usage),
-    JADE_LAYOUT_MEMBER("WGPUBufferDescriptor.size", WGPUBufferDescriptor, size),
-    JADE_LAYOUT_MEMBER("WGPUBufferDescriptor.mappedAtCreation", WGPUBufferDescriptor, mappedAtCreation),
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUBufferHostMappedPointer", WGPUBufferHostMappedPointer),
-    JADE_LAYOUT_MEMBER("WGPUBufferHostMappedPointer.chain", WGPUBufferHostMappedPointer, chain),
-    JADE_LAYOUT_MEMBER("WGPUBufferHostMappedPointer.pointer", WGPUBufferHostMappedPointer, pointer),
-    JADE_LAYOUT_MEMBER("WGPUBufferHostMappedPointer.disposeCallback", WGPUBufferHostMappedPointer, disposeCallback),
-    JADE_LAYOUT_MEMBER("WGPUBufferHostMappedPointer.userdata", WGPUBufferHostMappedPointer, userdata),
-#endif
-    JADE_LAYOUT_RECORD("WGPUBufferMapCallbackInfo", WGPUBufferMapCallbackInfo),
-    JADE_LAYOUT_MEMBER("WGPUBufferMapCallbackInfo.nextInChain", WGPUBufferMapCallbackInfo, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUBufferMapCallbackInfo.mode", WGPUBufferMapCallbackInfo, mode),
-    JADE_LAYOUT_MEMBER("WGPUBufferMapCallbackInfo.callback", WGPUBufferMapCallbackInfo, callback),
-    JADE_LAYOUT_MEMBER("WGPUBufferMapCallbackInfo.userdata1", WGPUBufferMapCallbackInfo, userdata1),
-    JADE_LAYOUT_MEMBER("WGPUBufferMapCallbackInfo.userdata2", WGPUBufferMapCallbackInfo, userdata2),
-    JADE_LAYOUT_RECORD("WGPUChainedStruct", WGPUChainedStruct),
-    JADE_LAYOUT_MEMBER("WGPUChainedStruct.next", WGPUChainedStruct, next),
-    JADE_LAYOUT_MEMBER("WGPUChainedStruct.sType", WGPUChainedStruct, sType),
-    JADE_LAYOUT_RECORD("WGPUColor", WGPUColor),
-    JADE_LAYOUT_MEMBER("WGPUColor.r", WGPUColor, r),
-    JADE_LAYOUT_MEMBER("WGPUColor.g", WGPUColor, g),
-    JADE_LAYOUT_MEMBER("WGPUColor.b", WGPUColor, b),
-    JADE_LAYOUT_MEMBER("WGPUColor.a", WGPUColor, a),
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUColorSpaceDawn", WGPUColorSpaceDawn),
-    JADE_LAYOUT_MEMBER("WGPUColorSpaceDawn.nextInChain", WGPUColorSpaceDawn, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUColorSpaceDawn.primaries", WGPUColorSpaceDawn, primaries),
-    JADE_LAYOUT_MEMBER("WGPUColorSpaceDawn.transfer", WGPUColorSpaceDawn, transfer),
-    JADE_LAYOUT_MEMBER("WGPUColorSpaceDawn.yCbCrRange", WGPUColorSpaceDawn, yCbCrRange),
-    JADE_LAYOUT_MEMBER("WGPUColorSpaceDawn.yCbCrMatrix", WGPUColorSpaceDawn, yCbCrMatrix),
-    JADE_LAYOUT_MEMBER("WGPUColorSpaceDawn.hdrReferenceWhiteLuminance", WGPUColorSpaceDawn, hdrReferenceWhiteLuminance),
-#endif
-    JADE_LAYOUT_RECORD("WGPUColorTargetState", WGPUColorTargetState),
-    JADE_LAYOUT_MEMBER("WGPUColorTargetState.nextInChain", WGPUColorTargetState, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUColorTargetState.format", WGPUColorTargetState, format),
-    JADE_LAYOUT_MEMBER("WGPUColorTargetState.blend", WGPUColorTargetState, blend),
-    JADE_LAYOUT_MEMBER("WGPUColorTargetState.writeMask", WGPUColorTargetState, writeMask),
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUColorTargetStateExpandResolveTextureDawn", WGPUColorTargetStateExpandResolveTextureDawn),
-    JADE_LAYOUT_MEMBER("WGPUColorTargetStateExpandResolveTextureDawn.chain", WGPUColorTargetStateExpandResolveTextureDawn, chain),
-    JADE_LAYOUT_MEMBER("WGPUColorTargetStateExpandResolveTextureDawn.enabled", WGPUColorTargetStateExpandResolveTextureDawn, enabled),
-#endif
-    JADE_LAYOUT_RECORD("WGPUCommandBufferDescriptor", WGPUCommandBufferDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUCommandBufferDescriptor.nextInChain", WGPUCommandBufferDescriptor, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUCommandBufferDescriptor.label", WGPUCommandBufferDescriptor, label),
-    JADE_LAYOUT_RECORD("WGPUCommandEncoderDescriptor", WGPUCommandEncoderDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUCommandEncoderDescriptor.nextInChain", WGPUCommandEncoderDescriptor, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUCommandEncoderDescriptor.label", WGPUCommandEncoderDescriptor, label),
-    JADE_LAYOUT_RECORD("WGPUCompatibilityModeLimits", WGPUCompatibilityModeLimits),
-    JADE_LAYOUT_MEMBER("WGPUCompatibilityModeLimits.chain", WGPUCompatibilityModeLimits, chain),
-    JADE_LAYOUT_MEMBER("WGPUCompatibilityModeLimits.maxStorageBuffersInVertexStage", WGPUCompatibilityModeLimits, maxStorageBuffersInVertexStage),
-    JADE_LAYOUT_MEMBER("WGPUCompatibilityModeLimits.maxStorageTexturesInVertexStage", WGPUCompatibilityModeLimits, maxStorageTexturesInVertexStage),
-    JADE_LAYOUT_MEMBER("WGPUCompatibilityModeLimits.maxStorageBuffersInFragmentStage", WGPUCompatibilityModeLimits, maxStorageBuffersInFragmentStage),
-    JADE_LAYOUT_MEMBER("WGPUCompatibilityModeLimits.maxStorageTexturesInFragmentStage", WGPUCompatibilityModeLimits, maxStorageTexturesInFragmentStage),
-    JADE_LAYOUT_RECORD("WGPUCompilationInfo", WGPUCompilationInfo),
-    JADE_LAYOUT_MEMBER("WGPUCompilationInfo.nextInChain", WGPUCompilationInfo, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUCompilationInfo.messageCount", WGPUCompilationInfo, messageCount),
-    JADE_LAYOUT_MEMBER("WGPUCompilationInfo.messages", WGPUCompilationInfo, messages),
-    JADE_LAYOUT_RECORD("WGPUCompilationInfoCallbackInfo", WGPUCompilationInfoCallbackInfo),
-    JADE_LAYOUT_MEMBER("WGPUCompilationInfoCallbackInfo.nextInChain", WGPUCompilationInfoCallbackInfo, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUCompilationInfoCallbackInfo.mode", WGPUCompilationInfoCallbackInfo, mode),
-    JADE_LAYOUT_MEMBER("WGPUCompilationInfoCallbackInfo.callback", WGPUCompilationInfoCallbackInfo, callback),
-    JADE_LAYOUT_MEMBER("WGPUCompilationInfoCallbackInfo.userdata1", WGPUCompilationInfoCallbackInfo, userdata1),
-    JADE_LAYOUT_MEMBER("WGPUCompilationInfoCallbackInfo.userdata2", WGPUCompilationInfoCallbackInfo, userdata2),
-    JADE_LAYOUT_RECORD("WGPUCompilationMessage", WGPUCompilationMessage),
-    JADE_LAYOUT_MEMBER("WGPUCompilationMessage.nextInChain", WGPUCompilationMessage, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUCompilationMessage.message", WGPUCompilationMessage, message),
-    JADE_LAYOUT_MEMBER("WGPUCompilationMessage.type", WGPUCompilationMessage, type),
-    JADE_LAYOUT_MEMBER("WGPUCompilationMessage.lineNum", WGPUCompilationMessage, lineNum),
-    JADE_LAYOUT_MEMBER("WGPUCompilationMessage.linePos", WGPUCompilationMessage, linePos),
-    JADE_LAYOUT_MEMBER("WGPUCompilationMessage.offset", WGPUCompilationMessage, offset),
-    JADE_LAYOUT_MEMBER("WGPUCompilationMessage.length", WGPUCompilationMessage, length),
-    JADE_LAYOUT_RECORD("WGPUComputePassDescriptor", WGPUComputePassDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUComputePassDescriptor.nextInChain", WGPUComputePassDescriptor, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUComputePassDescriptor.label", WGPUComputePassDescriptor, label),
-    JADE_LAYOUT_MEMBER("WGPUComputePassDescriptor.timestampWrites", WGPUComputePassDescriptor, timestampWrites),
-    JADE_LAYOUT_RECORD("WGPUComputePipelineDescriptor", WGPUComputePipelineDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUComputePipelineDescriptor.nextInChain", WGPUComputePipelineDescriptor, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUComputePipelineDescriptor.label", WGPUComputePipelineDescriptor, label),
-    JADE_LAYOUT_MEMBER("WGPUComputePipelineDescriptor.layout", WGPUComputePipelineDescriptor, layout),
-    JADE_LAYOUT_MEMBER("WGPUComputePipelineDescriptor.compute", WGPUComputePipelineDescriptor, compute),
-    JADE_LAYOUT_RECORD("WGPUComputeState", WGPUComputeState),
-    JADE_LAYOUT_MEMBER("WGPUComputeState.nextInChain", WGPUComputeState, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUComputeState.module", WGPUComputeState, module),
-    JADE_LAYOUT_MEMBER("WGPUComputeState.entryPoint", WGPUComputeState, entryPoint),
-    JADE_LAYOUT_MEMBER("WGPUComputeState.constantCount", WGPUComputeState, constantCount),
-    JADE_LAYOUT_MEMBER("WGPUComputeState.constants", WGPUComputeState, constants),
-    JADE_LAYOUT_RECORD("WGPUConstantEntry", WGPUConstantEntry),
-    JADE_LAYOUT_MEMBER("WGPUConstantEntry.nextInChain", WGPUConstantEntry, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUConstantEntry.key", WGPUConstantEntry, key),
-    JADE_LAYOUT_MEMBER("WGPUConstantEntry.value", WGPUConstantEntry, value),
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUCopyTextureForBrowserOptions", WGPUCopyTextureForBrowserOptions),
-    JADE_LAYOUT_MEMBER("WGPUCopyTextureForBrowserOptions.nextInChain", WGPUCopyTextureForBrowserOptions, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUCopyTextureForBrowserOptions.flipY", WGPUCopyTextureForBrowserOptions, flipY),
-    JADE_LAYOUT_MEMBER("WGPUCopyTextureForBrowserOptions.needsColorSpaceConversion", WGPUCopyTextureForBrowserOptions, needsColorSpaceConversion),
-    JADE_LAYOUT_MEMBER("WGPUCopyTextureForBrowserOptions.srcAlphaMode", WGPUCopyTextureForBrowserOptions, srcAlphaMode),
-    JADE_LAYOUT_MEMBER("WGPUCopyTextureForBrowserOptions.srcTransferFunctionParameters", WGPUCopyTextureForBrowserOptions, srcTransferFunctionParameters),
-    JADE_LAYOUT_MEMBER("WGPUCopyTextureForBrowserOptions.conversionMatrix", WGPUCopyTextureForBrowserOptions, conversionMatrix),
-    JADE_LAYOUT_MEMBER("WGPUCopyTextureForBrowserOptions.dstTransferFunctionParameters", WGPUCopyTextureForBrowserOptions, dstTransferFunctionParameters),
-    JADE_LAYOUT_MEMBER("WGPUCopyTextureForBrowserOptions.dstAlphaMode", WGPUCopyTextureForBrowserOptions, dstAlphaMode),
-    JADE_LAYOUT_MEMBER("WGPUCopyTextureForBrowserOptions.internalUsage", WGPUCopyTextureForBrowserOptions, internalUsage),
-#endif
-    JADE_LAYOUT_RECORD("WGPUCreateComputePipelineAsyncCallbackInfo", WGPUCreateComputePipelineAsyncCallbackInfo),
-    JADE_LAYOUT_MEMBER("WGPUCreateComputePipelineAsyncCallbackInfo.nextInChain", WGPUCreateComputePipelineAsyncCallbackInfo, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUCreateComputePipelineAsyncCallbackInfo.mode", WGPUCreateComputePipelineAsyncCallbackInfo, mode),
-    JADE_LAYOUT_MEMBER("WGPUCreateComputePipelineAsyncCallbackInfo.callback", WGPUCreateComputePipelineAsyncCallbackInfo, callback),
-    JADE_LAYOUT_MEMBER("WGPUCreateComputePipelineAsyncCallbackInfo.userdata1", WGPUCreateComputePipelineAsyncCallbackInfo, userdata1),
-    JADE_LAYOUT_MEMBER("WGPUCreateComputePipelineAsyncCallbackInfo.userdata2", WGPUCreateComputePipelineAsyncCallbackInfo, userdata2),
-    JADE_LAYOUT_RECORD("WGPUCreateRenderPipelineAsyncCallbackInfo", WGPUCreateRenderPipelineAsyncCallbackInfo),
-    JADE_LAYOUT_MEMBER("WGPUCreateRenderPipelineAsyncCallbackInfo.nextInChain", WGPUCreateRenderPipelineAsyncCallbackInfo, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUCreateRenderPipelineAsyncCallbackInfo.mode", WGPUCreateRenderPipelineAsyncCallbackInfo, mode),
-    JADE_LAYOUT_MEMBER("WGPUCreateRenderPipelineAsyncCallbackInfo.callback", WGPUCreateRenderPipelineAsyncCallbackInfo, callback),
-    JADE_LAYOUT_MEMBER("WGPUCreateRenderPipelineAsyncCallbackInfo.userdata1", WGPUCreateRenderPipelineAsyncCallbackInfo, userdata1),
-    JADE_LAYOUT_MEMBER("WGPUCreateRenderPipelineAsyncCallbackInfo.userdata2", WGPUCreateRenderPipelineAsyncCallbackInfo, userdata2),
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUDawnAdapterPropertiesPowerPreference", WGPUDawnAdapterPropertiesPowerPreference),
-    JADE_LAYOUT_MEMBER("WGPUDawnAdapterPropertiesPowerPreference.chain", WGPUDawnAdapterPropertiesPowerPreference, chain),
-    JADE_LAYOUT_MEMBER("WGPUDawnAdapterPropertiesPowerPreference.powerPreference", WGPUDawnAdapterPropertiesPowerPreference, powerPreference),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUDawnBufferDescriptorErrorInfoFromWireClient", WGPUDawnBufferDescriptorErrorInfoFromWireClient),
-    JADE_LAYOUT_MEMBER("WGPUDawnBufferDescriptorErrorInfoFromWireClient.chain", WGPUDawnBufferDescriptorErrorInfoFromWireClient, chain),
-    JADE_LAYOUT_MEMBER("WGPUDawnBufferDescriptorErrorInfoFromWireClient.outOfMemory", WGPUDawnBufferDescriptorErrorInfoFromWireClient, outOfMemory),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUDawnCacheDeviceDescriptor", WGPUDawnCacheDeviceDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUDawnCacheDeviceDescriptor.chain", WGPUDawnCacheDeviceDescriptor, chain),
-    JADE_LAYOUT_MEMBER("WGPUDawnCacheDeviceDescriptor.isolationKey", WGPUDawnCacheDeviceDescriptor, isolationKey),
-    JADE_LAYOUT_MEMBER("WGPUDawnCacheDeviceDescriptor.dawnLoadCacheDataCallbackInfo", WGPUDawnCacheDeviceDescriptor, dawnLoadCacheDataCallbackInfo),
-    JADE_LAYOUT_MEMBER("WGPUDawnCacheDeviceDescriptor.dawnStoreCacheDataCallbackInfo", WGPUDawnCacheDeviceDescriptor, dawnStoreCacheDataCallbackInfo),
-#endif
-    JADE_LAYOUT_RECORD("WGPUDawnCompilationMessageUtf16", WGPUDawnCompilationMessageUtf16),
-    JADE_LAYOUT_MEMBER("WGPUDawnCompilationMessageUtf16.chain", WGPUDawnCompilationMessageUtf16, chain),
-    JADE_LAYOUT_MEMBER("WGPUDawnCompilationMessageUtf16.linePos", WGPUDawnCompilationMessageUtf16, linePos),
-    JADE_LAYOUT_MEMBER("WGPUDawnCompilationMessageUtf16.offset", WGPUDawnCompilationMessageUtf16, offset),
-    JADE_LAYOUT_MEMBER("WGPUDawnCompilationMessageUtf16.length", WGPUDawnCompilationMessageUtf16, length),
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUDawnConsumeAdapterDescriptor", WGPUDawnConsumeAdapterDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUDawnConsumeAdapterDescriptor.chain", WGPUDawnConsumeAdapterDescriptor, chain),
-    JADE_LAYOUT_MEMBER("WGPUDawnConsumeAdapterDescriptor.consumeAdapter", WGPUDawnConsumeAdapterDescriptor, consumeAdapter),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUDawnDeviceAllocatorControl", WGPUDawnDeviceAllocatorControl),
-    JADE_LAYOUT_MEMBER("WGPUDawnDeviceAllocatorControl.chain", WGPUDawnDeviceAllocatorControl, chain),
-    JADE_LAYOUT_MEMBER("WGPUDawnDeviceAllocatorControl.allocatorHeapBlockSize", WGPUDawnDeviceAllocatorControl, allocatorHeapBlockSize),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUDawnDrmFormatCapabilities", WGPUDawnDrmFormatCapabilities),
-    JADE_LAYOUT_MEMBER("WGPUDawnDrmFormatCapabilities.chain", WGPUDawnDrmFormatCapabilities, chain),
-    JADE_LAYOUT_MEMBER("WGPUDawnDrmFormatCapabilities.propertiesCount", WGPUDawnDrmFormatCapabilities, propertiesCount),
-    JADE_LAYOUT_MEMBER("WGPUDawnDrmFormatCapabilities.properties", WGPUDawnDrmFormatCapabilities, properties),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUDawnDrmFormatProperties", WGPUDawnDrmFormatProperties),
-    JADE_LAYOUT_MEMBER("WGPUDawnDrmFormatProperties.modifier", WGPUDawnDrmFormatProperties, modifier),
-    JADE_LAYOUT_MEMBER("WGPUDawnDrmFormatProperties.modifierPlaneCount", WGPUDawnDrmFormatProperties, modifierPlaneCount),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUDawnEncoderInternalUsageDescriptor", WGPUDawnEncoderInternalUsageDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUDawnEncoderInternalUsageDescriptor.chain", WGPUDawnEncoderInternalUsageDescriptor, chain),
-    JADE_LAYOUT_MEMBER("WGPUDawnEncoderInternalUsageDescriptor.useInternalUsages", WGPUDawnEncoderInternalUsageDescriptor, useInternalUsages),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUDawnFakeBufferOOMForTesting", WGPUDawnFakeBufferOOMForTesting),
-    JADE_LAYOUT_MEMBER("WGPUDawnFakeBufferOOMForTesting.chain", WGPUDawnFakeBufferOOMForTesting, chain),
-    JADE_LAYOUT_MEMBER("WGPUDawnFakeBufferOOMForTesting.fakeOOMAtWireClientMap", WGPUDawnFakeBufferOOMForTesting, fakeOOMAtWireClientMap),
-    JADE_LAYOUT_MEMBER("WGPUDawnFakeBufferOOMForTesting.fakeOOMAtNativeMap", WGPUDawnFakeBufferOOMForTesting, fakeOOMAtNativeMap),
-    JADE_LAYOUT_MEMBER("WGPUDawnFakeBufferOOMForTesting.fakeOOMAtDevice", WGPUDawnFakeBufferOOMForTesting, fakeOOMAtDevice),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUDawnFakeDeviceInitializeErrorForTesting", WGPUDawnFakeDeviceInitializeErrorForTesting),
-    JADE_LAYOUT_MEMBER("WGPUDawnFakeDeviceInitializeErrorForTesting.chain", WGPUDawnFakeDeviceInitializeErrorForTesting, chain),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUDawnFormatCapabilities", WGPUDawnFormatCapabilities),
-    JADE_LAYOUT_MEMBER("WGPUDawnFormatCapabilities.nextInChain", WGPUDawnFormatCapabilities, nextInChain),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUDawnHostMappedPointerLimits", WGPUDawnHostMappedPointerLimits),
-    JADE_LAYOUT_MEMBER("WGPUDawnHostMappedPointerLimits.chain", WGPUDawnHostMappedPointerLimits, chain),
-    JADE_LAYOUT_MEMBER("WGPUDawnHostMappedPointerLimits.hostMappedPointerAlignment", WGPUDawnHostMappedPointerLimits, hostMappedPointerAlignment),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUDawnInjectedInvalidSType", WGPUDawnInjectedInvalidSType),
-    JADE_LAYOUT_MEMBER("WGPUDawnInjectedInvalidSType.chain", WGPUDawnInjectedInvalidSType, chain),
-    JADE_LAYOUT_MEMBER("WGPUDawnInjectedInvalidSType.invalidSType", WGPUDawnInjectedInvalidSType, invalidSType),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUDawnLoadCacheDataCallbackInfo", WGPUDawnLoadCacheDataCallbackInfo),
-    JADE_LAYOUT_MEMBER("WGPUDawnLoadCacheDataCallbackInfo.nextInChain", WGPUDawnLoadCacheDataCallbackInfo, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUDawnLoadCacheDataCallbackInfo.callback", WGPUDawnLoadCacheDataCallbackInfo, callback),
-    JADE_LAYOUT_MEMBER("WGPUDawnLoadCacheDataCallbackInfo.userdata1", WGPUDawnLoadCacheDataCallbackInfo, userdata1),
-    JADE_LAYOUT_MEMBER("WGPUDawnLoadCacheDataCallbackInfo.userdata2", WGPUDawnLoadCacheDataCallbackInfo, userdata2),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUDawnRenderPassSampleCount", WGPUDawnRenderPassSampleCount),
-    JADE_LAYOUT_MEMBER("WGPUDawnRenderPassSampleCount.chain", WGPUDawnRenderPassSampleCount, chain),
-    JADE_LAYOUT_MEMBER("WGPUDawnRenderPassSampleCount.sampleCount", WGPUDawnRenderPassSampleCount, sampleCount),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUDawnShaderModuleSPIRVOptionsDescriptor", WGPUDawnShaderModuleSPIRVOptionsDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUDawnShaderModuleSPIRVOptionsDescriptor.chain", WGPUDawnShaderModuleSPIRVOptionsDescriptor, chain),
-    JADE_LAYOUT_MEMBER("WGPUDawnShaderModuleSPIRVOptionsDescriptor.allowNonUniformDerivatives", WGPUDawnShaderModuleSPIRVOptionsDescriptor, allowNonUniformDerivatives),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUDawnShaderSourceSPIRV", WGPUDawnShaderSourceSPIRV),
-    JADE_LAYOUT_MEMBER("WGPUDawnShaderSourceSPIRV.chain", WGPUDawnShaderSourceSPIRV, chain),
-    JADE_LAYOUT_MEMBER("WGPUDawnShaderSourceSPIRV.codeSize", WGPUDawnShaderSourceSPIRV, codeSize),
-    JADE_LAYOUT_MEMBER("WGPUDawnShaderSourceSPIRV.code", WGPUDawnShaderSourceSPIRV, code),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUDawnStoreCacheDataCallbackInfo", WGPUDawnStoreCacheDataCallbackInfo),
-    JADE_LAYOUT_MEMBER("WGPUDawnStoreCacheDataCallbackInfo.nextInChain", WGPUDawnStoreCacheDataCallbackInfo, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUDawnStoreCacheDataCallbackInfo.callback", WGPUDawnStoreCacheDataCallbackInfo, callback),
-    JADE_LAYOUT_MEMBER("WGPUDawnStoreCacheDataCallbackInfo.userdata1", WGPUDawnStoreCacheDataCallbackInfo, userdata1),
-    JADE_LAYOUT_MEMBER("WGPUDawnStoreCacheDataCallbackInfo.userdata2", WGPUDawnStoreCacheDataCallbackInfo, userdata2),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUDawnTexelCopyBufferRowAlignmentLimits", WGPUDawnTexelCopyBufferRowAlignmentLimits),
-    JADE_LAYOUT_MEMBER("WGPUDawnTexelCopyBufferRowAlignmentLimits.chain", WGPUDawnTexelCopyBufferRowAlignmentLimits, chain),
-    JADE_LAYOUT_MEMBER("WGPUDawnTexelCopyBufferRowAlignmentLimits.minTexelCopyBufferRowAlignment", WGPUDawnTexelCopyBufferRowAlignmentLimits, minTexelCopyBufferRowAlignment),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUDawnTextureInternalUsageDescriptor", WGPUDawnTextureInternalUsageDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUDawnTextureInternalUsageDescriptor.chain", WGPUDawnTextureInternalUsageDescriptor, chain),
-    JADE_LAYOUT_MEMBER("WGPUDawnTextureInternalUsageDescriptor.internalUsage", WGPUDawnTextureInternalUsageDescriptor, internalUsage),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUDawnTogglesDescriptor", WGPUDawnTogglesDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUDawnTogglesDescriptor.chain", WGPUDawnTogglesDescriptor, chain),
-    JADE_LAYOUT_MEMBER("WGPUDawnTogglesDescriptor.enabledToggleCount", WGPUDawnTogglesDescriptor, enabledToggleCount),
-    JADE_LAYOUT_MEMBER("WGPUDawnTogglesDescriptor.enabledToggles", WGPUDawnTogglesDescriptor, enabledToggles),
-    JADE_LAYOUT_MEMBER("WGPUDawnTogglesDescriptor.disabledToggleCount", WGPUDawnTogglesDescriptor, disabledToggleCount),
-    JADE_LAYOUT_MEMBER("WGPUDawnTogglesDescriptor.disabledToggles", WGPUDawnTogglesDescriptor, disabledToggles),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUDawnWGSLBlocklist", WGPUDawnWGSLBlocklist),
-    JADE_LAYOUT_MEMBER("WGPUDawnWGSLBlocklist.chain", WGPUDawnWGSLBlocklist, chain),
-    JADE_LAYOUT_MEMBER("WGPUDawnWGSLBlocklist.blocklistedFeatureCount", WGPUDawnWGSLBlocklist, blocklistedFeatureCount),
-    JADE_LAYOUT_MEMBER("WGPUDawnWGSLBlocklist.blocklistedFeatures", WGPUDawnWGSLBlocklist, blocklistedFeatures),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUDawnWireWGSLControl", WGPUDawnWireWGSLControl),
-    JADE_LAYOUT_MEMBER("WGPUDawnWireWGSLControl.chain", WGPUDawnWireWGSLControl, chain),
-    JADE_LAYOUT_MEMBER("WGPUDawnWireWGSLControl.enableExperimental", WGPUDawnWireWGSLControl, enableExperimental),
-    JADE_LAYOUT_MEMBER("WGPUDawnWireWGSLControl.enableUnsafe", WGPUDawnWireWGSLControl, enableUnsafe),
-    JADE_LAYOUT_MEMBER("WGPUDawnWireWGSLControl.enableTesting", WGPUDawnWireWGSLControl, enableTesting),
-#endif
-    JADE_LAYOUT_RECORD("WGPUDepthStencilState", WGPUDepthStencilState),
-    JADE_LAYOUT_MEMBER("WGPUDepthStencilState.nextInChain", WGPUDepthStencilState, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUDepthStencilState.format", WGPUDepthStencilState, format),
-    JADE_LAYOUT_MEMBER("WGPUDepthStencilState.depthWriteEnabled", WGPUDepthStencilState, depthWriteEnabled),
-    JADE_LAYOUT_MEMBER("WGPUDepthStencilState.depthCompare", WGPUDepthStencilState, depthCompare),
-    JADE_LAYOUT_MEMBER("WGPUDepthStencilState.stencilFront", WGPUDepthStencilState, stencilFront),
-    JADE_LAYOUT_MEMBER("WGPUDepthStencilState.stencilBack", WGPUDepthStencilState, stencilBack),
-    JADE_LAYOUT_MEMBER("WGPUDepthStencilState.stencilReadMask", WGPUDepthStencilState, stencilReadMask),
-    JADE_LAYOUT_MEMBER("WGPUDepthStencilState.stencilWriteMask", WGPUDepthStencilState, stencilWriteMask),
-    JADE_LAYOUT_MEMBER("WGPUDepthStencilState.depthBias", WGPUDepthStencilState, depthBias),
-    JADE_LAYOUT_MEMBER("WGPUDepthStencilState.depthBiasSlopeScale", WGPUDepthStencilState, depthBiasSlopeScale),
-    JADE_LAYOUT_MEMBER("WGPUDepthStencilState.depthBiasClamp", WGPUDepthStencilState, depthBiasClamp),
-    JADE_LAYOUT_RECORD("WGPUDeviceDescriptor", WGPUDeviceDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUDeviceDescriptor.nextInChain", WGPUDeviceDescriptor, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUDeviceDescriptor.label", WGPUDeviceDescriptor, label),
-    JADE_LAYOUT_MEMBER("WGPUDeviceDescriptor.requiredFeatureCount", WGPUDeviceDescriptor, requiredFeatureCount),
-    JADE_LAYOUT_MEMBER("WGPUDeviceDescriptor.requiredFeatures", WGPUDeviceDescriptor, requiredFeatures),
-    JADE_LAYOUT_MEMBER("WGPUDeviceDescriptor.requiredLimits", WGPUDeviceDescriptor, requiredLimits),
-    JADE_LAYOUT_MEMBER("WGPUDeviceDescriptor.defaultQueue", WGPUDeviceDescriptor, defaultQueue),
-    JADE_LAYOUT_MEMBER("WGPUDeviceDescriptor.deviceLostCallbackInfo", WGPUDeviceDescriptor, deviceLostCallbackInfo),
-    JADE_LAYOUT_MEMBER("WGPUDeviceDescriptor.uncapturedErrorCallbackInfo", WGPUDeviceDescriptor, uncapturedErrorCallbackInfo),
-    JADE_LAYOUT_RECORD("WGPUDeviceLostCallbackInfo", WGPUDeviceLostCallbackInfo),
-    JADE_LAYOUT_MEMBER("WGPUDeviceLostCallbackInfo.nextInChain", WGPUDeviceLostCallbackInfo, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUDeviceLostCallbackInfo.mode", WGPUDeviceLostCallbackInfo, mode),
-    JADE_LAYOUT_MEMBER("WGPUDeviceLostCallbackInfo.callback", WGPUDeviceLostCallbackInfo, callback),
-    JADE_LAYOUT_MEMBER("WGPUDeviceLostCallbackInfo.userdata1", WGPUDeviceLostCallbackInfo, userdata1),
-    JADE_LAYOUT_MEMBER("WGPUDeviceLostCallbackInfo.userdata2", WGPUDeviceLostCallbackInfo, userdata2),
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUDisposeCallbackInfo", WGPUDisposeCallbackInfo),
-    JADE_LAYOUT_MEMBER("WGPUDisposeCallbackInfo.nextInChain", WGPUDisposeCallbackInfo, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUDisposeCallbackInfo.mode", WGPUDisposeCallbackInfo, mode),
-    JADE_LAYOUT_MEMBER("WGPUDisposeCallbackInfo.callback", WGPUDisposeCallbackInfo, callback),
-    JADE_LAYOUT_MEMBER("WGPUDisposeCallbackInfo.userdata1", WGPUDisposeCallbackInfo, userdata1),
-    JADE_LAYOUT_MEMBER("WGPUDisposeCallbackInfo.userdata2", WGPUDisposeCallbackInfo, userdata2),
-#endif
-#if defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUEmscriptenSurfaceSourceCanvasHTMLSelector", WGPUEmscriptenSurfaceSourceCanvasHTMLSelector),
-    JADE_LAYOUT_MEMBER("WGPUEmscriptenSurfaceSourceCanvasHTMLSelector.chain", WGPUEmscriptenSurfaceSourceCanvasHTMLSelector, chain),
-    JADE_LAYOUT_MEMBER("WGPUEmscriptenSurfaceSourceCanvasHTMLSelector.selector", WGPUEmscriptenSurfaceSourceCanvasHTMLSelector, selector),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUExtent2D", WGPUExtent2D),
-    JADE_LAYOUT_MEMBER("WGPUExtent2D.width", WGPUExtent2D, width),
-    JADE_LAYOUT_MEMBER("WGPUExtent2D.height", WGPUExtent2D, height),
-#endif
-    JADE_LAYOUT_RECORD("WGPUExtent3D", WGPUExtent3D),
-    JADE_LAYOUT_MEMBER("WGPUExtent3D.width", WGPUExtent3D, width),
-    JADE_LAYOUT_MEMBER("WGPUExtent3D.height", WGPUExtent3D, height),
-    JADE_LAYOUT_MEMBER("WGPUExtent3D.depthOrArrayLayers", WGPUExtent3D, depthOrArrayLayers),
-    JADE_LAYOUT_RECORD("WGPUExternalTextureBindingEntry", WGPUExternalTextureBindingEntry),
-    JADE_LAYOUT_MEMBER("WGPUExternalTextureBindingEntry.chain", WGPUExternalTextureBindingEntry, chain),
-    JADE_LAYOUT_MEMBER("WGPUExternalTextureBindingEntry.externalTexture", WGPUExternalTextureBindingEntry, externalTexture),
-    JADE_LAYOUT_RECORD("WGPUExternalTextureBindingLayout", WGPUExternalTextureBindingLayout),
-    JADE_LAYOUT_MEMBER("WGPUExternalTextureBindingLayout.chain", WGPUExternalTextureBindingLayout, chain),
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUExternalTextureDescriptor", WGPUExternalTextureDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUExternalTextureDescriptor.nextInChain", WGPUExternalTextureDescriptor, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUExternalTextureDescriptor.label", WGPUExternalTextureDescriptor, label),
-    JADE_LAYOUT_MEMBER("WGPUExternalTextureDescriptor.plane0", WGPUExternalTextureDescriptor, plane0),
-    JADE_LAYOUT_MEMBER("WGPUExternalTextureDescriptor.plane1", WGPUExternalTextureDescriptor, plane1),
-    JADE_LAYOUT_MEMBER("WGPUExternalTextureDescriptor.cropOrigin", WGPUExternalTextureDescriptor, cropOrigin),
-    JADE_LAYOUT_MEMBER("WGPUExternalTextureDescriptor.cropSize", WGPUExternalTextureDescriptor, cropSize),
-    JADE_LAYOUT_MEMBER("WGPUExternalTextureDescriptor.apparentSize", WGPUExternalTextureDescriptor, apparentSize),
-    JADE_LAYOUT_MEMBER("WGPUExternalTextureDescriptor.doYuvToRgbConversionOnly", WGPUExternalTextureDescriptor, doYuvToRgbConversionOnly),
-    JADE_LAYOUT_MEMBER("WGPUExternalTextureDescriptor.yuvToRgbConversionMatrix", WGPUExternalTextureDescriptor, yuvToRgbConversionMatrix),
-    JADE_LAYOUT_MEMBER("WGPUExternalTextureDescriptor.srcTransferFunctionParameters", WGPUExternalTextureDescriptor, srcTransferFunctionParameters),
-    JADE_LAYOUT_MEMBER("WGPUExternalTextureDescriptor.dstTransferFunctionParameters", WGPUExternalTextureDescriptor, dstTransferFunctionParameters),
-    JADE_LAYOUT_MEMBER("WGPUExternalTextureDescriptor.gamutConversionMatrix", WGPUExternalTextureDescriptor, gamutConversionMatrix),
-    JADE_LAYOUT_MEMBER("WGPUExternalTextureDescriptor.mirrored", WGPUExternalTextureDescriptor, mirrored),
-    JADE_LAYOUT_MEMBER("WGPUExternalTextureDescriptor.rotation", WGPUExternalTextureDescriptor, rotation),
-#endif
-    JADE_LAYOUT_RECORD("WGPUFragmentState", WGPUFragmentState),
-    JADE_LAYOUT_MEMBER("WGPUFragmentState.nextInChain", WGPUFragmentState, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUFragmentState.module", WGPUFragmentState, module),
-    JADE_LAYOUT_MEMBER("WGPUFragmentState.entryPoint", WGPUFragmentState, entryPoint),
-    JADE_LAYOUT_MEMBER("WGPUFragmentState.constantCount", WGPUFragmentState, constantCount),
-    JADE_LAYOUT_MEMBER("WGPUFragmentState.constants", WGPUFragmentState, constants),
-    JADE_LAYOUT_MEMBER("WGPUFragmentState.targetCount", WGPUFragmentState, targetCount),
-    JADE_LAYOUT_MEMBER("WGPUFragmentState.targets", WGPUFragmentState, targets),
-    JADE_LAYOUT_RECORD("WGPUFuture", WGPUFuture),
-    JADE_LAYOUT_MEMBER("WGPUFuture.id", WGPUFuture, id),
-    JADE_LAYOUT_RECORD("WGPUFutureWaitInfo", WGPUFutureWaitInfo),
-    JADE_LAYOUT_MEMBER("WGPUFutureWaitInfo.future", WGPUFutureWaitInfo, future),
-    JADE_LAYOUT_MEMBER("WGPUFutureWaitInfo.completed", WGPUFutureWaitInfo, completed),
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUImageCopyExternalTexture", WGPUImageCopyExternalTexture),
-    JADE_LAYOUT_MEMBER("WGPUImageCopyExternalTexture.nextInChain", WGPUImageCopyExternalTexture, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUImageCopyExternalTexture.externalTexture", WGPUImageCopyExternalTexture, externalTexture),
-    JADE_LAYOUT_MEMBER("WGPUImageCopyExternalTexture.origin", WGPUImageCopyExternalTexture, origin),
-    JADE_LAYOUT_MEMBER("WGPUImageCopyExternalTexture.naturalSize", WGPUImageCopyExternalTexture, naturalSize),
-#endif
-    JADE_LAYOUT_RECORD("WGPUInstanceDescriptor", WGPUInstanceDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUInstanceDescriptor.nextInChain", WGPUInstanceDescriptor, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUInstanceDescriptor.requiredFeatureCount", WGPUInstanceDescriptor, requiredFeatureCount),
-    JADE_LAYOUT_MEMBER("WGPUInstanceDescriptor.requiredFeatures", WGPUInstanceDescriptor, requiredFeatures),
-    JADE_LAYOUT_MEMBER("WGPUInstanceDescriptor.requiredLimits", WGPUInstanceDescriptor, requiredLimits),
-    JADE_LAYOUT_RECORD("WGPUInstanceLimits", WGPUInstanceLimits),
-    JADE_LAYOUT_MEMBER("WGPUInstanceLimits.nextInChain", WGPUInstanceLimits, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUInstanceLimits.timedWaitAnyMaxCount", WGPUInstanceLimits, timedWaitAnyMaxCount),
-    JADE_LAYOUT_RECORD("WGPULimits", WGPULimits),
-    JADE_LAYOUT_MEMBER("WGPULimits.nextInChain", WGPULimits, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPULimits.maxTextureDimension1D", WGPULimits, maxTextureDimension1D),
-    JADE_LAYOUT_MEMBER("WGPULimits.maxTextureDimension2D", WGPULimits, maxTextureDimension2D),
-    JADE_LAYOUT_MEMBER("WGPULimits.maxTextureDimension3D", WGPULimits, maxTextureDimension3D),
-    JADE_LAYOUT_MEMBER("WGPULimits.maxTextureArrayLayers", WGPULimits, maxTextureArrayLayers),
-    JADE_LAYOUT_MEMBER("WGPULimits.maxBindGroups", WGPULimits, maxBindGroups),
-    JADE_LAYOUT_MEMBER("WGPULimits.maxBindGroupsPlusVertexBuffers", WGPULimits, maxBindGroupsPlusVertexBuffers),
-    JADE_LAYOUT_MEMBER("WGPULimits.maxBindingsPerBindGroup", WGPULimits, maxBindingsPerBindGroup),
-    JADE_LAYOUT_MEMBER("WGPULimits.maxDynamicUniformBuffersPerPipelineLayout", WGPULimits, maxDynamicUniformBuffersPerPipelineLayout),
-    JADE_LAYOUT_MEMBER("WGPULimits.maxDynamicStorageBuffersPerPipelineLayout", WGPULimits, maxDynamicStorageBuffersPerPipelineLayout),
-    JADE_LAYOUT_MEMBER("WGPULimits.maxSampledTexturesPerShaderStage", WGPULimits, maxSampledTexturesPerShaderStage),
-    JADE_LAYOUT_MEMBER("WGPULimits.maxSamplersPerShaderStage", WGPULimits, maxSamplersPerShaderStage),
-    JADE_LAYOUT_MEMBER("WGPULimits.maxStorageBuffersPerShaderStage", WGPULimits, maxStorageBuffersPerShaderStage),
-    JADE_LAYOUT_MEMBER("WGPULimits.maxStorageTexturesPerShaderStage", WGPULimits, maxStorageTexturesPerShaderStage),
-    JADE_LAYOUT_MEMBER("WGPULimits.maxUniformBuffersPerShaderStage", WGPULimits, maxUniformBuffersPerShaderStage),
-    JADE_LAYOUT_MEMBER("WGPULimits.maxUniformBufferBindingSize", WGPULimits, maxUniformBufferBindingSize),
-    JADE_LAYOUT_MEMBER("WGPULimits.maxStorageBufferBindingSize", WGPULimits, maxStorageBufferBindingSize),
-    JADE_LAYOUT_MEMBER("WGPULimits.minUniformBufferOffsetAlignment", WGPULimits, minUniformBufferOffsetAlignment),
-    JADE_LAYOUT_MEMBER("WGPULimits.minStorageBufferOffsetAlignment", WGPULimits, minStorageBufferOffsetAlignment),
-    JADE_LAYOUT_MEMBER("WGPULimits.maxVertexBuffers", WGPULimits, maxVertexBuffers),
-    JADE_LAYOUT_MEMBER("WGPULimits.maxBufferSize", WGPULimits, maxBufferSize),
-    JADE_LAYOUT_MEMBER("WGPULimits.maxVertexAttributes", WGPULimits, maxVertexAttributes),
-    JADE_LAYOUT_MEMBER("WGPULimits.maxVertexBufferArrayStride", WGPULimits, maxVertexBufferArrayStride),
-    JADE_LAYOUT_MEMBER("WGPULimits.maxInterStageShaderVariables", WGPULimits, maxInterStageShaderVariables),
-    JADE_LAYOUT_MEMBER("WGPULimits.maxColorAttachments", WGPULimits, maxColorAttachments),
-    JADE_LAYOUT_MEMBER("WGPULimits.maxColorAttachmentBytesPerSample", WGPULimits, maxColorAttachmentBytesPerSample),
-    JADE_LAYOUT_MEMBER("WGPULimits.maxComputeWorkgroupStorageSize", WGPULimits, maxComputeWorkgroupStorageSize),
-    JADE_LAYOUT_MEMBER("WGPULimits.maxComputeInvocationsPerWorkgroup", WGPULimits, maxComputeInvocationsPerWorkgroup),
-    JADE_LAYOUT_MEMBER("WGPULimits.maxComputeWorkgroupSizeX", WGPULimits, maxComputeWorkgroupSizeX),
-    JADE_LAYOUT_MEMBER("WGPULimits.maxComputeWorkgroupSizeY", WGPULimits, maxComputeWorkgroupSizeY),
-    JADE_LAYOUT_MEMBER("WGPULimits.maxComputeWorkgroupSizeZ", WGPULimits, maxComputeWorkgroupSizeZ),
-    JADE_LAYOUT_MEMBER("WGPULimits.maxComputeWorkgroupsPerDimension", WGPULimits, maxComputeWorkgroupsPerDimension),
-    JADE_LAYOUT_MEMBER("WGPULimits.maxImmediateSize", WGPULimits, maxImmediateSize),
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPULoggingCallbackInfo", WGPULoggingCallbackInfo),
-    JADE_LAYOUT_MEMBER("WGPULoggingCallbackInfo.nextInChain", WGPULoggingCallbackInfo, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPULoggingCallbackInfo.callback", WGPULoggingCallbackInfo, callback),
-    JADE_LAYOUT_MEMBER("WGPULoggingCallbackInfo.userdata1", WGPULoggingCallbackInfo, userdata1),
-    JADE_LAYOUT_MEMBER("WGPULoggingCallbackInfo.userdata2", WGPULoggingCallbackInfo, userdata2),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUMemoryHeapInfo", WGPUMemoryHeapInfo),
-    JADE_LAYOUT_MEMBER("WGPUMemoryHeapInfo.properties", WGPUMemoryHeapInfo, properties),
-    JADE_LAYOUT_MEMBER("WGPUMemoryHeapInfo.size", WGPUMemoryHeapInfo, size),
-#endif
-    JADE_LAYOUT_RECORD("WGPUMultisampleState", WGPUMultisampleState),
-    JADE_LAYOUT_MEMBER("WGPUMultisampleState.nextInChain", WGPUMultisampleState, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUMultisampleState.count", WGPUMultisampleState, count),
-    JADE_LAYOUT_MEMBER("WGPUMultisampleState.mask", WGPUMultisampleState, mask),
-    JADE_LAYOUT_MEMBER("WGPUMultisampleState.alphaToCoverageEnabled", WGPUMultisampleState, alphaToCoverageEnabled),
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUOrigin2D", WGPUOrigin2D),
-    JADE_LAYOUT_MEMBER("WGPUOrigin2D.x", WGPUOrigin2D, x),
-    JADE_LAYOUT_MEMBER("WGPUOrigin2D.y", WGPUOrigin2D, y),
-#endif
-    JADE_LAYOUT_RECORD("WGPUOrigin3D", WGPUOrigin3D),
-    JADE_LAYOUT_MEMBER("WGPUOrigin3D.x", WGPUOrigin3D, x),
-    JADE_LAYOUT_MEMBER("WGPUOrigin3D.y", WGPUOrigin3D, y),
-    JADE_LAYOUT_MEMBER("WGPUOrigin3D.z", WGPUOrigin3D, z),
-    JADE_LAYOUT_RECORD("WGPUPassTimestampWrites", WGPUPassTimestampWrites),
-    JADE_LAYOUT_MEMBER("WGPUPassTimestampWrites.nextInChain", WGPUPassTimestampWrites, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUPassTimestampWrites.querySet", WGPUPassTimestampWrites, querySet),
-    JADE_LAYOUT_MEMBER("WGPUPassTimestampWrites.beginningOfPassWriteIndex", WGPUPassTimestampWrites, beginningOfPassWriteIndex),
-    JADE_LAYOUT_MEMBER("WGPUPassTimestampWrites.endOfPassWriteIndex", WGPUPassTimestampWrites, endOfPassWriteIndex),
-    JADE_LAYOUT_RECORD("WGPUPipelineLayoutDescriptor", WGPUPipelineLayoutDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUPipelineLayoutDescriptor.nextInChain", WGPUPipelineLayoutDescriptor, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUPipelineLayoutDescriptor.label", WGPUPipelineLayoutDescriptor, label),
-    JADE_LAYOUT_MEMBER("WGPUPipelineLayoutDescriptor.bindGroupLayoutCount", WGPUPipelineLayoutDescriptor, bindGroupLayoutCount),
-    JADE_LAYOUT_MEMBER("WGPUPipelineLayoutDescriptor.bindGroupLayouts", WGPUPipelineLayoutDescriptor, bindGroupLayouts),
-    JADE_LAYOUT_MEMBER("WGPUPipelineLayoutDescriptor.immediateSize", WGPUPipelineLayoutDescriptor, immediateSize),
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUPipelineLayoutPixelLocalStorage", WGPUPipelineLayoutPixelLocalStorage),
-    JADE_LAYOUT_MEMBER("WGPUPipelineLayoutPixelLocalStorage.chain", WGPUPipelineLayoutPixelLocalStorage, chain),
-    JADE_LAYOUT_MEMBER("WGPUPipelineLayoutPixelLocalStorage.totalPixelLocalStorageSize", WGPUPipelineLayoutPixelLocalStorage, totalPixelLocalStorageSize),
-    JADE_LAYOUT_MEMBER("WGPUPipelineLayoutPixelLocalStorage.storageAttachmentCount", WGPUPipelineLayoutPixelLocalStorage, storageAttachmentCount),
-    JADE_LAYOUT_MEMBER("WGPUPipelineLayoutPixelLocalStorage.storageAttachments", WGPUPipelineLayoutPixelLocalStorage, storageAttachments),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUPipelineLayoutResourceTable", WGPUPipelineLayoutResourceTable),
-    JADE_LAYOUT_MEMBER("WGPUPipelineLayoutResourceTable.chain", WGPUPipelineLayoutResourceTable, chain),
-    JADE_LAYOUT_MEMBER("WGPUPipelineLayoutResourceTable.usesResourceTable", WGPUPipelineLayoutResourceTable, usesResourceTable),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUPipelineLayoutStorageAttachment", WGPUPipelineLayoutStorageAttachment),
-    JADE_LAYOUT_MEMBER("WGPUPipelineLayoutStorageAttachment.nextInChain", WGPUPipelineLayoutStorageAttachment, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUPipelineLayoutStorageAttachment.offset", WGPUPipelineLayoutStorageAttachment, offset),
-    JADE_LAYOUT_MEMBER("WGPUPipelineLayoutStorageAttachment.format", WGPUPipelineLayoutStorageAttachment, format),
-#endif
-    JADE_LAYOUT_RECORD("WGPUPopErrorScopeCallbackInfo", WGPUPopErrorScopeCallbackInfo),
-    JADE_LAYOUT_MEMBER("WGPUPopErrorScopeCallbackInfo.nextInChain", WGPUPopErrorScopeCallbackInfo, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUPopErrorScopeCallbackInfo.mode", WGPUPopErrorScopeCallbackInfo, mode),
-    JADE_LAYOUT_MEMBER("WGPUPopErrorScopeCallbackInfo.callback", WGPUPopErrorScopeCallbackInfo, callback),
-    JADE_LAYOUT_MEMBER("WGPUPopErrorScopeCallbackInfo.userdata1", WGPUPopErrorScopeCallbackInfo, userdata1),
-    JADE_LAYOUT_MEMBER("WGPUPopErrorScopeCallbackInfo.userdata2", WGPUPopErrorScopeCallbackInfo, userdata2),
-    JADE_LAYOUT_RECORD("WGPUPrimitiveState", WGPUPrimitiveState),
-    JADE_LAYOUT_MEMBER("WGPUPrimitiveState.nextInChain", WGPUPrimitiveState, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUPrimitiveState.topology", WGPUPrimitiveState, topology),
-    JADE_LAYOUT_MEMBER("WGPUPrimitiveState.stripIndexFormat", WGPUPrimitiveState, stripIndexFormat),
-    JADE_LAYOUT_MEMBER("WGPUPrimitiveState.frontFace", WGPUPrimitiveState, frontFace),
-    JADE_LAYOUT_MEMBER("WGPUPrimitiveState.cullMode", WGPUPrimitiveState, cullMode),
-    JADE_LAYOUT_MEMBER("WGPUPrimitiveState.unclippedDepth", WGPUPrimitiveState, unclippedDepth),
-    JADE_LAYOUT_RECORD("WGPUQuerySetDescriptor", WGPUQuerySetDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUQuerySetDescriptor.nextInChain", WGPUQuerySetDescriptor, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUQuerySetDescriptor.label", WGPUQuerySetDescriptor, label),
-    JADE_LAYOUT_MEMBER("WGPUQuerySetDescriptor.type", WGPUQuerySetDescriptor, type),
-    JADE_LAYOUT_MEMBER("WGPUQuerySetDescriptor.count", WGPUQuerySetDescriptor, count),
-    JADE_LAYOUT_RECORD("WGPUQueueDescriptor", WGPUQueueDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUQueueDescriptor.nextInChain", WGPUQueueDescriptor, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUQueueDescriptor.label", WGPUQueueDescriptor, label),
-    JADE_LAYOUT_RECORD("WGPUQueueWorkDoneCallbackInfo", WGPUQueueWorkDoneCallbackInfo),
-    JADE_LAYOUT_MEMBER("WGPUQueueWorkDoneCallbackInfo.nextInChain", WGPUQueueWorkDoneCallbackInfo, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUQueueWorkDoneCallbackInfo.mode", WGPUQueueWorkDoneCallbackInfo, mode),
-    JADE_LAYOUT_MEMBER("WGPUQueueWorkDoneCallbackInfo.callback", WGPUQueueWorkDoneCallbackInfo, callback),
-    JADE_LAYOUT_MEMBER("WGPUQueueWorkDoneCallbackInfo.userdata1", WGPUQueueWorkDoneCallbackInfo, userdata1),
-    JADE_LAYOUT_MEMBER("WGPUQueueWorkDoneCallbackInfo.userdata2", WGPUQueueWorkDoneCallbackInfo, userdata2),
-    JADE_LAYOUT_RECORD("WGPURenderBundleDescriptor", WGPURenderBundleDescriptor),
-    JADE_LAYOUT_MEMBER("WGPURenderBundleDescriptor.nextInChain", WGPURenderBundleDescriptor, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPURenderBundleDescriptor.label", WGPURenderBundleDescriptor, label),
-    JADE_LAYOUT_RECORD("WGPURenderBundleEncoderDescriptor", WGPURenderBundleEncoderDescriptor),
-    JADE_LAYOUT_MEMBER("WGPURenderBundleEncoderDescriptor.nextInChain", WGPURenderBundleEncoderDescriptor, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPURenderBundleEncoderDescriptor.label", WGPURenderBundleEncoderDescriptor, label),
-    JADE_LAYOUT_MEMBER("WGPURenderBundleEncoderDescriptor.colorFormatCount", WGPURenderBundleEncoderDescriptor, colorFormatCount),
-    JADE_LAYOUT_MEMBER("WGPURenderBundleEncoderDescriptor.colorFormats", WGPURenderBundleEncoderDescriptor, colorFormats),
-    JADE_LAYOUT_MEMBER("WGPURenderBundleEncoderDescriptor.depthStencilFormat", WGPURenderBundleEncoderDescriptor, depthStencilFormat),
-    JADE_LAYOUT_MEMBER("WGPURenderBundleEncoderDescriptor.sampleCount", WGPURenderBundleEncoderDescriptor, sampleCount),
-    JADE_LAYOUT_MEMBER("WGPURenderBundleEncoderDescriptor.depthReadOnly", WGPURenderBundleEncoderDescriptor, depthReadOnly),
-    JADE_LAYOUT_MEMBER("WGPURenderBundleEncoderDescriptor.stencilReadOnly", WGPURenderBundleEncoderDescriptor, stencilReadOnly),
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPURenderBundleEncoderResourceTable", WGPURenderBundleEncoderResourceTable),
-    JADE_LAYOUT_MEMBER("WGPURenderBundleEncoderResourceTable.chain", WGPURenderBundleEncoderResourceTable, chain),
-    JADE_LAYOUT_MEMBER("WGPURenderBundleEncoderResourceTable.usesResourceTable", WGPURenderBundleEncoderResourceTable, usesResourceTable),
-#endif
-    JADE_LAYOUT_RECORD("WGPURenderPassColorAttachment", WGPURenderPassColorAttachment),
-    JADE_LAYOUT_MEMBER("WGPURenderPassColorAttachment.nextInChain", WGPURenderPassColorAttachment, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPURenderPassColorAttachment.view", WGPURenderPassColorAttachment, view),
-    JADE_LAYOUT_MEMBER("WGPURenderPassColorAttachment.depthSlice", WGPURenderPassColorAttachment, depthSlice),
-    JADE_LAYOUT_MEMBER("WGPURenderPassColorAttachment.resolveTarget", WGPURenderPassColorAttachment, resolveTarget),
-    JADE_LAYOUT_MEMBER("WGPURenderPassColorAttachment.loadOp", WGPURenderPassColorAttachment, loadOp),
-    JADE_LAYOUT_MEMBER("WGPURenderPassColorAttachment.storeOp", WGPURenderPassColorAttachment, storeOp),
-    JADE_LAYOUT_MEMBER("WGPURenderPassColorAttachment.clearValue", WGPURenderPassColorAttachment, clearValue),
-    JADE_LAYOUT_RECORD("WGPURenderPassDepthStencilAttachment", WGPURenderPassDepthStencilAttachment),
-    JADE_LAYOUT_MEMBER("WGPURenderPassDepthStencilAttachment.nextInChain", WGPURenderPassDepthStencilAttachment, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPURenderPassDepthStencilAttachment.view", WGPURenderPassDepthStencilAttachment, view),
-    JADE_LAYOUT_MEMBER("WGPURenderPassDepthStencilAttachment.depthLoadOp", WGPURenderPassDepthStencilAttachment, depthLoadOp),
-    JADE_LAYOUT_MEMBER("WGPURenderPassDepthStencilAttachment.depthStoreOp", WGPURenderPassDepthStencilAttachment, depthStoreOp),
-    JADE_LAYOUT_MEMBER("WGPURenderPassDepthStencilAttachment.depthClearValue", WGPURenderPassDepthStencilAttachment, depthClearValue),
-    JADE_LAYOUT_MEMBER("WGPURenderPassDepthStencilAttachment.depthReadOnly", WGPURenderPassDepthStencilAttachment, depthReadOnly),
-    JADE_LAYOUT_MEMBER("WGPURenderPassDepthStencilAttachment.stencilLoadOp", WGPURenderPassDepthStencilAttachment, stencilLoadOp),
-    JADE_LAYOUT_MEMBER("WGPURenderPassDepthStencilAttachment.stencilStoreOp", WGPURenderPassDepthStencilAttachment, stencilStoreOp),
-    JADE_LAYOUT_MEMBER("WGPURenderPassDepthStencilAttachment.stencilClearValue", WGPURenderPassDepthStencilAttachment, stencilClearValue),
-    JADE_LAYOUT_MEMBER("WGPURenderPassDepthStencilAttachment.stencilReadOnly", WGPURenderPassDepthStencilAttachment, stencilReadOnly),
-    JADE_LAYOUT_RECORD("WGPURenderPassDescriptor", WGPURenderPassDescriptor),
-    JADE_LAYOUT_MEMBER("WGPURenderPassDescriptor.nextInChain", WGPURenderPassDescriptor, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPURenderPassDescriptor.label", WGPURenderPassDescriptor, label),
-    JADE_LAYOUT_MEMBER("WGPURenderPassDescriptor.colorAttachmentCount", WGPURenderPassDescriptor, colorAttachmentCount),
-    JADE_LAYOUT_MEMBER("WGPURenderPassDescriptor.colorAttachments", WGPURenderPassDescriptor, colorAttachments),
-    JADE_LAYOUT_MEMBER("WGPURenderPassDescriptor.depthStencilAttachment", WGPURenderPassDescriptor, depthStencilAttachment),
-    JADE_LAYOUT_MEMBER("WGPURenderPassDescriptor.occlusionQuerySet", WGPURenderPassDescriptor, occlusionQuerySet),
-    JADE_LAYOUT_MEMBER("WGPURenderPassDescriptor.timestampWrites", WGPURenderPassDescriptor, timestampWrites),
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPURenderPassDescriptorResolveRect", WGPURenderPassDescriptorResolveRect),
-    JADE_LAYOUT_MEMBER("WGPURenderPassDescriptorResolveRect.chain", WGPURenderPassDescriptorResolveRect, chain),
-    JADE_LAYOUT_MEMBER("WGPURenderPassDescriptorResolveRect.colorOffsetX", WGPURenderPassDescriptorResolveRect, colorOffsetX),
-    JADE_LAYOUT_MEMBER("WGPURenderPassDescriptorResolveRect.colorOffsetY", WGPURenderPassDescriptorResolveRect, colorOffsetY),
-    JADE_LAYOUT_MEMBER("WGPURenderPassDescriptorResolveRect.resolveOffsetX", WGPURenderPassDescriptorResolveRect, resolveOffsetX),
-    JADE_LAYOUT_MEMBER("WGPURenderPassDescriptorResolveRect.resolveOffsetY", WGPURenderPassDescriptorResolveRect, resolveOffsetY),
-    JADE_LAYOUT_MEMBER("WGPURenderPassDescriptorResolveRect.width", WGPURenderPassDescriptorResolveRect, width),
-    JADE_LAYOUT_MEMBER("WGPURenderPassDescriptorResolveRect.height", WGPURenderPassDescriptorResolveRect, height),
-#endif
-    JADE_LAYOUT_RECORD("WGPURenderPassMaxDrawCount", WGPURenderPassMaxDrawCount),
-    JADE_LAYOUT_MEMBER("WGPURenderPassMaxDrawCount.chain", WGPURenderPassMaxDrawCount, chain),
-    JADE_LAYOUT_MEMBER("WGPURenderPassMaxDrawCount.maxDrawCount", WGPURenderPassMaxDrawCount, maxDrawCount),
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPURenderPassPixelLocalStorage", WGPURenderPassPixelLocalStorage),
-    JADE_LAYOUT_MEMBER("WGPURenderPassPixelLocalStorage.chain", WGPURenderPassPixelLocalStorage, chain),
-    JADE_LAYOUT_MEMBER("WGPURenderPassPixelLocalStorage.totalPixelLocalStorageSize", WGPURenderPassPixelLocalStorage, totalPixelLocalStorageSize),
-    JADE_LAYOUT_MEMBER("WGPURenderPassPixelLocalStorage.storageAttachmentCount", WGPURenderPassPixelLocalStorage, storageAttachmentCount),
-    JADE_LAYOUT_MEMBER("WGPURenderPassPixelLocalStorage.storageAttachments", WGPURenderPassPixelLocalStorage, storageAttachments),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPURenderPassRenderAreaRect", WGPURenderPassRenderAreaRect),
-    JADE_LAYOUT_MEMBER("WGPURenderPassRenderAreaRect.chain", WGPURenderPassRenderAreaRect, chain),
-    JADE_LAYOUT_MEMBER("WGPURenderPassRenderAreaRect.origin", WGPURenderPassRenderAreaRect, origin),
-    JADE_LAYOUT_MEMBER("WGPURenderPassRenderAreaRect.size", WGPURenderPassRenderAreaRect, size),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPURenderPassStorageAttachment", WGPURenderPassStorageAttachment),
-    JADE_LAYOUT_MEMBER("WGPURenderPassStorageAttachment.nextInChain", WGPURenderPassStorageAttachment, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPURenderPassStorageAttachment.offset", WGPURenderPassStorageAttachment, offset),
-    JADE_LAYOUT_MEMBER("WGPURenderPassStorageAttachment.storage", WGPURenderPassStorageAttachment, storage),
-    JADE_LAYOUT_MEMBER("WGPURenderPassStorageAttachment.loadOp", WGPURenderPassStorageAttachment, loadOp),
-    JADE_LAYOUT_MEMBER("WGPURenderPassStorageAttachment.storeOp", WGPURenderPassStorageAttachment, storeOp),
-    JADE_LAYOUT_MEMBER("WGPURenderPassStorageAttachment.clearValue", WGPURenderPassStorageAttachment, clearValue),
-#endif
-    JADE_LAYOUT_RECORD("WGPURenderPipelineDescriptor", WGPURenderPipelineDescriptor),
-    JADE_LAYOUT_MEMBER("WGPURenderPipelineDescriptor.nextInChain", WGPURenderPipelineDescriptor, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPURenderPipelineDescriptor.label", WGPURenderPipelineDescriptor, label),
-    JADE_LAYOUT_MEMBER("WGPURenderPipelineDescriptor.layout", WGPURenderPipelineDescriptor, layout),
-    JADE_LAYOUT_MEMBER("WGPURenderPipelineDescriptor.vertex", WGPURenderPipelineDescriptor, vertex),
-    JADE_LAYOUT_MEMBER("WGPURenderPipelineDescriptor.primitive", WGPURenderPipelineDescriptor, primitive),
-    JADE_LAYOUT_MEMBER("WGPURenderPipelineDescriptor.depthStencil", WGPURenderPipelineDescriptor, depthStencil),
-    JADE_LAYOUT_MEMBER("WGPURenderPipelineDescriptor.multisample", WGPURenderPipelineDescriptor, multisample),
-    JADE_LAYOUT_MEMBER("WGPURenderPipelineDescriptor.fragment", WGPURenderPipelineDescriptor, fragment),
-    JADE_LAYOUT_RECORD("WGPURequestAdapterCallbackInfo", WGPURequestAdapterCallbackInfo),
-    JADE_LAYOUT_MEMBER("WGPURequestAdapterCallbackInfo.nextInChain", WGPURequestAdapterCallbackInfo, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPURequestAdapterCallbackInfo.mode", WGPURequestAdapterCallbackInfo, mode),
-    JADE_LAYOUT_MEMBER("WGPURequestAdapterCallbackInfo.callback", WGPURequestAdapterCallbackInfo, callback),
-    JADE_LAYOUT_MEMBER("WGPURequestAdapterCallbackInfo.userdata1", WGPURequestAdapterCallbackInfo, userdata1),
-    JADE_LAYOUT_MEMBER("WGPURequestAdapterCallbackInfo.userdata2", WGPURequestAdapterCallbackInfo, userdata2),
-    JADE_LAYOUT_RECORD("WGPURequestAdapterOptions", WGPURequestAdapterOptions),
-    JADE_LAYOUT_MEMBER("WGPURequestAdapterOptions.nextInChain", WGPURequestAdapterOptions, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPURequestAdapterOptions.featureLevel", WGPURequestAdapterOptions, featureLevel),
-    JADE_LAYOUT_MEMBER("WGPURequestAdapterOptions.powerPreference", WGPURequestAdapterOptions, powerPreference),
-    JADE_LAYOUT_MEMBER("WGPURequestAdapterOptions.forceFallbackAdapter", WGPURequestAdapterOptions, forceFallbackAdapter),
-    JADE_LAYOUT_MEMBER("WGPURequestAdapterOptions.backendType", WGPURequestAdapterOptions, backendType),
-    JADE_LAYOUT_MEMBER("WGPURequestAdapterOptions.compatibleSurface", WGPURequestAdapterOptions, compatibleSurface),
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPURequestAdapterWebGPUBackendOptions", WGPURequestAdapterWebGPUBackendOptions),
-    JADE_LAYOUT_MEMBER("WGPURequestAdapterWebGPUBackendOptions.chain", WGPURequestAdapterWebGPUBackendOptions, chain),
-#endif
-    JADE_LAYOUT_RECORD("WGPURequestAdapterWebXROptions", WGPURequestAdapterWebXROptions),
-    JADE_LAYOUT_MEMBER("WGPURequestAdapterWebXROptions.chain", WGPURequestAdapterWebXROptions, chain),
-    JADE_LAYOUT_MEMBER("WGPURequestAdapterWebXROptions.xrCompatible", WGPURequestAdapterWebXROptions, xrCompatible),
-    JADE_LAYOUT_RECORD("WGPURequestDeviceCallbackInfo", WGPURequestDeviceCallbackInfo),
-    JADE_LAYOUT_MEMBER("WGPURequestDeviceCallbackInfo.nextInChain", WGPURequestDeviceCallbackInfo, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPURequestDeviceCallbackInfo.mode", WGPURequestDeviceCallbackInfo, mode),
-    JADE_LAYOUT_MEMBER("WGPURequestDeviceCallbackInfo.callback", WGPURequestDeviceCallbackInfo, callback),
-    JADE_LAYOUT_MEMBER("WGPURequestDeviceCallbackInfo.userdata1", WGPURequestDeviceCallbackInfo, userdata1),
-    JADE_LAYOUT_MEMBER("WGPURequestDeviceCallbackInfo.userdata2", WGPURequestDeviceCallbackInfo, userdata2),
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUResourceTableDescriptor", WGPUResourceTableDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUResourceTableDescriptor.nextInChain", WGPUResourceTableDescriptor, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUResourceTableDescriptor.label", WGPUResourceTableDescriptor, label),
-    JADE_LAYOUT_MEMBER("WGPUResourceTableDescriptor.size", WGPUResourceTableDescriptor, size),
-#endif
-    JADE_LAYOUT_RECORD("WGPUSamplerBindingLayout", WGPUSamplerBindingLayout),
-    JADE_LAYOUT_MEMBER("WGPUSamplerBindingLayout.nextInChain", WGPUSamplerBindingLayout, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUSamplerBindingLayout.type", WGPUSamplerBindingLayout, type),
-    JADE_LAYOUT_RECORD("WGPUSamplerDescriptor", WGPUSamplerDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUSamplerDescriptor.nextInChain", WGPUSamplerDescriptor, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUSamplerDescriptor.label", WGPUSamplerDescriptor, label),
-    JADE_LAYOUT_MEMBER("WGPUSamplerDescriptor.addressModeU", WGPUSamplerDescriptor, addressModeU),
-    JADE_LAYOUT_MEMBER("WGPUSamplerDescriptor.addressModeV", WGPUSamplerDescriptor, addressModeV),
-    JADE_LAYOUT_MEMBER("WGPUSamplerDescriptor.addressModeW", WGPUSamplerDescriptor, addressModeW),
-    JADE_LAYOUT_MEMBER("WGPUSamplerDescriptor.magFilter", WGPUSamplerDescriptor, magFilter),
-    JADE_LAYOUT_MEMBER("WGPUSamplerDescriptor.minFilter", WGPUSamplerDescriptor, minFilter),
-    JADE_LAYOUT_MEMBER("WGPUSamplerDescriptor.mipmapFilter", WGPUSamplerDescriptor, mipmapFilter),
-    JADE_LAYOUT_MEMBER("WGPUSamplerDescriptor.lodMinClamp", WGPUSamplerDescriptor, lodMinClamp),
-    JADE_LAYOUT_MEMBER("WGPUSamplerDescriptor.lodMaxClamp", WGPUSamplerDescriptor, lodMaxClamp),
-    JADE_LAYOUT_MEMBER("WGPUSamplerDescriptor.compare", WGPUSamplerDescriptor, compare),
-    JADE_LAYOUT_MEMBER("WGPUSamplerDescriptor.maxAnisotropy", WGPUSamplerDescriptor, maxAnisotropy),
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUShaderModuleCompilationOptions", WGPUShaderModuleCompilationOptions),
-    JADE_LAYOUT_MEMBER("WGPUShaderModuleCompilationOptions.chain", WGPUShaderModuleCompilationOptions, chain),
-    JADE_LAYOUT_MEMBER("WGPUShaderModuleCompilationOptions.strictMath", WGPUShaderModuleCompilationOptions, strictMath),
-#endif
-    JADE_LAYOUT_RECORD("WGPUShaderModuleDescriptor", WGPUShaderModuleDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUShaderModuleDescriptor.nextInChain", WGPUShaderModuleDescriptor, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUShaderModuleDescriptor.label", WGPUShaderModuleDescriptor, label),
-    JADE_LAYOUT_RECORD("WGPUShaderSourceSPIRV", WGPUShaderSourceSPIRV),
-    JADE_LAYOUT_MEMBER("WGPUShaderSourceSPIRV.chain", WGPUShaderSourceSPIRV, chain),
-    JADE_LAYOUT_MEMBER("WGPUShaderSourceSPIRV.codeSize", WGPUShaderSourceSPIRV, codeSize),
-    JADE_LAYOUT_MEMBER("WGPUShaderSourceSPIRV.code", WGPUShaderSourceSPIRV, code),
-    JADE_LAYOUT_RECORD("WGPUShaderSourceWGSL", WGPUShaderSourceWGSL),
-    JADE_LAYOUT_MEMBER("WGPUShaderSourceWGSL.chain", WGPUShaderSourceWGSL, chain),
-    JADE_LAYOUT_MEMBER("WGPUShaderSourceWGSL.code", WGPUShaderSourceWGSL, code),
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedBufferMemoryBeginAccessDescriptor", WGPUSharedBufferMemoryBeginAccessDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryBeginAccessDescriptor.nextInChain", WGPUSharedBufferMemoryBeginAccessDescriptor, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryBeginAccessDescriptor.initialized", WGPUSharedBufferMemoryBeginAccessDescriptor, initialized),
-    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryBeginAccessDescriptor.fenceCount", WGPUSharedBufferMemoryBeginAccessDescriptor, fenceCount),
-    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryBeginAccessDescriptor.fences", WGPUSharedBufferMemoryBeginAccessDescriptor, fences),
-    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryBeginAccessDescriptor.signaledValueCount", WGPUSharedBufferMemoryBeginAccessDescriptor, signaledValueCount),
-    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryBeginAccessDescriptor.signaledValues", WGPUSharedBufferMemoryBeginAccessDescriptor, signaledValues),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedBufferMemoryDescriptor", WGPUSharedBufferMemoryDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryDescriptor.nextInChain", WGPUSharedBufferMemoryDescriptor, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryDescriptor.label", WGPUSharedBufferMemoryDescriptor, label),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedBufferMemoryEndAccessState", WGPUSharedBufferMemoryEndAccessState),
-    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryEndAccessState.nextInChain", WGPUSharedBufferMemoryEndAccessState, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryEndAccessState.initialized", WGPUSharedBufferMemoryEndAccessState, initialized),
-    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryEndAccessState.fenceCount", WGPUSharedBufferMemoryEndAccessState, fenceCount),
-    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryEndAccessState.fences", WGPUSharedBufferMemoryEndAccessState, fences),
-    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryEndAccessState.signaledValueCount", WGPUSharedBufferMemoryEndAccessState, signaledValueCount),
-    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryEndAccessState.signaledValues", WGPUSharedBufferMemoryEndAccessState, signaledValues),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedBufferMemoryFromWindowsHandleDescriptor", WGPUSharedBufferMemoryFromWindowsHandleDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryFromWindowsHandleDescriptor.chain", WGPUSharedBufferMemoryFromWindowsHandleDescriptor, chain),
-    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryFromWindowsHandleDescriptor.handle", WGPUSharedBufferMemoryFromWindowsHandleDescriptor, handle),
-    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryFromWindowsHandleDescriptor.size", WGPUSharedBufferMemoryFromWindowsHandleDescriptor, size),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedBufferMemoryHostPointerDescriptor", WGPUSharedBufferMemoryHostPointerDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryHostPointerDescriptor.chain", WGPUSharedBufferMemoryHostPointerDescriptor, chain),
-    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryHostPointerDescriptor.pointer", WGPUSharedBufferMemoryHostPointerDescriptor, pointer),
-    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryHostPointerDescriptor.size", WGPUSharedBufferMemoryHostPointerDescriptor, size),
-    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryHostPointerDescriptor.disposeCallbackInfo", WGPUSharedBufferMemoryHostPointerDescriptor, disposeCallbackInfo),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedBufferMemoryProperties", WGPUSharedBufferMemoryProperties),
-    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryProperties.nextInChain", WGPUSharedBufferMemoryProperties, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryProperties.usage", WGPUSharedBufferMemoryProperties, usage),
-    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryProperties.size", WGPUSharedBufferMemoryProperties, size),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedFenceDXGISharedHandleDescriptor", WGPUSharedFenceDXGISharedHandleDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUSharedFenceDXGISharedHandleDescriptor.chain", WGPUSharedFenceDXGISharedHandleDescriptor, chain),
-    JADE_LAYOUT_MEMBER("WGPUSharedFenceDXGISharedHandleDescriptor.handle", WGPUSharedFenceDXGISharedHandleDescriptor, handle),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedFenceDXGISharedHandleExportInfo", WGPUSharedFenceDXGISharedHandleExportInfo),
-    JADE_LAYOUT_MEMBER("WGPUSharedFenceDXGISharedHandleExportInfo.chain", WGPUSharedFenceDXGISharedHandleExportInfo, chain),
-    JADE_LAYOUT_MEMBER("WGPUSharedFenceDXGISharedHandleExportInfo.handle", WGPUSharedFenceDXGISharedHandleExportInfo, handle),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedFenceDescriptor", WGPUSharedFenceDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUSharedFenceDescriptor.nextInChain", WGPUSharedFenceDescriptor, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUSharedFenceDescriptor.label", WGPUSharedFenceDescriptor, label),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedFenceEGLSyncDescriptor", WGPUSharedFenceEGLSyncDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUSharedFenceEGLSyncDescriptor.chain", WGPUSharedFenceEGLSyncDescriptor, chain),
-    JADE_LAYOUT_MEMBER("WGPUSharedFenceEGLSyncDescriptor.sync", WGPUSharedFenceEGLSyncDescriptor, sync),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedFenceEGLSyncExportInfo", WGPUSharedFenceEGLSyncExportInfo),
-    JADE_LAYOUT_MEMBER("WGPUSharedFenceEGLSyncExportInfo.chain", WGPUSharedFenceEGLSyncExportInfo, chain),
-    JADE_LAYOUT_MEMBER("WGPUSharedFenceEGLSyncExportInfo.sync", WGPUSharedFenceEGLSyncExportInfo, sync),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedFenceExportInfo", WGPUSharedFenceExportInfo),
-    JADE_LAYOUT_MEMBER("WGPUSharedFenceExportInfo.nextInChain", WGPUSharedFenceExportInfo, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUSharedFenceExportInfo.type", WGPUSharedFenceExportInfo, type),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedFenceMTLSharedEventDescriptor", WGPUSharedFenceMTLSharedEventDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUSharedFenceMTLSharedEventDescriptor.chain", WGPUSharedFenceMTLSharedEventDescriptor, chain),
-    JADE_LAYOUT_MEMBER("WGPUSharedFenceMTLSharedEventDescriptor.sharedEvent", WGPUSharedFenceMTLSharedEventDescriptor, sharedEvent),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedFenceMTLSharedEventExportInfo", WGPUSharedFenceMTLSharedEventExportInfo),
-    JADE_LAYOUT_MEMBER("WGPUSharedFenceMTLSharedEventExportInfo.chain", WGPUSharedFenceMTLSharedEventExportInfo, chain),
-    JADE_LAYOUT_MEMBER("WGPUSharedFenceMTLSharedEventExportInfo.sharedEvent", WGPUSharedFenceMTLSharedEventExportInfo, sharedEvent),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedFenceSyncFDDescriptor", WGPUSharedFenceSyncFDDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUSharedFenceSyncFDDescriptor.chain", WGPUSharedFenceSyncFDDescriptor, chain),
-    JADE_LAYOUT_MEMBER("WGPUSharedFenceSyncFDDescriptor.handle", WGPUSharedFenceSyncFDDescriptor, handle),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedFenceSyncFDExportInfo", WGPUSharedFenceSyncFDExportInfo),
-    JADE_LAYOUT_MEMBER("WGPUSharedFenceSyncFDExportInfo.chain", WGPUSharedFenceSyncFDExportInfo, chain),
-    JADE_LAYOUT_MEMBER("WGPUSharedFenceSyncFDExportInfo.handle", WGPUSharedFenceSyncFDExportInfo, handle),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedFenceVkSemaphoreOpaqueFDDescriptor", WGPUSharedFenceVkSemaphoreOpaqueFDDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUSharedFenceVkSemaphoreOpaqueFDDescriptor.chain", WGPUSharedFenceVkSemaphoreOpaqueFDDescriptor, chain),
-    JADE_LAYOUT_MEMBER("WGPUSharedFenceVkSemaphoreOpaqueFDDescriptor.handle", WGPUSharedFenceVkSemaphoreOpaqueFDDescriptor, handle),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedFenceVkSemaphoreOpaqueFDExportInfo", WGPUSharedFenceVkSemaphoreOpaqueFDExportInfo),
-    JADE_LAYOUT_MEMBER("WGPUSharedFenceVkSemaphoreOpaqueFDExportInfo.chain", WGPUSharedFenceVkSemaphoreOpaqueFDExportInfo, chain),
-    JADE_LAYOUT_MEMBER("WGPUSharedFenceVkSemaphoreOpaqueFDExportInfo.handle", WGPUSharedFenceVkSemaphoreOpaqueFDExportInfo, handle),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedFenceVkSemaphoreZirconHandleDescriptor", WGPUSharedFenceVkSemaphoreZirconHandleDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUSharedFenceVkSemaphoreZirconHandleDescriptor.chain", WGPUSharedFenceVkSemaphoreZirconHandleDescriptor, chain),
-    JADE_LAYOUT_MEMBER("WGPUSharedFenceVkSemaphoreZirconHandleDescriptor.handle", WGPUSharedFenceVkSemaphoreZirconHandleDescriptor, handle),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedFenceVkSemaphoreZirconHandleExportInfo", WGPUSharedFenceVkSemaphoreZirconHandleExportInfo),
-    JADE_LAYOUT_MEMBER("WGPUSharedFenceVkSemaphoreZirconHandleExportInfo.chain", WGPUSharedFenceVkSemaphoreZirconHandleExportInfo, chain),
-    JADE_LAYOUT_MEMBER("WGPUSharedFenceVkSemaphoreZirconHandleExportInfo.handle", WGPUSharedFenceVkSemaphoreZirconHandleExportInfo, handle),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedTextureMemoryAHardwareBufferDescriptor", WGPUSharedTextureMemoryAHardwareBufferDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryAHardwareBufferDescriptor.chain", WGPUSharedTextureMemoryAHardwareBufferDescriptor, chain),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryAHardwareBufferDescriptor.handle", WGPUSharedTextureMemoryAHardwareBufferDescriptor, handle),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedTextureMemoryAHardwareBufferProperties", WGPUSharedTextureMemoryAHardwareBufferProperties),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryAHardwareBufferProperties.chain", WGPUSharedTextureMemoryAHardwareBufferProperties, chain),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryAHardwareBufferProperties.yCbCrInfo", WGPUSharedTextureMemoryAHardwareBufferProperties, yCbCrInfo),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedTextureMemoryBeginAccessDescriptor", WGPUSharedTextureMemoryBeginAccessDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryBeginAccessDescriptor.nextInChain", WGPUSharedTextureMemoryBeginAccessDescriptor, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryBeginAccessDescriptor.concurrentRead", WGPUSharedTextureMemoryBeginAccessDescriptor, concurrentRead),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryBeginAccessDescriptor.initialized", WGPUSharedTextureMemoryBeginAccessDescriptor, initialized),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryBeginAccessDescriptor.fenceCount", WGPUSharedTextureMemoryBeginAccessDescriptor, fenceCount),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryBeginAccessDescriptor.fences", WGPUSharedTextureMemoryBeginAccessDescriptor, fences),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryBeginAccessDescriptor.signaledValueCount", WGPUSharedTextureMemoryBeginAccessDescriptor, signaledValueCount),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryBeginAccessDescriptor.signaledValues", WGPUSharedTextureMemoryBeginAccessDescriptor, signaledValues),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedTextureMemoryD3D11BeginState", WGPUSharedTextureMemoryD3D11BeginState),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryD3D11BeginState.chain", WGPUSharedTextureMemoryD3D11BeginState, chain),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryD3D11BeginState.requiresEndAccessFence", WGPUSharedTextureMemoryD3D11BeginState, requiresEndAccessFence),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedTextureMemoryD3DSwapchainBeginState", WGPUSharedTextureMemoryD3DSwapchainBeginState),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryD3DSwapchainBeginState.chain", WGPUSharedTextureMemoryD3DSwapchainBeginState, chain),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryD3DSwapchainBeginState.isSwapchain", WGPUSharedTextureMemoryD3DSwapchainBeginState, isSwapchain),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedTextureMemoryDXGISharedHandleDescriptor", WGPUSharedTextureMemoryDXGISharedHandleDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryDXGISharedHandleDescriptor.chain", WGPUSharedTextureMemoryDXGISharedHandleDescriptor, chain),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryDXGISharedHandleDescriptor.handle", WGPUSharedTextureMemoryDXGISharedHandleDescriptor, handle),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryDXGISharedHandleDescriptor.useKeyedMutex", WGPUSharedTextureMemoryDXGISharedHandleDescriptor, useKeyedMutex),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedTextureMemoryDescriptor", WGPUSharedTextureMemoryDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryDescriptor.nextInChain", WGPUSharedTextureMemoryDescriptor, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryDescriptor.label", WGPUSharedTextureMemoryDescriptor, label),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedTextureMemoryDmaBufDescriptor", WGPUSharedTextureMemoryDmaBufDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryDmaBufDescriptor.chain", WGPUSharedTextureMemoryDmaBufDescriptor, chain),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryDmaBufDescriptor.size", WGPUSharedTextureMemoryDmaBufDescriptor, size),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryDmaBufDescriptor.drmFormat", WGPUSharedTextureMemoryDmaBufDescriptor, drmFormat),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryDmaBufDescriptor.drmModifier", WGPUSharedTextureMemoryDmaBufDescriptor, drmModifier),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryDmaBufDescriptor.planeCount", WGPUSharedTextureMemoryDmaBufDescriptor, planeCount),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryDmaBufDescriptor.planes", WGPUSharedTextureMemoryDmaBufDescriptor, planes),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedTextureMemoryDmaBufPlane", WGPUSharedTextureMemoryDmaBufPlane),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryDmaBufPlane.fd", WGPUSharedTextureMemoryDmaBufPlane, fd),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryDmaBufPlane.offset", WGPUSharedTextureMemoryDmaBufPlane, offset),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryDmaBufPlane.stride", WGPUSharedTextureMemoryDmaBufPlane, stride),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedTextureMemoryEGLImageDescriptor", WGPUSharedTextureMemoryEGLImageDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryEGLImageDescriptor.chain", WGPUSharedTextureMemoryEGLImageDescriptor, chain),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryEGLImageDescriptor.image", WGPUSharedTextureMemoryEGLImageDescriptor, image),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedTextureMemoryEndAccessState", WGPUSharedTextureMemoryEndAccessState),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryEndAccessState.nextInChain", WGPUSharedTextureMemoryEndAccessState, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryEndAccessState.initialized", WGPUSharedTextureMemoryEndAccessState, initialized),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryEndAccessState.fenceCount", WGPUSharedTextureMemoryEndAccessState, fenceCount),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryEndAccessState.fences", WGPUSharedTextureMemoryEndAccessState, fences),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryEndAccessState.signaledValueCount", WGPUSharedTextureMemoryEndAccessState, signaledValueCount),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryEndAccessState.signaledValues", WGPUSharedTextureMemoryEndAccessState, signaledValues),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedTextureMemoryIOSurfaceDescriptor", WGPUSharedTextureMemoryIOSurfaceDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryIOSurfaceDescriptor.chain", WGPUSharedTextureMemoryIOSurfaceDescriptor, chain),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryIOSurfaceDescriptor.ioSurface", WGPUSharedTextureMemoryIOSurfaceDescriptor, ioSurface),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryIOSurfaceDescriptor.allowStorageBinding", WGPUSharedTextureMemoryIOSurfaceDescriptor, allowStorageBinding),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedTextureMemoryMetalEndAccessState", WGPUSharedTextureMemoryMetalEndAccessState),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryMetalEndAccessState.chain", WGPUSharedTextureMemoryMetalEndAccessState, chain),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryMetalEndAccessState.commandsScheduledFuture", WGPUSharedTextureMemoryMetalEndAccessState, commandsScheduledFuture),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedTextureMemoryOpaqueFDDescriptor", WGPUSharedTextureMemoryOpaqueFDDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryOpaqueFDDescriptor.chain", WGPUSharedTextureMemoryOpaqueFDDescriptor, chain),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryOpaqueFDDescriptor.vkImageCreateInfo", WGPUSharedTextureMemoryOpaqueFDDescriptor, vkImageCreateInfo),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryOpaqueFDDescriptor.memoryFD", WGPUSharedTextureMemoryOpaqueFDDescriptor, memoryFD),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryOpaqueFDDescriptor.memoryTypeIndex", WGPUSharedTextureMemoryOpaqueFDDescriptor, memoryTypeIndex),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryOpaqueFDDescriptor.allocationSize", WGPUSharedTextureMemoryOpaqueFDDescriptor, allocationSize),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryOpaqueFDDescriptor.dedicatedAllocation", WGPUSharedTextureMemoryOpaqueFDDescriptor, dedicatedAllocation),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedTextureMemoryProperties", WGPUSharedTextureMemoryProperties),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryProperties.nextInChain", WGPUSharedTextureMemoryProperties, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryProperties.usage", WGPUSharedTextureMemoryProperties, usage),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryProperties.size", WGPUSharedTextureMemoryProperties, size),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryProperties.format", WGPUSharedTextureMemoryProperties, format),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedTextureMemoryVkDedicatedAllocationDescriptor", WGPUSharedTextureMemoryVkDedicatedAllocationDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryVkDedicatedAllocationDescriptor.chain", WGPUSharedTextureMemoryVkDedicatedAllocationDescriptor, chain),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryVkDedicatedAllocationDescriptor.dedicatedAllocation", WGPUSharedTextureMemoryVkDedicatedAllocationDescriptor, dedicatedAllocation),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedTextureMemoryVkImageLayoutBeginState", WGPUSharedTextureMemoryVkImageLayoutBeginState),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryVkImageLayoutBeginState.chain", WGPUSharedTextureMemoryVkImageLayoutBeginState, chain),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryVkImageLayoutBeginState.oldLayout", WGPUSharedTextureMemoryVkImageLayoutBeginState, oldLayout),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryVkImageLayoutBeginState.newLayout", WGPUSharedTextureMemoryVkImageLayoutBeginState, newLayout),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedTextureMemoryVkImageLayoutEndState", WGPUSharedTextureMemoryVkImageLayoutEndState),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryVkImageLayoutEndState.chain", WGPUSharedTextureMemoryVkImageLayoutEndState, chain),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryVkImageLayoutEndState.oldLayout", WGPUSharedTextureMemoryVkImageLayoutEndState, oldLayout),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryVkImageLayoutEndState.newLayout", WGPUSharedTextureMemoryVkImageLayoutEndState, newLayout),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSharedTextureMemoryZirconHandleDescriptor", WGPUSharedTextureMemoryZirconHandleDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryZirconHandleDescriptor.chain", WGPUSharedTextureMemoryZirconHandleDescriptor, chain),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryZirconHandleDescriptor.memoryFD", WGPUSharedTextureMemoryZirconHandleDescriptor, memoryFD),
-    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryZirconHandleDescriptor.allocationSize", WGPUSharedTextureMemoryZirconHandleDescriptor, allocationSize),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUStaticSamplerBindingLayout", WGPUStaticSamplerBindingLayout),
-    JADE_LAYOUT_MEMBER("WGPUStaticSamplerBindingLayout.chain", WGPUStaticSamplerBindingLayout, chain),
-    JADE_LAYOUT_MEMBER("WGPUStaticSamplerBindingLayout.sampler", WGPUStaticSamplerBindingLayout, sampler),
-    JADE_LAYOUT_MEMBER("WGPUStaticSamplerBindingLayout.sampledTextureBinding", WGPUStaticSamplerBindingLayout, sampledTextureBinding),
-#endif
-    JADE_LAYOUT_RECORD("WGPUStencilFaceState", WGPUStencilFaceState),
-    JADE_LAYOUT_MEMBER("WGPUStencilFaceState.compare", WGPUStencilFaceState, compare),
-    JADE_LAYOUT_MEMBER("WGPUStencilFaceState.failOp", WGPUStencilFaceState, failOp),
-    JADE_LAYOUT_MEMBER("WGPUStencilFaceState.depthFailOp", WGPUStencilFaceState, depthFailOp),
-    JADE_LAYOUT_MEMBER("WGPUStencilFaceState.passOp", WGPUStencilFaceState, passOp),
-    JADE_LAYOUT_RECORD("WGPUStorageTextureBindingLayout", WGPUStorageTextureBindingLayout),
-    JADE_LAYOUT_MEMBER("WGPUStorageTextureBindingLayout.nextInChain", WGPUStorageTextureBindingLayout, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUStorageTextureBindingLayout.access", WGPUStorageTextureBindingLayout, access),
-    JADE_LAYOUT_MEMBER("WGPUStorageTextureBindingLayout.format", WGPUStorageTextureBindingLayout, format),
-    JADE_LAYOUT_MEMBER("WGPUStorageTextureBindingLayout.viewDimension", WGPUStorageTextureBindingLayout, viewDimension),
-    JADE_LAYOUT_RECORD("WGPUStringView", WGPUStringView),
-    JADE_LAYOUT_MEMBER("WGPUStringView.data", WGPUStringView, data),
-    JADE_LAYOUT_MEMBER("WGPUStringView.length", WGPUStringView, length),
-    JADE_LAYOUT_RECORD("WGPUSubgroupMatrixConfig", WGPUSubgroupMatrixConfig),
-    JADE_LAYOUT_MEMBER("WGPUSubgroupMatrixConfig.componentType", WGPUSubgroupMatrixConfig, componentType),
-    JADE_LAYOUT_MEMBER("WGPUSubgroupMatrixConfig.resultComponentType", WGPUSubgroupMatrixConfig, resultComponentType),
-    JADE_LAYOUT_MEMBER("WGPUSubgroupMatrixConfig.M", WGPUSubgroupMatrixConfig, M),
-    JADE_LAYOUT_MEMBER("WGPUSubgroupMatrixConfig.N", WGPUSubgroupMatrixConfig, N),
-    JADE_LAYOUT_MEMBER("WGPUSubgroupMatrixConfig.K", WGPUSubgroupMatrixConfig, K),
-    JADE_LAYOUT_MEMBER("WGPUSubgroupMatrixConfig.minSubgroupSize", WGPUSubgroupMatrixConfig, minSubgroupSize),
-    JADE_LAYOUT_MEMBER("WGPUSubgroupMatrixConfig.maxSubgroupSize", WGPUSubgroupMatrixConfig, maxSubgroupSize),
-    JADE_LAYOUT_RECORD("WGPUSupportedFeatures", WGPUSupportedFeatures),
-    JADE_LAYOUT_MEMBER("WGPUSupportedFeatures.featureCount", WGPUSupportedFeatures, featureCount),
-    JADE_LAYOUT_MEMBER("WGPUSupportedFeatures.features", WGPUSupportedFeatures, features),
-    JADE_LAYOUT_RECORD("WGPUSupportedInstanceFeatures", WGPUSupportedInstanceFeatures),
-    JADE_LAYOUT_MEMBER("WGPUSupportedInstanceFeatures.featureCount", WGPUSupportedInstanceFeatures, featureCount),
-    JADE_LAYOUT_MEMBER("WGPUSupportedInstanceFeatures.features", WGPUSupportedInstanceFeatures, features),
-    JADE_LAYOUT_RECORD("WGPUSupportedWGSLLanguageFeatures", WGPUSupportedWGSLLanguageFeatures),
-    JADE_LAYOUT_MEMBER("WGPUSupportedWGSLLanguageFeatures.featureCount", WGPUSupportedWGSLLanguageFeatures, featureCount),
-    JADE_LAYOUT_MEMBER("WGPUSupportedWGSLLanguageFeatures.features", WGPUSupportedWGSLLanguageFeatures, features),
-    JADE_LAYOUT_RECORD("WGPUSurfaceCapabilities", WGPUSurfaceCapabilities),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceCapabilities.nextInChain", WGPUSurfaceCapabilities, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceCapabilities.usages", WGPUSurfaceCapabilities, usages),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceCapabilities.formatCount", WGPUSurfaceCapabilities, formatCount),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceCapabilities.formats", WGPUSurfaceCapabilities, formats),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceCapabilities.presentModeCount", WGPUSurfaceCapabilities, presentModeCount),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceCapabilities.presentModes", WGPUSurfaceCapabilities, presentModes),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceCapabilities.alphaModeCount", WGPUSurfaceCapabilities, alphaModeCount),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceCapabilities.alphaModes", WGPUSurfaceCapabilities, alphaModes),
-    JADE_LAYOUT_RECORD("WGPUSurfaceColorManagement", WGPUSurfaceColorManagement),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceColorManagement.chain", WGPUSurfaceColorManagement, chain),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceColorManagement.colorSpace", WGPUSurfaceColorManagement, colorSpace),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceColorManagement.toneMappingMode", WGPUSurfaceColorManagement, toneMappingMode),
-    JADE_LAYOUT_RECORD("WGPUSurfaceConfiguration", WGPUSurfaceConfiguration),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceConfiguration.nextInChain", WGPUSurfaceConfiguration, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceConfiguration.device", WGPUSurfaceConfiguration, device),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceConfiguration.format", WGPUSurfaceConfiguration, format),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceConfiguration.usage", WGPUSurfaceConfiguration, usage),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceConfiguration.width", WGPUSurfaceConfiguration, width),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceConfiguration.height", WGPUSurfaceConfiguration, height),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceConfiguration.viewFormatCount", WGPUSurfaceConfiguration, viewFormatCount),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceConfiguration.viewFormats", WGPUSurfaceConfiguration, viewFormats),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceConfiguration.alphaMode", WGPUSurfaceConfiguration, alphaMode),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceConfiguration.presentMode", WGPUSurfaceConfiguration, presentMode),
-    JADE_LAYOUT_RECORD("WGPUSurfaceDescriptor", WGPUSurfaceDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceDescriptor.nextInChain", WGPUSurfaceDescriptor, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceDescriptor.label", WGPUSurfaceDescriptor, label),
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSurfaceDescriptorFromWindowsCoreWindow", WGPUSurfaceDescriptorFromWindowsCoreWindow),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceDescriptorFromWindowsCoreWindow.chain", WGPUSurfaceDescriptorFromWindowsCoreWindow, chain),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceDescriptorFromWindowsCoreWindow.coreWindow", WGPUSurfaceDescriptorFromWindowsCoreWindow, coreWindow),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSurfaceDescriptorFromWindowsUWPSwapChainPanel", WGPUSurfaceDescriptorFromWindowsUWPSwapChainPanel),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceDescriptorFromWindowsUWPSwapChainPanel.chain", WGPUSurfaceDescriptorFromWindowsUWPSwapChainPanel, chain),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceDescriptorFromWindowsUWPSwapChainPanel.swapChainPanel", WGPUSurfaceDescriptorFromWindowsUWPSwapChainPanel, swapChainPanel),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSurfaceDescriptorFromWindowsWinUISwapChainPanel", WGPUSurfaceDescriptorFromWindowsWinUISwapChainPanel),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceDescriptorFromWindowsWinUISwapChainPanel.chain", WGPUSurfaceDescriptorFromWindowsWinUISwapChainPanel, chain),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceDescriptorFromWindowsWinUISwapChainPanel.swapChainPanel", WGPUSurfaceDescriptorFromWindowsWinUISwapChainPanel, swapChainPanel),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSurfaceSourceAndroidNativeWindow", WGPUSurfaceSourceAndroidNativeWindow),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceSourceAndroidNativeWindow.chain", WGPUSurfaceSourceAndroidNativeWindow, chain),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceSourceAndroidNativeWindow.window", WGPUSurfaceSourceAndroidNativeWindow, window),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSurfaceSourceMetalLayer", WGPUSurfaceSourceMetalLayer),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceSourceMetalLayer.chain", WGPUSurfaceSourceMetalLayer, chain),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceSourceMetalLayer.layer", WGPUSurfaceSourceMetalLayer, layer),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSurfaceSourceWaylandSurface", WGPUSurfaceSourceWaylandSurface),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceSourceWaylandSurface.chain", WGPUSurfaceSourceWaylandSurface, chain),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceSourceWaylandSurface.display", WGPUSurfaceSourceWaylandSurface, display),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceSourceWaylandSurface.surface", WGPUSurfaceSourceWaylandSurface, surface),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSurfaceSourceWindowsHWND", WGPUSurfaceSourceWindowsHWND),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceSourceWindowsHWND.chain", WGPUSurfaceSourceWindowsHWND, chain),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceSourceWindowsHWND.hinstance", WGPUSurfaceSourceWindowsHWND, hinstance),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceSourceWindowsHWND.hwnd", WGPUSurfaceSourceWindowsHWND, hwnd),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSurfaceSourceXCBWindow", WGPUSurfaceSourceXCBWindow),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceSourceXCBWindow.chain", WGPUSurfaceSourceXCBWindow, chain),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceSourceXCBWindow.connection", WGPUSurfaceSourceXCBWindow, connection),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceSourceXCBWindow.window", WGPUSurfaceSourceXCBWindow, window),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUSurfaceSourceXlibWindow", WGPUSurfaceSourceXlibWindow),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceSourceXlibWindow.chain", WGPUSurfaceSourceXlibWindow, chain),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceSourceXlibWindow.display", WGPUSurfaceSourceXlibWindow, display),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceSourceXlibWindow.window", WGPUSurfaceSourceXlibWindow, window),
-#endif
-    JADE_LAYOUT_RECORD("WGPUSurfaceTexture", WGPUSurfaceTexture),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceTexture.nextInChain", WGPUSurfaceTexture, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceTexture.texture", WGPUSurfaceTexture, texture),
-    JADE_LAYOUT_MEMBER("WGPUSurfaceTexture.status", WGPUSurfaceTexture, status),
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUTexelBufferBindingEntry", WGPUTexelBufferBindingEntry),
-    JADE_LAYOUT_MEMBER("WGPUTexelBufferBindingEntry.chain", WGPUTexelBufferBindingEntry, chain),
-    JADE_LAYOUT_MEMBER("WGPUTexelBufferBindingEntry.texelBufferView", WGPUTexelBufferBindingEntry, texelBufferView),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUTexelBufferBindingLayout", WGPUTexelBufferBindingLayout),
-    JADE_LAYOUT_MEMBER("WGPUTexelBufferBindingLayout.chain", WGPUTexelBufferBindingLayout, chain),
-    JADE_LAYOUT_MEMBER("WGPUTexelBufferBindingLayout.access", WGPUTexelBufferBindingLayout, access),
-    JADE_LAYOUT_MEMBER("WGPUTexelBufferBindingLayout.format", WGPUTexelBufferBindingLayout, format),
-#endif
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUTexelBufferViewDescriptor", WGPUTexelBufferViewDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUTexelBufferViewDescriptor.nextInChain", WGPUTexelBufferViewDescriptor, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUTexelBufferViewDescriptor.label", WGPUTexelBufferViewDescriptor, label),
-    JADE_LAYOUT_MEMBER("WGPUTexelBufferViewDescriptor.format", WGPUTexelBufferViewDescriptor, format),
-    JADE_LAYOUT_MEMBER("WGPUTexelBufferViewDescriptor.offset", WGPUTexelBufferViewDescriptor, offset),
-    JADE_LAYOUT_MEMBER("WGPUTexelBufferViewDescriptor.size", WGPUTexelBufferViewDescriptor, size),
-#endif
-    JADE_LAYOUT_RECORD("WGPUTexelCopyBufferInfo", WGPUTexelCopyBufferInfo),
-    JADE_LAYOUT_MEMBER("WGPUTexelCopyBufferInfo.layout", WGPUTexelCopyBufferInfo, layout),
-    JADE_LAYOUT_MEMBER("WGPUTexelCopyBufferInfo.buffer", WGPUTexelCopyBufferInfo, buffer),
-    JADE_LAYOUT_RECORD("WGPUTexelCopyBufferLayout", WGPUTexelCopyBufferLayout),
-    JADE_LAYOUT_MEMBER("WGPUTexelCopyBufferLayout.offset", WGPUTexelCopyBufferLayout, offset),
-    JADE_LAYOUT_MEMBER("WGPUTexelCopyBufferLayout.bytesPerRow", WGPUTexelCopyBufferLayout, bytesPerRow),
-    JADE_LAYOUT_MEMBER("WGPUTexelCopyBufferLayout.rowsPerImage", WGPUTexelCopyBufferLayout, rowsPerImage),
-    JADE_LAYOUT_RECORD("WGPUTexelCopyTextureInfo", WGPUTexelCopyTextureInfo),
-    JADE_LAYOUT_MEMBER("WGPUTexelCopyTextureInfo.texture", WGPUTexelCopyTextureInfo, texture),
-    JADE_LAYOUT_MEMBER("WGPUTexelCopyTextureInfo.mipLevel", WGPUTexelCopyTextureInfo, mipLevel),
-    JADE_LAYOUT_MEMBER("WGPUTexelCopyTextureInfo.origin", WGPUTexelCopyTextureInfo, origin),
-    JADE_LAYOUT_MEMBER("WGPUTexelCopyTextureInfo.aspect", WGPUTexelCopyTextureInfo, aspect),
-    JADE_LAYOUT_RECORD("WGPUTextureBindingLayout", WGPUTextureBindingLayout),
-    JADE_LAYOUT_MEMBER("WGPUTextureBindingLayout.nextInChain", WGPUTextureBindingLayout, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUTextureBindingLayout.sampleType", WGPUTextureBindingLayout, sampleType),
-    JADE_LAYOUT_MEMBER("WGPUTextureBindingLayout.viewDimension", WGPUTextureBindingLayout, viewDimension),
-    JADE_LAYOUT_MEMBER("WGPUTextureBindingLayout.multisampled", WGPUTextureBindingLayout, multisampled),
-    JADE_LAYOUT_RECORD("WGPUTextureBindingViewDimension", WGPUTextureBindingViewDimension),
-    JADE_LAYOUT_MEMBER("WGPUTextureBindingViewDimension.chain", WGPUTextureBindingViewDimension, chain),
-    JADE_LAYOUT_MEMBER("WGPUTextureBindingViewDimension.textureBindingViewDimension", WGPUTextureBindingViewDimension, textureBindingViewDimension),
-    JADE_LAYOUT_RECORD("WGPUTextureComponentSwizzle", WGPUTextureComponentSwizzle),
-    JADE_LAYOUT_MEMBER("WGPUTextureComponentSwizzle.r", WGPUTextureComponentSwizzle, r),
-    JADE_LAYOUT_MEMBER("WGPUTextureComponentSwizzle.g", WGPUTextureComponentSwizzle, g),
-    JADE_LAYOUT_MEMBER("WGPUTextureComponentSwizzle.b", WGPUTextureComponentSwizzle, b),
-    JADE_LAYOUT_MEMBER("WGPUTextureComponentSwizzle.a", WGPUTextureComponentSwizzle, a),
-    JADE_LAYOUT_RECORD("WGPUTextureComponentSwizzleDescriptor", WGPUTextureComponentSwizzleDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUTextureComponentSwizzleDescriptor.chain", WGPUTextureComponentSwizzleDescriptor, chain),
-    JADE_LAYOUT_MEMBER("WGPUTextureComponentSwizzleDescriptor.swizzle", WGPUTextureComponentSwizzleDescriptor, swizzle),
-    JADE_LAYOUT_RECORD("WGPUTextureDescriptor", WGPUTextureDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUTextureDescriptor.nextInChain", WGPUTextureDescriptor, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUTextureDescriptor.label", WGPUTextureDescriptor, label),
-    JADE_LAYOUT_MEMBER("WGPUTextureDescriptor.usage", WGPUTextureDescriptor, usage),
-    JADE_LAYOUT_MEMBER("WGPUTextureDescriptor.dimension", WGPUTextureDescriptor, dimension),
-    JADE_LAYOUT_MEMBER("WGPUTextureDescriptor.size", WGPUTextureDescriptor, size),
-    JADE_LAYOUT_MEMBER("WGPUTextureDescriptor.format", WGPUTextureDescriptor, format),
-    JADE_LAYOUT_MEMBER("WGPUTextureDescriptor.mipLevelCount", WGPUTextureDescriptor, mipLevelCount),
-    JADE_LAYOUT_MEMBER("WGPUTextureDescriptor.sampleCount", WGPUTextureDescriptor, sampleCount),
-    JADE_LAYOUT_MEMBER("WGPUTextureDescriptor.viewFormatCount", WGPUTextureDescriptor, viewFormatCount),
-    JADE_LAYOUT_MEMBER("WGPUTextureDescriptor.viewFormats", WGPUTextureDescriptor, viewFormats),
-    JADE_LAYOUT_RECORD("WGPUTextureViewDescriptor", WGPUTextureViewDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUTextureViewDescriptor.nextInChain", WGPUTextureViewDescriptor, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUTextureViewDescriptor.label", WGPUTextureViewDescriptor, label),
-    JADE_LAYOUT_MEMBER("WGPUTextureViewDescriptor.format", WGPUTextureViewDescriptor, format),
-    JADE_LAYOUT_MEMBER("WGPUTextureViewDescriptor.dimension", WGPUTextureViewDescriptor, dimension),
-    JADE_LAYOUT_MEMBER("WGPUTextureViewDescriptor.baseMipLevel", WGPUTextureViewDescriptor, baseMipLevel),
-    JADE_LAYOUT_MEMBER("WGPUTextureViewDescriptor.mipLevelCount", WGPUTextureViewDescriptor, mipLevelCount),
-    JADE_LAYOUT_MEMBER("WGPUTextureViewDescriptor.baseArrayLayer", WGPUTextureViewDescriptor, baseArrayLayer),
-    JADE_LAYOUT_MEMBER("WGPUTextureViewDescriptor.arrayLayerCount", WGPUTextureViewDescriptor, arrayLayerCount),
-    JADE_LAYOUT_MEMBER("WGPUTextureViewDescriptor.aspect", WGPUTextureViewDescriptor, aspect),
-    JADE_LAYOUT_MEMBER("WGPUTextureViewDescriptor.usage", WGPUTextureViewDescriptor, usage),
-    JADE_LAYOUT_RECORD("WGPUUncapturedErrorCallbackInfo", WGPUUncapturedErrorCallbackInfo),
-    JADE_LAYOUT_MEMBER("WGPUUncapturedErrorCallbackInfo.nextInChain", WGPUUncapturedErrorCallbackInfo, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUUncapturedErrorCallbackInfo.callback", WGPUUncapturedErrorCallbackInfo, callback),
-    JADE_LAYOUT_MEMBER("WGPUUncapturedErrorCallbackInfo.userdata1", WGPUUncapturedErrorCallbackInfo, userdata1),
-    JADE_LAYOUT_MEMBER("WGPUUncapturedErrorCallbackInfo.userdata2", WGPUUncapturedErrorCallbackInfo, userdata2),
-    JADE_LAYOUT_RECORD("WGPUVertexAttribute", WGPUVertexAttribute),
-    JADE_LAYOUT_MEMBER("WGPUVertexAttribute.nextInChain", WGPUVertexAttribute, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUVertexAttribute.format", WGPUVertexAttribute, format),
-    JADE_LAYOUT_MEMBER("WGPUVertexAttribute.offset", WGPUVertexAttribute, offset),
-    JADE_LAYOUT_MEMBER("WGPUVertexAttribute.shaderLocation", WGPUVertexAttribute, shaderLocation),
-    JADE_LAYOUT_RECORD("WGPUVertexBufferLayout", WGPUVertexBufferLayout),
-    JADE_LAYOUT_MEMBER("WGPUVertexBufferLayout.nextInChain", WGPUVertexBufferLayout, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUVertexBufferLayout.stepMode", WGPUVertexBufferLayout, stepMode),
-    JADE_LAYOUT_MEMBER("WGPUVertexBufferLayout.arrayStride", WGPUVertexBufferLayout, arrayStride),
-    JADE_LAYOUT_MEMBER("WGPUVertexBufferLayout.attributeCount", WGPUVertexBufferLayout, attributeCount),
-    JADE_LAYOUT_MEMBER("WGPUVertexBufferLayout.attributes", WGPUVertexBufferLayout, attributes),
-    JADE_LAYOUT_RECORD("WGPUVertexState", WGPUVertexState),
-    JADE_LAYOUT_MEMBER("WGPUVertexState.nextInChain", WGPUVertexState, nextInChain),
-    JADE_LAYOUT_MEMBER("WGPUVertexState.module", WGPUVertexState, module),
-    JADE_LAYOUT_MEMBER("WGPUVertexState.entryPoint", WGPUVertexState, entryPoint),
-    JADE_LAYOUT_MEMBER("WGPUVertexState.constantCount", WGPUVertexState, constantCount),
-    JADE_LAYOUT_MEMBER("WGPUVertexState.constants", WGPUVertexState, constants),
-    JADE_LAYOUT_MEMBER("WGPUVertexState.bufferCount", WGPUVertexState, bufferCount),
-    JADE_LAYOUT_MEMBER("WGPUVertexState.buffers", WGPUVertexState, buffers),
-#if !defined(JADE_LAYOUT_BROWSER)
-    JADE_LAYOUT_RECORD("WGPUYCbCrVkDescriptor", WGPUYCbCrVkDescriptor),
-    JADE_LAYOUT_MEMBER("WGPUYCbCrVkDescriptor.chain", WGPUYCbCrVkDescriptor, chain),
-    JADE_LAYOUT_MEMBER("WGPUYCbCrVkDescriptor.vkFormat", WGPUYCbCrVkDescriptor, vkFormat),
-    JADE_LAYOUT_MEMBER("WGPUYCbCrVkDescriptor.vkYCbCrModel", WGPUYCbCrVkDescriptor, vkYCbCrModel),
-    JADE_LAYOUT_MEMBER("WGPUYCbCrVkDescriptor.vkYCbCrRange", WGPUYCbCrVkDescriptor, vkYCbCrRange),
-    JADE_LAYOUT_MEMBER("WGPUYCbCrVkDescriptor.vkComponentSwizzleRed", WGPUYCbCrVkDescriptor, vkComponentSwizzleRed),
-    JADE_LAYOUT_MEMBER("WGPUYCbCrVkDescriptor.vkComponentSwizzleGreen", WGPUYCbCrVkDescriptor, vkComponentSwizzleGreen),
-    JADE_LAYOUT_MEMBER("WGPUYCbCrVkDescriptor.vkComponentSwizzleBlue", WGPUYCbCrVkDescriptor, vkComponentSwizzleBlue),
-    JADE_LAYOUT_MEMBER("WGPUYCbCrVkDescriptor.vkComponentSwizzleAlpha", WGPUYCbCrVkDescriptor, vkComponentSwizzleAlpha),
-    JADE_LAYOUT_MEMBER("WGPUYCbCrVkDescriptor.vkXChromaOffset", WGPUYCbCrVkDescriptor, vkXChromaOffset),
-    JADE_LAYOUT_MEMBER("WGPUYCbCrVkDescriptor.vkYChromaOffset", WGPUYCbCrVkDescriptor, vkYChromaOffset),
-    JADE_LAYOUT_MEMBER("WGPUYCbCrVkDescriptor.vkChromaFilter", WGPUYCbCrVkDescriptor, vkChromaFilter),
-    JADE_LAYOUT_MEMBER("WGPUYCbCrVkDescriptor.forceExplicitReconstruction", WGPUYCbCrVkDescriptor, forceExplicitReconstruction),
-    JADE_LAYOUT_MEMBER("WGPUYCbCrVkDescriptor.externalFormat", WGPUYCbCrVkDescriptor, externalFormat),
-#endif
-    JADE_LAYOUT_END,
-};
-
 JADE_LAYOUT_API const jade_layout_entry* jade_wgpu_layout(void)
 {
+    static jade_layout_entry entries[967];
+    jade_layout_entry* cursor = entries;
+
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUAHardwareBufferProperties", WGPUAHardwareBufferProperties);
+    JADE_LAYOUT_MEMBER("WGPUAHardwareBufferProperties.yCbCrInfo", WGPUAHardwareBufferProperties, yCbCrInfo);
+    #endif
+    JADE_LAYOUT_RECORD("WGPUAdapterInfo", WGPUAdapterInfo);
+    JADE_LAYOUT_MEMBER("WGPUAdapterInfo.nextInChain", WGPUAdapterInfo, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUAdapterInfo.vendor", WGPUAdapterInfo, vendor);
+    JADE_LAYOUT_MEMBER("WGPUAdapterInfo.architecture", WGPUAdapterInfo, architecture);
+    JADE_LAYOUT_MEMBER("WGPUAdapterInfo.device", WGPUAdapterInfo, device);
+    JADE_LAYOUT_MEMBER("WGPUAdapterInfo.description", WGPUAdapterInfo, description);
+    JADE_LAYOUT_MEMBER("WGPUAdapterInfo.backendType", WGPUAdapterInfo, backendType);
+    JADE_LAYOUT_MEMBER("WGPUAdapterInfo.adapterType", WGPUAdapterInfo, adapterType);
+    JADE_LAYOUT_MEMBER("WGPUAdapterInfo.vendorID", WGPUAdapterInfo, vendorID);
+    JADE_LAYOUT_MEMBER("WGPUAdapterInfo.deviceID", WGPUAdapterInfo, deviceID);
+    JADE_LAYOUT_MEMBER("WGPUAdapterInfo.subgroupMinSize", WGPUAdapterInfo, subgroupMinSize);
+    JADE_LAYOUT_MEMBER("WGPUAdapterInfo.subgroupMaxSize", WGPUAdapterInfo, subgroupMaxSize);
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUAdapterPropertiesD3D", WGPUAdapterPropertiesD3D);
+    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesD3D.chain", WGPUAdapterPropertiesD3D, chain);
+    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesD3D.shaderModel", WGPUAdapterPropertiesD3D, shaderModel);
+    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesD3D.adapterLUIDLowPart", WGPUAdapterPropertiesD3D, adapterLUIDLowPart);
+    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesD3D.adapterLUIDHighPart", WGPUAdapterPropertiesD3D, adapterLUIDHighPart);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUAdapterPropertiesDrm", WGPUAdapterPropertiesDrm);
+    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesDrm.chain", WGPUAdapterPropertiesDrm, chain);
+    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesDrm.hasPrimary", WGPUAdapterPropertiesDrm, hasPrimary);
+    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesDrm.hasRender", WGPUAdapterPropertiesDrm, hasRender);
+    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesDrm.primaryMajor", WGPUAdapterPropertiesDrm, primaryMajor);
+    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesDrm.primaryMinor", WGPUAdapterPropertiesDrm, primaryMinor);
+    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesDrm.renderMajor", WGPUAdapterPropertiesDrm, renderMajor);
+    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesDrm.renderMinor", WGPUAdapterPropertiesDrm, renderMinor);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUAdapterPropertiesMemoryHeaps", WGPUAdapterPropertiesMemoryHeaps);
+    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesMemoryHeaps.chain", WGPUAdapterPropertiesMemoryHeaps, chain);
+    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesMemoryHeaps.heapCount", WGPUAdapterPropertiesMemoryHeaps, heapCount);
+    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesMemoryHeaps.heapInfo", WGPUAdapterPropertiesMemoryHeaps, heapInfo);
+    #endif
+    JADE_LAYOUT_RECORD("WGPUAdapterPropertiesSubgroupMatrixConfigs", WGPUAdapterPropertiesSubgroupMatrixConfigs);
+    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesSubgroupMatrixConfigs.chain", WGPUAdapterPropertiesSubgroupMatrixConfigs, chain);
+    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesSubgroupMatrixConfigs.configCount", WGPUAdapterPropertiesSubgroupMatrixConfigs, configCount);
+    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesSubgroupMatrixConfigs.configs", WGPUAdapterPropertiesSubgroupMatrixConfigs, configs);
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUAdapterPropertiesVk", WGPUAdapterPropertiesVk);
+    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesVk.chain", WGPUAdapterPropertiesVk, chain);
+    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesVk.driverVersion", WGPUAdapterPropertiesVk, driverVersion);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUAdapterPropertiesWGPU", WGPUAdapterPropertiesWGPU);
+    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesWGPU.chain", WGPUAdapterPropertiesWGPU, chain);
+    JADE_LAYOUT_MEMBER("WGPUAdapterPropertiesWGPU.backendType", WGPUAdapterPropertiesWGPU, backendType);
+    #endif
+    JADE_LAYOUT_RECORD("WGPUBindGroupDescriptor", WGPUBindGroupDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUBindGroupDescriptor.nextInChain", WGPUBindGroupDescriptor, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUBindGroupDescriptor.label", WGPUBindGroupDescriptor, label);
+    JADE_LAYOUT_MEMBER("WGPUBindGroupDescriptor.layout", WGPUBindGroupDescriptor, layout);
+    JADE_LAYOUT_MEMBER("WGPUBindGroupDescriptor.entryCount", WGPUBindGroupDescriptor, entryCount);
+    JADE_LAYOUT_MEMBER("WGPUBindGroupDescriptor.entries", WGPUBindGroupDescriptor, entries);
+    JADE_LAYOUT_RECORD("WGPUBindGroupEntry", WGPUBindGroupEntry);
+    JADE_LAYOUT_MEMBER("WGPUBindGroupEntry.nextInChain", WGPUBindGroupEntry, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUBindGroupEntry.binding", WGPUBindGroupEntry, binding);
+    JADE_LAYOUT_MEMBER("WGPUBindGroupEntry.buffer", WGPUBindGroupEntry, buffer);
+    JADE_LAYOUT_MEMBER("WGPUBindGroupEntry.offset", WGPUBindGroupEntry, offset);
+    JADE_LAYOUT_MEMBER("WGPUBindGroupEntry.size", WGPUBindGroupEntry, size);
+    JADE_LAYOUT_MEMBER("WGPUBindGroupEntry.sampler", WGPUBindGroupEntry, sampler);
+    JADE_LAYOUT_MEMBER("WGPUBindGroupEntry.textureView", WGPUBindGroupEntry, textureView);
+    JADE_LAYOUT_RECORD("WGPUBindGroupLayoutDescriptor", WGPUBindGroupLayoutDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUBindGroupLayoutDescriptor.nextInChain", WGPUBindGroupLayoutDescriptor, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUBindGroupLayoutDescriptor.label", WGPUBindGroupLayoutDescriptor, label);
+    JADE_LAYOUT_MEMBER("WGPUBindGroupLayoutDescriptor.entryCount", WGPUBindGroupLayoutDescriptor, entryCount);
+    JADE_LAYOUT_MEMBER("WGPUBindGroupLayoutDescriptor.entries", WGPUBindGroupLayoutDescriptor, entries);
+    JADE_LAYOUT_RECORD("WGPUBindGroupLayoutEntry", WGPUBindGroupLayoutEntry);
+    JADE_LAYOUT_MEMBER("WGPUBindGroupLayoutEntry.nextInChain", WGPUBindGroupLayoutEntry, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUBindGroupLayoutEntry.binding", WGPUBindGroupLayoutEntry, binding);
+    JADE_LAYOUT_MEMBER("WGPUBindGroupLayoutEntry.visibility", WGPUBindGroupLayoutEntry, visibility);
+    JADE_LAYOUT_MEMBER("WGPUBindGroupLayoutEntry.bindingArraySize", WGPUBindGroupLayoutEntry, bindingArraySize);
+    JADE_LAYOUT_MEMBER("WGPUBindGroupLayoutEntry.buffer", WGPUBindGroupLayoutEntry, buffer);
+    JADE_LAYOUT_MEMBER("WGPUBindGroupLayoutEntry.sampler", WGPUBindGroupLayoutEntry, sampler);
+    JADE_LAYOUT_MEMBER("WGPUBindGroupLayoutEntry.texture", WGPUBindGroupLayoutEntry, texture);
+    JADE_LAYOUT_MEMBER("WGPUBindGroupLayoutEntry.storageTexture", WGPUBindGroupLayoutEntry, storageTexture);
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUBindingResource", WGPUBindingResource);
+    JADE_LAYOUT_MEMBER("WGPUBindingResource.nextInChain", WGPUBindingResource, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUBindingResource.buffer", WGPUBindingResource, buffer);
+    JADE_LAYOUT_MEMBER("WGPUBindingResource.offset", WGPUBindingResource, offset);
+    JADE_LAYOUT_MEMBER("WGPUBindingResource.size", WGPUBindingResource, size);
+    JADE_LAYOUT_MEMBER("WGPUBindingResource.sampler", WGPUBindingResource, sampler);
+    JADE_LAYOUT_MEMBER("WGPUBindingResource.textureView", WGPUBindingResource, textureView);
+    #endif
+    JADE_LAYOUT_RECORD("WGPUBlendComponent", WGPUBlendComponent);
+    JADE_LAYOUT_MEMBER("WGPUBlendComponent.operation", WGPUBlendComponent, operation);
+    JADE_LAYOUT_MEMBER("WGPUBlendComponent.srcFactor", WGPUBlendComponent, srcFactor);
+    JADE_LAYOUT_MEMBER("WGPUBlendComponent.dstFactor", WGPUBlendComponent, dstFactor);
+    JADE_LAYOUT_RECORD("WGPUBlendState", WGPUBlendState);
+    JADE_LAYOUT_MEMBER("WGPUBlendState.color", WGPUBlendState, color);
+    JADE_LAYOUT_MEMBER("WGPUBlendState.alpha", WGPUBlendState, alpha);
+    JADE_LAYOUT_RECORD("WGPUBufferBindingLayout", WGPUBufferBindingLayout);
+    JADE_LAYOUT_MEMBER("WGPUBufferBindingLayout.nextInChain", WGPUBufferBindingLayout, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUBufferBindingLayout.type", WGPUBufferBindingLayout, type);
+    JADE_LAYOUT_MEMBER("WGPUBufferBindingLayout.hasDynamicOffset", WGPUBufferBindingLayout, hasDynamicOffset);
+    JADE_LAYOUT_MEMBER("WGPUBufferBindingLayout.minBindingSize", WGPUBufferBindingLayout, minBindingSize);
+    JADE_LAYOUT_RECORD("WGPUBufferDescriptor", WGPUBufferDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUBufferDescriptor.nextInChain", WGPUBufferDescriptor, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUBufferDescriptor.label", WGPUBufferDescriptor, label);
+    JADE_LAYOUT_MEMBER("WGPUBufferDescriptor.usage", WGPUBufferDescriptor, usage);
+    JADE_LAYOUT_MEMBER("WGPUBufferDescriptor.size", WGPUBufferDescriptor, size);
+    JADE_LAYOUT_MEMBER("WGPUBufferDescriptor.mappedAtCreation", WGPUBufferDescriptor, mappedAtCreation);
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUBufferHostMappedPointer", WGPUBufferHostMappedPointer);
+    JADE_LAYOUT_MEMBER("WGPUBufferHostMappedPointer.chain", WGPUBufferHostMappedPointer, chain);
+    JADE_LAYOUT_MEMBER("WGPUBufferHostMappedPointer.pointer", WGPUBufferHostMappedPointer, pointer);
+    JADE_LAYOUT_MEMBER("WGPUBufferHostMappedPointer.disposeCallback", WGPUBufferHostMappedPointer, disposeCallback);
+    JADE_LAYOUT_MEMBER("WGPUBufferHostMappedPointer.userdata", WGPUBufferHostMappedPointer, userdata);
+    #endif
+    JADE_LAYOUT_RECORD("WGPUBufferMapCallbackInfo", WGPUBufferMapCallbackInfo);
+    JADE_LAYOUT_MEMBER("WGPUBufferMapCallbackInfo.nextInChain", WGPUBufferMapCallbackInfo, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUBufferMapCallbackInfo.mode", WGPUBufferMapCallbackInfo, mode);
+    JADE_LAYOUT_MEMBER("WGPUBufferMapCallbackInfo.callback", WGPUBufferMapCallbackInfo, callback);
+    JADE_LAYOUT_MEMBER("WGPUBufferMapCallbackInfo.userdata1", WGPUBufferMapCallbackInfo, userdata1);
+    JADE_LAYOUT_MEMBER("WGPUBufferMapCallbackInfo.userdata2", WGPUBufferMapCallbackInfo, userdata2);
+    JADE_LAYOUT_RECORD("WGPUChainedStruct", WGPUChainedStruct);
+    JADE_LAYOUT_MEMBER("WGPUChainedStruct.next", WGPUChainedStruct, next);
+    JADE_LAYOUT_MEMBER("WGPUChainedStruct.sType", WGPUChainedStruct, sType);
+    JADE_LAYOUT_RECORD("WGPUColor", WGPUColor);
+    JADE_LAYOUT_MEMBER("WGPUColor.r", WGPUColor, r);
+    JADE_LAYOUT_MEMBER("WGPUColor.g", WGPUColor, g);
+    JADE_LAYOUT_MEMBER("WGPUColor.b", WGPUColor, b);
+    JADE_LAYOUT_MEMBER("WGPUColor.a", WGPUColor, a);
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUColorSpaceDawn", WGPUColorSpaceDawn);
+    JADE_LAYOUT_MEMBER("WGPUColorSpaceDawn.nextInChain", WGPUColorSpaceDawn, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUColorSpaceDawn.primaries", WGPUColorSpaceDawn, primaries);
+    JADE_LAYOUT_MEMBER("WGPUColorSpaceDawn.transfer", WGPUColorSpaceDawn, transfer);
+    JADE_LAYOUT_MEMBER("WGPUColorSpaceDawn.yCbCrRange", WGPUColorSpaceDawn, yCbCrRange);
+    JADE_LAYOUT_MEMBER("WGPUColorSpaceDawn.yCbCrMatrix", WGPUColorSpaceDawn, yCbCrMatrix);
+    JADE_LAYOUT_MEMBER("WGPUColorSpaceDawn.hdrReferenceWhiteLuminance", WGPUColorSpaceDawn, hdrReferenceWhiteLuminance);
+    #endif
+    JADE_LAYOUT_RECORD("WGPUColorTargetState", WGPUColorTargetState);
+    JADE_LAYOUT_MEMBER("WGPUColorTargetState.nextInChain", WGPUColorTargetState, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUColorTargetState.format", WGPUColorTargetState, format);
+    JADE_LAYOUT_MEMBER("WGPUColorTargetState.blend", WGPUColorTargetState, blend);
+    JADE_LAYOUT_MEMBER("WGPUColorTargetState.writeMask", WGPUColorTargetState, writeMask);
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUColorTargetStateExpandResolveTextureDawn", WGPUColorTargetStateExpandResolveTextureDawn);
+    JADE_LAYOUT_MEMBER("WGPUColorTargetStateExpandResolveTextureDawn.chain", WGPUColorTargetStateExpandResolveTextureDawn, chain);
+    JADE_LAYOUT_MEMBER("WGPUColorTargetStateExpandResolveTextureDawn.enabled", WGPUColorTargetStateExpandResolveTextureDawn, enabled);
+    #endif
+    JADE_LAYOUT_RECORD("WGPUCommandBufferDescriptor", WGPUCommandBufferDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUCommandBufferDescriptor.nextInChain", WGPUCommandBufferDescriptor, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUCommandBufferDescriptor.label", WGPUCommandBufferDescriptor, label);
+    JADE_LAYOUT_RECORD("WGPUCommandEncoderDescriptor", WGPUCommandEncoderDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUCommandEncoderDescriptor.nextInChain", WGPUCommandEncoderDescriptor, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUCommandEncoderDescriptor.label", WGPUCommandEncoderDescriptor, label);
+    JADE_LAYOUT_RECORD("WGPUCompatibilityModeLimits", WGPUCompatibilityModeLimits);
+    JADE_LAYOUT_MEMBER("WGPUCompatibilityModeLimits.chain", WGPUCompatibilityModeLimits, chain);
+    JADE_LAYOUT_MEMBER("WGPUCompatibilityModeLimits.maxStorageBuffersInVertexStage", WGPUCompatibilityModeLimits, maxStorageBuffersInVertexStage);
+    JADE_LAYOUT_MEMBER("WGPUCompatibilityModeLimits.maxStorageTexturesInVertexStage", WGPUCompatibilityModeLimits, maxStorageTexturesInVertexStage);
+    JADE_LAYOUT_MEMBER("WGPUCompatibilityModeLimits.maxStorageBuffersInFragmentStage", WGPUCompatibilityModeLimits, maxStorageBuffersInFragmentStage);
+    JADE_LAYOUT_MEMBER("WGPUCompatibilityModeLimits.maxStorageTexturesInFragmentStage", WGPUCompatibilityModeLimits, maxStorageTexturesInFragmentStage);
+    JADE_LAYOUT_RECORD("WGPUCompilationInfo", WGPUCompilationInfo);
+    JADE_LAYOUT_MEMBER("WGPUCompilationInfo.nextInChain", WGPUCompilationInfo, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUCompilationInfo.messageCount", WGPUCompilationInfo, messageCount);
+    JADE_LAYOUT_MEMBER("WGPUCompilationInfo.messages", WGPUCompilationInfo, messages);
+    JADE_LAYOUT_RECORD("WGPUCompilationInfoCallbackInfo", WGPUCompilationInfoCallbackInfo);
+    JADE_LAYOUT_MEMBER("WGPUCompilationInfoCallbackInfo.nextInChain", WGPUCompilationInfoCallbackInfo, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUCompilationInfoCallbackInfo.mode", WGPUCompilationInfoCallbackInfo, mode);
+    JADE_LAYOUT_MEMBER("WGPUCompilationInfoCallbackInfo.callback", WGPUCompilationInfoCallbackInfo, callback);
+    JADE_LAYOUT_MEMBER("WGPUCompilationInfoCallbackInfo.userdata1", WGPUCompilationInfoCallbackInfo, userdata1);
+    JADE_LAYOUT_MEMBER("WGPUCompilationInfoCallbackInfo.userdata2", WGPUCompilationInfoCallbackInfo, userdata2);
+    JADE_LAYOUT_RECORD("WGPUCompilationMessage", WGPUCompilationMessage);
+    JADE_LAYOUT_MEMBER("WGPUCompilationMessage.nextInChain", WGPUCompilationMessage, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUCompilationMessage.message", WGPUCompilationMessage, message);
+    JADE_LAYOUT_MEMBER("WGPUCompilationMessage.type", WGPUCompilationMessage, type);
+    JADE_LAYOUT_MEMBER("WGPUCompilationMessage.lineNum", WGPUCompilationMessage, lineNum);
+    JADE_LAYOUT_MEMBER("WGPUCompilationMessage.linePos", WGPUCompilationMessage, linePos);
+    JADE_LAYOUT_MEMBER("WGPUCompilationMessage.offset", WGPUCompilationMessage, offset);
+    JADE_LAYOUT_MEMBER("WGPUCompilationMessage.length", WGPUCompilationMessage, length);
+    JADE_LAYOUT_RECORD("WGPUComputePassDescriptor", WGPUComputePassDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUComputePassDescriptor.nextInChain", WGPUComputePassDescriptor, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUComputePassDescriptor.label", WGPUComputePassDescriptor, label);
+    JADE_LAYOUT_MEMBER("WGPUComputePassDescriptor.timestampWrites", WGPUComputePassDescriptor, timestampWrites);
+    JADE_LAYOUT_RECORD("WGPUComputePipelineDescriptor", WGPUComputePipelineDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUComputePipelineDescriptor.nextInChain", WGPUComputePipelineDescriptor, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUComputePipelineDescriptor.label", WGPUComputePipelineDescriptor, label);
+    JADE_LAYOUT_MEMBER("WGPUComputePipelineDescriptor.layout", WGPUComputePipelineDescriptor, layout);
+    JADE_LAYOUT_MEMBER("WGPUComputePipelineDescriptor.compute", WGPUComputePipelineDescriptor, compute);
+    JADE_LAYOUT_RECORD("WGPUComputeState", WGPUComputeState);
+    JADE_LAYOUT_MEMBER("WGPUComputeState.nextInChain", WGPUComputeState, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUComputeState.module", WGPUComputeState, module);
+    JADE_LAYOUT_MEMBER("WGPUComputeState.entryPoint", WGPUComputeState, entryPoint);
+    JADE_LAYOUT_MEMBER("WGPUComputeState.constantCount", WGPUComputeState, constantCount);
+    JADE_LAYOUT_MEMBER("WGPUComputeState.constants", WGPUComputeState, constants);
+    JADE_LAYOUT_RECORD("WGPUConstantEntry", WGPUConstantEntry);
+    JADE_LAYOUT_MEMBER("WGPUConstantEntry.nextInChain", WGPUConstantEntry, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUConstantEntry.key", WGPUConstantEntry, key);
+    JADE_LAYOUT_MEMBER("WGPUConstantEntry.value", WGPUConstantEntry, value);
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUCopyTextureForBrowserOptions", WGPUCopyTextureForBrowserOptions);
+    JADE_LAYOUT_MEMBER("WGPUCopyTextureForBrowserOptions.nextInChain", WGPUCopyTextureForBrowserOptions, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUCopyTextureForBrowserOptions.flipY", WGPUCopyTextureForBrowserOptions, flipY);
+    JADE_LAYOUT_MEMBER("WGPUCopyTextureForBrowserOptions.needsColorSpaceConversion", WGPUCopyTextureForBrowserOptions, needsColorSpaceConversion);
+    JADE_LAYOUT_MEMBER("WGPUCopyTextureForBrowserOptions.srcAlphaMode", WGPUCopyTextureForBrowserOptions, srcAlphaMode);
+    JADE_LAYOUT_MEMBER("WGPUCopyTextureForBrowserOptions.srcTransferFunctionParameters", WGPUCopyTextureForBrowserOptions, srcTransferFunctionParameters);
+    JADE_LAYOUT_MEMBER("WGPUCopyTextureForBrowserOptions.conversionMatrix", WGPUCopyTextureForBrowserOptions, conversionMatrix);
+    JADE_LAYOUT_MEMBER("WGPUCopyTextureForBrowserOptions.dstTransferFunctionParameters", WGPUCopyTextureForBrowserOptions, dstTransferFunctionParameters);
+    JADE_LAYOUT_MEMBER("WGPUCopyTextureForBrowserOptions.dstAlphaMode", WGPUCopyTextureForBrowserOptions, dstAlphaMode);
+    JADE_LAYOUT_MEMBER("WGPUCopyTextureForBrowserOptions.internalUsage", WGPUCopyTextureForBrowserOptions, internalUsage);
+    #endif
+    JADE_LAYOUT_RECORD("WGPUCreateComputePipelineAsyncCallbackInfo", WGPUCreateComputePipelineAsyncCallbackInfo);
+    JADE_LAYOUT_MEMBER("WGPUCreateComputePipelineAsyncCallbackInfo.nextInChain", WGPUCreateComputePipelineAsyncCallbackInfo, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUCreateComputePipelineAsyncCallbackInfo.mode", WGPUCreateComputePipelineAsyncCallbackInfo, mode);
+    JADE_LAYOUT_MEMBER("WGPUCreateComputePipelineAsyncCallbackInfo.callback", WGPUCreateComputePipelineAsyncCallbackInfo, callback);
+    JADE_LAYOUT_MEMBER("WGPUCreateComputePipelineAsyncCallbackInfo.userdata1", WGPUCreateComputePipelineAsyncCallbackInfo, userdata1);
+    JADE_LAYOUT_MEMBER("WGPUCreateComputePipelineAsyncCallbackInfo.userdata2", WGPUCreateComputePipelineAsyncCallbackInfo, userdata2);
+    JADE_LAYOUT_RECORD("WGPUCreateRenderPipelineAsyncCallbackInfo", WGPUCreateRenderPipelineAsyncCallbackInfo);
+    JADE_LAYOUT_MEMBER("WGPUCreateRenderPipelineAsyncCallbackInfo.nextInChain", WGPUCreateRenderPipelineAsyncCallbackInfo, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUCreateRenderPipelineAsyncCallbackInfo.mode", WGPUCreateRenderPipelineAsyncCallbackInfo, mode);
+    JADE_LAYOUT_MEMBER("WGPUCreateRenderPipelineAsyncCallbackInfo.callback", WGPUCreateRenderPipelineAsyncCallbackInfo, callback);
+    JADE_LAYOUT_MEMBER("WGPUCreateRenderPipelineAsyncCallbackInfo.userdata1", WGPUCreateRenderPipelineAsyncCallbackInfo, userdata1);
+    JADE_LAYOUT_MEMBER("WGPUCreateRenderPipelineAsyncCallbackInfo.userdata2", WGPUCreateRenderPipelineAsyncCallbackInfo, userdata2);
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUDawnAdapterPropertiesPowerPreference", WGPUDawnAdapterPropertiesPowerPreference);
+    JADE_LAYOUT_MEMBER("WGPUDawnAdapterPropertiesPowerPreference.chain", WGPUDawnAdapterPropertiesPowerPreference, chain);
+    JADE_LAYOUT_MEMBER("WGPUDawnAdapterPropertiesPowerPreference.powerPreference", WGPUDawnAdapterPropertiesPowerPreference, powerPreference);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUDawnBufferDescriptorErrorInfoFromWireClient", WGPUDawnBufferDescriptorErrorInfoFromWireClient);
+    JADE_LAYOUT_MEMBER("WGPUDawnBufferDescriptorErrorInfoFromWireClient.chain", WGPUDawnBufferDescriptorErrorInfoFromWireClient, chain);
+    JADE_LAYOUT_MEMBER("WGPUDawnBufferDescriptorErrorInfoFromWireClient.outOfMemory", WGPUDawnBufferDescriptorErrorInfoFromWireClient, outOfMemory);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUDawnCacheDeviceDescriptor", WGPUDawnCacheDeviceDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUDawnCacheDeviceDescriptor.chain", WGPUDawnCacheDeviceDescriptor, chain);
+    JADE_LAYOUT_MEMBER("WGPUDawnCacheDeviceDescriptor.isolationKey", WGPUDawnCacheDeviceDescriptor, isolationKey);
+    JADE_LAYOUT_MEMBER("WGPUDawnCacheDeviceDescriptor.dawnLoadCacheDataCallbackInfo", WGPUDawnCacheDeviceDescriptor, dawnLoadCacheDataCallbackInfo);
+    JADE_LAYOUT_MEMBER("WGPUDawnCacheDeviceDescriptor.dawnStoreCacheDataCallbackInfo", WGPUDawnCacheDeviceDescriptor, dawnStoreCacheDataCallbackInfo);
+    #endif
+    JADE_LAYOUT_RECORD("WGPUDawnCompilationMessageUtf16", WGPUDawnCompilationMessageUtf16);
+    JADE_LAYOUT_MEMBER("WGPUDawnCompilationMessageUtf16.chain", WGPUDawnCompilationMessageUtf16, chain);
+    JADE_LAYOUT_MEMBER("WGPUDawnCompilationMessageUtf16.linePos", WGPUDawnCompilationMessageUtf16, linePos);
+    JADE_LAYOUT_MEMBER("WGPUDawnCompilationMessageUtf16.offset", WGPUDawnCompilationMessageUtf16, offset);
+    JADE_LAYOUT_MEMBER("WGPUDawnCompilationMessageUtf16.length", WGPUDawnCompilationMessageUtf16, length);
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUDawnConsumeAdapterDescriptor", WGPUDawnConsumeAdapterDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUDawnConsumeAdapterDescriptor.chain", WGPUDawnConsumeAdapterDescriptor, chain);
+    JADE_LAYOUT_MEMBER("WGPUDawnConsumeAdapterDescriptor.consumeAdapter", WGPUDawnConsumeAdapterDescriptor, consumeAdapter);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUDawnDeviceAllocatorControl", WGPUDawnDeviceAllocatorControl);
+    JADE_LAYOUT_MEMBER("WGPUDawnDeviceAllocatorControl.chain", WGPUDawnDeviceAllocatorControl, chain);
+    JADE_LAYOUT_MEMBER("WGPUDawnDeviceAllocatorControl.allocatorHeapBlockSize", WGPUDawnDeviceAllocatorControl, allocatorHeapBlockSize);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUDawnDrmFormatCapabilities", WGPUDawnDrmFormatCapabilities);
+    JADE_LAYOUT_MEMBER("WGPUDawnDrmFormatCapabilities.chain", WGPUDawnDrmFormatCapabilities, chain);
+    JADE_LAYOUT_MEMBER("WGPUDawnDrmFormatCapabilities.propertiesCount", WGPUDawnDrmFormatCapabilities, propertiesCount);
+    JADE_LAYOUT_MEMBER("WGPUDawnDrmFormatCapabilities.properties", WGPUDawnDrmFormatCapabilities, properties);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUDawnDrmFormatProperties", WGPUDawnDrmFormatProperties);
+    JADE_LAYOUT_MEMBER("WGPUDawnDrmFormatProperties.modifier", WGPUDawnDrmFormatProperties, modifier);
+    JADE_LAYOUT_MEMBER("WGPUDawnDrmFormatProperties.modifierPlaneCount", WGPUDawnDrmFormatProperties, modifierPlaneCount);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUDawnEncoderInternalUsageDescriptor", WGPUDawnEncoderInternalUsageDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUDawnEncoderInternalUsageDescriptor.chain", WGPUDawnEncoderInternalUsageDescriptor, chain);
+    JADE_LAYOUT_MEMBER("WGPUDawnEncoderInternalUsageDescriptor.useInternalUsages", WGPUDawnEncoderInternalUsageDescriptor, useInternalUsages);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUDawnFakeBufferOOMForTesting", WGPUDawnFakeBufferOOMForTesting);
+    JADE_LAYOUT_MEMBER("WGPUDawnFakeBufferOOMForTesting.chain", WGPUDawnFakeBufferOOMForTesting, chain);
+    JADE_LAYOUT_MEMBER("WGPUDawnFakeBufferOOMForTesting.fakeOOMAtWireClientMap", WGPUDawnFakeBufferOOMForTesting, fakeOOMAtWireClientMap);
+    JADE_LAYOUT_MEMBER("WGPUDawnFakeBufferOOMForTesting.fakeOOMAtNativeMap", WGPUDawnFakeBufferOOMForTesting, fakeOOMAtNativeMap);
+    JADE_LAYOUT_MEMBER("WGPUDawnFakeBufferOOMForTesting.fakeOOMAtDevice", WGPUDawnFakeBufferOOMForTesting, fakeOOMAtDevice);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUDawnFakeDeviceInitializeErrorForTesting", WGPUDawnFakeDeviceInitializeErrorForTesting);
+    JADE_LAYOUT_MEMBER("WGPUDawnFakeDeviceInitializeErrorForTesting.chain", WGPUDawnFakeDeviceInitializeErrorForTesting, chain);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUDawnFormatCapabilities", WGPUDawnFormatCapabilities);
+    JADE_LAYOUT_MEMBER("WGPUDawnFormatCapabilities.nextInChain", WGPUDawnFormatCapabilities, nextInChain);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUDawnHostMappedPointerLimits", WGPUDawnHostMappedPointerLimits);
+    JADE_LAYOUT_MEMBER("WGPUDawnHostMappedPointerLimits.chain", WGPUDawnHostMappedPointerLimits, chain);
+    JADE_LAYOUT_MEMBER("WGPUDawnHostMappedPointerLimits.hostMappedPointerAlignment", WGPUDawnHostMappedPointerLimits, hostMappedPointerAlignment);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUDawnInjectedInvalidSType", WGPUDawnInjectedInvalidSType);
+    JADE_LAYOUT_MEMBER("WGPUDawnInjectedInvalidSType.chain", WGPUDawnInjectedInvalidSType, chain);
+    JADE_LAYOUT_MEMBER("WGPUDawnInjectedInvalidSType.invalidSType", WGPUDawnInjectedInvalidSType, invalidSType);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUDawnLoadCacheDataCallbackInfo", WGPUDawnLoadCacheDataCallbackInfo);
+    JADE_LAYOUT_MEMBER("WGPUDawnLoadCacheDataCallbackInfo.nextInChain", WGPUDawnLoadCacheDataCallbackInfo, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUDawnLoadCacheDataCallbackInfo.callback", WGPUDawnLoadCacheDataCallbackInfo, callback);
+    JADE_LAYOUT_MEMBER("WGPUDawnLoadCacheDataCallbackInfo.userdata1", WGPUDawnLoadCacheDataCallbackInfo, userdata1);
+    JADE_LAYOUT_MEMBER("WGPUDawnLoadCacheDataCallbackInfo.userdata2", WGPUDawnLoadCacheDataCallbackInfo, userdata2);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUDawnRenderPassSampleCount", WGPUDawnRenderPassSampleCount);
+    JADE_LAYOUT_MEMBER("WGPUDawnRenderPassSampleCount.chain", WGPUDawnRenderPassSampleCount, chain);
+    JADE_LAYOUT_MEMBER("WGPUDawnRenderPassSampleCount.sampleCount", WGPUDawnRenderPassSampleCount, sampleCount);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUDawnShaderModuleSPIRVOptionsDescriptor", WGPUDawnShaderModuleSPIRVOptionsDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUDawnShaderModuleSPIRVOptionsDescriptor.chain", WGPUDawnShaderModuleSPIRVOptionsDescriptor, chain);
+    JADE_LAYOUT_MEMBER("WGPUDawnShaderModuleSPIRVOptionsDescriptor.allowNonUniformDerivatives", WGPUDawnShaderModuleSPIRVOptionsDescriptor, allowNonUniformDerivatives);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUDawnShaderSourceSPIRV", WGPUDawnShaderSourceSPIRV);
+    JADE_LAYOUT_MEMBER("WGPUDawnShaderSourceSPIRV.chain", WGPUDawnShaderSourceSPIRV, chain);
+    JADE_LAYOUT_MEMBER("WGPUDawnShaderSourceSPIRV.codeSize", WGPUDawnShaderSourceSPIRV, codeSize);
+    JADE_LAYOUT_MEMBER("WGPUDawnShaderSourceSPIRV.code", WGPUDawnShaderSourceSPIRV, code);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUDawnStoreCacheDataCallbackInfo", WGPUDawnStoreCacheDataCallbackInfo);
+    JADE_LAYOUT_MEMBER("WGPUDawnStoreCacheDataCallbackInfo.nextInChain", WGPUDawnStoreCacheDataCallbackInfo, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUDawnStoreCacheDataCallbackInfo.callback", WGPUDawnStoreCacheDataCallbackInfo, callback);
+    JADE_LAYOUT_MEMBER("WGPUDawnStoreCacheDataCallbackInfo.userdata1", WGPUDawnStoreCacheDataCallbackInfo, userdata1);
+    JADE_LAYOUT_MEMBER("WGPUDawnStoreCacheDataCallbackInfo.userdata2", WGPUDawnStoreCacheDataCallbackInfo, userdata2);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUDawnTexelCopyBufferRowAlignmentLimits", WGPUDawnTexelCopyBufferRowAlignmentLimits);
+    JADE_LAYOUT_MEMBER("WGPUDawnTexelCopyBufferRowAlignmentLimits.chain", WGPUDawnTexelCopyBufferRowAlignmentLimits, chain);
+    JADE_LAYOUT_MEMBER("WGPUDawnTexelCopyBufferRowAlignmentLimits.minTexelCopyBufferRowAlignment", WGPUDawnTexelCopyBufferRowAlignmentLimits, minTexelCopyBufferRowAlignment);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUDawnTextureInternalUsageDescriptor", WGPUDawnTextureInternalUsageDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUDawnTextureInternalUsageDescriptor.chain", WGPUDawnTextureInternalUsageDescriptor, chain);
+    JADE_LAYOUT_MEMBER("WGPUDawnTextureInternalUsageDescriptor.internalUsage", WGPUDawnTextureInternalUsageDescriptor, internalUsage);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUDawnTogglesDescriptor", WGPUDawnTogglesDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUDawnTogglesDescriptor.chain", WGPUDawnTogglesDescriptor, chain);
+    JADE_LAYOUT_MEMBER("WGPUDawnTogglesDescriptor.enabledToggleCount", WGPUDawnTogglesDescriptor, enabledToggleCount);
+    JADE_LAYOUT_MEMBER("WGPUDawnTogglesDescriptor.enabledToggles", WGPUDawnTogglesDescriptor, enabledToggles);
+    JADE_LAYOUT_MEMBER("WGPUDawnTogglesDescriptor.disabledToggleCount", WGPUDawnTogglesDescriptor, disabledToggleCount);
+    JADE_LAYOUT_MEMBER("WGPUDawnTogglesDescriptor.disabledToggles", WGPUDawnTogglesDescriptor, disabledToggles);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUDawnWGSLBlocklist", WGPUDawnWGSLBlocklist);
+    JADE_LAYOUT_MEMBER("WGPUDawnWGSLBlocklist.chain", WGPUDawnWGSLBlocklist, chain);
+    JADE_LAYOUT_MEMBER("WGPUDawnWGSLBlocklist.blocklistedFeatureCount", WGPUDawnWGSLBlocklist, blocklistedFeatureCount);
+    JADE_LAYOUT_MEMBER("WGPUDawnWGSLBlocklist.blocklistedFeatures", WGPUDawnWGSLBlocklist, blocklistedFeatures);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUDawnWireWGSLControl", WGPUDawnWireWGSLControl);
+    JADE_LAYOUT_MEMBER("WGPUDawnWireWGSLControl.chain", WGPUDawnWireWGSLControl, chain);
+    JADE_LAYOUT_MEMBER("WGPUDawnWireWGSLControl.enableExperimental", WGPUDawnWireWGSLControl, enableExperimental);
+    JADE_LAYOUT_MEMBER("WGPUDawnWireWGSLControl.enableUnsafe", WGPUDawnWireWGSLControl, enableUnsafe);
+    JADE_LAYOUT_MEMBER("WGPUDawnWireWGSLControl.enableTesting", WGPUDawnWireWGSLControl, enableTesting);
+    #endif
+    JADE_LAYOUT_RECORD("WGPUDepthStencilState", WGPUDepthStencilState);
+    JADE_LAYOUT_MEMBER("WGPUDepthStencilState.nextInChain", WGPUDepthStencilState, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUDepthStencilState.format", WGPUDepthStencilState, format);
+    JADE_LAYOUT_MEMBER("WGPUDepthStencilState.depthWriteEnabled", WGPUDepthStencilState, depthWriteEnabled);
+    JADE_LAYOUT_MEMBER("WGPUDepthStencilState.depthCompare", WGPUDepthStencilState, depthCompare);
+    JADE_LAYOUT_MEMBER("WGPUDepthStencilState.stencilFront", WGPUDepthStencilState, stencilFront);
+    JADE_LAYOUT_MEMBER("WGPUDepthStencilState.stencilBack", WGPUDepthStencilState, stencilBack);
+    JADE_LAYOUT_MEMBER("WGPUDepthStencilState.stencilReadMask", WGPUDepthStencilState, stencilReadMask);
+    JADE_LAYOUT_MEMBER("WGPUDepthStencilState.stencilWriteMask", WGPUDepthStencilState, stencilWriteMask);
+    JADE_LAYOUT_MEMBER("WGPUDepthStencilState.depthBias", WGPUDepthStencilState, depthBias);
+    JADE_LAYOUT_MEMBER("WGPUDepthStencilState.depthBiasSlopeScale", WGPUDepthStencilState, depthBiasSlopeScale);
+    JADE_LAYOUT_MEMBER("WGPUDepthStencilState.depthBiasClamp", WGPUDepthStencilState, depthBiasClamp);
+    JADE_LAYOUT_RECORD("WGPUDeviceDescriptor", WGPUDeviceDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUDeviceDescriptor.nextInChain", WGPUDeviceDescriptor, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUDeviceDescriptor.label", WGPUDeviceDescriptor, label);
+    JADE_LAYOUT_MEMBER("WGPUDeviceDescriptor.requiredFeatureCount", WGPUDeviceDescriptor, requiredFeatureCount);
+    JADE_LAYOUT_MEMBER("WGPUDeviceDescriptor.requiredFeatures", WGPUDeviceDescriptor, requiredFeatures);
+    JADE_LAYOUT_MEMBER("WGPUDeviceDescriptor.requiredLimits", WGPUDeviceDescriptor, requiredLimits);
+    JADE_LAYOUT_MEMBER("WGPUDeviceDescriptor.defaultQueue", WGPUDeviceDescriptor, defaultQueue);
+    JADE_LAYOUT_MEMBER("WGPUDeviceDescriptor.deviceLostCallbackInfo", WGPUDeviceDescriptor, deviceLostCallbackInfo);
+    JADE_LAYOUT_MEMBER("WGPUDeviceDescriptor.uncapturedErrorCallbackInfo", WGPUDeviceDescriptor, uncapturedErrorCallbackInfo);
+    JADE_LAYOUT_RECORD("WGPUDeviceLostCallbackInfo", WGPUDeviceLostCallbackInfo);
+    JADE_LAYOUT_MEMBER("WGPUDeviceLostCallbackInfo.nextInChain", WGPUDeviceLostCallbackInfo, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUDeviceLostCallbackInfo.mode", WGPUDeviceLostCallbackInfo, mode);
+    JADE_LAYOUT_MEMBER("WGPUDeviceLostCallbackInfo.callback", WGPUDeviceLostCallbackInfo, callback);
+    JADE_LAYOUT_MEMBER("WGPUDeviceLostCallbackInfo.userdata1", WGPUDeviceLostCallbackInfo, userdata1);
+    JADE_LAYOUT_MEMBER("WGPUDeviceLostCallbackInfo.userdata2", WGPUDeviceLostCallbackInfo, userdata2);
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUDisposeCallbackInfo", WGPUDisposeCallbackInfo);
+    JADE_LAYOUT_MEMBER("WGPUDisposeCallbackInfo.nextInChain", WGPUDisposeCallbackInfo, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUDisposeCallbackInfo.mode", WGPUDisposeCallbackInfo, mode);
+    JADE_LAYOUT_MEMBER("WGPUDisposeCallbackInfo.callback", WGPUDisposeCallbackInfo, callback);
+    JADE_LAYOUT_MEMBER("WGPUDisposeCallbackInfo.userdata1", WGPUDisposeCallbackInfo, userdata1);
+    JADE_LAYOUT_MEMBER("WGPUDisposeCallbackInfo.userdata2", WGPUDisposeCallbackInfo, userdata2);
+    #endif
+    #if defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUEmscriptenSurfaceSourceCanvasHTMLSelector", WGPUEmscriptenSurfaceSourceCanvasHTMLSelector);
+    JADE_LAYOUT_MEMBER("WGPUEmscriptenSurfaceSourceCanvasHTMLSelector.chain", WGPUEmscriptenSurfaceSourceCanvasHTMLSelector, chain);
+    JADE_LAYOUT_MEMBER("WGPUEmscriptenSurfaceSourceCanvasHTMLSelector.selector", WGPUEmscriptenSurfaceSourceCanvasHTMLSelector, selector);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUExtent2D", WGPUExtent2D);
+    JADE_LAYOUT_MEMBER("WGPUExtent2D.width", WGPUExtent2D, width);
+    JADE_LAYOUT_MEMBER("WGPUExtent2D.height", WGPUExtent2D, height);
+    #endif
+    JADE_LAYOUT_RECORD("WGPUExtent3D", WGPUExtent3D);
+    JADE_LAYOUT_MEMBER("WGPUExtent3D.width", WGPUExtent3D, width);
+    JADE_LAYOUT_MEMBER("WGPUExtent3D.height", WGPUExtent3D, height);
+    JADE_LAYOUT_MEMBER("WGPUExtent3D.depthOrArrayLayers", WGPUExtent3D, depthOrArrayLayers);
+    JADE_LAYOUT_RECORD("WGPUExternalTextureBindingEntry", WGPUExternalTextureBindingEntry);
+    JADE_LAYOUT_MEMBER("WGPUExternalTextureBindingEntry.chain", WGPUExternalTextureBindingEntry, chain);
+    JADE_LAYOUT_MEMBER("WGPUExternalTextureBindingEntry.externalTexture", WGPUExternalTextureBindingEntry, externalTexture);
+    JADE_LAYOUT_RECORD("WGPUExternalTextureBindingLayout", WGPUExternalTextureBindingLayout);
+    JADE_LAYOUT_MEMBER("WGPUExternalTextureBindingLayout.chain", WGPUExternalTextureBindingLayout, chain);
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUExternalTextureDescriptor", WGPUExternalTextureDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUExternalTextureDescriptor.nextInChain", WGPUExternalTextureDescriptor, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUExternalTextureDescriptor.label", WGPUExternalTextureDescriptor, label);
+    JADE_LAYOUT_MEMBER("WGPUExternalTextureDescriptor.plane0", WGPUExternalTextureDescriptor, plane0);
+    JADE_LAYOUT_MEMBER("WGPUExternalTextureDescriptor.plane1", WGPUExternalTextureDescriptor, plane1);
+    JADE_LAYOUT_MEMBER("WGPUExternalTextureDescriptor.cropOrigin", WGPUExternalTextureDescriptor, cropOrigin);
+    JADE_LAYOUT_MEMBER("WGPUExternalTextureDescriptor.cropSize", WGPUExternalTextureDescriptor, cropSize);
+    JADE_LAYOUT_MEMBER("WGPUExternalTextureDescriptor.apparentSize", WGPUExternalTextureDescriptor, apparentSize);
+    JADE_LAYOUT_MEMBER("WGPUExternalTextureDescriptor.doYuvToRgbConversionOnly", WGPUExternalTextureDescriptor, doYuvToRgbConversionOnly);
+    JADE_LAYOUT_MEMBER("WGPUExternalTextureDescriptor.yuvToRgbConversionMatrix", WGPUExternalTextureDescriptor, yuvToRgbConversionMatrix);
+    JADE_LAYOUT_MEMBER("WGPUExternalTextureDescriptor.srcTransferFunctionParameters", WGPUExternalTextureDescriptor, srcTransferFunctionParameters);
+    JADE_LAYOUT_MEMBER("WGPUExternalTextureDescriptor.dstTransferFunctionParameters", WGPUExternalTextureDescriptor, dstTransferFunctionParameters);
+    JADE_LAYOUT_MEMBER("WGPUExternalTextureDescriptor.gamutConversionMatrix", WGPUExternalTextureDescriptor, gamutConversionMatrix);
+    JADE_LAYOUT_MEMBER("WGPUExternalTextureDescriptor.mirrored", WGPUExternalTextureDescriptor, mirrored);
+    JADE_LAYOUT_MEMBER("WGPUExternalTextureDescriptor.rotation", WGPUExternalTextureDescriptor, rotation);
+    #endif
+    JADE_LAYOUT_RECORD("WGPUFragmentState", WGPUFragmentState);
+    JADE_LAYOUT_MEMBER("WGPUFragmentState.nextInChain", WGPUFragmentState, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUFragmentState.module", WGPUFragmentState, module);
+    JADE_LAYOUT_MEMBER("WGPUFragmentState.entryPoint", WGPUFragmentState, entryPoint);
+    JADE_LAYOUT_MEMBER("WGPUFragmentState.constantCount", WGPUFragmentState, constantCount);
+    JADE_LAYOUT_MEMBER("WGPUFragmentState.constants", WGPUFragmentState, constants);
+    JADE_LAYOUT_MEMBER("WGPUFragmentState.targetCount", WGPUFragmentState, targetCount);
+    JADE_LAYOUT_MEMBER("WGPUFragmentState.targets", WGPUFragmentState, targets);
+    JADE_LAYOUT_RECORD("WGPUFuture", WGPUFuture);
+    JADE_LAYOUT_MEMBER("WGPUFuture.id", WGPUFuture, id);
+    JADE_LAYOUT_RECORD("WGPUFutureWaitInfo", WGPUFutureWaitInfo);
+    JADE_LAYOUT_MEMBER("WGPUFutureWaitInfo.future", WGPUFutureWaitInfo, future);
+    JADE_LAYOUT_MEMBER("WGPUFutureWaitInfo.completed", WGPUFutureWaitInfo, completed);
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUImageCopyExternalTexture", WGPUImageCopyExternalTexture);
+    JADE_LAYOUT_MEMBER("WGPUImageCopyExternalTexture.nextInChain", WGPUImageCopyExternalTexture, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUImageCopyExternalTexture.externalTexture", WGPUImageCopyExternalTexture, externalTexture);
+    JADE_LAYOUT_MEMBER("WGPUImageCopyExternalTexture.origin", WGPUImageCopyExternalTexture, origin);
+    JADE_LAYOUT_MEMBER("WGPUImageCopyExternalTexture.naturalSize", WGPUImageCopyExternalTexture, naturalSize);
+    #endif
+    JADE_LAYOUT_RECORD("WGPUInstanceDescriptor", WGPUInstanceDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUInstanceDescriptor.nextInChain", WGPUInstanceDescriptor, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUInstanceDescriptor.requiredFeatureCount", WGPUInstanceDescriptor, requiredFeatureCount);
+    JADE_LAYOUT_MEMBER("WGPUInstanceDescriptor.requiredFeatures", WGPUInstanceDescriptor, requiredFeatures);
+    JADE_LAYOUT_MEMBER("WGPUInstanceDescriptor.requiredLimits", WGPUInstanceDescriptor, requiredLimits);
+    JADE_LAYOUT_RECORD("WGPUInstanceLimits", WGPUInstanceLimits);
+    JADE_LAYOUT_MEMBER("WGPUInstanceLimits.nextInChain", WGPUInstanceLimits, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUInstanceLimits.timedWaitAnyMaxCount", WGPUInstanceLimits, timedWaitAnyMaxCount);
+    JADE_LAYOUT_RECORD("WGPULimits", WGPULimits);
+    JADE_LAYOUT_MEMBER("WGPULimits.nextInChain", WGPULimits, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPULimits.maxTextureDimension1D", WGPULimits, maxTextureDimension1D);
+    JADE_LAYOUT_MEMBER("WGPULimits.maxTextureDimension2D", WGPULimits, maxTextureDimension2D);
+    JADE_LAYOUT_MEMBER("WGPULimits.maxTextureDimension3D", WGPULimits, maxTextureDimension3D);
+    JADE_LAYOUT_MEMBER("WGPULimits.maxTextureArrayLayers", WGPULimits, maxTextureArrayLayers);
+    JADE_LAYOUT_MEMBER("WGPULimits.maxBindGroups", WGPULimits, maxBindGroups);
+    JADE_LAYOUT_MEMBER("WGPULimits.maxBindGroupsPlusVertexBuffers", WGPULimits, maxBindGroupsPlusVertexBuffers);
+    JADE_LAYOUT_MEMBER("WGPULimits.maxBindingsPerBindGroup", WGPULimits, maxBindingsPerBindGroup);
+    JADE_LAYOUT_MEMBER("WGPULimits.maxDynamicUniformBuffersPerPipelineLayout", WGPULimits, maxDynamicUniformBuffersPerPipelineLayout);
+    JADE_LAYOUT_MEMBER("WGPULimits.maxDynamicStorageBuffersPerPipelineLayout", WGPULimits, maxDynamicStorageBuffersPerPipelineLayout);
+    JADE_LAYOUT_MEMBER("WGPULimits.maxSampledTexturesPerShaderStage", WGPULimits, maxSampledTexturesPerShaderStage);
+    JADE_LAYOUT_MEMBER("WGPULimits.maxSamplersPerShaderStage", WGPULimits, maxSamplersPerShaderStage);
+    JADE_LAYOUT_MEMBER("WGPULimits.maxStorageBuffersPerShaderStage", WGPULimits, maxStorageBuffersPerShaderStage);
+    JADE_LAYOUT_MEMBER("WGPULimits.maxStorageTexturesPerShaderStage", WGPULimits, maxStorageTexturesPerShaderStage);
+    JADE_LAYOUT_MEMBER("WGPULimits.maxUniformBuffersPerShaderStage", WGPULimits, maxUniformBuffersPerShaderStage);
+    JADE_LAYOUT_MEMBER("WGPULimits.maxUniformBufferBindingSize", WGPULimits, maxUniformBufferBindingSize);
+    JADE_LAYOUT_MEMBER("WGPULimits.maxStorageBufferBindingSize", WGPULimits, maxStorageBufferBindingSize);
+    JADE_LAYOUT_MEMBER("WGPULimits.minUniformBufferOffsetAlignment", WGPULimits, minUniformBufferOffsetAlignment);
+    JADE_LAYOUT_MEMBER("WGPULimits.minStorageBufferOffsetAlignment", WGPULimits, minStorageBufferOffsetAlignment);
+    JADE_LAYOUT_MEMBER("WGPULimits.maxVertexBuffers", WGPULimits, maxVertexBuffers);
+    JADE_LAYOUT_MEMBER("WGPULimits.maxBufferSize", WGPULimits, maxBufferSize);
+    JADE_LAYOUT_MEMBER("WGPULimits.maxVertexAttributes", WGPULimits, maxVertexAttributes);
+    JADE_LAYOUT_MEMBER("WGPULimits.maxVertexBufferArrayStride", WGPULimits, maxVertexBufferArrayStride);
+    JADE_LAYOUT_MEMBER("WGPULimits.maxInterStageShaderVariables", WGPULimits, maxInterStageShaderVariables);
+    JADE_LAYOUT_MEMBER("WGPULimits.maxColorAttachments", WGPULimits, maxColorAttachments);
+    JADE_LAYOUT_MEMBER("WGPULimits.maxColorAttachmentBytesPerSample", WGPULimits, maxColorAttachmentBytesPerSample);
+    JADE_LAYOUT_MEMBER("WGPULimits.maxComputeWorkgroupStorageSize", WGPULimits, maxComputeWorkgroupStorageSize);
+    JADE_LAYOUT_MEMBER("WGPULimits.maxComputeInvocationsPerWorkgroup", WGPULimits, maxComputeInvocationsPerWorkgroup);
+    JADE_LAYOUT_MEMBER("WGPULimits.maxComputeWorkgroupSizeX", WGPULimits, maxComputeWorkgroupSizeX);
+    JADE_LAYOUT_MEMBER("WGPULimits.maxComputeWorkgroupSizeY", WGPULimits, maxComputeWorkgroupSizeY);
+    JADE_LAYOUT_MEMBER("WGPULimits.maxComputeWorkgroupSizeZ", WGPULimits, maxComputeWorkgroupSizeZ);
+    JADE_LAYOUT_MEMBER("WGPULimits.maxComputeWorkgroupsPerDimension", WGPULimits, maxComputeWorkgroupsPerDimension);
+    JADE_LAYOUT_MEMBER("WGPULimits.maxImmediateSize", WGPULimits, maxImmediateSize);
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPULoggingCallbackInfo", WGPULoggingCallbackInfo);
+    JADE_LAYOUT_MEMBER("WGPULoggingCallbackInfo.nextInChain", WGPULoggingCallbackInfo, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPULoggingCallbackInfo.callback", WGPULoggingCallbackInfo, callback);
+    JADE_LAYOUT_MEMBER("WGPULoggingCallbackInfo.userdata1", WGPULoggingCallbackInfo, userdata1);
+    JADE_LAYOUT_MEMBER("WGPULoggingCallbackInfo.userdata2", WGPULoggingCallbackInfo, userdata2);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUMemoryHeapInfo", WGPUMemoryHeapInfo);
+    JADE_LAYOUT_MEMBER("WGPUMemoryHeapInfo.properties", WGPUMemoryHeapInfo, properties);
+    JADE_LAYOUT_MEMBER("WGPUMemoryHeapInfo.size", WGPUMemoryHeapInfo, size);
+    #endif
+    JADE_LAYOUT_RECORD("WGPUMultisampleState", WGPUMultisampleState);
+    JADE_LAYOUT_MEMBER("WGPUMultisampleState.nextInChain", WGPUMultisampleState, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUMultisampleState.count", WGPUMultisampleState, count);
+    JADE_LAYOUT_MEMBER("WGPUMultisampleState.mask", WGPUMultisampleState, mask);
+    JADE_LAYOUT_MEMBER("WGPUMultisampleState.alphaToCoverageEnabled", WGPUMultisampleState, alphaToCoverageEnabled);
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUOrigin2D", WGPUOrigin2D);
+    JADE_LAYOUT_MEMBER("WGPUOrigin2D.x", WGPUOrigin2D, x);
+    JADE_LAYOUT_MEMBER("WGPUOrigin2D.y", WGPUOrigin2D, y);
+    #endif
+    JADE_LAYOUT_RECORD("WGPUOrigin3D", WGPUOrigin3D);
+    JADE_LAYOUT_MEMBER("WGPUOrigin3D.x", WGPUOrigin3D, x);
+    JADE_LAYOUT_MEMBER("WGPUOrigin3D.y", WGPUOrigin3D, y);
+    JADE_LAYOUT_MEMBER("WGPUOrigin3D.z", WGPUOrigin3D, z);
+    JADE_LAYOUT_RECORD("WGPUPassTimestampWrites", WGPUPassTimestampWrites);
+    JADE_LAYOUT_MEMBER("WGPUPassTimestampWrites.nextInChain", WGPUPassTimestampWrites, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUPassTimestampWrites.querySet", WGPUPassTimestampWrites, querySet);
+    JADE_LAYOUT_MEMBER("WGPUPassTimestampWrites.beginningOfPassWriteIndex", WGPUPassTimestampWrites, beginningOfPassWriteIndex);
+    JADE_LAYOUT_MEMBER("WGPUPassTimestampWrites.endOfPassWriteIndex", WGPUPassTimestampWrites, endOfPassWriteIndex);
+    JADE_LAYOUT_RECORD("WGPUPipelineLayoutDescriptor", WGPUPipelineLayoutDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUPipelineLayoutDescriptor.nextInChain", WGPUPipelineLayoutDescriptor, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUPipelineLayoutDescriptor.label", WGPUPipelineLayoutDescriptor, label);
+    JADE_LAYOUT_MEMBER("WGPUPipelineLayoutDescriptor.bindGroupLayoutCount", WGPUPipelineLayoutDescriptor, bindGroupLayoutCount);
+    JADE_LAYOUT_MEMBER("WGPUPipelineLayoutDescriptor.bindGroupLayouts", WGPUPipelineLayoutDescriptor, bindGroupLayouts);
+    JADE_LAYOUT_MEMBER("WGPUPipelineLayoutDescriptor.immediateSize", WGPUPipelineLayoutDescriptor, immediateSize);
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUPipelineLayoutPixelLocalStorage", WGPUPipelineLayoutPixelLocalStorage);
+    JADE_LAYOUT_MEMBER("WGPUPipelineLayoutPixelLocalStorage.chain", WGPUPipelineLayoutPixelLocalStorage, chain);
+    JADE_LAYOUT_MEMBER("WGPUPipelineLayoutPixelLocalStorage.totalPixelLocalStorageSize", WGPUPipelineLayoutPixelLocalStorage, totalPixelLocalStorageSize);
+    JADE_LAYOUT_MEMBER("WGPUPipelineLayoutPixelLocalStorage.storageAttachmentCount", WGPUPipelineLayoutPixelLocalStorage, storageAttachmentCount);
+    JADE_LAYOUT_MEMBER("WGPUPipelineLayoutPixelLocalStorage.storageAttachments", WGPUPipelineLayoutPixelLocalStorage, storageAttachments);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUPipelineLayoutResourceTable", WGPUPipelineLayoutResourceTable);
+    JADE_LAYOUT_MEMBER("WGPUPipelineLayoutResourceTable.chain", WGPUPipelineLayoutResourceTable, chain);
+    JADE_LAYOUT_MEMBER("WGPUPipelineLayoutResourceTable.usesResourceTable", WGPUPipelineLayoutResourceTable, usesResourceTable);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUPipelineLayoutStorageAttachment", WGPUPipelineLayoutStorageAttachment);
+    JADE_LAYOUT_MEMBER("WGPUPipelineLayoutStorageAttachment.nextInChain", WGPUPipelineLayoutStorageAttachment, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUPipelineLayoutStorageAttachment.offset", WGPUPipelineLayoutStorageAttachment, offset);
+    JADE_LAYOUT_MEMBER("WGPUPipelineLayoutStorageAttachment.format", WGPUPipelineLayoutStorageAttachment, format);
+    #endif
+    JADE_LAYOUT_RECORD("WGPUPopErrorScopeCallbackInfo", WGPUPopErrorScopeCallbackInfo);
+    JADE_LAYOUT_MEMBER("WGPUPopErrorScopeCallbackInfo.nextInChain", WGPUPopErrorScopeCallbackInfo, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUPopErrorScopeCallbackInfo.mode", WGPUPopErrorScopeCallbackInfo, mode);
+    JADE_LAYOUT_MEMBER("WGPUPopErrorScopeCallbackInfo.callback", WGPUPopErrorScopeCallbackInfo, callback);
+    JADE_LAYOUT_MEMBER("WGPUPopErrorScopeCallbackInfo.userdata1", WGPUPopErrorScopeCallbackInfo, userdata1);
+    JADE_LAYOUT_MEMBER("WGPUPopErrorScopeCallbackInfo.userdata2", WGPUPopErrorScopeCallbackInfo, userdata2);
+    JADE_LAYOUT_RECORD("WGPUPrimitiveState", WGPUPrimitiveState);
+    JADE_LAYOUT_MEMBER("WGPUPrimitiveState.nextInChain", WGPUPrimitiveState, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUPrimitiveState.topology", WGPUPrimitiveState, topology);
+    JADE_LAYOUT_MEMBER("WGPUPrimitiveState.stripIndexFormat", WGPUPrimitiveState, stripIndexFormat);
+    JADE_LAYOUT_MEMBER("WGPUPrimitiveState.frontFace", WGPUPrimitiveState, frontFace);
+    JADE_LAYOUT_MEMBER("WGPUPrimitiveState.cullMode", WGPUPrimitiveState, cullMode);
+    JADE_LAYOUT_MEMBER("WGPUPrimitiveState.unclippedDepth", WGPUPrimitiveState, unclippedDepth);
+    JADE_LAYOUT_RECORD("WGPUQuerySetDescriptor", WGPUQuerySetDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUQuerySetDescriptor.nextInChain", WGPUQuerySetDescriptor, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUQuerySetDescriptor.label", WGPUQuerySetDescriptor, label);
+    JADE_LAYOUT_MEMBER("WGPUQuerySetDescriptor.type", WGPUQuerySetDescriptor, type);
+    JADE_LAYOUT_MEMBER("WGPUQuerySetDescriptor.count", WGPUQuerySetDescriptor, count);
+    JADE_LAYOUT_RECORD("WGPUQueueDescriptor", WGPUQueueDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUQueueDescriptor.nextInChain", WGPUQueueDescriptor, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUQueueDescriptor.label", WGPUQueueDescriptor, label);
+    JADE_LAYOUT_RECORD("WGPUQueueWorkDoneCallbackInfo", WGPUQueueWorkDoneCallbackInfo);
+    JADE_LAYOUT_MEMBER("WGPUQueueWorkDoneCallbackInfo.nextInChain", WGPUQueueWorkDoneCallbackInfo, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUQueueWorkDoneCallbackInfo.mode", WGPUQueueWorkDoneCallbackInfo, mode);
+    JADE_LAYOUT_MEMBER("WGPUQueueWorkDoneCallbackInfo.callback", WGPUQueueWorkDoneCallbackInfo, callback);
+    JADE_LAYOUT_MEMBER("WGPUQueueWorkDoneCallbackInfo.userdata1", WGPUQueueWorkDoneCallbackInfo, userdata1);
+    JADE_LAYOUT_MEMBER("WGPUQueueWorkDoneCallbackInfo.userdata2", WGPUQueueWorkDoneCallbackInfo, userdata2);
+    JADE_LAYOUT_RECORD("WGPURenderBundleDescriptor", WGPURenderBundleDescriptor);
+    JADE_LAYOUT_MEMBER("WGPURenderBundleDescriptor.nextInChain", WGPURenderBundleDescriptor, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPURenderBundleDescriptor.label", WGPURenderBundleDescriptor, label);
+    JADE_LAYOUT_RECORD("WGPURenderBundleEncoderDescriptor", WGPURenderBundleEncoderDescriptor);
+    JADE_LAYOUT_MEMBER("WGPURenderBundleEncoderDescriptor.nextInChain", WGPURenderBundleEncoderDescriptor, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPURenderBundleEncoderDescriptor.label", WGPURenderBundleEncoderDescriptor, label);
+    JADE_LAYOUT_MEMBER("WGPURenderBundleEncoderDescriptor.colorFormatCount", WGPURenderBundleEncoderDescriptor, colorFormatCount);
+    JADE_LAYOUT_MEMBER("WGPURenderBundleEncoderDescriptor.colorFormats", WGPURenderBundleEncoderDescriptor, colorFormats);
+    JADE_LAYOUT_MEMBER("WGPURenderBundleEncoderDescriptor.depthStencilFormat", WGPURenderBundleEncoderDescriptor, depthStencilFormat);
+    JADE_LAYOUT_MEMBER("WGPURenderBundleEncoderDescriptor.sampleCount", WGPURenderBundleEncoderDescriptor, sampleCount);
+    JADE_LAYOUT_MEMBER("WGPURenderBundleEncoderDescriptor.depthReadOnly", WGPURenderBundleEncoderDescriptor, depthReadOnly);
+    JADE_LAYOUT_MEMBER("WGPURenderBundleEncoderDescriptor.stencilReadOnly", WGPURenderBundleEncoderDescriptor, stencilReadOnly);
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPURenderBundleEncoderResourceTable", WGPURenderBundleEncoderResourceTable);
+    JADE_LAYOUT_MEMBER("WGPURenderBundleEncoderResourceTable.chain", WGPURenderBundleEncoderResourceTable, chain);
+    JADE_LAYOUT_MEMBER("WGPURenderBundleEncoderResourceTable.usesResourceTable", WGPURenderBundleEncoderResourceTable, usesResourceTable);
+    #endif
+    JADE_LAYOUT_RECORD("WGPURenderPassColorAttachment", WGPURenderPassColorAttachment);
+    JADE_LAYOUT_MEMBER("WGPURenderPassColorAttachment.nextInChain", WGPURenderPassColorAttachment, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPURenderPassColorAttachment.view", WGPURenderPassColorAttachment, view);
+    JADE_LAYOUT_MEMBER("WGPURenderPassColorAttachment.depthSlice", WGPURenderPassColorAttachment, depthSlice);
+    JADE_LAYOUT_MEMBER("WGPURenderPassColorAttachment.resolveTarget", WGPURenderPassColorAttachment, resolveTarget);
+    JADE_LAYOUT_MEMBER("WGPURenderPassColorAttachment.loadOp", WGPURenderPassColorAttachment, loadOp);
+    JADE_LAYOUT_MEMBER("WGPURenderPassColorAttachment.storeOp", WGPURenderPassColorAttachment, storeOp);
+    JADE_LAYOUT_MEMBER("WGPURenderPassColorAttachment.clearValue", WGPURenderPassColorAttachment, clearValue);
+    JADE_LAYOUT_RECORD("WGPURenderPassDepthStencilAttachment", WGPURenderPassDepthStencilAttachment);
+    JADE_LAYOUT_MEMBER("WGPURenderPassDepthStencilAttachment.nextInChain", WGPURenderPassDepthStencilAttachment, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPURenderPassDepthStencilAttachment.view", WGPURenderPassDepthStencilAttachment, view);
+    JADE_LAYOUT_MEMBER("WGPURenderPassDepthStencilAttachment.depthLoadOp", WGPURenderPassDepthStencilAttachment, depthLoadOp);
+    JADE_LAYOUT_MEMBER("WGPURenderPassDepthStencilAttachment.depthStoreOp", WGPURenderPassDepthStencilAttachment, depthStoreOp);
+    JADE_LAYOUT_MEMBER("WGPURenderPassDepthStencilAttachment.depthClearValue", WGPURenderPassDepthStencilAttachment, depthClearValue);
+    JADE_LAYOUT_MEMBER("WGPURenderPassDepthStencilAttachment.depthReadOnly", WGPURenderPassDepthStencilAttachment, depthReadOnly);
+    JADE_LAYOUT_MEMBER("WGPURenderPassDepthStencilAttachment.stencilLoadOp", WGPURenderPassDepthStencilAttachment, stencilLoadOp);
+    JADE_LAYOUT_MEMBER("WGPURenderPassDepthStencilAttachment.stencilStoreOp", WGPURenderPassDepthStencilAttachment, stencilStoreOp);
+    JADE_LAYOUT_MEMBER("WGPURenderPassDepthStencilAttachment.stencilClearValue", WGPURenderPassDepthStencilAttachment, stencilClearValue);
+    JADE_LAYOUT_MEMBER("WGPURenderPassDepthStencilAttachment.stencilReadOnly", WGPURenderPassDepthStencilAttachment, stencilReadOnly);
+    JADE_LAYOUT_RECORD("WGPURenderPassDescriptor", WGPURenderPassDescriptor);
+    JADE_LAYOUT_MEMBER("WGPURenderPassDescriptor.nextInChain", WGPURenderPassDescriptor, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPURenderPassDescriptor.label", WGPURenderPassDescriptor, label);
+    JADE_LAYOUT_MEMBER("WGPURenderPassDescriptor.colorAttachmentCount", WGPURenderPassDescriptor, colorAttachmentCount);
+    JADE_LAYOUT_MEMBER("WGPURenderPassDescriptor.colorAttachments", WGPURenderPassDescriptor, colorAttachments);
+    JADE_LAYOUT_MEMBER("WGPURenderPassDescriptor.depthStencilAttachment", WGPURenderPassDescriptor, depthStencilAttachment);
+    JADE_LAYOUT_MEMBER("WGPURenderPassDescriptor.occlusionQuerySet", WGPURenderPassDescriptor, occlusionQuerySet);
+    JADE_LAYOUT_MEMBER("WGPURenderPassDescriptor.timestampWrites", WGPURenderPassDescriptor, timestampWrites);
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPURenderPassDescriptorResolveRect", WGPURenderPassDescriptorResolveRect);
+    JADE_LAYOUT_MEMBER("WGPURenderPassDescriptorResolveRect.chain", WGPURenderPassDescriptorResolveRect, chain);
+    JADE_LAYOUT_MEMBER("WGPURenderPassDescriptorResolveRect.colorOffsetX", WGPURenderPassDescriptorResolveRect, colorOffsetX);
+    JADE_LAYOUT_MEMBER("WGPURenderPassDescriptorResolveRect.colorOffsetY", WGPURenderPassDescriptorResolveRect, colorOffsetY);
+    JADE_LAYOUT_MEMBER("WGPURenderPassDescriptorResolveRect.resolveOffsetX", WGPURenderPassDescriptorResolveRect, resolveOffsetX);
+    JADE_LAYOUT_MEMBER("WGPURenderPassDescriptorResolveRect.resolveOffsetY", WGPURenderPassDescriptorResolveRect, resolveOffsetY);
+    JADE_LAYOUT_MEMBER("WGPURenderPassDescriptorResolveRect.width", WGPURenderPassDescriptorResolveRect, width);
+    JADE_LAYOUT_MEMBER("WGPURenderPassDescriptorResolveRect.height", WGPURenderPassDescriptorResolveRect, height);
+    #endif
+    JADE_LAYOUT_RECORD("WGPURenderPassMaxDrawCount", WGPURenderPassMaxDrawCount);
+    JADE_LAYOUT_MEMBER("WGPURenderPassMaxDrawCount.chain", WGPURenderPassMaxDrawCount, chain);
+    JADE_LAYOUT_MEMBER("WGPURenderPassMaxDrawCount.maxDrawCount", WGPURenderPassMaxDrawCount, maxDrawCount);
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPURenderPassPixelLocalStorage", WGPURenderPassPixelLocalStorage);
+    JADE_LAYOUT_MEMBER("WGPURenderPassPixelLocalStorage.chain", WGPURenderPassPixelLocalStorage, chain);
+    JADE_LAYOUT_MEMBER("WGPURenderPassPixelLocalStorage.totalPixelLocalStorageSize", WGPURenderPassPixelLocalStorage, totalPixelLocalStorageSize);
+    JADE_LAYOUT_MEMBER("WGPURenderPassPixelLocalStorage.storageAttachmentCount", WGPURenderPassPixelLocalStorage, storageAttachmentCount);
+    JADE_LAYOUT_MEMBER("WGPURenderPassPixelLocalStorage.storageAttachments", WGPURenderPassPixelLocalStorage, storageAttachments);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPURenderPassRenderAreaRect", WGPURenderPassRenderAreaRect);
+    JADE_LAYOUT_MEMBER("WGPURenderPassRenderAreaRect.chain", WGPURenderPassRenderAreaRect, chain);
+    JADE_LAYOUT_MEMBER("WGPURenderPassRenderAreaRect.origin", WGPURenderPassRenderAreaRect, origin);
+    JADE_LAYOUT_MEMBER("WGPURenderPassRenderAreaRect.size", WGPURenderPassRenderAreaRect, size);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPURenderPassStorageAttachment", WGPURenderPassStorageAttachment);
+    JADE_LAYOUT_MEMBER("WGPURenderPassStorageAttachment.nextInChain", WGPURenderPassStorageAttachment, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPURenderPassStorageAttachment.offset", WGPURenderPassStorageAttachment, offset);
+    JADE_LAYOUT_MEMBER("WGPURenderPassStorageAttachment.storage", WGPURenderPassStorageAttachment, storage);
+    JADE_LAYOUT_MEMBER("WGPURenderPassStorageAttachment.loadOp", WGPURenderPassStorageAttachment, loadOp);
+    JADE_LAYOUT_MEMBER("WGPURenderPassStorageAttachment.storeOp", WGPURenderPassStorageAttachment, storeOp);
+    JADE_LAYOUT_MEMBER("WGPURenderPassStorageAttachment.clearValue", WGPURenderPassStorageAttachment, clearValue);
+    #endif
+    JADE_LAYOUT_RECORD("WGPURenderPipelineDescriptor", WGPURenderPipelineDescriptor);
+    JADE_LAYOUT_MEMBER("WGPURenderPipelineDescriptor.nextInChain", WGPURenderPipelineDescriptor, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPURenderPipelineDescriptor.label", WGPURenderPipelineDescriptor, label);
+    JADE_LAYOUT_MEMBER("WGPURenderPipelineDescriptor.layout", WGPURenderPipelineDescriptor, layout);
+    JADE_LAYOUT_MEMBER("WGPURenderPipelineDescriptor.vertex", WGPURenderPipelineDescriptor, vertex);
+    JADE_LAYOUT_MEMBER("WGPURenderPipelineDescriptor.primitive", WGPURenderPipelineDescriptor, primitive);
+    JADE_LAYOUT_MEMBER("WGPURenderPipelineDescriptor.depthStencil", WGPURenderPipelineDescriptor, depthStencil);
+    JADE_LAYOUT_MEMBER("WGPURenderPipelineDescriptor.multisample", WGPURenderPipelineDescriptor, multisample);
+    JADE_LAYOUT_MEMBER("WGPURenderPipelineDescriptor.fragment", WGPURenderPipelineDescriptor, fragment);
+    JADE_LAYOUT_RECORD("WGPURequestAdapterCallbackInfo", WGPURequestAdapterCallbackInfo);
+    JADE_LAYOUT_MEMBER("WGPURequestAdapterCallbackInfo.nextInChain", WGPURequestAdapterCallbackInfo, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPURequestAdapterCallbackInfo.mode", WGPURequestAdapterCallbackInfo, mode);
+    JADE_LAYOUT_MEMBER("WGPURequestAdapterCallbackInfo.callback", WGPURequestAdapterCallbackInfo, callback);
+    JADE_LAYOUT_MEMBER("WGPURequestAdapterCallbackInfo.userdata1", WGPURequestAdapterCallbackInfo, userdata1);
+    JADE_LAYOUT_MEMBER("WGPURequestAdapterCallbackInfo.userdata2", WGPURequestAdapterCallbackInfo, userdata2);
+    JADE_LAYOUT_RECORD("WGPURequestAdapterOptions", WGPURequestAdapterOptions);
+    JADE_LAYOUT_MEMBER("WGPURequestAdapterOptions.nextInChain", WGPURequestAdapterOptions, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPURequestAdapterOptions.featureLevel", WGPURequestAdapterOptions, featureLevel);
+    JADE_LAYOUT_MEMBER("WGPURequestAdapterOptions.powerPreference", WGPURequestAdapterOptions, powerPreference);
+    JADE_LAYOUT_MEMBER("WGPURequestAdapterOptions.forceFallbackAdapter", WGPURequestAdapterOptions, forceFallbackAdapter);
+    JADE_LAYOUT_MEMBER("WGPURequestAdapterOptions.backendType", WGPURequestAdapterOptions, backendType);
+    JADE_LAYOUT_MEMBER("WGPURequestAdapterOptions.compatibleSurface", WGPURequestAdapterOptions, compatibleSurface);
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPURequestAdapterWebGPUBackendOptions", WGPURequestAdapterWebGPUBackendOptions);
+    JADE_LAYOUT_MEMBER("WGPURequestAdapterWebGPUBackendOptions.chain", WGPURequestAdapterWebGPUBackendOptions, chain);
+    #endif
+    JADE_LAYOUT_RECORD("WGPURequestAdapterWebXROptions", WGPURequestAdapterWebXROptions);
+    JADE_LAYOUT_MEMBER("WGPURequestAdapterWebXROptions.chain", WGPURequestAdapterWebXROptions, chain);
+    JADE_LAYOUT_MEMBER("WGPURequestAdapterWebXROptions.xrCompatible", WGPURequestAdapterWebXROptions, xrCompatible);
+    JADE_LAYOUT_RECORD("WGPURequestDeviceCallbackInfo", WGPURequestDeviceCallbackInfo);
+    JADE_LAYOUT_MEMBER("WGPURequestDeviceCallbackInfo.nextInChain", WGPURequestDeviceCallbackInfo, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPURequestDeviceCallbackInfo.mode", WGPURequestDeviceCallbackInfo, mode);
+    JADE_LAYOUT_MEMBER("WGPURequestDeviceCallbackInfo.callback", WGPURequestDeviceCallbackInfo, callback);
+    JADE_LAYOUT_MEMBER("WGPURequestDeviceCallbackInfo.userdata1", WGPURequestDeviceCallbackInfo, userdata1);
+    JADE_LAYOUT_MEMBER("WGPURequestDeviceCallbackInfo.userdata2", WGPURequestDeviceCallbackInfo, userdata2);
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUResourceTableDescriptor", WGPUResourceTableDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUResourceTableDescriptor.nextInChain", WGPUResourceTableDescriptor, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUResourceTableDescriptor.label", WGPUResourceTableDescriptor, label);
+    JADE_LAYOUT_MEMBER("WGPUResourceTableDescriptor.size", WGPUResourceTableDescriptor, size);
+    #endif
+    JADE_LAYOUT_RECORD("WGPUSamplerBindingLayout", WGPUSamplerBindingLayout);
+    JADE_LAYOUT_MEMBER("WGPUSamplerBindingLayout.nextInChain", WGPUSamplerBindingLayout, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUSamplerBindingLayout.type", WGPUSamplerBindingLayout, type);
+    JADE_LAYOUT_RECORD("WGPUSamplerDescriptor", WGPUSamplerDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUSamplerDescriptor.nextInChain", WGPUSamplerDescriptor, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUSamplerDescriptor.label", WGPUSamplerDescriptor, label);
+    JADE_LAYOUT_MEMBER("WGPUSamplerDescriptor.addressModeU", WGPUSamplerDescriptor, addressModeU);
+    JADE_LAYOUT_MEMBER("WGPUSamplerDescriptor.addressModeV", WGPUSamplerDescriptor, addressModeV);
+    JADE_LAYOUT_MEMBER("WGPUSamplerDescriptor.addressModeW", WGPUSamplerDescriptor, addressModeW);
+    JADE_LAYOUT_MEMBER("WGPUSamplerDescriptor.magFilter", WGPUSamplerDescriptor, magFilter);
+    JADE_LAYOUT_MEMBER("WGPUSamplerDescriptor.minFilter", WGPUSamplerDescriptor, minFilter);
+    JADE_LAYOUT_MEMBER("WGPUSamplerDescriptor.mipmapFilter", WGPUSamplerDescriptor, mipmapFilter);
+    JADE_LAYOUT_MEMBER("WGPUSamplerDescriptor.lodMinClamp", WGPUSamplerDescriptor, lodMinClamp);
+    JADE_LAYOUT_MEMBER("WGPUSamplerDescriptor.lodMaxClamp", WGPUSamplerDescriptor, lodMaxClamp);
+    JADE_LAYOUT_MEMBER("WGPUSamplerDescriptor.compare", WGPUSamplerDescriptor, compare);
+    JADE_LAYOUT_MEMBER("WGPUSamplerDescriptor.maxAnisotropy", WGPUSamplerDescriptor, maxAnisotropy);
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUShaderModuleCompilationOptions", WGPUShaderModuleCompilationOptions);
+    JADE_LAYOUT_MEMBER("WGPUShaderModuleCompilationOptions.chain", WGPUShaderModuleCompilationOptions, chain);
+    JADE_LAYOUT_MEMBER("WGPUShaderModuleCompilationOptions.strictMath", WGPUShaderModuleCompilationOptions, strictMath);
+    #endif
+    JADE_LAYOUT_RECORD("WGPUShaderModuleDescriptor", WGPUShaderModuleDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUShaderModuleDescriptor.nextInChain", WGPUShaderModuleDescriptor, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUShaderModuleDescriptor.label", WGPUShaderModuleDescriptor, label);
+    JADE_LAYOUT_RECORD("WGPUShaderSourceSPIRV", WGPUShaderSourceSPIRV);
+    JADE_LAYOUT_MEMBER("WGPUShaderSourceSPIRV.chain", WGPUShaderSourceSPIRV, chain);
+    JADE_LAYOUT_MEMBER("WGPUShaderSourceSPIRV.codeSize", WGPUShaderSourceSPIRV, codeSize);
+    JADE_LAYOUT_MEMBER("WGPUShaderSourceSPIRV.code", WGPUShaderSourceSPIRV, code);
+    JADE_LAYOUT_RECORD("WGPUShaderSourceWGSL", WGPUShaderSourceWGSL);
+    JADE_LAYOUT_MEMBER("WGPUShaderSourceWGSL.chain", WGPUShaderSourceWGSL, chain);
+    JADE_LAYOUT_MEMBER("WGPUShaderSourceWGSL.code", WGPUShaderSourceWGSL, code);
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedBufferMemoryBeginAccessDescriptor", WGPUSharedBufferMemoryBeginAccessDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryBeginAccessDescriptor.nextInChain", WGPUSharedBufferMemoryBeginAccessDescriptor, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryBeginAccessDescriptor.initialized", WGPUSharedBufferMemoryBeginAccessDescriptor, initialized);
+    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryBeginAccessDescriptor.fenceCount", WGPUSharedBufferMemoryBeginAccessDescriptor, fenceCount);
+    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryBeginAccessDescriptor.fences", WGPUSharedBufferMemoryBeginAccessDescriptor, fences);
+    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryBeginAccessDescriptor.signaledValueCount", WGPUSharedBufferMemoryBeginAccessDescriptor, signaledValueCount);
+    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryBeginAccessDescriptor.signaledValues", WGPUSharedBufferMemoryBeginAccessDescriptor, signaledValues);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedBufferMemoryDescriptor", WGPUSharedBufferMemoryDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryDescriptor.nextInChain", WGPUSharedBufferMemoryDescriptor, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryDescriptor.label", WGPUSharedBufferMemoryDescriptor, label);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedBufferMemoryEndAccessState", WGPUSharedBufferMemoryEndAccessState);
+    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryEndAccessState.nextInChain", WGPUSharedBufferMemoryEndAccessState, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryEndAccessState.initialized", WGPUSharedBufferMemoryEndAccessState, initialized);
+    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryEndAccessState.fenceCount", WGPUSharedBufferMemoryEndAccessState, fenceCount);
+    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryEndAccessState.fences", WGPUSharedBufferMemoryEndAccessState, fences);
+    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryEndAccessState.signaledValueCount", WGPUSharedBufferMemoryEndAccessState, signaledValueCount);
+    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryEndAccessState.signaledValues", WGPUSharedBufferMemoryEndAccessState, signaledValues);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedBufferMemoryFromWindowsHandleDescriptor", WGPUSharedBufferMemoryFromWindowsHandleDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryFromWindowsHandleDescriptor.chain", WGPUSharedBufferMemoryFromWindowsHandleDescriptor, chain);
+    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryFromWindowsHandleDescriptor.handle", WGPUSharedBufferMemoryFromWindowsHandleDescriptor, handle);
+    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryFromWindowsHandleDescriptor.size", WGPUSharedBufferMemoryFromWindowsHandleDescriptor, size);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedBufferMemoryHostPointerDescriptor", WGPUSharedBufferMemoryHostPointerDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryHostPointerDescriptor.chain", WGPUSharedBufferMemoryHostPointerDescriptor, chain);
+    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryHostPointerDescriptor.pointer", WGPUSharedBufferMemoryHostPointerDescriptor, pointer);
+    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryHostPointerDescriptor.size", WGPUSharedBufferMemoryHostPointerDescriptor, size);
+    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryHostPointerDescriptor.disposeCallbackInfo", WGPUSharedBufferMemoryHostPointerDescriptor, disposeCallbackInfo);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedBufferMemoryProperties", WGPUSharedBufferMemoryProperties);
+    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryProperties.nextInChain", WGPUSharedBufferMemoryProperties, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryProperties.usage", WGPUSharedBufferMemoryProperties, usage);
+    JADE_LAYOUT_MEMBER("WGPUSharedBufferMemoryProperties.size", WGPUSharedBufferMemoryProperties, size);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedFenceDXGISharedHandleDescriptor", WGPUSharedFenceDXGISharedHandleDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUSharedFenceDXGISharedHandleDescriptor.chain", WGPUSharedFenceDXGISharedHandleDescriptor, chain);
+    JADE_LAYOUT_MEMBER("WGPUSharedFenceDXGISharedHandleDescriptor.handle", WGPUSharedFenceDXGISharedHandleDescriptor, handle);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedFenceDXGISharedHandleExportInfo", WGPUSharedFenceDXGISharedHandleExportInfo);
+    JADE_LAYOUT_MEMBER("WGPUSharedFenceDXGISharedHandleExportInfo.chain", WGPUSharedFenceDXGISharedHandleExportInfo, chain);
+    JADE_LAYOUT_MEMBER("WGPUSharedFenceDXGISharedHandleExportInfo.handle", WGPUSharedFenceDXGISharedHandleExportInfo, handle);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedFenceDescriptor", WGPUSharedFenceDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUSharedFenceDescriptor.nextInChain", WGPUSharedFenceDescriptor, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUSharedFenceDescriptor.label", WGPUSharedFenceDescriptor, label);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedFenceEGLSyncDescriptor", WGPUSharedFenceEGLSyncDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUSharedFenceEGLSyncDescriptor.chain", WGPUSharedFenceEGLSyncDescriptor, chain);
+    JADE_LAYOUT_MEMBER("WGPUSharedFenceEGLSyncDescriptor.sync", WGPUSharedFenceEGLSyncDescriptor, sync);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedFenceEGLSyncExportInfo", WGPUSharedFenceEGLSyncExportInfo);
+    JADE_LAYOUT_MEMBER("WGPUSharedFenceEGLSyncExportInfo.chain", WGPUSharedFenceEGLSyncExportInfo, chain);
+    JADE_LAYOUT_MEMBER("WGPUSharedFenceEGLSyncExportInfo.sync", WGPUSharedFenceEGLSyncExportInfo, sync);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedFenceExportInfo", WGPUSharedFenceExportInfo);
+    JADE_LAYOUT_MEMBER("WGPUSharedFenceExportInfo.nextInChain", WGPUSharedFenceExportInfo, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUSharedFenceExportInfo.type", WGPUSharedFenceExportInfo, type);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedFenceMTLSharedEventDescriptor", WGPUSharedFenceMTLSharedEventDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUSharedFenceMTLSharedEventDescriptor.chain", WGPUSharedFenceMTLSharedEventDescriptor, chain);
+    JADE_LAYOUT_MEMBER("WGPUSharedFenceMTLSharedEventDescriptor.sharedEvent", WGPUSharedFenceMTLSharedEventDescriptor, sharedEvent);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedFenceMTLSharedEventExportInfo", WGPUSharedFenceMTLSharedEventExportInfo);
+    JADE_LAYOUT_MEMBER("WGPUSharedFenceMTLSharedEventExportInfo.chain", WGPUSharedFenceMTLSharedEventExportInfo, chain);
+    JADE_LAYOUT_MEMBER("WGPUSharedFenceMTLSharedEventExportInfo.sharedEvent", WGPUSharedFenceMTLSharedEventExportInfo, sharedEvent);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedFenceSyncFDDescriptor", WGPUSharedFenceSyncFDDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUSharedFenceSyncFDDescriptor.chain", WGPUSharedFenceSyncFDDescriptor, chain);
+    JADE_LAYOUT_MEMBER("WGPUSharedFenceSyncFDDescriptor.handle", WGPUSharedFenceSyncFDDescriptor, handle);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedFenceSyncFDExportInfo", WGPUSharedFenceSyncFDExportInfo);
+    JADE_LAYOUT_MEMBER("WGPUSharedFenceSyncFDExportInfo.chain", WGPUSharedFenceSyncFDExportInfo, chain);
+    JADE_LAYOUT_MEMBER("WGPUSharedFenceSyncFDExportInfo.handle", WGPUSharedFenceSyncFDExportInfo, handle);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedFenceVkSemaphoreOpaqueFDDescriptor", WGPUSharedFenceVkSemaphoreOpaqueFDDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUSharedFenceVkSemaphoreOpaqueFDDescriptor.chain", WGPUSharedFenceVkSemaphoreOpaqueFDDescriptor, chain);
+    JADE_LAYOUT_MEMBER("WGPUSharedFenceVkSemaphoreOpaqueFDDescriptor.handle", WGPUSharedFenceVkSemaphoreOpaqueFDDescriptor, handle);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedFenceVkSemaphoreOpaqueFDExportInfo", WGPUSharedFenceVkSemaphoreOpaqueFDExportInfo);
+    JADE_LAYOUT_MEMBER("WGPUSharedFenceVkSemaphoreOpaqueFDExportInfo.chain", WGPUSharedFenceVkSemaphoreOpaqueFDExportInfo, chain);
+    JADE_LAYOUT_MEMBER("WGPUSharedFenceVkSemaphoreOpaqueFDExportInfo.handle", WGPUSharedFenceVkSemaphoreOpaqueFDExportInfo, handle);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedFenceVkSemaphoreZirconHandleDescriptor", WGPUSharedFenceVkSemaphoreZirconHandleDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUSharedFenceVkSemaphoreZirconHandleDescriptor.chain", WGPUSharedFenceVkSemaphoreZirconHandleDescriptor, chain);
+    JADE_LAYOUT_MEMBER("WGPUSharedFenceVkSemaphoreZirconHandleDescriptor.handle", WGPUSharedFenceVkSemaphoreZirconHandleDescriptor, handle);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedFenceVkSemaphoreZirconHandleExportInfo", WGPUSharedFenceVkSemaphoreZirconHandleExportInfo);
+    JADE_LAYOUT_MEMBER("WGPUSharedFenceVkSemaphoreZirconHandleExportInfo.chain", WGPUSharedFenceVkSemaphoreZirconHandleExportInfo, chain);
+    JADE_LAYOUT_MEMBER("WGPUSharedFenceVkSemaphoreZirconHandleExportInfo.handle", WGPUSharedFenceVkSemaphoreZirconHandleExportInfo, handle);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedTextureMemoryAHardwareBufferDescriptor", WGPUSharedTextureMemoryAHardwareBufferDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryAHardwareBufferDescriptor.chain", WGPUSharedTextureMemoryAHardwareBufferDescriptor, chain);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryAHardwareBufferDescriptor.handle", WGPUSharedTextureMemoryAHardwareBufferDescriptor, handle);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedTextureMemoryAHardwareBufferProperties", WGPUSharedTextureMemoryAHardwareBufferProperties);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryAHardwareBufferProperties.chain", WGPUSharedTextureMemoryAHardwareBufferProperties, chain);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryAHardwareBufferProperties.yCbCrInfo", WGPUSharedTextureMemoryAHardwareBufferProperties, yCbCrInfo);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedTextureMemoryBeginAccessDescriptor", WGPUSharedTextureMemoryBeginAccessDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryBeginAccessDescriptor.nextInChain", WGPUSharedTextureMemoryBeginAccessDescriptor, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryBeginAccessDescriptor.concurrentRead", WGPUSharedTextureMemoryBeginAccessDescriptor, concurrentRead);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryBeginAccessDescriptor.initialized", WGPUSharedTextureMemoryBeginAccessDescriptor, initialized);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryBeginAccessDescriptor.fenceCount", WGPUSharedTextureMemoryBeginAccessDescriptor, fenceCount);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryBeginAccessDescriptor.fences", WGPUSharedTextureMemoryBeginAccessDescriptor, fences);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryBeginAccessDescriptor.signaledValueCount", WGPUSharedTextureMemoryBeginAccessDescriptor, signaledValueCount);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryBeginAccessDescriptor.signaledValues", WGPUSharedTextureMemoryBeginAccessDescriptor, signaledValues);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedTextureMemoryD3D11BeginState", WGPUSharedTextureMemoryD3D11BeginState);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryD3D11BeginState.chain", WGPUSharedTextureMemoryD3D11BeginState, chain);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryD3D11BeginState.requiresEndAccessFence", WGPUSharedTextureMemoryD3D11BeginState, requiresEndAccessFence);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedTextureMemoryD3DSwapchainBeginState", WGPUSharedTextureMemoryD3DSwapchainBeginState);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryD3DSwapchainBeginState.chain", WGPUSharedTextureMemoryD3DSwapchainBeginState, chain);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryD3DSwapchainBeginState.isSwapchain", WGPUSharedTextureMemoryD3DSwapchainBeginState, isSwapchain);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedTextureMemoryDXGISharedHandleDescriptor", WGPUSharedTextureMemoryDXGISharedHandleDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryDXGISharedHandleDescriptor.chain", WGPUSharedTextureMemoryDXGISharedHandleDescriptor, chain);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryDXGISharedHandleDescriptor.handle", WGPUSharedTextureMemoryDXGISharedHandleDescriptor, handle);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryDXGISharedHandleDescriptor.useKeyedMutex", WGPUSharedTextureMemoryDXGISharedHandleDescriptor, useKeyedMutex);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedTextureMemoryDescriptor", WGPUSharedTextureMemoryDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryDescriptor.nextInChain", WGPUSharedTextureMemoryDescriptor, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryDescriptor.label", WGPUSharedTextureMemoryDescriptor, label);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedTextureMemoryDmaBufDescriptor", WGPUSharedTextureMemoryDmaBufDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryDmaBufDescriptor.chain", WGPUSharedTextureMemoryDmaBufDescriptor, chain);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryDmaBufDescriptor.size", WGPUSharedTextureMemoryDmaBufDescriptor, size);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryDmaBufDescriptor.drmFormat", WGPUSharedTextureMemoryDmaBufDescriptor, drmFormat);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryDmaBufDescriptor.drmModifier", WGPUSharedTextureMemoryDmaBufDescriptor, drmModifier);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryDmaBufDescriptor.planeCount", WGPUSharedTextureMemoryDmaBufDescriptor, planeCount);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryDmaBufDescriptor.planes", WGPUSharedTextureMemoryDmaBufDescriptor, planes);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedTextureMemoryDmaBufPlane", WGPUSharedTextureMemoryDmaBufPlane);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryDmaBufPlane.fd", WGPUSharedTextureMemoryDmaBufPlane, fd);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryDmaBufPlane.offset", WGPUSharedTextureMemoryDmaBufPlane, offset);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryDmaBufPlane.stride", WGPUSharedTextureMemoryDmaBufPlane, stride);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedTextureMemoryEGLImageDescriptor", WGPUSharedTextureMemoryEGLImageDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryEGLImageDescriptor.chain", WGPUSharedTextureMemoryEGLImageDescriptor, chain);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryEGLImageDescriptor.image", WGPUSharedTextureMemoryEGLImageDescriptor, image);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedTextureMemoryEndAccessState", WGPUSharedTextureMemoryEndAccessState);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryEndAccessState.nextInChain", WGPUSharedTextureMemoryEndAccessState, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryEndAccessState.initialized", WGPUSharedTextureMemoryEndAccessState, initialized);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryEndAccessState.fenceCount", WGPUSharedTextureMemoryEndAccessState, fenceCount);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryEndAccessState.fences", WGPUSharedTextureMemoryEndAccessState, fences);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryEndAccessState.signaledValueCount", WGPUSharedTextureMemoryEndAccessState, signaledValueCount);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryEndAccessState.signaledValues", WGPUSharedTextureMemoryEndAccessState, signaledValues);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedTextureMemoryIOSurfaceDescriptor", WGPUSharedTextureMemoryIOSurfaceDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryIOSurfaceDescriptor.chain", WGPUSharedTextureMemoryIOSurfaceDescriptor, chain);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryIOSurfaceDescriptor.ioSurface", WGPUSharedTextureMemoryIOSurfaceDescriptor, ioSurface);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryIOSurfaceDescriptor.allowStorageBinding", WGPUSharedTextureMemoryIOSurfaceDescriptor, allowStorageBinding);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedTextureMemoryMetalEndAccessState", WGPUSharedTextureMemoryMetalEndAccessState);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryMetalEndAccessState.chain", WGPUSharedTextureMemoryMetalEndAccessState, chain);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryMetalEndAccessState.commandsScheduledFuture", WGPUSharedTextureMemoryMetalEndAccessState, commandsScheduledFuture);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedTextureMemoryOpaqueFDDescriptor", WGPUSharedTextureMemoryOpaqueFDDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryOpaqueFDDescriptor.chain", WGPUSharedTextureMemoryOpaqueFDDescriptor, chain);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryOpaqueFDDescriptor.vkImageCreateInfo", WGPUSharedTextureMemoryOpaqueFDDescriptor, vkImageCreateInfo);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryOpaqueFDDescriptor.memoryFD", WGPUSharedTextureMemoryOpaqueFDDescriptor, memoryFD);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryOpaqueFDDescriptor.memoryTypeIndex", WGPUSharedTextureMemoryOpaqueFDDescriptor, memoryTypeIndex);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryOpaqueFDDescriptor.allocationSize", WGPUSharedTextureMemoryOpaqueFDDescriptor, allocationSize);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryOpaqueFDDescriptor.dedicatedAllocation", WGPUSharedTextureMemoryOpaqueFDDescriptor, dedicatedAllocation);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedTextureMemoryProperties", WGPUSharedTextureMemoryProperties);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryProperties.nextInChain", WGPUSharedTextureMemoryProperties, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryProperties.usage", WGPUSharedTextureMemoryProperties, usage);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryProperties.size", WGPUSharedTextureMemoryProperties, size);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryProperties.format", WGPUSharedTextureMemoryProperties, format);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedTextureMemoryVkDedicatedAllocationDescriptor", WGPUSharedTextureMemoryVkDedicatedAllocationDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryVkDedicatedAllocationDescriptor.chain", WGPUSharedTextureMemoryVkDedicatedAllocationDescriptor, chain);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryVkDedicatedAllocationDescriptor.dedicatedAllocation", WGPUSharedTextureMemoryVkDedicatedAllocationDescriptor, dedicatedAllocation);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedTextureMemoryVkImageLayoutBeginState", WGPUSharedTextureMemoryVkImageLayoutBeginState);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryVkImageLayoutBeginState.chain", WGPUSharedTextureMemoryVkImageLayoutBeginState, chain);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryVkImageLayoutBeginState.oldLayout", WGPUSharedTextureMemoryVkImageLayoutBeginState, oldLayout);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryVkImageLayoutBeginState.newLayout", WGPUSharedTextureMemoryVkImageLayoutBeginState, newLayout);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedTextureMemoryVkImageLayoutEndState", WGPUSharedTextureMemoryVkImageLayoutEndState);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryVkImageLayoutEndState.chain", WGPUSharedTextureMemoryVkImageLayoutEndState, chain);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryVkImageLayoutEndState.oldLayout", WGPUSharedTextureMemoryVkImageLayoutEndState, oldLayout);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryVkImageLayoutEndState.newLayout", WGPUSharedTextureMemoryVkImageLayoutEndState, newLayout);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSharedTextureMemoryZirconHandleDescriptor", WGPUSharedTextureMemoryZirconHandleDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryZirconHandleDescriptor.chain", WGPUSharedTextureMemoryZirconHandleDescriptor, chain);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryZirconHandleDescriptor.memoryFD", WGPUSharedTextureMemoryZirconHandleDescriptor, memoryFD);
+    JADE_LAYOUT_MEMBER("WGPUSharedTextureMemoryZirconHandleDescriptor.allocationSize", WGPUSharedTextureMemoryZirconHandleDescriptor, allocationSize);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUStaticSamplerBindingLayout", WGPUStaticSamplerBindingLayout);
+    JADE_LAYOUT_MEMBER("WGPUStaticSamplerBindingLayout.chain", WGPUStaticSamplerBindingLayout, chain);
+    JADE_LAYOUT_MEMBER("WGPUStaticSamplerBindingLayout.sampler", WGPUStaticSamplerBindingLayout, sampler);
+    JADE_LAYOUT_MEMBER("WGPUStaticSamplerBindingLayout.sampledTextureBinding", WGPUStaticSamplerBindingLayout, sampledTextureBinding);
+    #endif
+    JADE_LAYOUT_RECORD("WGPUStencilFaceState", WGPUStencilFaceState);
+    JADE_LAYOUT_MEMBER("WGPUStencilFaceState.compare", WGPUStencilFaceState, compare);
+    JADE_LAYOUT_MEMBER("WGPUStencilFaceState.failOp", WGPUStencilFaceState, failOp);
+    JADE_LAYOUT_MEMBER("WGPUStencilFaceState.depthFailOp", WGPUStencilFaceState, depthFailOp);
+    JADE_LAYOUT_MEMBER("WGPUStencilFaceState.passOp", WGPUStencilFaceState, passOp);
+    JADE_LAYOUT_RECORD("WGPUStorageTextureBindingLayout", WGPUStorageTextureBindingLayout);
+    JADE_LAYOUT_MEMBER("WGPUStorageTextureBindingLayout.nextInChain", WGPUStorageTextureBindingLayout, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUStorageTextureBindingLayout.access", WGPUStorageTextureBindingLayout, access);
+    JADE_LAYOUT_MEMBER("WGPUStorageTextureBindingLayout.format", WGPUStorageTextureBindingLayout, format);
+    JADE_LAYOUT_MEMBER("WGPUStorageTextureBindingLayout.viewDimension", WGPUStorageTextureBindingLayout, viewDimension);
+    JADE_LAYOUT_RECORD("WGPUStringView", WGPUStringView);
+    JADE_LAYOUT_MEMBER("WGPUStringView.data", WGPUStringView, data);
+    JADE_LAYOUT_MEMBER("WGPUStringView.length", WGPUStringView, length);
+    JADE_LAYOUT_RECORD("WGPUSubgroupMatrixConfig", WGPUSubgroupMatrixConfig);
+    JADE_LAYOUT_MEMBER("WGPUSubgroupMatrixConfig.componentType", WGPUSubgroupMatrixConfig, componentType);
+    JADE_LAYOUT_MEMBER("WGPUSubgroupMatrixConfig.resultComponentType", WGPUSubgroupMatrixConfig, resultComponentType);
+    JADE_LAYOUT_MEMBER("WGPUSubgroupMatrixConfig.M", WGPUSubgroupMatrixConfig, M);
+    JADE_LAYOUT_MEMBER("WGPUSubgroupMatrixConfig.N", WGPUSubgroupMatrixConfig, N);
+    JADE_LAYOUT_MEMBER("WGPUSubgroupMatrixConfig.K", WGPUSubgroupMatrixConfig, K);
+    JADE_LAYOUT_MEMBER("WGPUSubgroupMatrixConfig.minSubgroupSize", WGPUSubgroupMatrixConfig, minSubgroupSize);
+    JADE_LAYOUT_MEMBER("WGPUSubgroupMatrixConfig.maxSubgroupSize", WGPUSubgroupMatrixConfig, maxSubgroupSize);
+    JADE_LAYOUT_RECORD("WGPUSupportedFeatures", WGPUSupportedFeatures);
+    JADE_LAYOUT_MEMBER("WGPUSupportedFeatures.featureCount", WGPUSupportedFeatures, featureCount);
+    JADE_LAYOUT_MEMBER("WGPUSupportedFeatures.features", WGPUSupportedFeatures, features);
+    JADE_LAYOUT_RECORD("WGPUSupportedInstanceFeatures", WGPUSupportedInstanceFeatures);
+    JADE_LAYOUT_MEMBER("WGPUSupportedInstanceFeatures.featureCount", WGPUSupportedInstanceFeatures, featureCount);
+    JADE_LAYOUT_MEMBER("WGPUSupportedInstanceFeatures.features", WGPUSupportedInstanceFeatures, features);
+    JADE_LAYOUT_RECORD("WGPUSupportedWGSLLanguageFeatures", WGPUSupportedWGSLLanguageFeatures);
+    JADE_LAYOUT_MEMBER("WGPUSupportedWGSLLanguageFeatures.featureCount", WGPUSupportedWGSLLanguageFeatures, featureCount);
+    JADE_LAYOUT_MEMBER("WGPUSupportedWGSLLanguageFeatures.features", WGPUSupportedWGSLLanguageFeatures, features);
+    JADE_LAYOUT_RECORD("WGPUSurfaceCapabilities", WGPUSurfaceCapabilities);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceCapabilities.nextInChain", WGPUSurfaceCapabilities, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceCapabilities.usages", WGPUSurfaceCapabilities, usages);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceCapabilities.formatCount", WGPUSurfaceCapabilities, formatCount);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceCapabilities.formats", WGPUSurfaceCapabilities, formats);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceCapabilities.presentModeCount", WGPUSurfaceCapabilities, presentModeCount);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceCapabilities.presentModes", WGPUSurfaceCapabilities, presentModes);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceCapabilities.alphaModeCount", WGPUSurfaceCapabilities, alphaModeCount);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceCapabilities.alphaModes", WGPUSurfaceCapabilities, alphaModes);
+    JADE_LAYOUT_RECORD("WGPUSurfaceColorManagement", WGPUSurfaceColorManagement);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceColorManagement.chain", WGPUSurfaceColorManagement, chain);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceColorManagement.colorSpace", WGPUSurfaceColorManagement, colorSpace);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceColorManagement.toneMappingMode", WGPUSurfaceColorManagement, toneMappingMode);
+    JADE_LAYOUT_RECORD("WGPUSurfaceConfiguration", WGPUSurfaceConfiguration);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceConfiguration.nextInChain", WGPUSurfaceConfiguration, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceConfiguration.device", WGPUSurfaceConfiguration, device);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceConfiguration.format", WGPUSurfaceConfiguration, format);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceConfiguration.usage", WGPUSurfaceConfiguration, usage);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceConfiguration.width", WGPUSurfaceConfiguration, width);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceConfiguration.height", WGPUSurfaceConfiguration, height);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceConfiguration.viewFormatCount", WGPUSurfaceConfiguration, viewFormatCount);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceConfiguration.viewFormats", WGPUSurfaceConfiguration, viewFormats);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceConfiguration.alphaMode", WGPUSurfaceConfiguration, alphaMode);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceConfiguration.presentMode", WGPUSurfaceConfiguration, presentMode);
+    JADE_LAYOUT_RECORD("WGPUSurfaceDescriptor", WGPUSurfaceDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceDescriptor.nextInChain", WGPUSurfaceDescriptor, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceDescriptor.label", WGPUSurfaceDescriptor, label);
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSurfaceDescriptorFromWindowsCoreWindow", WGPUSurfaceDescriptorFromWindowsCoreWindow);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceDescriptorFromWindowsCoreWindow.chain", WGPUSurfaceDescriptorFromWindowsCoreWindow, chain);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceDescriptorFromWindowsCoreWindow.coreWindow", WGPUSurfaceDescriptorFromWindowsCoreWindow, coreWindow);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSurfaceDescriptorFromWindowsUWPSwapChainPanel", WGPUSurfaceDescriptorFromWindowsUWPSwapChainPanel);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceDescriptorFromWindowsUWPSwapChainPanel.chain", WGPUSurfaceDescriptorFromWindowsUWPSwapChainPanel, chain);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceDescriptorFromWindowsUWPSwapChainPanel.swapChainPanel", WGPUSurfaceDescriptorFromWindowsUWPSwapChainPanel, swapChainPanel);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSurfaceDescriptorFromWindowsWinUISwapChainPanel", WGPUSurfaceDescriptorFromWindowsWinUISwapChainPanel);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceDescriptorFromWindowsWinUISwapChainPanel.chain", WGPUSurfaceDescriptorFromWindowsWinUISwapChainPanel, chain);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceDescriptorFromWindowsWinUISwapChainPanel.swapChainPanel", WGPUSurfaceDescriptorFromWindowsWinUISwapChainPanel, swapChainPanel);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSurfaceSourceAndroidNativeWindow", WGPUSurfaceSourceAndroidNativeWindow);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceSourceAndroidNativeWindow.chain", WGPUSurfaceSourceAndroidNativeWindow, chain);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceSourceAndroidNativeWindow.window", WGPUSurfaceSourceAndroidNativeWindow, window);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSurfaceSourceMetalLayer", WGPUSurfaceSourceMetalLayer);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceSourceMetalLayer.chain", WGPUSurfaceSourceMetalLayer, chain);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceSourceMetalLayer.layer", WGPUSurfaceSourceMetalLayer, layer);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSurfaceSourceWaylandSurface", WGPUSurfaceSourceWaylandSurface);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceSourceWaylandSurface.chain", WGPUSurfaceSourceWaylandSurface, chain);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceSourceWaylandSurface.display", WGPUSurfaceSourceWaylandSurface, display);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceSourceWaylandSurface.surface", WGPUSurfaceSourceWaylandSurface, surface);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSurfaceSourceWindowsHWND", WGPUSurfaceSourceWindowsHWND);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceSourceWindowsHWND.chain", WGPUSurfaceSourceWindowsHWND, chain);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceSourceWindowsHWND.hinstance", WGPUSurfaceSourceWindowsHWND, hinstance);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceSourceWindowsHWND.hwnd", WGPUSurfaceSourceWindowsHWND, hwnd);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSurfaceSourceXCBWindow", WGPUSurfaceSourceXCBWindow);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceSourceXCBWindow.chain", WGPUSurfaceSourceXCBWindow, chain);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceSourceXCBWindow.connection", WGPUSurfaceSourceXCBWindow, connection);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceSourceXCBWindow.window", WGPUSurfaceSourceXCBWindow, window);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUSurfaceSourceXlibWindow", WGPUSurfaceSourceXlibWindow);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceSourceXlibWindow.chain", WGPUSurfaceSourceXlibWindow, chain);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceSourceXlibWindow.display", WGPUSurfaceSourceXlibWindow, display);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceSourceXlibWindow.window", WGPUSurfaceSourceXlibWindow, window);
+    #endif
+    JADE_LAYOUT_RECORD("WGPUSurfaceTexture", WGPUSurfaceTexture);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceTexture.nextInChain", WGPUSurfaceTexture, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceTexture.texture", WGPUSurfaceTexture, texture);
+    JADE_LAYOUT_MEMBER("WGPUSurfaceTexture.status", WGPUSurfaceTexture, status);
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUTexelBufferBindingEntry", WGPUTexelBufferBindingEntry);
+    JADE_LAYOUT_MEMBER("WGPUTexelBufferBindingEntry.chain", WGPUTexelBufferBindingEntry, chain);
+    JADE_LAYOUT_MEMBER("WGPUTexelBufferBindingEntry.texelBufferView", WGPUTexelBufferBindingEntry, texelBufferView);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUTexelBufferBindingLayout", WGPUTexelBufferBindingLayout);
+    JADE_LAYOUT_MEMBER("WGPUTexelBufferBindingLayout.chain", WGPUTexelBufferBindingLayout, chain);
+    JADE_LAYOUT_MEMBER("WGPUTexelBufferBindingLayout.access", WGPUTexelBufferBindingLayout, access);
+    JADE_LAYOUT_MEMBER("WGPUTexelBufferBindingLayout.format", WGPUTexelBufferBindingLayout, format);
+    #endif
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUTexelBufferViewDescriptor", WGPUTexelBufferViewDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUTexelBufferViewDescriptor.nextInChain", WGPUTexelBufferViewDescriptor, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUTexelBufferViewDescriptor.label", WGPUTexelBufferViewDescriptor, label);
+    JADE_LAYOUT_MEMBER("WGPUTexelBufferViewDescriptor.format", WGPUTexelBufferViewDescriptor, format);
+    JADE_LAYOUT_MEMBER("WGPUTexelBufferViewDescriptor.offset", WGPUTexelBufferViewDescriptor, offset);
+    JADE_LAYOUT_MEMBER("WGPUTexelBufferViewDescriptor.size", WGPUTexelBufferViewDescriptor, size);
+    #endif
+    JADE_LAYOUT_RECORD("WGPUTexelCopyBufferInfo", WGPUTexelCopyBufferInfo);
+    JADE_LAYOUT_MEMBER("WGPUTexelCopyBufferInfo.layout", WGPUTexelCopyBufferInfo, layout);
+    JADE_LAYOUT_MEMBER("WGPUTexelCopyBufferInfo.buffer", WGPUTexelCopyBufferInfo, buffer);
+    JADE_LAYOUT_RECORD("WGPUTexelCopyBufferLayout", WGPUTexelCopyBufferLayout);
+    JADE_LAYOUT_MEMBER("WGPUTexelCopyBufferLayout.offset", WGPUTexelCopyBufferLayout, offset);
+    JADE_LAYOUT_MEMBER("WGPUTexelCopyBufferLayout.bytesPerRow", WGPUTexelCopyBufferLayout, bytesPerRow);
+    JADE_LAYOUT_MEMBER("WGPUTexelCopyBufferLayout.rowsPerImage", WGPUTexelCopyBufferLayout, rowsPerImage);
+    JADE_LAYOUT_RECORD("WGPUTexelCopyTextureInfo", WGPUTexelCopyTextureInfo);
+    JADE_LAYOUT_MEMBER("WGPUTexelCopyTextureInfo.texture", WGPUTexelCopyTextureInfo, texture);
+    JADE_LAYOUT_MEMBER("WGPUTexelCopyTextureInfo.mipLevel", WGPUTexelCopyTextureInfo, mipLevel);
+    JADE_LAYOUT_MEMBER("WGPUTexelCopyTextureInfo.origin", WGPUTexelCopyTextureInfo, origin);
+    JADE_LAYOUT_MEMBER("WGPUTexelCopyTextureInfo.aspect", WGPUTexelCopyTextureInfo, aspect);
+    JADE_LAYOUT_RECORD("WGPUTextureBindingLayout", WGPUTextureBindingLayout);
+    JADE_LAYOUT_MEMBER("WGPUTextureBindingLayout.nextInChain", WGPUTextureBindingLayout, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUTextureBindingLayout.sampleType", WGPUTextureBindingLayout, sampleType);
+    JADE_LAYOUT_MEMBER("WGPUTextureBindingLayout.viewDimension", WGPUTextureBindingLayout, viewDimension);
+    JADE_LAYOUT_MEMBER("WGPUTextureBindingLayout.multisampled", WGPUTextureBindingLayout, multisampled);
+    JADE_LAYOUT_RECORD("WGPUTextureBindingViewDimension", WGPUTextureBindingViewDimension);
+    JADE_LAYOUT_MEMBER("WGPUTextureBindingViewDimension.chain", WGPUTextureBindingViewDimension, chain);
+    JADE_LAYOUT_MEMBER("WGPUTextureBindingViewDimension.textureBindingViewDimension", WGPUTextureBindingViewDimension, textureBindingViewDimension);
+    JADE_LAYOUT_RECORD("WGPUTextureComponentSwizzle", WGPUTextureComponentSwizzle);
+    JADE_LAYOUT_MEMBER("WGPUTextureComponentSwizzle.r", WGPUTextureComponentSwizzle, r);
+    JADE_LAYOUT_MEMBER("WGPUTextureComponentSwizzle.g", WGPUTextureComponentSwizzle, g);
+    JADE_LAYOUT_MEMBER("WGPUTextureComponentSwizzle.b", WGPUTextureComponentSwizzle, b);
+    JADE_LAYOUT_MEMBER("WGPUTextureComponentSwizzle.a", WGPUTextureComponentSwizzle, a);
+    JADE_LAYOUT_RECORD("WGPUTextureComponentSwizzleDescriptor", WGPUTextureComponentSwizzleDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUTextureComponentSwizzleDescriptor.chain", WGPUTextureComponentSwizzleDescriptor, chain);
+    JADE_LAYOUT_MEMBER("WGPUTextureComponentSwizzleDescriptor.swizzle", WGPUTextureComponentSwizzleDescriptor, swizzle);
+    JADE_LAYOUT_RECORD("WGPUTextureDescriptor", WGPUTextureDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUTextureDescriptor.nextInChain", WGPUTextureDescriptor, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUTextureDescriptor.label", WGPUTextureDescriptor, label);
+    JADE_LAYOUT_MEMBER("WGPUTextureDescriptor.usage", WGPUTextureDescriptor, usage);
+    JADE_LAYOUT_MEMBER("WGPUTextureDescriptor.dimension", WGPUTextureDescriptor, dimension);
+    JADE_LAYOUT_MEMBER("WGPUTextureDescriptor.size", WGPUTextureDescriptor, size);
+    JADE_LAYOUT_MEMBER("WGPUTextureDescriptor.format", WGPUTextureDescriptor, format);
+    JADE_LAYOUT_MEMBER("WGPUTextureDescriptor.mipLevelCount", WGPUTextureDescriptor, mipLevelCount);
+    JADE_LAYOUT_MEMBER("WGPUTextureDescriptor.sampleCount", WGPUTextureDescriptor, sampleCount);
+    JADE_LAYOUT_MEMBER("WGPUTextureDescriptor.viewFormatCount", WGPUTextureDescriptor, viewFormatCount);
+    JADE_LAYOUT_MEMBER("WGPUTextureDescriptor.viewFormats", WGPUTextureDescriptor, viewFormats);
+    JADE_LAYOUT_RECORD("WGPUTextureViewDescriptor", WGPUTextureViewDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUTextureViewDescriptor.nextInChain", WGPUTextureViewDescriptor, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUTextureViewDescriptor.label", WGPUTextureViewDescriptor, label);
+    JADE_LAYOUT_MEMBER("WGPUTextureViewDescriptor.format", WGPUTextureViewDescriptor, format);
+    JADE_LAYOUT_MEMBER("WGPUTextureViewDescriptor.dimension", WGPUTextureViewDescriptor, dimension);
+    JADE_LAYOUT_MEMBER("WGPUTextureViewDescriptor.baseMipLevel", WGPUTextureViewDescriptor, baseMipLevel);
+    JADE_LAYOUT_MEMBER("WGPUTextureViewDescriptor.mipLevelCount", WGPUTextureViewDescriptor, mipLevelCount);
+    JADE_LAYOUT_MEMBER("WGPUTextureViewDescriptor.baseArrayLayer", WGPUTextureViewDescriptor, baseArrayLayer);
+    JADE_LAYOUT_MEMBER("WGPUTextureViewDescriptor.arrayLayerCount", WGPUTextureViewDescriptor, arrayLayerCount);
+    JADE_LAYOUT_MEMBER("WGPUTextureViewDescriptor.aspect", WGPUTextureViewDescriptor, aspect);
+    JADE_LAYOUT_MEMBER("WGPUTextureViewDescriptor.usage", WGPUTextureViewDescriptor, usage);
+    JADE_LAYOUT_RECORD("WGPUUncapturedErrorCallbackInfo", WGPUUncapturedErrorCallbackInfo);
+    JADE_LAYOUT_MEMBER("WGPUUncapturedErrorCallbackInfo.nextInChain", WGPUUncapturedErrorCallbackInfo, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUUncapturedErrorCallbackInfo.callback", WGPUUncapturedErrorCallbackInfo, callback);
+    JADE_LAYOUT_MEMBER("WGPUUncapturedErrorCallbackInfo.userdata1", WGPUUncapturedErrorCallbackInfo, userdata1);
+    JADE_LAYOUT_MEMBER("WGPUUncapturedErrorCallbackInfo.userdata2", WGPUUncapturedErrorCallbackInfo, userdata2);
+    JADE_LAYOUT_RECORD("WGPUVertexAttribute", WGPUVertexAttribute);
+    JADE_LAYOUT_MEMBER("WGPUVertexAttribute.nextInChain", WGPUVertexAttribute, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUVertexAttribute.format", WGPUVertexAttribute, format);
+    JADE_LAYOUT_MEMBER("WGPUVertexAttribute.offset", WGPUVertexAttribute, offset);
+    JADE_LAYOUT_MEMBER("WGPUVertexAttribute.shaderLocation", WGPUVertexAttribute, shaderLocation);
+    JADE_LAYOUT_RECORD("WGPUVertexBufferLayout", WGPUVertexBufferLayout);
+    JADE_LAYOUT_MEMBER("WGPUVertexBufferLayout.nextInChain", WGPUVertexBufferLayout, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUVertexBufferLayout.stepMode", WGPUVertexBufferLayout, stepMode);
+    JADE_LAYOUT_MEMBER("WGPUVertexBufferLayout.arrayStride", WGPUVertexBufferLayout, arrayStride);
+    JADE_LAYOUT_MEMBER("WGPUVertexBufferLayout.attributeCount", WGPUVertexBufferLayout, attributeCount);
+    JADE_LAYOUT_MEMBER("WGPUVertexBufferLayout.attributes", WGPUVertexBufferLayout, attributes);
+    JADE_LAYOUT_RECORD("WGPUVertexState", WGPUVertexState);
+    JADE_LAYOUT_MEMBER("WGPUVertexState.nextInChain", WGPUVertexState, nextInChain);
+    JADE_LAYOUT_MEMBER("WGPUVertexState.module", WGPUVertexState, module);
+    JADE_LAYOUT_MEMBER("WGPUVertexState.entryPoint", WGPUVertexState, entryPoint);
+    JADE_LAYOUT_MEMBER("WGPUVertexState.constantCount", WGPUVertexState, constantCount);
+    JADE_LAYOUT_MEMBER("WGPUVertexState.constants", WGPUVertexState, constants);
+    JADE_LAYOUT_MEMBER("WGPUVertexState.bufferCount", WGPUVertexState, bufferCount);
+    JADE_LAYOUT_MEMBER("WGPUVertexState.buffers", WGPUVertexState, buffers);
+    #if !defined(JADE_LAYOUT_BROWSER)
+    JADE_LAYOUT_RECORD("WGPUYCbCrVkDescriptor", WGPUYCbCrVkDescriptor);
+    JADE_LAYOUT_MEMBER("WGPUYCbCrVkDescriptor.chain", WGPUYCbCrVkDescriptor, chain);
+    JADE_LAYOUT_MEMBER("WGPUYCbCrVkDescriptor.vkFormat", WGPUYCbCrVkDescriptor, vkFormat);
+    JADE_LAYOUT_MEMBER("WGPUYCbCrVkDescriptor.vkYCbCrModel", WGPUYCbCrVkDescriptor, vkYCbCrModel);
+    JADE_LAYOUT_MEMBER("WGPUYCbCrVkDescriptor.vkYCbCrRange", WGPUYCbCrVkDescriptor, vkYCbCrRange);
+    JADE_LAYOUT_MEMBER("WGPUYCbCrVkDescriptor.vkComponentSwizzleRed", WGPUYCbCrVkDescriptor, vkComponentSwizzleRed);
+    JADE_LAYOUT_MEMBER("WGPUYCbCrVkDescriptor.vkComponentSwizzleGreen", WGPUYCbCrVkDescriptor, vkComponentSwizzleGreen);
+    JADE_LAYOUT_MEMBER("WGPUYCbCrVkDescriptor.vkComponentSwizzleBlue", WGPUYCbCrVkDescriptor, vkComponentSwizzleBlue);
+    JADE_LAYOUT_MEMBER("WGPUYCbCrVkDescriptor.vkComponentSwizzleAlpha", WGPUYCbCrVkDescriptor, vkComponentSwizzleAlpha);
+    JADE_LAYOUT_MEMBER("WGPUYCbCrVkDescriptor.vkXChromaOffset", WGPUYCbCrVkDescriptor, vkXChromaOffset);
+    JADE_LAYOUT_MEMBER("WGPUYCbCrVkDescriptor.vkYChromaOffset", WGPUYCbCrVkDescriptor, vkYChromaOffset);
+    JADE_LAYOUT_MEMBER("WGPUYCbCrVkDescriptor.vkChromaFilter", WGPUYCbCrVkDescriptor, vkChromaFilter);
+    JADE_LAYOUT_MEMBER("WGPUYCbCrVkDescriptor.forceExplicitReconstruction", WGPUYCbCrVkDescriptor, forceExplicitReconstruction);
+    JADE_LAYOUT_MEMBER("WGPUYCbCrVkDescriptor.externalFormat", WGPUYCbCrVkDescriptor, externalFormat);
+    #endif
+    JADE_LAYOUT_END;
+
     return entries;
 }

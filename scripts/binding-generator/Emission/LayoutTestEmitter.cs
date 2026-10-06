@@ -87,7 +87,15 @@ internal static class LayoutTestEmitter
         writer.Line();
         writer.Line($"#include \"{NativeHeader}\"");
         writer.Line();
-        writer.Line("static const jade_layout_entry entries[] = {");
+
+        // Every entry the file can hold, whatever the platform conditions keep, and the end entry.
+        var capacity = layouts.Records.Sum(static record => 1 + record.Members.Sum(static member => member.IsArray ? 2 : 1)) + 1;
+
+        writer.Line($"JADE_LAYOUT_API const jade_layout_entry* {layouts.NativeName}(void)");
+        writer.OpenBlock();
+        writer.Line($"static jade_layout_entry entries[{capacity}];");
+        writer.Line("jade_layout_entry* cursor = entries;");
+        writer.Line();
 
         foreach (var record in layouts.Records)
         {
@@ -106,11 +114,8 @@ internal static class LayoutTestEmitter
             }
         }
 
-        writer.Line("    JADE_LAYOUT_END,");
-        writer.Line("};");
+        writer.Line("JADE_LAYOUT_END;");
         writer.Line();
-        writer.Line($"JADE_LAYOUT_API const jade_layout_entry* {layouts.NativeName}(void)");
-        writer.OpenBlock();
         writer.Line("return entries;");
         writer.CloseBlock();
 
@@ -168,8 +173,8 @@ internal static class LayoutTestEmitter
     private static void EmitNativeEntries(CSharpWriter writer, ProjectedRecordLayout record)
     {
         writer.Line(record.CPath is { } recordPath
-            ? $"    JADE_LAYOUT_NESTED_RECORD(\"{record.CName}\", {record.CRoot}, {recordPath}),"
-            : $"    JADE_LAYOUT_RECORD(\"{record.CName}\", {record.CRoot}),");
+            ? $"JADE_LAYOUT_NESTED_RECORD(\"{record.CName}\", {record.CRoot}, {recordPath});"
+            : $"JADE_LAYOUT_RECORD(\"{record.CName}\", {record.CRoot});");
 
         foreach (var member in record.Members)
         {
@@ -178,8 +183,8 @@ internal static class LayoutTestEmitter
             foreach (var designator in designators)
             {
                 writer.Line(record.CPath is { } path
-                    ? $"    JADE_LAYOUT_NESTED_MEMBER(\"{record.CName}.{designator}\", {record.CRoot}, {path}, {designator}),"
-                    : $"    JADE_LAYOUT_MEMBER(\"{record.CName}.{designator}\", {record.CRoot}, {designator}),");
+                    ? $"JADE_LAYOUT_NESTED_MEMBER(\"{record.CName}.{designator}\", {record.CRoot}, {path}, {designator});"
+                    : $"JADE_LAYOUT_MEMBER(\"{record.CName}.{designator}\", {record.CRoot}, {designator});");
             }
         }
     }

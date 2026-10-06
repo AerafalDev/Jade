@@ -15,1004 +15,1005 @@
 
 #include "jade_layout.h"
 
-static const jade_layout_entry entries[] = {
-    JADE_LAYOUT_RECORD("SDL_AssertData", struct SDL_AssertData),
-    JADE_LAYOUT_MEMBER("SDL_AssertData.always_ignore", struct SDL_AssertData, always_ignore),
-    JADE_LAYOUT_MEMBER("SDL_AssertData.trigger_count", struct SDL_AssertData, trigger_count),
-    JADE_LAYOUT_MEMBER("SDL_AssertData.condition", struct SDL_AssertData, condition),
-    JADE_LAYOUT_MEMBER("SDL_AssertData.filename", struct SDL_AssertData, filename),
-    JADE_LAYOUT_MEMBER("SDL_AssertData.linenum", struct SDL_AssertData, linenum),
-    JADE_LAYOUT_MEMBER("SDL_AssertData.function", struct SDL_AssertData, function),
-    JADE_LAYOUT_MEMBER("SDL_AssertData.next", struct SDL_AssertData, next),
-    JADE_LAYOUT_RECORD("SDL_AsyncIOOutcome", struct SDL_AsyncIOOutcome),
-    JADE_LAYOUT_MEMBER("SDL_AsyncIOOutcome.asyncio", struct SDL_AsyncIOOutcome, asyncio),
-    JADE_LAYOUT_MEMBER("SDL_AsyncIOOutcome.type", struct SDL_AsyncIOOutcome, type),
-    JADE_LAYOUT_MEMBER("SDL_AsyncIOOutcome.result", struct SDL_AsyncIOOutcome, result),
-    JADE_LAYOUT_MEMBER("SDL_AsyncIOOutcome.buffer", struct SDL_AsyncIOOutcome, buffer),
-    JADE_LAYOUT_MEMBER("SDL_AsyncIOOutcome.offset", struct SDL_AsyncIOOutcome, offset),
-    JADE_LAYOUT_MEMBER("SDL_AsyncIOOutcome.bytes_requested", struct SDL_AsyncIOOutcome, bytes_requested),
-    JADE_LAYOUT_MEMBER("SDL_AsyncIOOutcome.bytes_transferred", struct SDL_AsyncIOOutcome, bytes_transferred),
-    JADE_LAYOUT_MEMBER("SDL_AsyncIOOutcome.userdata", struct SDL_AsyncIOOutcome, userdata),
-    JADE_LAYOUT_RECORD("SDL_AtomicInt", struct SDL_AtomicInt),
-    JADE_LAYOUT_MEMBER("SDL_AtomicInt.value", struct SDL_AtomicInt, value),
-    JADE_LAYOUT_RECORD("SDL_AtomicU32", struct SDL_AtomicU32),
-    JADE_LAYOUT_MEMBER("SDL_AtomicU32.value", struct SDL_AtomicU32, value),
-    JADE_LAYOUT_RECORD("SDL_AudioDeviceEvent", struct SDL_AudioDeviceEvent),
-    JADE_LAYOUT_MEMBER("SDL_AudioDeviceEvent.type", struct SDL_AudioDeviceEvent, type),
-    JADE_LAYOUT_MEMBER("SDL_AudioDeviceEvent.reserved", struct SDL_AudioDeviceEvent, reserved),
-    JADE_LAYOUT_MEMBER("SDL_AudioDeviceEvent.timestamp", struct SDL_AudioDeviceEvent, timestamp),
-    JADE_LAYOUT_MEMBER("SDL_AudioDeviceEvent.which", struct SDL_AudioDeviceEvent, which),
-    JADE_LAYOUT_MEMBER("SDL_AudioDeviceEvent.recording", struct SDL_AudioDeviceEvent, recording),
-    JADE_LAYOUT_MEMBER("SDL_AudioDeviceEvent.padding1", struct SDL_AudioDeviceEvent, padding1),
-    JADE_LAYOUT_MEMBER("SDL_AudioDeviceEvent.padding2", struct SDL_AudioDeviceEvent, padding2),
-    JADE_LAYOUT_MEMBER("SDL_AudioDeviceEvent.padding3", struct SDL_AudioDeviceEvent, padding3),
-    JADE_LAYOUT_RECORD("SDL_CameraDeviceEvent", struct SDL_CameraDeviceEvent),
-    JADE_LAYOUT_MEMBER("SDL_CameraDeviceEvent.type", struct SDL_CameraDeviceEvent, type),
-    JADE_LAYOUT_MEMBER("SDL_CameraDeviceEvent.reserved", struct SDL_CameraDeviceEvent, reserved),
-    JADE_LAYOUT_MEMBER("SDL_CameraDeviceEvent.timestamp", struct SDL_CameraDeviceEvent, timestamp),
-    JADE_LAYOUT_MEMBER("SDL_CameraDeviceEvent.which", struct SDL_CameraDeviceEvent, which),
-    JADE_LAYOUT_RECORD("SDL_CameraSpec", struct SDL_CameraSpec),
-    JADE_LAYOUT_MEMBER("SDL_CameraSpec.format", struct SDL_CameraSpec, format),
-    JADE_LAYOUT_MEMBER("SDL_CameraSpec.colorspace", struct SDL_CameraSpec, colorspace),
-    JADE_LAYOUT_MEMBER("SDL_CameraSpec.width", struct SDL_CameraSpec, width),
-    JADE_LAYOUT_MEMBER("SDL_CameraSpec.height", struct SDL_CameraSpec, height),
-    JADE_LAYOUT_MEMBER("SDL_CameraSpec.framerate_numerator", struct SDL_CameraSpec, framerate_numerator),
-    JADE_LAYOUT_MEMBER("SDL_CameraSpec.framerate_denominator", struct SDL_CameraSpec, framerate_denominator),
-    JADE_LAYOUT_RECORD("SDL_ClipboardEvent", struct SDL_ClipboardEvent),
-    JADE_LAYOUT_MEMBER("SDL_ClipboardEvent.type", struct SDL_ClipboardEvent, type),
-    JADE_LAYOUT_MEMBER("SDL_ClipboardEvent.reserved", struct SDL_ClipboardEvent, reserved),
-    JADE_LAYOUT_MEMBER("SDL_ClipboardEvent.timestamp", struct SDL_ClipboardEvent, timestamp),
-    JADE_LAYOUT_MEMBER("SDL_ClipboardEvent.owner", struct SDL_ClipboardEvent, owner),
-    JADE_LAYOUT_MEMBER("SDL_ClipboardEvent.num_mime_types", struct SDL_ClipboardEvent, num_mime_types),
-    JADE_LAYOUT_MEMBER("SDL_ClipboardEvent.mime_types", struct SDL_ClipboardEvent, mime_types),
-    JADE_LAYOUT_RECORD("SDL_Color", struct SDL_Color),
-    JADE_LAYOUT_MEMBER("SDL_Color.r", struct SDL_Color, r),
-    JADE_LAYOUT_MEMBER("SDL_Color.g", struct SDL_Color, g),
-    JADE_LAYOUT_MEMBER("SDL_Color.b", struct SDL_Color, b),
-    JADE_LAYOUT_MEMBER("SDL_Color.a", struct SDL_Color, a),
-    JADE_LAYOUT_RECORD("SDL_CommonEvent", struct SDL_CommonEvent),
-    JADE_LAYOUT_MEMBER("SDL_CommonEvent.type", struct SDL_CommonEvent, type),
-    JADE_LAYOUT_MEMBER("SDL_CommonEvent.reserved", struct SDL_CommonEvent, reserved),
-    JADE_LAYOUT_MEMBER("SDL_CommonEvent.timestamp", struct SDL_CommonEvent, timestamp),
-    JADE_LAYOUT_RECORD("SDL_CursorFrameInfo", struct SDL_CursorFrameInfo),
-    JADE_LAYOUT_MEMBER("SDL_CursorFrameInfo.surface", struct SDL_CursorFrameInfo, surface),
-    JADE_LAYOUT_MEMBER("SDL_CursorFrameInfo.duration", struct SDL_CursorFrameInfo, duration),
-    JADE_LAYOUT_RECORD("SDL_DateTime", struct SDL_DateTime),
-    JADE_LAYOUT_MEMBER("SDL_DateTime.year", struct SDL_DateTime, year),
-    JADE_LAYOUT_MEMBER("SDL_DateTime.month", struct SDL_DateTime, month),
-    JADE_LAYOUT_MEMBER("SDL_DateTime.day", struct SDL_DateTime, day),
-    JADE_LAYOUT_MEMBER("SDL_DateTime.hour", struct SDL_DateTime, hour),
-    JADE_LAYOUT_MEMBER("SDL_DateTime.minute", struct SDL_DateTime, minute),
-    JADE_LAYOUT_MEMBER("SDL_DateTime.second", struct SDL_DateTime, second),
-    JADE_LAYOUT_MEMBER("SDL_DateTime.nanosecond", struct SDL_DateTime, nanosecond),
-    JADE_LAYOUT_MEMBER("SDL_DateTime.day_of_week", struct SDL_DateTime, day_of_week),
-    JADE_LAYOUT_MEMBER("SDL_DateTime.utc_offset", struct SDL_DateTime, utc_offset),
-    JADE_LAYOUT_RECORD("SDL_DialogFileFilter", struct SDL_DialogFileFilter),
-    JADE_LAYOUT_MEMBER("SDL_DialogFileFilter.name", struct SDL_DialogFileFilter, name),
-    JADE_LAYOUT_MEMBER("SDL_DialogFileFilter.pattern", struct SDL_DialogFileFilter, pattern),
-    JADE_LAYOUT_RECORD("SDL_DisplayEvent", struct SDL_DisplayEvent),
-    JADE_LAYOUT_MEMBER("SDL_DisplayEvent.type", struct SDL_DisplayEvent, type),
-    JADE_LAYOUT_MEMBER("SDL_DisplayEvent.reserved", struct SDL_DisplayEvent, reserved),
-    JADE_LAYOUT_MEMBER("SDL_DisplayEvent.timestamp", struct SDL_DisplayEvent, timestamp),
-    JADE_LAYOUT_MEMBER("SDL_DisplayEvent.displayID", struct SDL_DisplayEvent, displayID),
-    JADE_LAYOUT_MEMBER("SDL_DisplayEvent.data1", struct SDL_DisplayEvent, data1),
-    JADE_LAYOUT_MEMBER("SDL_DisplayEvent.data2", struct SDL_DisplayEvent, data2),
-    JADE_LAYOUT_RECORD("SDL_DisplayMode", struct SDL_DisplayMode),
-    JADE_LAYOUT_MEMBER("SDL_DisplayMode.displayID", struct SDL_DisplayMode, displayID),
-    JADE_LAYOUT_MEMBER("SDL_DisplayMode.format", struct SDL_DisplayMode, format),
-    JADE_LAYOUT_MEMBER("SDL_DisplayMode.w", struct SDL_DisplayMode, w),
-    JADE_LAYOUT_MEMBER("SDL_DisplayMode.h", struct SDL_DisplayMode, h),
-    JADE_LAYOUT_MEMBER("SDL_DisplayMode.pixel_density", struct SDL_DisplayMode, pixel_density),
-    JADE_LAYOUT_MEMBER("SDL_DisplayMode.refresh_rate", struct SDL_DisplayMode, refresh_rate),
-    JADE_LAYOUT_MEMBER("SDL_DisplayMode.refresh_rate_numerator", struct SDL_DisplayMode, refresh_rate_numerator),
-    JADE_LAYOUT_MEMBER("SDL_DisplayMode.refresh_rate_denominator", struct SDL_DisplayMode, refresh_rate_denominator),
-    JADE_LAYOUT_MEMBER("SDL_DisplayMode.internal", struct SDL_DisplayMode, internal),
-    JADE_LAYOUT_RECORD("SDL_DropEvent", struct SDL_DropEvent),
-    JADE_LAYOUT_MEMBER("SDL_DropEvent.type", struct SDL_DropEvent, type),
-    JADE_LAYOUT_MEMBER("SDL_DropEvent.reserved", struct SDL_DropEvent, reserved),
-    JADE_LAYOUT_MEMBER("SDL_DropEvent.timestamp", struct SDL_DropEvent, timestamp),
-    JADE_LAYOUT_MEMBER("SDL_DropEvent.windowID", struct SDL_DropEvent, windowID),
-    JADE_LAYOUT_MEMBER("SDL_DropEvent.x", struct SDL_DropEvent, x),
-    JADE_LAYOUT_MEMBER("SDL_DropEvent.y", struct SDL_DropEvent, y),
-    JADE_LAYOUT_MEMBER("SDL_DropEvent.source", struct SDL_DropEvent, source),
-    JADE_LAYOUT_MEMBER("SDL_DropEvent.data", struct SDL_DropEvent, data),
-    JADE_LAYOUT_RECORD("SDL_Event", union SDL_Event),
-    JADE_LAYOUT_MEMBER("SDL_Event.type", union SDL_Event, type),
-    JADE_LAYOUT_MEMBER("SDL_Event.common", union SDL_Event, common),
-    JADE_LAYOUT_MEMBER("SDL_Event.display", union SDL_Event, display),
-    JADE_LAYOUT_MEMBER("SDL_Event.window", union SDL_Event, window),
-    JADE_LAYOUT_MEMBER("SDL_Event.kdevice", union SDL_Event, kdevice),
-    JADE_LAYOUT_MEMBER("SDL_Event.key", union SDL_Event, key),
-    JADE_LAYOUT_MEMBER("SDL_Event.edit", union SDL_Event, edit),
-    JADE_LAYOUT_MEMBER("SDL_Event.edit_candidates", union SDL_Event, edit_candidates),
-    JADE_LAYOUT_MEMBER("SDL_Event.text", union SDL_Event, text),
-    JADE_LAYOUT_MEMBER("SDL_Event.mdevice", union SDL_Event, mdevice),
-    JADE_LAYOUT_MEMBER("SDL_Event.motion", union SDL_Event, motion),
-    JADE_LAYOUT_MEMBER("SDL_Event.button", union SDL_Event, button),
-    JADE_LAYOUT_MEMBER("SDL_Event.wheel", union SDL_Event, wheel),
-    JADE_LAYOUT_MEMBER("SDL_Event.jdevice", union SDL_Event, jdevice),
-    JADE_LAYOUT_MEMBER("SDL_Event.jaxis", union SDL_Event, jaxis),
-    JADE_LAYOUT_MEMBER("SDL_Event.jball", union SDL_Event, jball),
-    JADE_LAYOUT_MEMBER("SDL_Event.jhat", union SDL_Event, jhat),
-    JADE_LAYOUT_MEMBER("SDL_Event.jbutton", union SDL_Event, jbutton),
-    JADE_LAYOUT_MEMBER("SDL_Event.jbattery", union SDL_Event, jbattery),
-    JADE_LAYOUT_MEMBER("SDL_Event.gdevice", union SDL_Event, gdevice),
-    JADE_LAYOUT_MEMBER("SDL_Event.gaxis", union SDL_Event, gaxis),
-    JADE_LAYOUT_MEMBER("SDL_Event.gbutton", union SDL_Event, gbutton),
-    JADE_LAYOUT_MEMBER("SDL_Event.gtouchpad", union SDL_Event, gtouchpad),
-    JADE_LAYOUT_MEMBER("SDL_Event.gsensor", union SDL_Event, gsensor),
-    JADE_LAYOUT_MEMBER("SDL_Event.adevice", union SDL_Event, adevice),
-    JADE_LAYOUT_MEMBER("SDL_Event.cdevice", union SDL_Event, cdevice),
-    JADE_LAYOUT_MEMBER("SDL_Event.sensor", union SDL_Event, sensor),
-    JADE_LAYOUT_MEMBER("SDL_Event.quit", union SDL_Event, quit),
-    JADE_LAYOUT_MEMBER("SDL_Event.user", union SDL_Event, user),
-    JADE_LAYOUT_MEMBER("SDL_Event.tfinger", union SDL_Event, tfinger),
-    JADE_LAYOUT_MEMBER("SDL_Event.pinch", union SDL_Event, pinch),
-    JADE_LAYOUT_MEMBER("SDL_Event.pproximity", union SDL_Event, pproximity),
-    JADE_LAYOUT_MEMBER("SDL_Event.ptouch", union SDL_Event, ptouch),
-    JADE_LAYOUT_MEMBER("SDL_Event.pmotion", union SDL_Event, pmotion),
-    JADE_LAYOUT_MEMBER("SDL_Event.pbutton", union SDL_Event, pbutton),
-    JADE_LAYOUT_MEMBER("SDL_Event.paxis", union SDL_Event, paxis),
-    JADE_LAYOUT_MEMBER("SDL_Event.render", union SDL_Event, render),
-    JADE_LAYOUT_MEMBER("SDL_Event.drop", union SDL_Event, drop),
-    JADE_LAYOUT_MEMBER("SDL_Event.clipboard", union SDL_Event, clipboard),
-    JADE_LAYOUT_MEMBER("SDL_Event.padding", union SDL_Event, padding),
-    JADE_LAYOUT_MEMBER("SDL_Event.padding[0]", union SDL_Event, padding[0]),
-    JADE_LAYOUT_RECORD("SDL_FColor", struct SDL_FColor),
-    JADE_LAYOUT_MEMBER("SDL_FColor.r", struct SDL_FColor, r),
-    JADE_LAYOUT_MEMBER("SDL_FColor.g", struct SDL_FColor, g),
-    JADE_LAYOUT_MEMBER("SDL_FColor.b", struct SDL_FColor, b),
-    JADE_LAYOUT_MEMBER("SDL_FColor.a", struct SDL_FColor, a),
-    JADE_LAYOUT_RECORD("SDL_FPoint", struct SDL_FPoint),
-    JADE_LAYOUT_MEMBER("SDL_FPoint.x", struct SDL_FPoint, x),
-    JADE_LAYOUT_MEMBER("SDL_FPoint.y", struct SDL_FPoint, y),
-    JADE_LAYOUT_RECORD("SDL_FRect", struct SDL_FRect),
-    JADE_LAYOUT_MEMBER("SDL_FRect.x", struct SDL_FRect, x),
-    JADE_LAYOUT_MEMBER("SDL_FRect.y", struct SDL_FRect, y),
-    JADE_LAYOUT_MEMBER("SDL_FRect.w", struct SDL_FRect, w),
-    JADE_LAYOUT_MEMBER("SDL_FRect.h", struct SDL_FRect, h),
-    JADE_LAYOUT_RECORD("SDL_Finger", struct SDL_Finger),
-    JADE_LAYOUT_MEMBER("SDL_Finger.id", struct SDL_Finger, id),
-    JADE_LAYOUT_MEMBER("SDL_Finger.x", struct SDL_Finger, x),
-    JADE_LAYOUT_MEMBER("SDL_Finger.y", struct SDL_Finger, y),
-    JADE_LAYOUT_MEMBER("SDL_Finger.pressure", struct SDL_Finger, pressure),
-    JADE_LAYOUT_RECORD("SDL_GPUBlitInfo", struct SDL_GPUBlitInfo),
-    JADE_LAYOUT_MEMBER("SDL_GPUBlitInfo.source", struct SDL_GPUBlitInfo, source),
-    JADE_LAYOUT_MEMBER("SDL_GPUBlitInfo.destination", struct SDL_GPUBlitInfo, destination),
-    JADE_LAYOUT_MEMBER("SDL_GPUBlitInfo.load_op", struct SDL_GPUBlitInfo, load_op),
-    JADE_LAYOUT_MEMBER("SDL_GPUBlitInfo.clear_color", struct SDL_GPUBlitInfo, clear_color),
-    JADE_LAYOUT_MEMBER("SDL_GPUBlitInfo.flip_mode", struct SDL_GPUBlitInfo, flip_mode),
-    JADE_LAYOUT_MEMBER("SDL_GPUBlitInfo.filter", struct SDL_GPUBlitInfo, filter),
-    JADE_LAYOUT_MEMBER("SDL_GPUBlitInfo.cycle", struct SDL_GPUBlitInfo, cycle),
-    JADE_LAYOUT_MEMBER("SDL_GPUBlitInfo.padding1", struct SDL_GPUBlitInfo, padding1),
-    JADE_LAYOUT_MEMBER("SDL_GPUBlitInfo.padding2", struct SDL_GPUBlitInfo, padding2),
-    JADE_LAYOUT_MEMBER("SDL_GPUBlitInfo.padding3", struct SDL_GPUBlitInfo, padding3),
-    JADE_LAYOUT_RECORD("SDL_GPUBlitRegion", struct SDL_GPUBlitRegion),
-    JADE_LAYOUT_MEMBER("SDL_GPUBlitRegion.texture", struct SDL_GPUBlitRegion, texture),
-    JADE_LAYOUT_MEMBER("SDL_GPUBlitRegion.mip_level", struct SDL_GPUBlitRegion, mip_level),
-    JADE_LAYOUT_MEMBER("SDL_GPUBlitRegion.layer_or_depth_plane", struct SDL_GPUBlitRegion, layer_or_depth_plane),
-    JADE_LAYOUT_MEMBER("SDL_GPUBlitRegion.x", struct SDL_GPUBlitRegion, x),
-    JADE_LAYOUT_MEMBER("SDL_GPUBlitRegion.y", struct SDL_GPUBlitRegion, y),
-    JADE_LAYOUT_MEMBER("SDL_GPUBlitRegion.w", struct SDL_GPUBlitRegion, w),
-    JADE_LAYOUT_MEMBER("SDL_GPUBlitRegion.h", struct SDL_GPUBlitRegion, h),
-    JADE_LAYOUT_RECORD("SDL_GPUBufferBinding", struct SDL_GPUBufferBinding),
-    JADE_LAYOUT_MEMBER("SDL_GPUBufferBinding.buffer", struct SDL_GPUBufferBinding, buffer),
-    JADE_LAYOUT_MEMBER("SDL_GPUBufferBinding.offset", struct SDL_GPUBufferBinding, offset),
-    JADE_LAYOUT_RECORD("SDL_GPUBufferCreateInfo", struct SDL_GPUBufferCreateInfo),
-    JADE_LAYOUT_MEMBER("SDL_GPUBufferCreateInfo.usage", struct SDL_GPUBufferCreateInfo, usage),
-    JADE_LAYOUT_MEMBER("SDL_GPUBufferCreateInfo.size", struct SDL_GPUBufferCreateInfo, size),
-    JADE_LAYOUT_MEMBER("SDL_GPUBufferCreateInfo.props", struct SDL_GPUBufferCreateInfo, props),
-    JADE_LAYOUT_RECORD("SDL_GPUBufferLocation", struct SDL_GPUBufferLocation),
-    JADE_LAYOUT_MEMBER("SDL_GPUBufferLocation.buffer", struct SDL_GPUBufferLocation, buffer),
-    JADE_LAYOUT_MEMBER("SDL_GPUBufferLocation.offset", struct SDL_GPUBufferLocation, offset),
-    JADE_LAYOUT_RECORD("SDL_GPUBufferRegion", struct SDL_GPUBufferRegion),
-    JADE_LAYOUT_MEMBER("SDL_GPUBufferRegion.buffer", struct SDL_GPUBufferRegion, buffer),
-    JADE_LAYOUT_MEMBER("SDL_GPUBufferRegion.offset", struct SDL_GPUBufferRegion, offset),
-    JADE_LAYOUT_MEMBER("SDL_GPUBufferRegion.size", struct SDL_GPUBufferRegion, size),
-    JADE_LAYOUT_RECORD("SDL_GPUColorTargetBlendState", struct SDL_GPUColorTargetBlendState),
-    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetBlendState.src_color_blendfactor", struct SDL_GPUColorTargetBlendState, src_color_blendfactor),
-    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetBlendState.dst_color_blendfactor", struct SDL_GPUColorTargetBlendState, dst_color_blendfactor),
-    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetBlendState.color_blend_op", struct SDL_GPUColorTargetBlendState, color_blend_op),
-    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetBlendState.src_alpha_blendfactor", struct SDL_GPUColorTargetBlendState, src_alpha_blendfactor),
-    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetBlendState.dst_alpha_blendfactor", struct SDL_GPUColorTargetBlendState, dst_alpha_blendfactor),
-    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetBlendState.alpha_blend_op", struct SDL_GPUColorTargetBlendState, alpha_blend_op),
-    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetBlendState.color_write_mask", struct SDL_GPUColorTargetBlendState, color_write_mask),
-    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetBlendState.enable_blend", struct SDL_GPUColorTargetBlendState, enable_blend),
-    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetBlendState.enable_color_write_mask", struct SDL_GPUColorTargetBlendState, enable_color_write_mask),
-    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetBlendState.padding1", struct SDL_GPUColorTargetBlendState, padding1),
-    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetBlendState.padding2", struct SDL_GPUColorTargetBlendState, padding2),
-    JADE_LAYOUT_RECORD("SDL_GPUColorTargetDescription", struct SDL_GPUColorTargetDescription),
-    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetDescription.format", struct SDL_GPUColorTargetDescription, format),
-    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetDescription.blend_state", struct SDL_GPUColorTargetDescription, blend_state),
-    JADE_LAYOUT_RECORD("SDL_GPUColorTargetInfo", struct SDL_GPUColorTargetInfo),
-    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetInfo.texture", struct SDL_GPUColorTargetInfo, texture),
-    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetInfo.mip_level", struct SDL_GPUColorTargetInfo, mip_level),
-    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetInfo.layer_or_depth_plane", struct SDL_GPUColorTargetInfo, layer_or_depth_plane),
-    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetInfo.clear_color", struct SDL_GPUColorTargetInfo, clear_color),
-    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetInfo.load_op", struct SDL_GPUColorTargetInfo, load_op),
-    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetInfo.store_op", struct SDL_GPUColorTargetInfo, store_op),
-    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetInfo.resolve_texture", struct SDL_GPUColorTargetInfo, resolve_texture),
-    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetInfo.resolve_mip_level", struct SDL_GPUColorTargetInfo, resolve_mip_level),
-    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetInfo.resolve_layer", struct SDL_GPUColorTargetInfo, resolve_layer),
-    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetInfo.cycle", struct SDL_GPUColorTargetInfo, cycle),
-    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetInfo.cycle_resolve_texture", struct SDL_GPUColorTargetInfo, cycle_resolve_texture),
-    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetInfo.padding1", struct SDL_GPUColorTargetInfo, padding1),
-    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetInfo.padding2", struct SDL_GPUColorTargetInfo, padding2),
-    JADE_LAYOUT_RECORD("SDL_GPUComputePipelineCreateInfo", struct SDL_GPUComputePipelineCreateInfo),
-    JADE_LAYOUT_MEMBER("SDL_GPUComputePipelineCreateInfo.code_size", struct SDL_GPUComputePipelineCreateInfo, code_size),
-    JADE_LAYOUT_MEMBER("SDL_GPUComputePipelineCreateInfo.code", struct SDL_GPUComputePipelineCreateInfo, code),
-    JADE_LAYOUT_MEMBER("SDL_GPUComputePipelineCreateInfo.entrypoint", struct SDL_GPUComputePipelineCreateInfo, entrypoint),
-    JADE_LAYOUT_MEMBER("SDL_GPUComputePipelineCreateInfo.format", struct SDL_GPUComputePipelineCreateInfo, format),
-    JADE_LAYOUT_MEMBER("SDL_GPUComputePipelineCreateInfo.num_samplers", struct SDL_GPUComputePipelineCreateInfo, num_samplers),
-    JADE_LAYOUT_MEMBER("SDL_GPUComputePipelineCreateInfo.num_readonly_storage_textures", struct SDL_GPUComputePipelineCreateInfo, num_readonly_storage_textures),
-    JADE_LAYOUT_MEMBER("SDL_GPUComputePipelineCreateInfo.num_readonly_storage_buffers", struct SDL_GPUComputePipelineCreateInfo, num_readonly_storage_buffers),
-    JADE_LAYOUT_MEMBER("SDL_GPUComputePipelineCreateInfo.num_readwrite_storage_textures", struct SDL_GPUComputePipelineCreateInfo, num_readwrite_storage_textures),
-    JADE_LAYOUT_MEMBER("SDL_GPUComputePipelineCreateInfo.num_readwrite_storage_buffers", struct SDL_GPUComputePipelineCreateInfo, num_readwrite_storage_buffers),
-    JADE_LAYOUT_MEMBER("SDL_GPUComputePipelineCreateInfo.num_uniform_buffers", struct SDL_GPUComputePipelineCreateInfo, num_uniform_buffers),
-    JADE_LAYOUT_MEMBER("SDL_GPUComputePipelineCreateInfo.threadcount_x", struct SDL_GPUComputePipelineCreateInfo, threadcount_x),
-    JADE_LAYOUT_MEMBER("SDL_GPUComputePipelineCreateInfo.threadcount_y", struct SDL_GPUComputePipelineCreateInfo, threadcount_y),
-    JADE_LAYOUT_MEMBER("SDL_GPUComputePipelineCreateInfo.threadcount_z", struct SDL_GPUComputePipelineCreateInfo, threadcount_z),
-    JADE_LAYOUT_MEMBER("SDL_GPUComputePipelineCreateInfo.props", struct SDL_GPUComputePipelineCreateInfo, props),
-    JADE_LAYOUT_RECORD("SDL_GPUDepthStencilState", struct SDL_GPUDepthStencilState),
-    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilState.compare_op", struct SDL_GPUDepthStencilState, compare_op),
-    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilState.back_stencil_state", struct SDL_GPUDepthStencilState, back_stencil_state),
-    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilState.front_stencil_state", struct SDL_GPUDepthStencilState, front_stencil_state),
-    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilState.compare_mask", struct SDL_GPUDepthStencilState, compare_mask),
-    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilState.write_mask", struct SDL_GPUDepthStencilState, write_mask),
-    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilState.enable_depth_test", struct SDL_GPUDepthStencilState, enable_depth_test),
-    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilState.enable_depth_write", struct SDL_GPUDepthStencilState, enable_depth_write),
-    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilState.enable_stencil_test", struct SDL_GPUDepthStencilState, enable_stencil_test),
-    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilState.padding1", struct SDL_GPUDepthStencilState, padding1),
-    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilState.padding2", struct SDL_GPUDepthStencilState, padding2),
-    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilState.padding3", struct SDL_GPUDepthStencilState, padding3),
-    JADE_LAYOUT_RECORD("SDL_GPUDepthStencilTargetInfo", struct SDL_GPUDepthStencilTargetInfo),
-    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilTargetInfo.texture", struct SDL_GPUDepthStencilTargetInfo, texture),
-    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilTargetInfo.clear_depth", struct SDL_GPUDepthStencilTargetInfo, clear_depth),
-    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilTargetInfo.load_op", struct SDL_GPUDepthStencilTargetInfo, load_op),
-    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilTargetInfo.store_op", struct SDL_GPUDepthStencilTargetInfo, store_op),
-    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilTargetInfo.stencil_load_op", struct SDL_GPUDepthStencilTargetInfo, stencil_load_op),
-    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilTargetInfo.stencil_store_op", struct SDL_GPUDepthStencilTargetInfo, stencil_store_op),
-    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilTargetInfo.cycle", struct SDL_GPUDepthStencilTargetInfo, cycle),
-    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilTargetInfo.clear_stencil", struct SDL_GPUDepthStencilTargetInfo, clear_stencil),
-    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilTargetInfo.mip_level", struct SDL_GPUDepthStencilTargetInfo, mip_level),
-    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilTargetInfo.layer", struct SDL_GPUDepthStencilTargetInfo, layer),
-    JADE_LAYOUT_RECORD("SDL_GPUGraphicsPipelineCreateInfo", struct SDL_GPUGraphicsPipelineCreateInfo),
-    JADE_LAYOUT_MEMBER("SDL_GPUGraphicsPipelineCreateInfo.vertex_shader", struct SDL_GPUGraphicsPipelineCreateInfo, vertex_shader),
-    JADE_LAYOUT_MEMBER("SDL_GPUGraphicsPipelineCreateInfo.fragment_shader", struct SDL_GPUGraphicsPipelineCreateInfo, fragment_shader),
-    JADE_LAYOUT_MEMBER("SDL_GPUGraphicsPipelineCreateInfo.vertex_input_state", struct SDL_GPUGraphicsPipelineCreateInfo, vertex_input_state),
-    JADE_LAYOUT_MEMBER("SDL_GPUGraphicsPipelineCreateInfo.primitive_type", struct SDL_GPUGraphicsPipelineCreateInfo, primitive_type),
-    JADE_LAYOUT_MEMBER("SDL_GPUGraphicsPipelineCreateInfo.rasterizer_state", struct SDL_GPUGraphicsPipelineCreateInfo, rasterizer_state),
-    JADE_LAYOUT_MEMBER("SDL_GPUGraphicsPipelineCreateInfo.multisample_state", struct SDL_GPUGraphicsPipelineCreateInfo, multisample_state),
-    JADE_LAYOUT_MEMBER("SDL_GPUGraphicsPipelineCreateInfo.depth_stencil_state", struct SDL_GPUGraphicsPipelineCreateInfo, depth_stencil_state),
-    JADE_LAYOUT_MEMBER("SDL_GPUGraphicsPipelineCreateInfo.target_info", struct SDL_GPUGraphicsPipelineCreateInfo, target_info),
-    JADE_LAYOUT_MEMBER("SDL_GPUGraphicsPipelineCreateInfo.props", struct SDL_GPUGraphicsPipelineCreateInfo, props),
-    JADE_LAYOUT_RECORD("SDL_GPUGraphicsPipelineTargetInfo", struct SDL_GPUGraphicsPipelineTargetInfo),
-    JADE_LAYOUT_MEMBER("SDL_GPUGraphicsPipelineTargetInfo.color_target_descriptions", struct SDL_GPUGraphicsPipelineTargetInfo, color_target_descriptions),
-    JADE_LAYOUT_MEMBER("SDL_GPUGraphicsPipelineTargetInfo.num_color_targets", struct SDL_GPUGraphicsPipelineTargetInfo, num_color_targets),
-    JADE_LAYOUT_MEMBER("SDL_GPUGraphicsPipelineTargetInfo.depth_stencil_format", struct SDL_GPUGraphicsPipelineTargetInfo, depth_stencil_format),
-    JADE_LAYOUT_MEMBER("SDL_GPUGraphicsPipelineTargetInfo.has_depth_stencil_target", struct SDL_GPUGraphicsPipelineTargetInfo, has_depth_stencil_target),
-    JADE_LAYOUT_MEMBER("SDL_GPUGraphicsPipelineTargetInfo.padding1", struct SDL_GPUGraphicsPipelineTargetInfo, padding1),
-    JADE_LAYOUT_MEMBER("SDL_GPUGraphicsPipelineTargetInfo.padding2", struct SDL_GPUGraphicsPipelineTargetInfo, padding2),
-    JADE_LAYOUT_MEMBER("SDL_GPUGraphicsPipelineTargetInfo.padding3", struct SDL_GPUGraphicsPipelineTargetInfo, padding3),
-    JADE_LAYOUT_RECORD("SDL_GPUIndexedIndirectDrawCommand", struct SDL_GPUIndexedIndirectDrawCommand),
-    JADE_LAYOUT_MEMBER("SDL_GPUIndexedIndirectDrawCommand.num_indices", struct SDL_GPUIndexedIndirectDrawCommand, num_indices),
-    JADE_LAYOUT_MEMBER("SDL_GPUIndexedIndirectDrawCommand.num_instances", struct SDL_GPUIndexedIndirectDrawCommand, num_instances),
-    JADE_LAYOUT_MEMBER("SDL_GPUIndexedIndirectDrawCommand.first_index", struct SDL_GPUIndexedIndirectDrawCommand, first_index),
-    JADE_LAYOUT_MEMBER("SDL_GPUIndexedIndirectDrawCommand.vertex_offset", struct SDL_GPUIndexedIndirectDrawCommand, vertex_offset),
-    JADE_LAYOUT_MEMBER("SDL_GPUIndexedIndirectDrawCommand.first_instance", struct SDL_GPUIndexedIndirectDrawCommand, first_instance),
-    JADE_LAYOUT_RECORD("SDL_GPUIndirectDispatchCommand", struct SDL_GPUIndirectDispatchCommand),
-    JADE_LAYOUT_MEMBER("SDL_GPUIndirectDispatchCommand.groupcount_x", struct SDL_GPUIndirectDispatchCommand, groupcount_x),
-    JADE_LAYOUT_MEMBER("SDL_GPUIndirectDispatchCommand.groupcount_y", struct SDL_GPUIndirectDispatchCommand, groupcount_y),
-    JADE_LAYOUT_MEMBER("SDL_GPUIndirectDispatchCommand.groupcount_z", struct SDL_GPUIndirectDispatchCommand, groupcount_z),
-    JADE_LAYOUT_RECORD("SDL_GPUIndirectDrawCommand", struct SDL_GPUIndirectDrawCommand),
-    JADE_LAYOUT_MEMBER("SDL_GPUIndirectDrawCommand.num_vertices", struct SDL_GPUIndirectDrawCommand, num_vertices),
-    JADE_LAYOUT_MEMBER("SDL_GPUIndirectDrawCommand.num_instances", struct SDL_GPUIndirectDrawCommand, num_instances),
-    JADE_LAYOUT_MEMBER("SDL_GPUIndirectDrawCommand.first_vertex", struct SDL_GPUIndirectDrawCommand, first_vertex),
-    JADE_LAYOUT_MEMBER("SDL_GPUIndirectDrawCommand.first_instance", struct SDL_GPUIndirectDrawCommand, first_instance),
-    JADE_LAYOUT_RECORD("SDL_GPUMultisampleState", struct SDL_GPUMultisampleState),
-    JADE_LAYOUT_MEMBER("SDL_GPUMultisampleState.sample_count", struct SDL_GPUMultisampleState, sample_count),
-    JADE_LAYOUT_MEMBER("SDL_GPUMultisampleState.sample_mask", struct SDL_GPUMultisampleState, sample_mask),
-    JADE_LAYOUT_MEMBER("SDL_GPUMultisampleState.enable_mask", struct SDL_GPUMultisampleState, enable_mask),
-    JADE_LAYOUT_MEMBER("SDL_GPUMultisampleState.enable_alpha_to_coverage", struct SDL_GPUMultisampleState, enable_alpha_to_coverage),
-    JADE_LAYOUT_MEMBER("SDL_GPUMultisampleState.padding2", struct SDL_GPUMultisampleState, padding2),
-    JADE_LAYOUT_MEMBER("SDL_GPUMultisampleState.padding3", struct SDL_GPUMultisampleState, padding3),
-    JADE_LAYOUT_RECORD("SDL_GPURasterizerState", struct SDL_GPURasterizerState),
-    JADE_LAYOUT_MEMBER("SDL_GPURasterizerState.fill_mode", struct SDL_GPURasterizerState, fill_mode),
-    JADE_LAYOUT_MEMBER("SDL_GPURasterizerState.cull_mode", struct SDL_GPURasterizerState, cull_mode),
-    JADE_LAYOUT_MEMBER("SDL_GPURasterizerState.front_face", struct SDL_GPURasterizerState, front_face),
-    JADE_LAYOUT_MEMBER("SDL_GPURasterizerState.depth_bias_constant_factor", struct SDL_GPURasterizerState, depth_bias_constant_factor),
-    JADE_LAYOUT_MEMBER("SDL_GPURasterizerState.depth_bias_clamp", struct SDL_GPURasterizerState, depth_bias_clamp),
-    JADE_LAYOUT_MEMBER("SDL_GPURasterizerState.depth_bias_slope_factor", struct SDL_GPURasterizerState, depth_bias_slope_factor),
-    JADE_LAYOUT_MEMBER("SDL_GPURasterizerState.enable_depth_bias", struct SDL_GPURasterizerState, enable_depth_bias),
-    JADE_LAYOUT_MEMBER("SDL_GPURasterizerState.enable_depth_clip", struct SDL_GPURasterizerState, enable_depth_clip),
-    JADE_LAYOUT_MEMBER("SDL_GPURasterizerState.padding1", struct SDL_GPURasterizerState, padding1),
-    JADE_LAYOUT_MEMBER("SDL_GPURasterizerState.padding2", struct SDL_GPURasterizerState, padding2),
-    JADE_LAYOUT_RECORD("SDL_GPURenderStateCreateInfo", struct SDL_GPURenderStateCreateInfo),
-    JADE_LAYOUT_MEMBER("SDL_GPURenderStateCreateInfo.fragment_shader", struct SDL_GPURenderStateCreateInfo, fragment_shader),
-    JADE_LAYOUT_MEMBER("SDL_GPURenderStateCreateInfo.num_sampler_bindings", struct SDL_GPURenderStateCreateInfo, num_sampler_bindings),
-    JADE_LAYOUT_MEMBER("SDL_GPURenderStateCreateInfo.sampler_bindings", struct SDL_GPURenderStateCreateInfo, sampler_bindings),
-    JADE_LAYOUT_MEMBER("SDL_GPURenderStateCreateInfo.num_storage_textures", struct SDL_GPURenderStateCreateInfo, num_storage_textures),
-    JADE_LAYOUT_MEMBER("SDL_GPURenderStateCreateInfo.storage_textures", struct SDL_GPURenderStateCreateInfo, storage_textures),
-    JADE_LAYOUT_MEMBER("SDL_GPURenderStateCreateInfo.num_storage_buffers", struct SDL_GPURenderStateCreateInfo, num_storage_buffers),
-    JADE_LAYOUT_MEMBER("SDL_GPURenderStateCreateInfo.storage_buffers", struct SDL_GPURenderStateCreateInfo, storage_buffers),
-    JADE_LAYOUT_MEMBER("SDL_GPURenderStateCreateInfo.props", struct SDL_GPURenderStateCreateInfo, props),
-    JADE_LAYOUT_RECORD("SDL_GPUSamplerCreateInfo", struct SDL_GPUSamplerCreateInfo),
-    JADE_LAYOUT_MEMBER("SDL_GPUSamplerCreateInfo.min_filter", struct SDL_GPUSamplerCreateInfo, min_filter),
-    JADE_LAYOUT_MEMBER("SDL_GPUSamplerCreateInfo.mag_filter", struct SDL_GPUSamplerCreateInfo, mag_filter),
-    JADE_LAYOUT_MEMBER("SDL_GPUSamplerCreateInfo.mipmap_mode", struct SDL_GPUSamplerCreateInfo, mipmap_mode),
-    JADE_LAYOUT_MEMBER("SDL_GPUSamplerCreateInfo.address_mode_u", struct SDL_GPUSamplerCreateInfo, address_mode_u),
-    JADE_LAYOUT_MEMBER("SDL_GPUSamplerCreateInfo.address_mode_v", struct SDL_GPUSamplerCreateInfo, address_mode_v),
-    JADE_LAYOUT_MEMBER("SDL_GPUSamplerCreateInfo.address_mode_w", struct SDL_GPUSamplerCreateInfo, address_mode_w),
-    JADE_LAYOUT_MEMBER("SDL_GPUSamplerCreateInfo.mip_lod_bias", struct SDL_GPUSamplerCreateInfo, mip_lod_bias),
-    JADE_LAYOUT_MEMBER("SDL_GPUSamplerCreateInfo.max_anisotropy", struct SDL_GPUSamplerCreateInfo, max_anisotropy),
-    JADE_LAYOUT_MEMBER("SDL_GPUSamplerCreateInfo.compare_op", struct SDL_GPUSamplerCreateInfo, compare_op),
-    JADE_LAYOUT_MEMBER("SDL_GPUSamplerCreateInfo.min_lod", struct SDL_GPUSamplerCreateInfo, min_lod),
-    JADE_LAYOUT_MEMBER("SDL_GPUSamplerCreateInfo.max_lod", struct SDL_GPUSamplerCreateInfo, max_lod),
-    JADE_LAYOUT_MEMBER("SDL_GPUSamplerCreateInfo.enable_anisotropy", struct SDL_GPUSamplerCreateInfo, enable_anisotropy),
-    JADE_LAYOUT_MEMBER("SDL_GPUSamplerCreateInfo.enable_compare", struct SDL_GPUSamplerCreateInfo, enable_compare),
-    JADE_LAYOUT_MEMBER("SDL_GPUSamplerCreateInfo.padding1", struct SDL_GPUSamplerCreateInfo, padding1),
-    JADE_LAYOUT_MEMBER("SDL_GPUSamplerCreateInfo.padding2", struct SDL_GPUSamplerCreateInfo, padding2),
-    JADE_LAYOUT_MEMBER("SDL_GPUSamplerCreateInfo.props", struct SDL_GPUSamplerCreateInfo, props),
-    JADE_LAYOUT_RECORD("SDL_GPUShaderCreateInfo", struct SDL_GPUShaderCreateInfo),
-    JADE_LAYOUT_MEMBER("SDL_GPUShaderCreateInfo.code_size", struct SDL_GPUShaderCreateInfo, code_size),
-    JADE_LAYOUT_MEMBER("SDL_GPUShaderCreateInfo.code", struct SDL_GPUShaderCreateInfo, code),
-    JADE_LAYOUT_MEMBER("SDL_GPUShaderCreateInfo.entrypoint", struct SDL_GPUShaderCreateInfo, entrypoint),
-    JADE_LAYOUT_MEMBER("SDL_GPUShaderCreateInfo.format", struct SDL_GPUShaderCreateInfo, format),
-    JADE_LAYOUT_MEMBER("SDL_GPUShaderCreateInfo.stage", struct SDL_GPUShaderCreateInfo, stage),
-    JADE_LAYOUT_MEMBER("SDL_GPUShaderCreateInfo.num_samplers", struct SDL_GPUShaderCreateInfo, num_samplers),
-    JADE_LAYOUT_MEMBER("SDL_GPUShaderCreateInfo.num_storage_textures", struct SDL_GPUShaderCreateInfo, num_storage_textures),
-    JADE_LAYOUT_MEMBER("SDL_GPUShaderCreateInfo.num_storage_buffers", struct SDL_GPUShaderCreateInfo, num_storage_buffers),
-    JADE_LAYOUT_MEMBER("SDL_GPUShaderCreateInfo.num_uniform_buffers", struct SDL_GPUShaderCreateInfo, num_uniform_buffers),
-    JADE_LAYOUT_MEMBER("SDL_GPUShaderCreateInfo.props", struct SDL_GPUShaderCreateInfo, props),
-    JADE_LAYOUT_RECORD("SDL_GPUStencilOpState", struct SDL_GPUStencilOpState),
-    JADE_LAYOUT_MEMBER("SDL_GPUStencilOpState.fail_op", struct SDL_GPUStencilOpState, fail_op),
-    JADE_LAYOUT_MEMBER("SDL_GPUStencilOpState.pass_op", struct SDL_GPUStencilOpState, pass_op),
-    JADE_LAYOUT_MEMBER("SDL_GPUStencilOpState.depth_fail_op", struct SDL_GPUStencilOpState, depth_fail_op),
-    JADE_LAYOUT_MEMBER("SDL_GPUStencilOpState.compare_op", struct SDL_GPUStencilOpState, compare_op),
-    JADE_LAYOUT_RECORD("SDL_GPUStorageBufferReadWriteBinding", struct SDL_GPUStorageBufferReadWriteBinding),
-    JADE_LAYOUT_MEMBER("SDL_GPUStorageBufferReadWriteBinding.buffer", struct SDL_GPUStorageBufferReadWriteBinding, buffer),
-    JADE_LAYOUT_MEMBER("SDL_GPUStorageBufferReadWriteBinding.cycle", struct SDL_GPUStorageBufferReadWriteBinding, cycle),
-    JADE_LAYOUT_MEMBER("SDL_GPUStorageBufferReadWriteBinding.padding1", struct SDL_GPUStorageBufferReadWriteBinding, padding1),
-    JADE_LAYOUT_MEMBER("SDL_GPUStorageBufferReadWriteBinding.padding2", struct SDL_GPUStorageBufferReadWriteBinding, padding2),
-    JADE_LAYOUT_MEMBER("SDL_GPUStorageBufferReadWriteBinding.padding3", struct SDL_GPUStorageBufferReadWriteBinding, padding3),
-    JADE_LAYOUT_RECORD("SDL_GPUStorageTextureReadWriteBinding", struct SDL_GPUStorageTextureReadWriteBinding),
-    JADE_LAYOUT_MEMBER("SDL_GPUStorageTextureReadWriteBinding.texture", struct SDL_GPUStorageTextureReadWriteBinding, texture),
-    JADE_LAYOUT_MEMBER("SDL_GPUStorageTextureReadWriteBinding.mip_level", struct SDL_GPUStorageTextureReadWriteBinding, mip_level),
-    JADE_LAYOUT_MEMBER("SDL_GPUStorageTextureReadWriteBinding.layer", struct SDL_GPUStorageTextureReadWriteBinding, layer),
-    JADE_LAYOUT_MEMBER("SDL_GPUStorageTextureReadWriteBinding.cycle", struct SDL_GPUStorageTextureReadWriteBinding, cycle),
-    JADE_LAYOUT_MEMBER("SDL_GPUStorageTextureReadWriteBinding.padding1", struct SDL_GPUStorageTextureReadWriteBinding, padding1),
-    JADE_LAYOUT_MEMBER("SDL_GPUStorageTextureReadWriteBinding.padding2", struct SDL_GPUStorageTextureReadWriteBinding, padding2),
-    JADE_LAYOUT_MEMBER("SDL_GPUStorageTextureReadWriteBinding.padding3", struct SDL_GPUStorageTextureReadWriteBinding, padding3),
-    JADE_LAYOUT_RECORD("SDL_GPUTextureCreateInfo", struct SDL_GPUTextureCreateInfo),
-    JADE_LAYOUT_MEMBER("SDL_GPUTextureCreateInfo.type", struct SDL_GPUTextureCreateInfo, type),
-    JADE_LAYOUT_MEMBER("SDL_GPUTextureCreateInfo.format", struct SDL_GPUTextureCreateInfo, format),
-    JADE_LAYOUT_MEMBER("SDL_GPUTextureCreateInfo.usage", struct SDL_GPUTextureCreateInfo, usage),
-    JADE_LAYOUT_MEMBER("SDL_GPUTextureCreateInfo.width", struct SDL_GPUTextureCreateInfo, width),
-    JADE_LAYOUT_MEMBER("SDL_GPUTextureCreateInfo.height", struct SDL_GPUTextureCreateInfo, height),
-    JADE_LAYOUT_MEMBER("SDL_GPUTextureCreateInfo.layer_count_or_depth", struct SDL_GPUTextureCreateInfo, layer_count_or_depth),
-    JADE_LAYOUT_MEMBER("SDL_GPUTextureCreateInfo.num_levels", struct SDL_GPUTextureCreateInfo, num_levels),
-    JADE_LAYOUT_MEMBER("SDL_GPUTextureCreateInfo.sample_count", struct SDL_GPUTextureCreateInfo, sample_count),
-    JADE_LAYOUT_MEMBER("SDL_GPUTextureCreateInfo.props", struct SDL_GPUTextureCreateInfo, props),
-    JADE_LAYOUT_RECORD("SDL_GPUTextureLocation", struct SDL_GPUTextureLocation),
-    JADE_LAYOUT_MEMBER("SDL_GPUTextureLocation.texture", struct SDL_GPUTextureLocation, texture),
-    JADE_LAYOUT_MEMBER("SDL_GPUTextureLocation.mip_level", struct SDL_GPUTextureLocation, mip_level),
-    JADE_LAYOUT_MEMBER("SDL_GPUTextureLocation.layer", struct SDL_GPUTextureLocation, layer),
-    JADE_LAYOUT_MEMBER("SDL_GPUTextureLocation.x", struct SDL_GPUTextureLocation, x),
-    JADE_LAYOUT_MEMBER("SDL_GPUTextureLocation.y", struct SDL_GPUTextureLocation, y),
-    JADE_LAYOUT_MEMBER("SDL_GPUTextureLocation.z", struct SDL_GPUTextureLocation, z),
-    JADE_LAYOUT_RECORD("SDL_GPUTextureRegion", struct SDL_GPUTextureRegion),
-    JADE_LAYOUT_MEMBER("SDL_GPUTextureRegion.texture", struct SDL_GPUTextureRegion, texture),
-    JADE_LAYOUT_MEMBER("SDL_GPUTextureRegion.mip_level", struct SDL_GPUTextureRegion, mip_level),
-    JADE_LAYOUT_MEMBER("SDL_GPUTextureRegion.layer", struct SDL_GPUTextureRegion, layer),
-    JADE_LAYOUT_MEMBER("SDL_GPUTextureRegion.x", struct SDL_GPUTextureRegion, x),
-    JADE_LAYOUT_MEMBER("SDL_GPUTextureRegion.y", struct SDL_GPUTextureRegion, y),
-    JADE_LAYOUT_MEMBER("SDL_GPUTextureRegion.z", struct SDL_GPUTextureRegion, z),
-    JADE_LAYOUT_MEMBER("SDL_GPUTextureRegion.w", struct SDL_GPUTextureRegion, w),
-    JADE_LAYOUT_MEMBER("SDL_GPUTextureRegion.h", struct SDL_GPUTextureRegion, h),
-    JADE_LAYOUT_MEMBER("SDL_GPUTextureRegion.d", struct SDL_GPUTextureRegion, d),
-    JADE_LAYOUT_RECORD("SDL_GPUTextureSamplerBinding", struct SDL_GPUTextureSamplerBinding),
-    JADE_LAYOUT_MEMBER("SDL_GPUTextureSamplerBinding.texture", struct SDL_GPUTextureSamplerBinding, texture),
-    JADE_LAYOUT_MEMBER("SDL_GPUTextureSamplerBinding.sampler", struct SDL_GPUTextureSamplerBinding, sampler),
-    JADE_LAYOUT_RECORD("SDL_GPUTextureTransferInfo", struct SDL_GPUTextureTransferInfo),
-    JADE_LAYOUT_MEMBER("SDL_GPUTextureTransferInfo.transfer_buffer", struct SDL_GPUTextureTransferInfo, transfer_buffer),
-    JADE_LAYOUT_MEMBER("SDL_GPUTextureTransferInfo.offset", struct SDL_GPUTextureTransferInfo, offset),
-    JADE_LAYOUT_MEMBER("SDL_GPUTextureTransferInfo.pixels_per_row", struct SDL_GPUTextureTransferInfo, pixels_per_row),
-    JADE_LAYOUT_MEMBER("SDL_GPUTextureTransferInfo.rows_per_layer", struct SDL_GPUTextureTransferInfo, rows_per_layer),
-    JADE_LAYOUT_RECORD("SDL_GPUTransferBufferCreateInfo", struct SDL_GPUTransferBufferCreateInfo),
-    JADE_LAYOUT_MEMBER("SDL_GPUTransferBufferCreateInfo.usage", struct SDL_GPUTransferBufferCreateInfo, usage),
-    JADE_LAYOUT_MEMBER("SDL_GPUTransferBufferCreateInfo.size", struct SDL_GPUTransferBufferCreateInfo, size),
-    JADE_LAYOUT_MEMBER("SDL_GPUTransferBufferCreateInfo.props", struct SDL_GPUTransferBufferCreateInfo, props),
-    JADE_LAYOUT_RECORD("SDL_GPUTransferBufferLocation", struct SDL_GPUTransferBufferLocation),
-    JADE_LAYOUT_MEMBER("SDL_GPUTransferBufferLocation.transfer_buffer", struct SDL_GPUTransferBufferLocation, transfer_buffer),
-    JADE_LAYOUT_MEMBER("SDL_GPUTransferBufferLocation.offset", struct SDL_GPUTransferBufferLocation, offset),
-    JADE_LAYOUT_RECORD("SDL_GPUVertexAttribute", struct SDL_GPUVertexAttribute),
-    JADE_LAYOUT_MEMBER("SDL_GPUVertexAttribute.location", struct SDL_GPUVertexAttribute, location),
-    JADE_LAYOUT_MEMBER("SDL_GPUVertexAttribute.buffer_slot", struct SDL_GPUVertexAttribute, buffer_slot),
-    JADE_LAYOUT_MEMBER("SDL_GPUVertexAttribute.format", struct SDL_GPUVertexAttribute, format),
-    JADE_LAYOUT_MEMBER("SDL_GPUVertexAttribute.offset", struct SDL_GPUVertexAttribute, offset),
-    JADE_LAYOUT_RECORD("SDL_GPUVertexBufferDescription", struct SDL_GPUVertexBufferDescription),
-    JADE_LAYOUT_MEMBER("SDL_GPUVertexBufferDescription.slot", struct SDL_GPUVertexBufferDescription, slot),
-    JADE_LAYOUT_MEMBER("SDL_GPUVertexBufferDescription.pitch", struct SDL_GPUVertexBufferDescription, pitch),
-    JADE_LAYOUT_MEMBER("SDL_GPUVertexBufferDescription.input_rate", struct SDL_GPUVertexBufferDescription, input_rate),
-    JADE_LAYOUT_MEMBER("SDL_GPUVertexBufferDescription.instance_step_rate", struct SDL_GPUVertexBufferDescription, instance_step_rate),
-    JADE_LAYOUT_RECORD("SDL_GPUVertexInputState", struct SDL_GPUVertexInputState),
-    JADE_LAYOUT_MEMBER("SDL_GPUVertexInputState.vertex_buffer_descriptions", struct SDL_GPUVertexInputState, vertex_buffer_descriptions),
-    JADE_LAYOUT_MEMBER("SDL_GPUVertexInputState.num_vertex_buffers", struct SDL_GPUVertexInputState, num_vertex_buffers),
-    JADE_LAYOUT_MEMBER("SDL_GPUVertexInputState.vertex_attributes", struct SDL_GPUVertexInputState, vertex_attributes),
-    JADE_LAYOUT_MEMBER("SDL_GPUVertexInputState.num_vertex_attributes", struct SDL_GPUVertexInputState, num_vertex_attributes),
-    JADE_LAYOUT_RECORD("SDL_GPUViewport", struct SDL_GPUViewport),
-    JADE_LAYOUT_MEMBER("SDL_GPUViewport.x", struct SDL_GPUViewport, x),
-    JADE_LAYOUT_MEMBER("SDL_GPUViewport.y", struct SDL_GPUViewport, y),
-    JADE_LAYOUT_MEMBER("SDL_GPUViewport.w", struct SDL_GPUViewport, w),
-    JADE_LAYOUT_MEMBER("SDL_GPUViewport.h", struct SDL_GPUViewport, h),
-    JADE_LAYOUT_MEMBER("SDL_GPUViewport.min_depth", struct SDL_GPUViewport, min_depth),
-    JADE_LAYOUT_MEMBER("SDL_GPUViewport.max_depth", struct SDL_GPUViewport, max_depth),
-    JADE_LAYOUT_RECORD("SDL_GPUVulkanOptions", struct SDL_GPUVulkanOptions),
-    JADE_LAYOUT_MEMBER("SDL_GPUVulkanOptions.vulkan_api_version", struct SDL_GPUVulkanOptions, vulkan_api_version),
-    JADE_LAYOUT_MEMBER("SDL_GPUVulkanOptions.feature_list", struct SDL_GPUVulkanOptions, feature_list),
-    JADE_LAYOUT_MEMBER("SDL_GPUVulkanOptions.vulkan_10_physical_device_features", struct SDL_GPUVulkanOptions, vulkan_10_physical_device_features),
-    JADE_LAYOUT_MEMBER("SDL_GPUVulkanOptions.device_extension_count", struct SDL_GPUVulkanOptions, device_extension_count),
-    JADE_LAYOUT_MEMBER("SDL_GPUVulkanOptions.device_extension_names", struct SDL_GPUVulkanOptions, device_extension_names),
-    JADE_LAYOUT_MEMBER("SDL_GPUVulkanOptions.instance_extension_count", struct SDL_GPUVulkanOptions, instance_extension_count),
-    JADE_LAYOUT_MEMBER("SDL_GPUVulkanOptions.instance_extension_names", struct SDL_GPUVulkanOptions, instance_extension_names),
-    JADE_LAYOUT_RECORD("SDL_GUID", struct SDL_GUID),
-    JADE_LAYOUT_MEMBER("SDL_GUID.data", struct SDL_GUID, data),
-    JADE_LAYOUT_MEMBER("SDL_GUID.data[0]", struct SDL_GUID, data[0]),
-    JADE_LAYOUT_RECORD("SDL_GamepadAxisEvent", struct SDL_GamepadAxisEvent),
-    JADE_LAYOUT_MEMBER("SDL_GamepadAxisEvent.type", struct SDL_GamepadAxisEvent, type),
-    JADE_LAYOUT_MEMBER("SDL_GamepadAxisEvent.reserved", struct SDL_GamepadAxisEvent, reserved),
-    JADE_LAYOUT_MEMBER("SDL_GamepadAxisEvent.timestamp", struct SDL_GamepadAxisEvent, timestamp),
-    JADE_LAYOUT_MEMBER("SDL_GamepadAxisEvent.which", struct SDL_GamepadAxisEvent, which),
-    JADE_LAYOUT_MEMBER("SDL_GamepadAxisEvent.axis", struct SDL_GamepadAxisEvent, axis),
-    JADE_LAYOUT_MEMBER("SDL_GamepadAxisEvent.padding1", struct SDL_GamepadAxisEvent, padding1),
-    JADE_LAYOUT_MEMBER("SDL_GamepadAxisEvent.padding2", struct SDL_GamepadAxisEvent, padding2),
-    JADE_LAYOUT_MEMBER("SDL_GamepadAxisEvent.padding3", struct SDL_GamepadAxisEvent, padding3),
-    JADE_LAYOUT_MEMBER("SDL_GamepadAxisEvent.value", struct SDL_GamepadAxisEvent, value),
-    JADE_LAYOUT_MEMBER("SDL_GamepadAxisEvent.padding4", struct SDL_GamepadAxisEvent, padding4),
-    JADE_LAYOUT_RECORD("SDL_GamepadBinding", struct SDL_GamepadBinding),
-    JADE_LAYOUT_MEMBER("SDL_GamepadBinding.input_type", struct SDL_GamepadBinding, input_type),
-    JADE_LAYOUT_MEMBER("SDL_GamepadBinding.input", struct SDL_GamepadBinding, input),
-    JADE_LAYOUT_MEMBER("SDL_GamepadBinding.output_type", struct SDL_GamepadBinding, output_type),
-    JADE_LAYOUT_MEMBER("SDL_GamepadBinding.output", struct SDL_GamepadBinding, output),
-    JADE_LAYOUT_NESTED_RECORD("SDL_GamepadBinding_input", struct SDL_GamepadBinding, input),
-    JADE_LAYOUT_NESTED_MEMBER("SDL_GamepadBinding_input.button", struct SDL_GamepadBinding, input, button),
-    JADE_LAYOUT_NESTED_MEMBER("SDL_GamepadBinding_input.axis", struct SDL_GamepadBinding, input, axis),
-    JADE_LAYOUT_NESTED_MEMBER("SDL_GamepadBinding_input.hat", struct SDL_GamepadBinding, input, hat),
-    JADE_LAYOUT_NESTED_RECORD("SDL_GamepadBinding_input_axis", struct SDL_GamepadBinding, input.axis),
-    JADE_LAYOUT_NESTED_MEMBER("SDL_GamepadBinding_input_axis.axis", struct SDL_GamepadBinding, input.axis, axis),
-    JADE_LAYOUT_NESTED_MEMBER("SDL_GamepadBinding_input_axis.axis_min", struct SDL_GamepadBinding, input.axis, axis_min),
-    JADE_LAYOUT_NESTED_MEMBER("SDL_GamepadBinding_input_axis.axis_max", struct SDL_GamepadBinding, input.axis, axis_max),
-    JADE_LAYOUT_NESTED_RECORD("SDL_GamepadBinding_input_hat", struct SDL_GamepadBinding, input.hat),
-    JADE_LAYOUT_NESTED_MEMBER("SDL_GamepadBinding_input_hat.hat", struct SDL_GamepadBinding, input.hat, hat),
-    JADE_LAYOUT_NESTED_MEMBER("SDL_GamepadBinding_input_hat.hat_mask", struct SDL_GamepadBinding, input.hat, hat_mask),
-    JADE_LAYOUT_NESTED_RECORD("SDL_GamepadBinding_output", struct SDL_GamepadBinding, output),
-    JADE_LAYOUT_NESTED_MEMBER("SDL_GamepadBinding_output.button", struct SDL_GamepadBinding, output, button),
-    JADE_LAYOUT_NESTED_MEMBER("SDL_GamepadBinding_output.axis", struct SDL_GamepadBinding, output, axis),
-    JADE_LAYOUT_NESTED_RECORD("SDL_GamepadBinding_output_axis", struct SDL_GamepadBinding, output.axis),
-    JADE_LAYOUT_NESTED_MEMBER("SDL_GamepadBinding_output_axis.axis", struct SDL_GamepadBinding, output.axis, axis),
-    JADE_LAYOUT_NESTED_MEMBER("SDL_GamepadBinding_output_axis.axis_min", struct SDL_GamepadBinding, output.axis, axis_min),
-    JADE_LAYOUT_NESTED_MEMBER("SDL_GamepadBinding_output_axis.axis_max", struct SDL_GamepadBinding, output.axis, axis_max),
-    JADE_LAYOUT_RECORD("SDL_GamepadButtonEvent", struct SDL_GamepadButtonEvent),
-    JADE_LAYOUT_MEMBER("SDL_GamepadButtonEvent.type", struct SDL_GamepadButtonEvent, type),
-    JADE_LAYOUT_MEMBER("SDL_GamepadButtonEvent.reserved", struct SDL_GamepadButtonEvent, reserved),
-    JADE_LAYOUT_MEMBER("SDL_GamepadButtonEvent.timestamp", struct SDL_GamepadButtonEvent, timestamp),
-    JADE_LAYOUT_MEMBER("SDL_GamepadButtonEvent.which", struct SDL_GamepadButtonEvent, which),
-    JADE_LAYOUT_MEMBER("SDL_GamepadButtonEvent.button", struct SDL_GamepadButtonEvent, button),
-    JADE_LAYOUT_MEMBER("SDL_GamepadButtonEvent.down", struct SDL_GamepadButtonEvent, down),
-    JADE_LAYOUT_MEMBER("SDL_GamepadButtonEvent.padding1", struct SDL_GamepadButtonEvent, padding1),
-    JADE_LAYOUT_MEMBER("SDL_GamepadButtonEvent.padding2", struct SDL_GamepadButtonEvent, padding2),
-    JADE_LAYOUT_RECORD("SDL_GamepadDeviceEvent", struct SDL_GamepadDeviceEvent),
-    JADE_LAYOUT_MEMBER("SDL_GamepadDeviceEvent.type", struct SDL_GamepadDeviceEvent, type),
-    JADE_LAYOUT_MEMBER("SDL_GamepadDeviceEvent.reserved", struct SDL_GamepadDeviceEvent, reserved),
-    JADE_LAYOUT_MEMBER("SDL_GamepadDeviceEvent.timestamp", struct SDL_GamepadDeviceEvent, timestamp),
-    JADE_LAYOUT_MEMBER("SDL_GamepadDeviceEvent.which", struct SDL_GamepadDeviceEvent, which),
-    JADE_LAYOUT_RECORD("SDL_GamepadSensorEvent", struct SDL_GamepadSensorEvent),
-    JADE_LAYOUT_MEMBER("SDL_GamepadSensorEvent.type", struct SDL_GamepadSensorEvent, type),
-    JADE_LAYOUT_MEMBER("SDL_GamepadSensorEvent.reserved", struct SDL_GamepadSensorEvent, reserved),
-    JADE_LAYOUT_MEMBER("SDL_GamepadSensorEvent.timestamp", struct SDL_GamepadSensorEvent, timestamp),
-    JADE_LAYOUT_MEMBER("SDL_GamepadSensorEvent.which", struct SDL_GamepadSensorEvent, which),
-    JADE_LAYOUT_MEMBER("SDL_GamepadSensorEvent.sensor", struct SDL_GamepadSensorEvent, sensor),
-    JADE_LAYOUT_MEMBER("SDL_GamepadSensorEvent.data", struct SDL_GamepadSensorEvent, data),
-    JADE_LAYOUT_MEMBER("SDL_GamepadSensorEvent.data[0]", struct SDL_GamepadSensorEvent, data[0]),
-    JADE_LAYOUT_MEMBER("SDL_GamepadSensorEvent.sensor_timestamp", struct SDL_GamepadSensorEvent, sensor_timestamp),
-    JADE_LAYOUT_RECORD("SDL_GamepadTouchpadEvent", struct SDL_GamepadTouchpadEvent),
-    JADE_LAYOUT_MEMBER("SDL_GamepadTouchpadEvent.type", struct SDL_GamepadTouchpadEvent, type),
-    JADE_LAYOUT_MEMBER("SDL_GamepadTouchpadEvent.reserved", struct SDL_GamepadTouchpadEvent, reserved),
-    JADE_LAYOUT_MEMBER("SDL_GamepadTouchpadEvent.timestamp", struct SDL_GamepadTouchpadEvent, timestamp),
-    JADE_LAYOUT_MEMBER("SDL_GamepadTouchpadEvent.which", struct SDL_GamepadTouchpadEvent, which),
-    JADE_LAYOUT_MEMBER("SDL_GamepadTouchpadEvent.touchpad", struct SDL_GamepadTouchpadEvent, touchpad),
-    JADE_LAYOUT_MEMBER("SDL_GamepadTouchpadEvent.finger", struct SDL_GamepadTouchpadEvent, finger),
-    JADE_LAYOUT_MEMBER("SDL_GamepadTouchpadEvent.x", struct SDL_GamepadTouchpadEvent, x),
-    JADE_LAYOUT_MEMBER("SDL_GamepadTouchpadEvent.y", struct SDL_GamepadTouchpadEvent, y),
-    JADE_LAYOUT_MEMBER("SDL_GamepadTouchpadEvent.pressure", struct SDL_GamepadTouchpadEvent, pressure),
-    JADE_LAYOUT_RECORD("SDL_HapticCondition", struct SDL_HapticCondition),
-    JADE_LAYOUT_MEMBER("SDL_HapticCondition.type", struct SDL_HapticCondition, type),
-    JADE_LAYOUT_MEMBER("SDL_HapticCondition.direction", struct SDL_HapticCondition, direction),
-    JADE_LAYOUT_MEMBER("SDL_HapticCondition.length", struct SDL_HapticCondition, length),
-    JADE_LAYOUT_MEMBER("SDL_HapticCondition.delay", struct SDL_HapticCondition, delay),
-    JADE_LAYOUT_MEMBER("SDL_HapticCondition.button", struct SDL_HapticCondition, button),
-    JADE_LAYOUT_MEMBER("SDL_HapticCondition.interval", struct SDL_HapticCondition, interval),
-    JADE_LAYOUT_MEMBER("SDL_HapticCondition.right_sat", struct SDL_HapticCondition, right_sat),
-    JADE_LAYOUT_MEMBER("SDL_HapticCondition.right_sat[0]", struct SDL_HapticCondition, right_sat[0]),
-    JADE_LAYOUT_MEMBER("SDL_HapticCondition.left_sat", struct SDL_HapticCondition, left_sat),
-    JADE_LAYOUT_MEMBER("SDL_HapticCondition.left_sat[0]", struct SDL_HapticCondition, left_sat[0]),
-    JADE_LAYOUT_MEMBER("SDL_HapticCondition.right_coeff", struct SDL_HapticCondition, right_coeff),
-    JADE_LAYOUT_MEMBER("SDL_HapticCondition.right_coeff[0]", struct SDL_HapticCondition, right_coeff[0]),
-    JADE_LAYOUT_MEMBER("SDL_HapticCondition.left_coeff", struct SDL_HapticCondition, left_coeff),
-    JADE_LAYOUT_MEMBER("SDL_HapticCondition.left_coeff[0]", struct SDL_HapticCondition, left_coeff[0]),
-    JADE_LAYOUT_MEMBER("SDL_HapticCondition.deadband", struct SDL_HapticCondition, deadband),
-    JADE_LAYOUT_MEMBER("SDL_HapticCondition.deadband[0]", struct SDL_HapticCondition, deadband[0]),
-    JADE_LAYOUT_MEMBER("SDL_HapticCondition.center", struct SDL_HapticCondition, center),
-    JADE_LAYOUT_MEMBER("SDL_HapticCondition.center[0]", struct SDL_HapticCondition, center[0]),
-    JADE_LAYOUT_RECORD("SDL_HapticConstant", struct SDL_HapticConstant),
-    JADE_LAYOUT_MEMBER("SDL_HapticConstant.type", struct SDL_HapticConstant, type),
-    JADE_LAYOUT_MEMBER("SDL_HapticConstant.direction", struct SDL_HapticConstant, direction),
-    JADE_LAYOUT_MEMBER("SDL_HapticConstant.length", struct SDL_HapticConstant, length),
-    JADE_LAYOUT_MEMBER("SDL_HapticConstant.delay", struct SDL_HapticConstant, delay),
-    JADE_LAYOUT_MEMBER("SDL_HapticConstant.button", struct SDL_HapticConstant, button),
-    JADE_LAYOUT_MEMBER("SDL_HapticConstant.interval", struct SDL_HapticConstant, interval),
-    JADE_LAYOUT_MEMBER("SDL_HapticConstant.level", struct SDL_HapticConstant, level),
-    JADE_LAYOUT_MEMBER("SDL_HapticConstant.attack_length", struct SDL_HapticConstant, attack_length),
-    JADE_LAYOUT_MEMBER("SDL_HapticConstant.attack_level", struct SDL_HapticConstant, attack_level),
-    JADE_LAYOUT_MEMBER("SDL_HapticConstant.fade_length", struct SDL_HapticConstant, fade_length),
-    JADE_LAYOUT_MEMBER("SDL_HapticConstant.fade_level", struct SDL_HapticConstant, fade_level),
-    JADE_LAYOUT_RECORD("SDL_HapticCustom", struct SDL_HapticCustom),
-    JADE_LAYOUT_MEMBER("SDL_HapticCustom.type", struct SDL_HapticCustom, type),
-    JADE_LAYOUT_MEMBER("SDL_HapticCustom.direction", struct SDL_HapticCustom, direction),
-    JADE_LAYOUT_MEMBER("SDL_HapticCustom.length", struct SDL_HapticCustom, length),
-    JADE_LAYOUT_MEMBER("SDL_HapticCustom.delay", struct SDL_HapticCustom, delay),
-    JADE_LAYOUT_MEMBER("SDL_HapticCustom.button", struct SDL_HapticCustom, button),
-    JADE_LAYOUT_MEMBER("SDL_HapticCustom.interval", struct SDL_HapticCustom, interval),
-    JADE_LAYOUT_MEMBER("SDL_HapticCustom.channels", struct SDL_HapticCustom, channels),
-    JADE_LAYOUT_MEMBER("SDL_HapticCustom.period", struct SDL_HapticCustom, period),
-    JADE_LAYOUT_MEMBER("SDL_HapticCustom.samples", struct SDL_HapticCustom, samples),
-    JADE_LAYOUT_MEMBER("SDL_HapticCustom.data", struct SDL_HapticCustom, data),
-    JADE_LAYOUT_MEMBER("SDL_HapticCustom.attack_length", struct SDL_HapticCustom, attack_length),
-    JADE_LAYOUT_MEMBER("SDL_HapticCustom.attack_level", struct SDL_HapticCustom, attack_level),
-    JADE_LAYOUT_MEMBER("SDL_HapticCustom.fade_length", struct SDL_HapticCustom, fade_length),
-    JADE_LAYOUT_MEMBER("SDL_HapticCustom.fade_level", struct SDL_HapticCustom, fade_level),
-    JADE_LAYOUT_RECORD("SDL_HapticDirection", struct SDL_HapticDirection),
-    JADE_LAYOUT_MEMBER("SDL_HapticDirection.type", struct SDL_HapticDirection, type),
-    JADE_LAYOUT_MEMBER("SDL_HapticDirection.dir", struct SDL_HapticDirection, dir),
-    JADE_LAYOUT_MEMBER("SDL_HapticDirection.dir[0]", struct SDL_HapticDirection, dir[0]),
-    JADE_LAYOUT_RECORD("SDL_HapticEffect", union SDL_HapticEffect),
-    JADE_LAYOUT_MEMBER("SDL_HapticEffect.type", union SDL_HapticEffect, type),
-    JADE_LAYOUT_MEMBER("SDL_HapticEffect.constant", union SDL_HapticEffect, constant),
-    JADE_LAYOUT_MEMBER("SDL_HapticEffect.periodic", union SDL_HapticEffect, periodic),
-    JADE_LAYOUT_MEMBER("SDL_HapticEffect.condition", union SDL_HapticEffect, condition),
-    JADE_LAYOUT_MEMBER("SDL_HapticEffect.ramp", union SDL_HapticEffect, ramp),
-    JADE_LAYOUT_MEMBER("SDL_HapticEffect.leftright", union SDL_HapticEffect, leftright),
-    JADE_LAYOUT_MEMBER("SDL_HapticEffect.custom", union SDL_HapticEffect, custom),
-    JADE_LAYOUT_RECORD("SDL_HapticLeftRight", struct SDL_HapticLeftRight),
-    JADE_LAYOUT_MEMBER("SDL_HapticLeftRight.type", struct SDL_HapticLeftRight, type),
-    JADE_LAYOUT_MEMBER("SDL_HapticLeftRight.length", struct SDL_HapticLeftRight, length),
-    JADE_LAYOUT_MEMBER("SDL_HapticLeftRight.large_magnitude", struct SDL_HapticLeftRight, large_magnitude),
-    JADE_LAYOUT_MEMBER("SDL_HapticLeftRight.small_magnitude", struct SDL_HapticLeftRight, small_magnitude),
-    JADE_LAYOUT_RECORD("SDL_HapticPeriodic", struct SDL_HapticPeriodic),
-    JADE_LAYOUT_MEMBER("SDL_HapticPeriodic.type", struct SDL_HapticPeriodic, type),
-    JADE_LAYOUT_MEMBER("SDL_HapticPeriodic.direction", struct SDL_HapticPeriodic, direction),
-    JADE_LAYOUT_MEMBER("SDL_HapticPeriodic.length", struct SDL_HapticPeriodic, length),
-    JADE_LAYOUT_MEMBER("SDL_HapticPeriodic.delay", struct SDL_HapticPeriodic, delay),
-    JADE_LAYOUT_MEMBER("SDL_HapticPeriodic.button", struct SDL_HapticPeriodic, button),
-    JADE_LAYOUT_MEMBER("SDL_HapticPeriodic.interval", struct SDL_HapticPeriodic, interval),
-    JADE_LAYOUT_MEMBER("SDL_HapticPeriodic.period", struct SDL_HapticPeriodic, period),
-    JADE_LAYOUT_MEMBER("SDL_HapticPeriodic.magnitude", struct SDL_HapticPeriodic, magnitude),
-    JADE_LAYOUT_MEMBER("SDL_HapticPeriodic.offset", struct SDL_HapticPeriodic, offset),
-    JADE_LAYOUT_MEMBER("SDL_HapticPeriodic.phase", struct SDL_HapticPeriodic, phase),
-    JADE_LAYOUT_MEMBER("SDL_HapticPeriodic.attack_length", struct SDL_HapticPeriodic, attack_length),
-    JADE_LAYOUT_MEMBER("SDL_HapticPeriodic.attack_level", struct SDL_HapticPeriodic, attack_level),
-    JADE_LAYOUT_MEMBER("SDL_HapticPeriodic.fade_length", struct SDL_HapticPeriodic, fade_length),
-    JADE_LAYOUT_MEMBER("SDL_HapticPeriodic.fade_level", struct SDL_HapticPeriodic, fade_level),
-    JADE_LAYOUT_RECORD("SDL_HapticRamp", struct SDL_HapticRamp),
-    JADE_LAYOUT_MEMBER("SDL_HapticRamp.type", struct SDL_HapticRamp, type),
-    JADE_LAYOUT_MEMBER("SDL_HapticRamp.direction", struct SDL_HapticRamp, direction),
-    JADE_LAYOUT_MEMBER("SDL_HapticRamp.length", struct SDL_HapticRamp, length),
-    JADE_LAYOUT_MEMBER("SDL_HapticRamp.delay", struct SDL_HapticRamp, delay),
-    JADE_LAYOUT_MEMBER("SDL_HapticRamp.button", struct SDL_HapticRamp, button),
-    JADE_LAYOUT_MEMBER("SDL_HapticRamp.interval", struct SDL_HapticRamp, interval),
-    JADE_LAYOUT_MEMBER("SDL_HapticRamp.start", struct SDL_HapticRamp, start),
-    JADE_LAYOUT_MEMBER("SDL_HapticRamp.end", struct SDL_HapticRamp, end),
-    JADE_LAYOUT_MEMBER("SDL_HapticRamp.attack_length", struct SDL_HapticRamp, attack_length),
-    JADE_LAYOUT_MEMBER("SDL_HapticRamp.attack_level", struct SDL_HapticRamp, attack_level),
-    JADE_LAYOUT_MEMBER("SDL_HapticRamp.fade_length", struct SDL_HapticRamp, fade_length),
-    JADE_LAYOUT_MEMBER("SDL_HapticRamp.fade_level", struct SDL_HapticRamp, fade_level),
-    JADE_LAYOUT_RECORD("SDL_IOStreamInterface", struct SDL_IOStreamInterface),
-    JADE_LAYOUT_MEMBER("SDL_IOStreamInterface.version", struct SDL_IOStreamInterface, version),
-    JADE_LAYOUT_MEMBER("SDL_IOStreamInterface.size", struct SDL_IOStreamInterface, size),
-    JADE_LAYOUT_MEMBER("SDL_IOStreamInterface.seek", struct SDL_IOStreamInterface, seek),
-    JADE_LAYOUT_MEMBER("SDL_IOStreamInterface.read", struct SDL_IOStreamInterface, read),
-    JADE_LAYOUT_MEMBER("SDL_IOStreamInterface.write", struct SDL_IOStreamInterface, write),
-    JADE_LAYOUT_MEMBER("SDL_IOStreamInterface.flush", struct SDL_IOStreamInterface, flush),
-    JADE_LAYOUT_MEMBER("SDL_IOStreamInterface.close", struct SDL_IOStreamInterface, close),
-    JADE_LAYOUT_RECORD("SDL_InitState", struct SDL_InitState),
-    JADE_LAYOUT_MEMBER("SDL_InitState.status", struct SDL_InitState, status),
-    JADE_LAYOUT_MEMBER("SDL_InitState.thread", struct SDL_InitState, thread),
-    JADE_LAYOUT_MEMBER("SDL_InitState.reserved", struct SDL_InitState, reserved),
-    JADE_LAYOUT_RECORD("SDL_JoyAxisEvent", struct SDL_JoyAxisEvent),
-    JADE_LAYOUT_MEMBER("SDL_JoyAxisEvent.type", struct SDL_JoyAxisEvent, type),
-    JADE_LAYOUT_MEMBER("SDL_JoyAxisEvent.reserved", struct SDL_JoyAxisEvent, reserved),
-    JADE_LAYOUT_MEMBER("SDL_JoyAxisEvent.timestamp", struct SDL_JoyAxisEvent, timestamp),
-    JADE_LAYOUT_MEMBER("SDL_JoyAxisEvent.which", struct SDL_JoyAxisEvent, which),
-    JADE_LAYOUT_MEMBER("SDL_JoyAxisEvent.axis", struct SDL_JoyAxisEvent, axis),
-    JADE_LAYOUT_MEMBER("SDL_JoyAxisEvent.padding1", struct SDL_JoyAxisEvent, padding1),
-    JADE_LAYOUT_MEMBER("SDL_JoyAxisEvent.padding2", struct SDL_JoyAxisEvent, padding2),
-    JADE_LAYOUT_MEMBER("SDL_JoyAxisEvent.padding3", struct SDL_JoyAxisEvent, padding3),
-    JADE_LAYOUT_MEMBER("SDL_JoyAxisEvent.value", struct SDL_JoyAxisEvent, value),
-    JADE_LAYOUT_MEMBER("SDL_JoyAxisEvent.padding4", struct SDL_JoyAxisEvent, padding4),
-    JADE_LAYOUT_RECORD("SDL_JoyBallEvent", struct SDL_JoyBallEvent),
-    JADE_LAYOUT_MEMBER("SDL_JoyBallEvent.type", struct SDL_JoyBallEvent, type),
-    JADE_LAYOUT_MEMBER("SDL_JoyBallEvent.reserved", struct SDL_JoyBallEvent, reserved),
-    JADE_LAYOUT_MEMBER("SDL_JoyBallEvent.timestamp", struct SDL_JoyBallEvent, timestamp),
-    JADE_LAYOUT_MEMBER("SDL_JoyBallEvent.which", struct SDL_JoyBallEvent, which),
-    JADE_LAYOUT_MEMBER("SDL_JoyBallEvent.ball", struct SDL_JoyBallEvent, ball),
-    JADE_LAYOUT_MEMBER("SDL_JoyBallEvent.padding1", struct SDL_JoyBallEvent, padding1),
-    JADE_LAYOUT_MEMBER("SDL_JoyBallEvent.padding2", struct SDL_JoyBallEvent, padding2),
-    JADE_LAYOUT_MEMBER("SDL_JoyBallEvent.padding3", struct SDL_JoyBallEvent, padding3),
-    JADE_LAYOUT_MEMBER("SDL_JoyBallEvent.xrel", struct SDL_JoyBallEvent, xrel),
-    JADE_LAYOUT_MEMBER("SDL_JoyBallEvent.yrel", struct SDL_JoyBallEvent, yrel),
-    JADE_LAYOUT_RECORD("SDL_JoyBatteryEvent", struct SDL_JoyBatteryEvent),
-    JADE_LAYOUT_MEMBER("SDL_JoyBatteryEvent.type", struct SDL_JoyBatteryEvent, type),
-    JADE_LAYOUT_MEMBER("SDL_JoyBatteryEvent.reserved", struct SDL_JoyBatteryEvent, reserved),
-    JADE_LAYOUT_MEMBER("SDL_JoyBatteryEvent.timestamp", struct SDL_JoyBatteryEvent, timestamp),
-    JADE_LAYOUT_MEMBER("SDL_JoyBatteryEvent.which", struct SDL_JoyBatteryEvent, which),
-    JADE_LAYOUT_MEMBER("SDL_JoyBatteryEvent.state", struct SDL_JoyBatteryEvent, state),
-    JADE_LAYOUT_MEMBER("SDL_JoyBatteryEvent.percent", struct SDL_JoyBatteryEvent, percent),
-    JADE_LAYOUT_RECORD("SDL_JoyButtonEvent", struct SDL_JoyButtonEvent),
-    JADE_LAYOUT_MEMBER("SDL_JoyButtonEvent.type", struct SDL_JoyButtonEvent, type),
-    JADE_LAYOUT_MEMBER("SDL_JoyButtonEvent.reserved", struct SDL_JoyButtonEvent, reserved),
-    JADE_LAYOUT_MEMBER("SDL_JoyButtonEvent.timestamp", struct SDL_JoyButtonEvent, timestamp),
-    JADE_LAYOUT_MEMBER("SDL_JoyButtonEvent.which", struct SDL_JoyButtonEvent, which),
-    JADE_LAYOUT_MEMBER("SDL_JoyButtonEvent.button", struct SDL_JoyButtonEvent, button),
-    JADE_LAYOUT_MEMBER("SDL_JoyButtonEvent.down", struct SDL_JoyButtonEvent, down),
-    JADE_LAYOUT_MEMBER("SDL_JoyButtonEvent.padding1", struct SDL_JoyButtonEvent, padding1),
-    JADE_LAYOUT_MEMBER("SDL_JoyButtonEvent.padding2", struct SDL_JoyButtonEvent, padding2),
-    JADE_LAYOUT_RECORD("SDL_JoyDeviceEvent", struct SDL_JoyDeviceEvent),
-    JADE_LAYOUT_MEMBER("SDL_JoyDeviceEvent.type", struct SDL_JoyDeviceEvent, type),
-    JADE_LAYOUT_MEMBER("SDL_JoyDeviceEvent.reserved", struct SDL_JoyDeviceEvent, reserved),
-    JADE_LAYOUT_MEMBER("SDL_JoyDeviceEvent.timestamp", struct SDL_JoyDeviceEvent, timestamp),
-    JADE_LAYOUT_MEMBER("SDL_JoyDeviceEvent.which", struct SDL_JoyDeviceEvent, which),
-    JADE_LAYOUT_RECORD("SDL_JoyHatEvent", struct SDL_JoyHatEvent),
-    JADE_LAYOUT_MEMBER("SDL_JoyHatEvent.type", struct SDL_JoyHatEvent, type),
-    JADE_LAYOUT_MEMBER("SDL_JoyHatEvent.reserved", struct SDL_JoyHatEvent, reserved),
-    JADE_LAYOUT_MEMBER("SDL_JoyHatEvent.timestamp", struct SDL_JoyHatEvent, timestamp),
-    JADE_LAYOUT_MEMBER("SDL_JoyHatEvent.which", struct SDL_JoyHatEvent, which),
-    JADE_LAYOUT_MEMBER("SDL_JoyHatEvent.hat", struct SDL_JoyHatEvent, hat),
-    JADE_LAYOUT_MEMBER("SDL_JoyHatEvent.value", struct SDL_JoyHatEvent, value),
-    JADE_LAYOUT_MEMBER("SDL_JoyHatEvent.padding1", struct SDL_JoyHatEvent, padding1),
-    JADE_LAYOUT_MEMBER("SDL_JoyHatEvent.padding2", struct SDL_JoyHatEvent, padding2),
-    JADE_LAYOUT_RECORD("SDL_KeyboardDeviceEvent", struct SDL_KeyboardDeviceEvent),
-    JADE_LAYOUT_MEMBER("SDL_KeyboardDeviceEvent.type", struct SDL_KeyboardDeviceEvent, type),
-    JADE_LAYOUT_MEMBER("SDL_KeyboardDeviceEvent.reserved", struct SDL_KeyboardDeviceEvent, reserved),
-    JADE_LAYOUT_MEMBER("SDL_KeyboardDeviceEvent.timestamp", struct SDL_KeyboardDeviceEvent, timestamp),
-    JADE_LAYOUT_MEMBER("SDL_KeyboardDeviceEvent.which", struct SDL_KeyboardDeviceEvent, which),
-    JADE_LAYOUT_RECORD("SDL_KeyboardEvent", struct SDL_KeyboardEvent),
-    JADE_LAYOUT_MEMBER("SDL_KeyboardEvent.type", struct SDL_KeyboardEvent, type),
-    JADE_LAYOUT_MEMBER("SDL_KeyboardEvent.reserved", struct SDL_KeyboardEvent, reserved),
-    JADE_LAYOUT_MEMBER("SDL_KeyboardEvent.timestamp", struct SDL_KeyboardEvent, timestamp),
-    JADE_LAYOUT_MEMBER("SDL_KeyboardEvent.windowID", struct SDL_KeyboardEvent, windowID),
-    JADE_LAYOUT_MEMBER("SDL_KeyboardEvent.which", struct SDL_KeyboardEvent, which),
-    JADE_LAYOUT_MEMBER("SDL_KeyboardEvent.scancode", struct SDL_KeyboardEvent, scancode),
-    JADE_LAYOUT_MEMBER("SDL_KeyboardEvent.key", struct SDL_KeyboardEvent, key),
-    JADE_LAYOUT_MEMBER("SDL_KeyboardEvent.mod", struct SDL_KeyboardEvent, mod),
-    JADE_LAYOUT_MEMBER("SDL_KeyboardEvent.raw", struct SDL_KeyboardEvent, raw),
-    JADE_LAYOUT_MEMBER("SDL_KeyboardEvent.down", struct SDL_KeyboardEvent, down),
-    JADE_LAYOUT_MEMBER("SDL_KeyboardEvent.repeat", struct SDL_KeyboardEvent, repeat),
-    JADE_LAYOUT_RECORD("SDL_Locale", struct SDL_Locale),
-    JADE_LAYOUT_MEMBER("SDL_Locale.language", struct SDL_Locale, language),
-    JADE_LAYOUT_MEMBER("SDL_Locale.country", struct SDL_Locale, country),
-    JADE_LAYOUT_RECORD("SDL_MessageBoxButtonData", struct SDL_MessageBoxButtonData),
-    JADE_LAYOUT_MEMBER("SDL_MessageBoxButtonData.flags", struct SDL_MessageBoxButtonData, flags),
-    JADE_LAYOUT_MEMBER("SDL_MessageBoxButtonData.buttonID", struct SDL_MessageBoxButtonData, buttonID),
-    JADE_LAYOUT_MEMBER("SDL_MessageBoxButtonData.text", struct SDL_MessageBoxButtonData, text),
-    JADE_LAYOUT_RECORD("SDL_MessageBoxColor", struct SDL_MessageBoxColor),
-    JADE_LAYOUT_MEMBER("SDL_MessageBoxColor.r", struct SDL_MessageBoxColor, r),
-    JADE_LAYOUT_MEMBER("SDL_MessageBoxColor.g", struct SDL_MessageBoxColor, g),
-    JADE_LAYOUT_MEMBER("SDL_MessageBoxColor.b", struct SDL_MessageBoxColor, b),
-    JADE_LAYOUT_RECORD("SDL_MessageBoxColorScheme", struct SDL_MessageBoxColorScheme),
-    JADE_LAYOUT_MEMBER("SDL_MessageBoxColorScheme.colors", struct SDL_MessageBoxColorScheme, colors),
-    JADE_LAYOUT_MEMBER("SDL_MessageBoxColorScheme.colors[0]", struct SDL_MessageBoxColorScheme, colors[0]),
-    JADE_LAYOUT_RECORD("SDL_MessageBoxData", struct SDL_MessageBoxData),
-    JADE_LAYOUT_MEMBER("SDL_MessageBoxData.flags", struct SDL_MessageBoxData, flags),
-    JADE_LAYOUT_MEMBER("SDL_MessageBoxData.window", struct SDL_MessageBoxData, window),
-    JADE_LAYOUT_MEMBER("SDL_MessageBoxData.title", struct SDL_MessageBoxData, title),
-    JADE_LAYOUT_MEMBER("SDL_MessageBoxData.message", struct SDL_MessageBoxData, message),
-    JADE_LAYOUT_MEMBER("SDL_MessageBoxData.numbuttons", struct SDL_MessageBoxData, numbuttons),
-    JADE_LAYOUT_MEMBER("SDL_MessageBoxData.buttons", struct SDL_MessageBoxData, buttons),
-    JADE_LAYOUT_MEMBER("SDL_MessageBoxData.colorScheme", struct SDL_MessageBoxData, colorScheme),
-    JADE_LAYOUT_RECORD("SDL_MouseButtonEvent", struct SDL_MouseButtonEvent),
-    JADE_LAYOUT_MEMBER("SDL_MouseButtonEvent.type", struct SDL_MouseButtonEvent, type),
-    JADE_LAYOUT_MEMBER("SDL_MouseButtonEvent.reserved", struct SDL_MouseButtonEvent, reserved),
-    JADE_LAYOUT_MEMBER("SDL_MouseButtonEvent.timestamp", struct SDL_MouseButtonEvent, timestamp),
-    JADE_LAYOUT_MEMBER("SDL_MouseButtonEvent.windowID", struct SDL_MouseButtonEvent, windowID),
-    JADE_LAYOUT_MEMBER("SDL_MouseButtonEvent.which", struct SDL_MouseButtonEvent, which),
-    JADE_LAYOUT_MEMBER("SDL_MouseButtonEvent.button", struct SDL_MouseButtonEvent, button),
-    JADE_LAYOUT_MEMBER("SDL_MouseButtonEvent.down", struct SDL_MouseButtonEvent, down),
-    JADE_LAYOUT_MEMBER("SDL_MouseButtonEvent.clicks", struct SDL_MouseButtonEvent, clicks),
-    JADE_LAYOUT_MEMBER("SDL_MouseButtonEvent.padding", struct SDL_MouseButtonEvent, padding),
-    JADE_LAYOUT_MEMBER("SDL_MouseButtonEvent.x", struct SDL_MouseButtonEvent, x),
-    JADE_LAYOUT_MEMBER("SDL_MouseButtonEvent.y", struct SDL_MouseButtonEvent, y),
-    JADE_LAYOUT_RECORD("SDL_MouseDeviceEvent", struct SDL_MouseDeviceEvent),
-    JADE_LAYOUT_MEMBER("SDL_MouseDeviceEvent.type", struct SDL_MouseDeviceEvent, type),
-    JADE_LAYOUT_MEMBER("SDL_MouseDeviceEvent.reserved", struct SDL_MouseDeviceEvent, reserved),
-    JADE_LAYOUT_MEMBER("SDL_MouseDeviceEvent.timestamp", struct SDL_MouseDeviceEvent, timestamp),
-    JADE_LAYOUT_MEMBER("SDL_MouseDeviceEvent.which", struct SDL_MouseDeviceEvent, which),
-    JADE_LAYOUT_RECORD("SDL_MouseMotionEvent", struct SDL_MouseMotionEvent),
-    JADE_LAYOUT_MEMBER("SDL_MouseMotionEvent.type", struct SDL_MouseMotionEvent, type),
-    JADE_LAYOUT_MEMBER("SDL_MouseMotionEvent.reserved", struct SDL_MouseMotionEvent, reserved),
-    JADE_LAYOUT_MEMBER("SDL_MouseMotionEvent.timestamp", struct SDL_MouseMotionEvent, timestamp),
-    JADE_LAYOUT_MEMBER("SDL_MouseMotionEvent.windowID", struct SDL_MouseMotionEvent, windowID),
-    JADE_LAYOUT_MEMBER("SDL_MouseMotionEvent.which", struct SDL_MouseMotionEvent, which),
-    JADE_LAYOUT_MEMBER("SDL_MouseMotionEvent.state", struct SDL_MouseMotionEvent, state),
-    JADE_LAYOUT_MEMBER("SDL_MouseMotionEvent.x", struct SDL_MouseMotionEvent, x),
-    JADE_LAYOUT_MEMBER("SDL_MouseMotionEvent.y", struct SDL_MouseMotionEvent, y),
-    JADE_LAYOUT_MEMBER("SDL_MouseMotionEvent.xrel", struct SDL_MouseMotionEvent, xrel),
-    JADE_LAYOUT_MEMBER("SDL_MouseMotionEvent.yrel", struct SDL_MouseMotionEvent, yrel),
-    JADE_LAYOUT_RECORD("SDL_MouseWheelEvent", struct SDL_MouseWheelEvent),
-    JADE_LAYOUT_MEMBER("SDL_MouseWheelEvent.type", struct SDL_MouseWheelEvent, type),
-    JADE_LAYOUT_MEMBER("SDL_MouseWheelEvent.reserved", struct SDL_MouseWheelEvent, reserved),
-    JADE_LAYOUT_MEMBER("SDL_MouseWheelEvent.timestamp", struct SDL_MouseWheelEvent, timestamp),
-    JADE_LAYOUT_MEMBER("SDL_MouseWheelEvent.windowID", struct SDL_MouseWheelEvent, windowID),
-    JADE_LAYOUT_MEMBER("SDL_MouseWheelEvent.which", struct SDL_MouseWheelEvent, which),
-    JADE_LAYOUT_MEMBER("SDL_MouseWheelEvent.x", struct SDL_MouseWheelEvent, x),
-    JADE_LAYOUT_MEMBER("SDL_MouseWheelEvent.y", struct SDL_MouseWheelEvent, y),
-    JADE_LAYOUT_MEMBER("SDL_MouseWheelEvent.direction", struct SDL_MouseWheelEvent, direction),
-    JADE_LAYOUT_MEMBER("SDL_MouseWheelEvent.mouse_x", struct SDL_MouseWheelEvent, mouse_x),
-    JADE_LAYOUT_MEMBER("SDL_MouseWheelEvent.mouse_y", struct SDL_MouseWheelEvent, mouse_y),
-    JADE_LAYOUT_MEMBER("SDL_MouseWheelEvent.integer_x", struct SDL_MouseWheelEvent, integer_x),
-    JADE_LAYOUT_MEMBER("SDL_MouseWheelEvent.integer_y", struct SDL_MouseWheelEvent, integer_y),
-    JADE_LAYOUT_RECORD("SDL_Palette", struct SDL_Palette),
-    JADE_LAYOUT_MEMBER("SDL_Palette.ncolors", struct SDL_Palette, ncolors),
-    JADE_LAYOUT_MEMBER("SDL_Palette.colors", struct SDL_Palette, colors),
-    JADE_LAYOUT_MEMBER("SDL_Palette.version", struct SDL_Palette, version),
-    JADE_LAYOUT_MEMBER("SDL_Palette.refcount", struct SDL_Palette, refcount),
-    JADE_LAYOUT_RECORD("SDL_PathInfo", struct SDL_PathInfo),
-    JADE_LAYOUT_MEMBER("SDL_PathInfo.type", struct SDL_PathInfo, type),
-    JADE_LAYOUT_MEMBER("SDL_PathInfo.size", struct SDL_PathInfo, size),
-    JADE_LAYOUT_MEMBER("SDL_PathInfo.create_time", struct SDL_PathInfo, create_time),
-    JADE_LAYOUT_MEMBER("SDL_PathInfo.modify_time", struct SDL_PathInfo, modify_time),
-    JADE_LAYOUT_MEMBER("SDL_PathInfo.access_time", struct SDL_PathInfo, access_time),
-    JADE_LAYOUT_RECORD("SDL_PenAxisEvent", struct SDL_PenAxisEvent),
-    JADE_LAYOUT_MEMBER("SDL_PenAxisEvent.type", struct SDL_PenAxisEvent, type),
-    JADE_LAYOUT_MEMBER("SDL_PenAxisEvent.reserved", struct SDL_PenAxisEvent, reserved),
-    JADE_LAYOUT_MEMBER("SDL_PenAxisEvent.timestamp", struct SDL_PenAxisEvent, timestamp),
-    JADE_LAYOUT_MEMBER("SDL_PenAxisEvent.windowID", struct SDL_PenAxisEvent, windowID),
-    JADE_LAYOUT_MEMBER("SDL_PenAxisEvent.which", struct SDL_PenAxisEvent, which),
-    JADE_LAYOUT_MEMBER("SDL_PenAxisEvent.pen_state", struct SDL_PenAxisEvent, pen_state),
-    JADE_LAYOUT_MEMBER("SDL_PenAxisEvent.x", struct SDL_PenAxisEvent, x),
-    JADE_LAYOUT_MEMBER("SDL_PenAxisEvent.y", struct SDL_PenAxisEvent, y),
-    JADE_LAYOUT_MEMBER("SDL_PenAxisEvent.axis", struct SDL_PenAxisEvent, axis),
-    JADE_LAYOUT_MEMBER("SDL_PenAxisEvent.value", struct SDL_PenAxisEvent, value),
-    JADE_LAYOUT_MEMBER("SDL_PenAxisEvent.device_type", struct SDL_PenAxisEvent, device_type),
-    JADE_LAYOUT_RECORD("SDL_PenButtonEvent", struct SDL_PenButtonEvent),
-    JADE_LAYOUT_MEMBER("SDL_PenButtonEvent.type", struct SDL_PenButtonEvent, type),
-    JADE_LAYOUT_MEMBER("SDL_PenButtonEvent.reserved", struct SDL_PenButtonEvent, reserved),
-    JADE_LAYOUT_MEMBER("SDL_PenButtonEvent.timestamp", struct SDL_PenButtonEvent, timestamp),
-    JADE_LAYOUT_MEMBER("SDL_PenButtonEvent.windowID", struct SDL_PenButtonEvent, windowID),
-    JADE_LAYOUT_MEMBER("SDL_PenButtonEvent.which", struct SDL_PenButtonEvent, which),
-    JADE_LAYOUT_MEMBER("SDL_PenButtonEvent.pen_state", struct SDL_PenButtonEvent, pen_state),
-    JADE_LAYOUT_MEMBER("SDL_PenButtonEvent.x", struct SDL_PenButtonEvent, x),
-    JADE_LAYOUT_MEMBER("SDL_PenButtonEvent.y", struct SDL_PenButtonEvent, y),
-    JADE_LAYOUT_MEMBER("SDL_PenButtonEvent.button", struct SDL_PenButtonEvent, button),
-    JADE_LAYOUT_MEMBER("SDL_PenButtonEvent.down", struct SDL_PenButtonEvent, down),
-    JADE_LAYOUT_MEMBER("SDL_PenButtonEvent.device_type", struct SDL_PenButtonEvent, device_type),
-    JADE_LAYOUT_RECORD("SDL_PenMotionEvent", struct SDL_PenMotionEvent),
-    JADE_LAYOUT_MEMBER("SDL_PenMotionEvent.type", struct SDL_PenMotionEvent, type),
-    JADE_LAYOUT_MEMBER("SDL_PenMotionEvent.reserved", struct SDL_PenMotionEvent, reserved),
-    JADE_LAYOUT_MEMBER("SDL_PenMotionEvent.timestamp", struct SDL_PenMotionEvent, timestamp),
-    JADE_LAYOUT_MEMBER("SDL_PenMotionEvent.windowID", struct SDL_PenMotionEvent, windowID),
-    JADE_LAYOUT_MEMBER("SDL_PenMotionEvent.which", struct SDL_PenMotionEvent, which),
-    JADE_LAYOUT_MEMBER("SDL_PenMotionEvent.pen_state", struct SDL_PenMotionEvent, pen_state),
-    JADE_LAYOUT_MEMBER("SDL_PenMotionEvent.x", struct SDL_PenMotionEvent, x),
-    JADE_LAYOUT_MEMBER("SDL_PenMotionEvent.y", struct SDL_PenMotionEvent, y),
-    JADE_LAYOUT_MEMBER("SDL_PenMotionEvent.device_type", struct SDL_PenMotionEvent, device_type),
-    JADE_LAYOUT_RECORD("SDL_PenProximityEvent", struct SDL_PenProximityEvent),
-    JADE_LAYOUT_MEMBER("SDL_PenProximityEvent.type", struct SDL_PenProximityEvent, type),
-    JADE_LAYOUT_MEMBER("SDL_PenProximityEvent.reserved", struct SDL_PenProximityEvent, reserved),
-    JADE_LAYOUT_MEMBER("SDL_PenProximityEvent.timestamp", struct SDL_PenProximityEvent, timestamp),
-    JADE_LAYOUT_MEMBER("SDL_PenProximityEvent.windowID", struct SDL_PenProximityEvent, windowID),
-    JADE_LAYOUT_MEMBER("SDL_PenProximityEvent.which", struct SDL_PenProximityEvent, which),
-    JADE_LAYOUT_MEMBER("SDL_PenProximityEvent.pen_state", struct SDL_PenProximityEvent, pen_state),
-    JADE_LAYOUT_MEMBER("SDL_PenProximityEvent.device_type", struct SDL_PenProximityEvent, device_type),
-    JADE_LAYOUT_RECORD("SDL_PenTouchEvent", struct SDL_PenTouchEvent),
-    JADE_LAYOUT_MEMBER("SDL_PenTouchEvent.type", struct SDL_PenTouchEvent, type),
-    JADE_LAYOUT_MEMBER("SDL_PenTouchEvent.reserved", struct SDL_PenTouchEvent, reserved),
-    JADE_LAYOUT_MEMBER("SDL_PenTouchEvent.timestamp", struct SDL_PenTouchEvent, timestamp),
-    JADE_LAYOUT_MEMBER("SDL_PenTouchEvent.windowID", struct SDL_PenTouchEvent, windowID),
-    JADE_LAYOUT_MEMBER("SDL_PenTouchEvent.which", struct SDL_PenTouchEvent, which),
-    JADE_LAYOUT_MEMBER("SDL_PenTouchEvent.pen_state", struct SDL_PenTouchEvent, pen_state),
-    JADE_LAYOUT_MEMBER("SDL_PenTouchEvent.x", struct SDL_PenTouchEvent, x),
-    JADE_LAYOUT_MEMBER("SDL_PenTouchEvent.y", struct SDL_PenTouchEvent, y),
-    JADE_LAYOUT_MEMBER("SDL_PenTouchEvent.eraser", struct SDL_PenTouchEvent, eraser),
-    JADE_LAYOUT_MEMBER("SDL_PenTouchEvent.down", struct SDL_PenTouchEvent, down),
-    JADE_LAYOUT_MEMBER("SDL_PenTouchEvent.device_type", struct SDL_PenTouchEvent, device_type),
-    JADE_LAYOUT_RECORD("SDL_PinchFingerEvent", struct SDL_PinchFingerEvent),
-    JADE_LAYOUT_MEMBER("SDL_PinchFingerEvent.type", struct SDL_PinchFingerEvent, type),
-    JADE_LAYOUT_MEMBER("SDL_PinchFingerEvent.reserved", struct SDL_PinchFingerEvent, reserved),
-    JADE_LAYOUT_MEMBER("SDL_PinchFingerEvent.timestamp", struct SDL_PinchFingerEvent, timestamp),
-    JADE_LAYOUT_MEMBER("SDL_PinchFingerEvent.scale", struct SDL_PinchFingerEvent, scale),
-    JADE_LAYOUT_MEMBER("SDL_PinchFingerEvent.windowID", struct SDL_PinchFingerEvent, windowID),
-    JADE_LAYOUT_RECORD("SDL_PixelFormatDetails", struct SDL_PixelFormatDetails),
-    JADE_LAYOUT_MEMBER("SDL_PixelFormatDetails.format", struct SDL_PixelFormatDetails, format),
-    JADE_LAYOUT_MEMBER("SDL_PixelFormatDetails.bits_per_pixel", struct SDL_PixelFormatDetails, bits_per_pixel),
-    JADE_LAYOUT_MEMBER("SDL_PixelFormatDetails.bytes_per_pixel", struct SDL_PixelFormatDetails, bytes_per_pixel),
-    JADE_LAYOUT_MEMBER("SDL_PixelFormatDetails.padding", struct SDL_PixelFormatDetails, padding),
-    JADE_LAYOUT_MEMBER("SDL_PixelFormatDetails.padding[0]", struct SDL_PixelFormatDetails, padding[0]),
-    JADE_LAYOUT_MEMBER("SDL_PixelFormatDetails.Rmask", struct SDL_PixelFormatDetails, Rmask),
-    JADE_LAYOUT_MEMBER("SDL_PixelFormatDetails.Gmask", struct SDL_PixelFormatDetails, Gmask),
-    JADE_LAYOUT_MEMBER("SDL_PixelFormatDetails.Bmask", struct SDL_PixelFormatDetails, Bmask),
-    JADE_LAYOUT_MEMBER("SDL_PixelFormatDetails.Amask", struct SDL_PixelFormatDetails, Amask),
-    JADE_LAYOUT_MEMBER("SDL_PixelFormatDetails.Rbits", struct SDL_PixelFormatDetails, Rbits),
-    JADE_LAYOUT_MEMBER("SDL_PixelFormatDetails.Gbits", struct SDL_PixelFormatDetails, Gbits),
-    JADE_LAYOUT_MEMBER("SDL_PixelFormatDetails.Bbits", struct SDL_PixelFormatDetails, Bbits),
-    JADE_LAYOUT_MEMBER("SDL_PixelFormatDetails.Abits", struct SDL_PixelFormatDetails, Abits),
-    JADE_LAYOUT_MEMBER("SDL_PixelFormatDetails.Rshift", struct SDL_PixelFormatDetails, Rshift),
-    JADE_LAYOUT_MEMBER("SDL_PixelFormatDetails.Gshift", struct SDL_PixelFormatDetails, Gshift),
-    JADE_LAYOUT_MEMBER("SDL_PixelFormatDetails.Bshift", struct SDL_PixelFormatDetails, Bshift),
-    JADE_LAYOUT_MEMBER("SDL_PixelFormatDetails.Ashift", struct SDL_PixelFormatDetails, Ashift),
-    JADE_LAYOUT_RECORD("SDL_Point", struct SDL_Point),
-    JADE_LAYOUT_MEMBER("SDL_Point.x", struct SDL_Point, x),
-    JADE_LAYOUT_MEMBER("SDL_Point.y", struct SDL_Point, y),
-    JADE_LAYOUT_RECORD("SDL_QuitEvent", struct SDL_QuitEvent),
-    JADE_LAYOUT_MEMBER("SDL_QuitEvent.type", struct SDL_QuitEvent, type),
-    JADE_LAYOUT_MEMBER("SDL_QuitEvent.reserved", struct SDL_QuitEvent, reserved),
-    JADE_LAYOUT_MEMBER("SDL_QuitEvent.timestamp", struct SDL_QuitEvent, timestamp),
-    JADE_LAYOUT_RECORD("SDL_Rect", struct SDL_Rect),
-    JADE_LAYOUT_MEMBER("SDL_Rect.x", struct SDL_Rect, x),
-    JADE_LAYOUT_MEMBER("SDL_Rect.y", struct SDL_Rect, y),
-    JADE_LAYOUT_MEMBER("SDL_Rect.w", struct SDL_Rect, w),
-    JADE_LAYOUT_MEMBER("SDL_Rect.h", struct SDL_Rect, h),
-    JADE_LAYOUT_RECORD("SDL_RenderEvent", struct SDL_RenderEvent),
-    JADE_LAYOUT_MEMBER("SDL_RenderEvent.type", struct SDL_RenderEvent, type),
-    JADE_LAYOUT_MEMBER("SDL_RenderEvent.reserved", struct SDL_RenderEvent, reserved),
-    JADE_LAYOUT_MEMBER("SDL_RenderEvent.timestamp", struct SDL_RenderEvent, timestamp),
-    JADE_LAYOUT_MEMBER("SDL_RenderEvent.windowID", struct SDL_RenderEvent, windowID),
-    JADE_LAYOUT_RECORD("SDL_SensorEvent", struct SDL_SensorEvent),
-    JADE_LAYOUT_MEMBER("SDL_SensorEvent.type", struct SDL_SensorEvent, type),
-    JADE_LAYOUT_MEMBER("SDL_SensorEvent.reserved", struct SDL_SensorEvent, reserved),
-    JADE_LAYOUT_MEMBER("SDL_SensorEvent.timestamp", struct SDL_SensorEvent, timestamp),
-    JADE_LAYOUT_MEMBER("SDL_SensorEvent.which", struct SDL_SensorEvent, which),
-    JADE_LAYOUT_MEMBER("SDL_SensorEvent.data", struct SDL_SensorEvent, data),
-    JADE_LAYOUT_MEMBER("SDL_SensorEvent.data[0]", struct SDL_SensorEvent, data[0]),
-    JADE_LAYOUT_MEMBER("SDL_SensorEvent.sensor_timestamp", struct SDL_SensorEvent, sensor_timestamp),
-    JADE_LAYOUT_RECORD("SDL_StorageInterface", struct SDL_StorageInterface),
-    JADE_LAYOUT_MEMBER("SDL_StorageInterface.version", struct SDL_StorageInterface, version),
-    JADE_LAYOUT_MEMBER("SDL_StorageInterface.close", struct SDL_StorageInterface, close),
-    JADE_LAYOUT_MEMBER("SDL_StorageInterface.ready", struct SDL_StorageInterface, ready),
-    JADE_LAYOUT_MEMBER("SDL_StorageInterface.enumerate", struct SDL_StorageInterface, enumerate),
-    JADE_LAYOUT_MEMBER("SDL_StorageInterface.info", struct SDL_StorageInterface, info),
-    JADE_LAYOUT_MEMBER("SDL_StorageInterface.read_file", struct SDL_StorageInterface, read_file),
-    JADE_LAYOUT_MEMBER("SDL_StorageInterface.write_file", struct SDL_StorageInterface, write_file),
-    JADE_LAYOUT_MEMBER("SDL_StorageInterface.mkdir", struct SDL_StorageInterface, mkdir),
-    JADE_LAYOUT_MEMBER("SDL_StorageInterface.remove", struct SDL_StorageInterface, remove),
-    JADE_LAYOUT_MEMBER("SDL_StorageInterface.rename", struct SDL_StorageInterface, rename),
-    JADE_LAYOUT_MEMBER("SDL_StorageInterface.copy", struct SDL_StorageInterface, copy),
-    JADE_LAYOUT_MEMBER("SDL_StorageInterface.space_remaining", struct SDL_StorageInterface, space_remaining),
-    JADE_LAYOUT_RECORD("SDL_Surface", struct SDL_Surface),
-    JADE_LAYOUT_MEMBER("SDL_Surface.flags", struct SDL_Surface, flags),
-    JADE_LAYOUT_MEMBER("SDL_Surface.format", struct SDL_Surface, format),
-    JADE_LAYOUT_MEMBER("SDL_Surface.w", struct SDL_Surface, w),
-    JADE_LAYOUT_MEMBER("SDL_Surface.h", struct SDL_Surface, h),
-    JADE_LAYOUT_MEMBER("SDL_Surface.pitch", struct SDL_Surface, pitch),
-    JADE_LAYOUT_MEMBER("SDL_Surface.pixels", struct SDL_Surface, pixels),
-    JADE_LAYOUT_MEMBER("SDL_Surface.refcount", struct SDL_Surface, refcount),
-    JADE_LAYOUT_MEMBER("SDL_Surface.reserved", struct SDL_Surface, reserved),
-    JADE_LAYOUT_RECORD("SDL_TextEditingCandidatesEvent", struct SDL_TextEditingCandidatesEvent),
-    JADE_LAYOUT_MEMBER("SDL_TextEditingCandidatesEvent.type", struct SDL_TextEditingCandidatesEvent, type),
-    JADE_LAYOUT_MEMBER("SDL_TextEditingCandidatesEvent.reserved", struct SDL_TextEditingCandidatesEvent, reserved),
-    JADE_LAYOUT_MEMBER("SDL_TextEditingCandidatesEvent.timestamp", struct SDL_TextEditingCandidatesEvent, timestamp),
-    JADE_LAYOUT_MEMBER("SDL_TextEditingCandidatesEvent.windowID", struct SDL_TextEditingCandidatesEvent, windowID),
-    JADE_LAYOUT_MEMBER("SDL_TextEditingCandidatesEvent.candidates", struct SDL_TextEditingCandidatesEvent, candidates),
-    JADE_LAYOUT_MEMBER("SDL_TextEditingCandidatesEvent.num_candidates", struct SDL_TextEditingCandidatesEvent, num_candidates),
-    JADE_LAYOUT_MEMBER("SDL_TextEditingCandidatesEvent.selected_candidate", struct SDL_TextEditingCandidatesEvent, selected_candidate),
-    JADE_LAYOUT_MEMBER("SDL_TextEditingCandidatesEvent.horizontal", struct SDL_TextEditingCandidatesEvent, horizontal),
-    JADE_LAYOUT_MEMBER("SDL_TextEditingCandidatesEvent.padding1", struct SDL_TextEditingCandidatesEvent, padding1),
-    JADE_LAYOUT_MEMBER("SDL_TextEditingCandidatesEvent.padding2", struct SDL_TextEditingCandidatesEvent, padding2),
-    JADE_LAYOUT_MEMBER("SDL_TextEditingCandidatesEvent.padding3", struct SDL_TextEditingCandidatesEvent, padding3),
-    JADE_LAYOUT_RECORD("SDL_TextEditingEvent", struct SDL_TextEditingEvent),
-    JADE_LAYOUT_MEMBER("SDL_TextEditingEvent.type", struct SDL_TextEditingEvent, type),
-    JADE_LAYOUT_MEMBER("SDL_TextEditingEvent.reserved", struct SDL_TextEditingEvent, reserved),
-    JADE_LAYOUT_MEMBER("SDL_TextEditingEvent.timestamp", struct SDL_TextEditingEvent, timestamp),
-    JADE_LAYOUT_MEMBER("SDL_TextEditingEvent.windowID", struct SDL_TextEditingEvent, windowID),
-    JADE_LAYOUT_MEMBER("SDL_TextEditingEvent.text", struct SDL_TextEditingEvent, text),
-    JADE_LAYOUT_MEMBER("SDL_TextEditingEvent.start", struct SDL_TextEditingEvent, start),
-    JADE_LAYOUT_MEMBER("SDL_TextEditingEvent.length", struct SDL_TextEditingEvent, length),
-    JADE_LAYOUT_RECORD("SDL_TextInputEvent", struct SDL_TextInputEvent),
-    JADE_LAYOUT_MEMBER("SDL_TextInputEvent.type", struct SDL_TextInputEvent, type),
-    JADE_LAYOUT_MEMBER("SDL_TextInputEvent.reserved", struct SDL_TextInputEvent, reserved),
-    JADE_LAYOUT_MEMBER("SDL_TextInputEvent.timestamp", struct SDL_TextInputEvent, timestamp),
-    JADE_LAYOUT_MEMBER("SDL_TextInputEvent.windowID", struct SDL_TextInputEvent, windowID),
-    JADE_LAYOUT_MEMBER("SDL_TextInputEvent.text", struct SDL_TextInputEvent, text),
-    JADE_LAYOUT_RECORD("SDL_Texture", struct SDL_Texture),
-    JADE_LAYOUT_MEMBER("SDL_Texture.format", struct SDL_Texture, format),
-    JADE_LAYOUT_MEMBER("SDL_Texture.w", struct SDL_Texture, w),
-    JADE_LAYOUT_MEMBER("SDL_Texture.h", struct SDL_Texture, h),
-    JADE_LAYOUT_MEMBER("SDL_Texture.refcount", struct SDL_Texture, refcount),
-    JADE_LAYOUT_RECORD("SDL_TouchFingerEvent", struct SDL_TouchFingerEvent),
-    JADE_LAYOUT_MEMBER("SDL_TouchFingerEvent.type", struct SDL_TouchFingerEvent, type),
-    JADE_LAYOUT_MEMBER("SDL_TouchFingerEvent.reserved", struct SDL_TouchFingerEvent, reserved),
-    JADE_LAYOUT_MEMBER("SDL_TouchFingerEvent.timestamp", struct SDL_TouchFingerEvent, timestamp),
-    JADE_LAYOUT_MEMBER("SDL_TouchFingerEvent.touchID", struct SDL_TouchFingerEvent, touchID),
-    JADE_LAYOUT_MEMBER("SDL_TouchFingerEvent.fingerID", struct SDL_TouchFingerEvent, fingerID),
-    JADE_LAYOUT_MEMBER("SDL_TouchFingerEvent.x", struct SDL_TouchFingerEvent, x),
-    JADE_LAYOUT_MEMBER("SDL_TouchFingerEvent.y", struct SDL_TouchFingerEvent, y),
-    JADE_LAYOUT_MEMBER("SDL_TouchFingerEvent.dx", struct SDL_TouchFingerEvent, dx),
-    JADE_LAYOUT_MEMBER("SDL_TouchFingerEvent.dy", struct SDL_TouchFingerEvent, dy),
-    JADE_LAYOUT_MEMBER("SDL_TouchFingerEvent.pressure", struct SDL_TouchFingerEvent, pressure),
-    JADE_LAYOUT_MEMBER("SDL_TouchFingerEvent.windowID", struct SDL_TouchFingerEvent, windowID),
-    JADE_LAYOUT_RECORD("SDL_UserEvent", struct SDL_UserEvent),
-    JADE_LAYOUT_MEMBER("SDL_UserEvent.type", struct SDL_UserEvent, type),
-    JADE_LAYOUT_MEMBER("SDL_UserEvent.reserved", struct SDL_UserEvent, reserved),
-    JADE_LAYOUT_MEMBER("SDL_UserEvent.timestamp", struct SDL_UserEvent, timestamp),
-    JADE_LAYOUT_MEMBER("SDL_UserEvent.windowID", struct SDL_UserEvent, windowID),
-    JADE_LAYOUT_MEMBER("SDL_UserEvent.code", struct SDL_UserEvent, code),
-    JADE_LAYOUT_MEMBER("SDL_UserEvent.data1", struct SDL_UserEvent, data1),
-    JADE_LAYOUT_MEMBER("SDL_UserEvent.data2", struct SDL_UserEvent, data2),
-    JADE_LAYOUT_RECORD("SDL_Vertex", struct SDL_Vertex),
-    JADE_LAYOUT_MEMBER("SDL_Vertex.position", struct SDL_Vertex, position),
-    JADE_LAYOUT_MEMBER("SDL_Vertex.color", struct SDL_Vertex, color),
-    JADE_LAYOUT_MEMBER("SDL_Vertex.tex_coord", struct SDL_Vertex, tex_coord),
-    JADE_LAYOUT_RECORD("SDL_VirtualJoystickDesc", struct SDL_VirtualJoystickDesc),
-    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.version", struct SDL_VirtualJoystickDesc, version),
-    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.type", struct SDL_VirtualJoystickDesc, type),
-    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.padding", struct SDL_VirtualJoystickDesc, padding),
-    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.vendor_id", struct SDL_VirtualJoystickDesc, vendor_id),
-    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.product_id", struct SDL_VirtualJoystickDesc, product_id),
-    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.naxes", struct SDL_VirtualJoystickDesc, naxes),
-    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.nbuttons", struct SDL_VirtualJoystickDesc, nbuttons),
-    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.nballs", struct SDL_VirtualJoystickDesc, nballs),
-    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.nhats", struct SDL_VirtualJoystickDesc, nhats),
-    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.ntouchpads", struct SDL_VirtualJoystickDesc, ntouchpads),
-    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.nsensors", struct SDL_VirtualJoystickDesc, nsensors),
-    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.padding2", struct SDL_VirtualJoystickDesc, padding2),
-    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.padding2[0]", struct SDL_VirtualJoystickDesc, padding2[0]),
-    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.button_mask", struct SDL_VirtualJoystickDesc, button_mask),
-    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.axis_mask", struct SDL_VirtualJoystickDesc, axis_mask),
-    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.name", struct SDL_VirtualJoystickDesc, name),
-    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.touchpads", struct SDL_VirtualJoystickDesc, touchpads),
-    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.sensors", struct SDL_VirtualJoystickDesc, sensors),
-    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.userdata", struct SDL_VirtualJoystickDesc, userdata),
-    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.Update", struct SDL_VirtualJoystickDesc, Update),
-    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.SetPlayerIndex", struct SDL_VirtualJoystickDesc, SetPlayerIndex),
-    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.Rumble", struct SDL_VirtualJoystickDesc, Rumble),
-    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.RumbleTriggers", struct SDL_VirtualJoystickDesc, RumbleTriggers),
-    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.SetLED", struct SDL_VirtualJoystickDesc, SetLED),
-    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.SendEffect", struct SDL_VirtualJoystickDesc, SendEffect),
-    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.SetSensorsEnabled", struct SDL_VirtualJoystickDesc, SetSensorsEnabled),
-    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.Cleanup", struct SDL_VirtualJoystickDesc, Cleanup),
-    JADE_LAYOUT_RECORD("SDL_VirtualJoystickSensorDesc", struct SDL_VirtualJoystickSensorDesc),
-    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickSensorDesc.type", struct SDL_VirtualJoystickSensorDesc, type),
-    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickSensorDesc.rate", struct SDL_VirtualJoystickSensorDesc, rate),
-    JADE_LAYOUT_RECORD("SDL_VirtualJoystickTouchpadDesc", struct SDL_VirtualJoystickTouchpadDesc),
-    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickTouchpadDesc.nfingers", struct SDL_VirtualJoystickTouchpadDesc, nfingers),
-    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickTouchpadDesc.padding", struct SDL_VirtualJoystickTouchpadDesc, padding),
-    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickTouchpadDesc.padding[0]", struct SDL_VirtualJoystickTouchpadDesc, padding[0]),
-    JADE_LAYOUT_RECORD("SDL_WindowEvent", struct SDL_WindowEvent),
-    JADE_LAYOUT_MEMBER("SDL_WindowEvent.type", struct SDL_WindowEvent, type),
-    JADE_LAYOUT_MEMBER("SDL_WindowEvent.reserved", struct SDL_WindowEvent, reserved),
-    JADE_LAYOUT_MEMBER("SDL_WindowEvent.timestamp", struct SDL_WindowEvent, timestamp),
-    JADE_LAYOUT_MEMBER("SDL_WindowEvent.windowID", struct SDL_WindowEvent, windowID),
-    JADE_LAYOUT_MEMBER("SDL_WindowEvent.data1", struct SDL_WindowEvent, data1),
-    JADE_LAYOUT_MEMBER("SDL_WindowEvent.data2", struct SDL_WindowEvent, data2),
-    JADE_LAYOUT_RECORD("SDL_hid_device_info", struct SDL_hid_device_info),
-    JADE_LAYOUT_MEMBER("SDL_hid_device_info.path", struct SDL_hid_device_info, path),
-    JADE_LAYOUT_MEMBER("SDL_hid_device_info.vendor_id", struct SDL_hid_device_info, vendor_id),
-    JADE_LAYOUT_MEMBER("SDL_hid_device_info.product_id", struct SDL_hid_device_info, product_id),
-    JADE_LAYOUT_MEMBER("SDL_hid_device_info.serial_number", struct SDL_hid_device_info, serial_number),
-    JADE_LAYOUT_MEMBER("SDL_hid_device_info.release_number", struct SDL_hid_device_info, release_number),
-    JADE_LAYOUT_MEMBER("SDL_hid_device_info.manufacturer_string", struct SDL_hid_device_info, manufacturer_string),
-    JADE_LAYOUT_MEMBER("SDL_hid_device_info.product_string", struct SDL_hid_device_info, product_string),
-    JADE_LAYOUT_MEMBER("SDL_hid_device_info.usage_page", struct SDL_hid_device_info, usage_page),
-    JADE_LAYOUT_MEMBER("SDL_hid_device_info.usage", struct SDL_hid_device_info, usage),
-    JADE_LAYOUT_MEMBER("SDL_hid_device_info.interface_number", struct SDL_hid_device_info, interface_number),
-    JADE_LAYOUT_MEMBER("SDL_hid_device_info.interface_class", struct SDL_hid_device_info, interface_class),
-    JADE_LAYOUT_MEMBER("SDL_hid_device_info.interface_subclass", struct SDL_hid_device_info, interface_subclass),
-    JADE_LAYOUT_MEMBER("SDL_hid_device_info.interface_protocol", struct SDL_hid_device_info, interface_protocol),
-    JADE_LAYOUT_MEMBER("SDL_hid_device_info.bus_type", struct SDL_hid_device_info, bus_type),
-    JADE_LAYOUT_MEMBER("SDL_hid_device_info.next", struct SDL_hid_device_info, next),
-    JADE_LAYOUT_END,
-};
-
 JADE_LAYOUT_API const jade_layout_entry* jade_sdl_layout(void)
 {
+    static jade_layout_entry entries[994];
+    jade_layout_entry* cursor = entries;
+
+    JADE_LAYOUT_RECORD("SDL_AssertData", struct SDL_AssertData);
+    JADE_LAYOUT_MEMBER("SDL_AssertData.always_ignore", struct SDL_AssertData, always_ignore);
+    JADE_LAYOUT_MEMBER("SDL_AssertData.trigger_count", struct SDL_AssertData, trigger_count);
+    JADE_LAYOUT_MEMBER("SDL_AssertData.condition", struct SDL_AssertData, condition);
+    JADE_LAYOUT_MEMBER("SDL_AssertData.filename", struct SDL_AssertData, filename);
+    JADE_LAYOUT_MEMBER("SDL_AssertData.linenum", struct SDL_AssertData, linenum);
+    JADE_LAYOUT_MEMBER("SDL_AssertData.function", struct SDL_AssertData, function);
+    JADE_LAYOUT_MEMBER("SDL_AssertData.next", struct SDL_AssertData, next);
+    JADE_LAYOUT_RECORD("SDL_AsyncIOOutcome", struct SDL_AsyncIOOutcome);
+    JADE_LAYOUT_MEMBER("SDL_AsyncIOOutcome.asyncio", struct SDL_AsyncIOOutcome, asyncio);
+    JADE_LAYOUT_MEMBER("SDL_AsyncIOOutcome.type", struct SDL_AsyncIOOutcome, type);
+    JADE_LAYOUT_MEMBER("SDL_AsyncIOOutcome.result", struct SDL_AsyncIOOutcome, result);
+    JADE_LAYOUT_MEMBER("SDL_AsyncIOOutcome.buffer", struct SDL_AsyncIOOutcome, buffer);
+    JADE_LAYOUT_MEMBER("SDL_AsyncIOOutcome.offset", struct SDL_AsyncIOOutcome, offset);
+    JADE_LAYOUT_MEMBER("SDL_AsyncIOOutcome.bytes_requested", struct SDL_AsyncIOOutcome, bytes_requested);
+    JADE_LAYOUT_MEMBER("SDL_AsyncIOOutcome.bytes_transferred", struct SDL_AsyncIOOutcome, bytes_transferred);
+    JADE_LAYOUT_MEMBER("SDL_AsyncIOOutcome.userdata", struct SDL_AsyncIOOutcome, userdata);
+    JADE_LAYOUT_RECORD("SDL_AtomicInt", struct SDL_AtomicInt);
+    JADE_LAYOUT_MEMBER("SDL_AtomicInt.value", struct SDL_AtomicInt, value);
+    JADE_LAYOUT_RECORD("SDL_AtomicU32", struct SDL_AtomicU32);
+    JADE_LAYOUT_MEMBER("SDL_AtomicU32.value", struct SDL_AtomicU32, value);
+    JADE_LAYOUT_RECORD("SDL_AudioDeviceEvent", struct SDL_AudioDeviceEvent);
+    JADE_LAYOUT_MEMBER("SDL_AudioDeviceEvent.type", struct SDL_AudioDeviceEvent, type);
+    JADE_LAYOUT_MEMBER("SDL_AudioDeviceEvent.reserved", struct SDL_AudioDeviceEvent, reserved);
+    JADE_LAYOUT_MEMBER("SDL_AudioDeviceEvent.timestamp", struct SDL_AudioDeviceEvent, timestamp);
+    JADE_LAYOUT_MEMBER("SDL_AudioDeviceEvent.which", struct SDL_AudioDeviceEvent, which);
+    JADE_LAYOUT_MEMBER("SDL_AudioDeviceEvent.recording", struct SDL_AudioDeviceEvent, recording);
+    JADE_LAYOUT_MEMBER("SDL_AudioDeviceEvent.padding1", struct SDL_AudioDeviceEvent, padding1);
+    JADE_LAYOUT_MEMBER("SDL_AudioDeviceEvent.padding2", struct SDL_AudioDeviceEvent, padding2);
+    JADE_LAYOUT_MEMBER("SDL_AudioDeviceEvent.padding3", struct SDL_AudioDeviceEvent, padding3);
+    JADE_LAYOUT_RECORD("SDL_CameraDeviceEvent", struct SDL_CameraDeviceEvent);
+    JADE_LAYOUT_MEMBER("SDL_CameraDeviceEvent.type", struct SDL_CameraDeviceEvent, type);
+    JADE_LAYOUT_MEMBER("SDL_CameraDeviceEvent.reserved", struct SDL_CameraDeviceEvent, reserved);
+    JADE_LAYOUT_MEMBER("SDL_CameraDeviceEvent.timestamp", struct SDL_CameraDeviceEvent, timestamp);
+    JADE_LAYOUT_MEMBER("SDL_CameraDeviceEvent.which", struct SDL_CameraDeviceEvent, which);
+    JADE_LAYOUT_RECORD("SDL_CameraSpec", struct SDL_CameraSpec);
+    JADE_LAYOUT_MEMBER("SDL_CameraSpec.format", struct SDL_CameraSpec, format);
+    JADE_LAYOUT_MEMBER("SDL_CameraSpec.colorspace", struct SDL_CameraSpec, colorspace);
+    JADE_LAYOUT_MEMBER("SDL_CameraSpec.width", struct SDL_CameraSpec, width);
+    JADE_LAYOUT_MEMBER("SDL_CameraSpec.height", struct SDL_CameraSpec, height);
+    JADE_LAYOUT_MEMBER("SDL_CameraSpec.framerate_numerator", struct SDL_CameraSpec, framerate_numerator);
+    JADE_LAYOUT_MEMBER("SDL_CameraSpec.framerate_denominator", struct SDL_CameraSpec, framerate_denominator);
+    JADE_LAYOUT_RECORD("SDL_ClipboardEvent", struct SDL_ClipboardEvent);
+    JADE_LAYOUT_MEMBER("SDL_ClipboardEvent.type", struct SDL_ClipboardEvent, type);
+    JADE_LAYOUT_MEMBER("SDL_ClipboardEvent.reserved", struct SDL_ClipboardEvent, reserved);
+    JADE_LAYOUT_MEMBER("SDL_ClipboardEvent.timestamp", struct SDL_ClipboardEvent, timestamp);
+    JADE_LAYOUT_MEMBER("SDL_ClipboardEvent.owner", struct SDL_ClipboardEvent, owner);
+    JADE_LAYOUT_MEMBER("SDL_ClipboardEvent.num_mime_types", struct SDL_ClipboardEvent, num_mime_types);
+    JADE_LAYOUT_MEMBER("SDL_ClipboardEvent.mime_types", struct SDL_ClipboardEvent, mime_types);
+    JADE_LAYOUT_RECORD("SDL_Color", struct SDL_Color);
+    JADE_LAYOUT_MEMBER("SDL_Color.r", struct SDL_Color, r);
+    JADE_LAYOUT_MEMBER("SDL_Color.g", struct SDL_Color, g);
+    JADE_LAYOUT_MEMBER("SDL_Color.b", struct SDL_Color, b);
+    JADE_LAYOUT_MEMBER("SDL_Color.a", struct SDL_Color, a);
+    JADE_LAYOUT_RECORD("SDL_CommonEvent", struct SDL_CommonEvent);
+    JADE_LAYOUT_MEMBER("SDL_CommonEvent.type", struct SDL_CommonEvent, type);
+    JADE_LAYOUT_MEMBER("SDL_CommonEvent.reserved", struct SDL_CommonEvent, reserved);
+    JADE_LAYOUT_MEMBER("SDL_CommonEvent.timestamp", struct SDL_CommonEvent, timestamp);
+    JADE_LAYOUT_RECORD("SDL_CursorFrameInfo", struct SDL_CursorFrameInfo);
+    JADE_LAYOUT_MEMBER("SDL_CursorFrameInfo.surface", struct SDL_CursorFrameInfo, surface);
+    JADE_LAYOUT_MEMBER("SDL_CursorFrameInfo.duration", struct SDL_CursorFrameInfo, duration);
+    JADE_LAYOUT_RECORD("SDL_DateTime", struct SDL_DateTime);
+    JADE_LAYOUT_MEMBER("SDL_DateTime.year", struct SDL_DateTime, year);
+    JADE_LAYOUT_MEMBER("SDL_DateTime.month", struct SDL_DateTime, month);
+    JADE_LAYOUT_MEMBER("SDL_DateTime.day", struct SDL_DateTime, day);
+    JADE_LAYOUT_MEMBER("SDL_DateTime.hour", struct SDL_DateTime, hour);
+    JADE_LAYOUT_MEMBER("SDL_DateTime.minute", struct SDL_DateTime, minute);
+    JADE_LAYOUT_MEMBER("SDL_DateTime.second", struct SDL_DateTime, second);
+    JADE_LAYOUT_MEMBER("SDL_DateTime.nanosecond", struct SDL_DateTime, nanosecond);
+    JADE_LAYOUT_MEMBER("SDL_DateTime.day_of_week", struct SDL_DateTime, day_of_week);
+    JADE_LAYOUT_MEMBER("SDL_DateTime.utc_offset", struct SDL_DateTime, utc_offset);
+    JADE_LAYOUT_RECORD("SDL_DialogFileFilter", struct SDL_DialogFileFilter);
+    JADE_LAYOUT_MEMBER("SDL_DialogFileFilter.name", struct SDL_DialogFileFilter, name);
+    JADE_LAYOUT_MEMBER("SDL_DialogFileFilter.pattern", struct SDL_DialogFileFilter, pattern);
+    JADE_LAYOUT_RECORD("SDL_DisplayEvent", struct SDL_DisplayEvent);
+    JADE_LAYOUT_MEMBER("SDL_DisplayEvent.type", struct SDL_DisplayEvent, type);
+    JADE_LAYOUT_MEMBER("SDL_DisplayEvent.reserved", struct SDL_DisplayEvent, reserved);
+    JADE_LAYOUT_MEMBER("SDL_DisplayEvent.timestamp", struct SDL_DisplayEvent, timestamp);
+    JADE_LAYOUT_MEMBER("SDL_DisplayEvent.displayID", struct SDL_DisplayEvent, displayID);
+    JADE_LAYOUT_MEMBER("SDL_DisplayEvent.data1", struct SDL_DisplayEvent, data1);
+    JADE_LAYOUT_MEMBER("SDL_DisplayEvent.data2", struct SDL_DisplayEvent, data2);
+    JADE_LAYOUT_RECORD("SDL_DisplayMode", struct SDL_DisplayMode);
+    JADE_LAYOUT_MEMBER("SDL_DisplayMode.displayID", struct SDL_DisplayMode, displayID);
+    JADE_LAYOUT_MEMBER("SDL_DisplayMode.format", struct SDL_DisplayMode, format);
+    JADE_LAYOUT_MEMBER("SDL_DisplayMode.w", struct SDL_DisplayMode, w);
+    JADE_LAYOUT_MEMBER("SDL_DisplayMode.h", struct SDL_DisplayMode, h);
+    JADE_LAYOUT_MEMBER("SDL_DisplayMode.pixel_density", struct SDL_DisplayMode, pixel_density);
+    JADE_LAYOUT_MEMBER("SDL_DisplayMode.refresh_rate", struct SDL_DisplayMode, refresh_rate);
+    JADE_LAYOUT_MEMBER("SDL_DisplayMode.refresh_rate_numerator", struct SDL_DisplayMode, refresh_rate_numerator);
+    JADE_LAYOUT_MEMBER("SDL_DisplayMode.refresh_rate_denominator", struct SDL_DisplayMode, refresh_rate_denominator);
+    JADE_LAYOUT_MEMBER("SDL_DisplayMode.internal", struct SDL_DisplayMode, internal);
+    JADE_LAYOUT_RECORD("SDL_DropEvent", struct SDL_DropEvent);
+    JADE_LAYOUT_MEMBER("SDL_DropEvent.type", struct SDL_DropEvent, type);
+    JADE_LAYOUT_MEMBER("SDL_DropEvent.reserved", struct SDL_DropEvent, reserved);
+    JADE_LAYOUT_MEMBER("SDL_DropEvent.timestamp", struct SDL_DropEvent, timestamp);
+    JADE_LAYOUT_MEMBER("SDL_DropEvent.windowID", struct SDL_DropEvent, windowID);
+    JADE_LAYOUT_MEMBER("SDL_DropEvent.x", struct SDL_DropEvent, x);
+    JADE_LAYOUT_MEMBER("SDL_DropEvent.y", struct SDL_DropEvent, y);
+    JADE_LAYOUT_MEMBER("SDL_DropEvent.source", struct SDL_DropEvent, source);
+    JADE_LAYOUT_MEMBER("SDL_DropEvent.data", struct SDL_DropEvent, data);
+    JADE_LAYOUT_RECORD("SDL_Event", union SDL_Event);
+    JADE_LAYOUT_MEMBER("SDL_Event.type", union SDL_Event, type);
+    JADE_LAYOUT_MEMBER("SDL_Event.common", union SDL_Event, common);
+    JADE_LAYOUT_MEMBER("SDL_Event.display", union SDL_Event, display);
+    JADE_LAYOUT_MEMBER("SDL_Event.window", union SDL_Event, window);
+    JADE_LAYOUT_MEMBER("SDL_Event.kdevice", union SDL_Event, kdevice);
+    JADE_LAYOUT_MEMBER("SDL_Event.key", union SDL_Event, key);
+    JADE_LAYOUT_MEMBER("SDL_Event.edit", union SDL_Event, edit);
+    JADE_LAYOUT_MEMBER("SDL_Event.edit_candidates", union SDL_Event, edit_candidates);
+    JADE_LAYOUT_MEMBER("SDL_Event.text", union SDL_Event, text);
+    JADE_LAYOUT_MEMBER("SDL_Event.mdevice", union SDL_Event, mdevice);
+    JADE_LAYOUT_MEMBER("SDL_Event.motion", union SDL_Event, motion);
+    JADE_LAYOUT_MEMBER("SDL_Event.button", union SDL_Event, button);
+    JADE_LAYOUT_MEMBER("SDL_Event.wheel", union SDL_Event, wheel);
+    JADE_LAYOUT_MEMBER("SDL_Event.jdevice", union SDL_Event, jdevice);
+    JADE_LAYOUT_MEMBER("SDL_Event.jaxis", union SDL_Event, jaxis);
+    JADE_LAYOUT_MEMBER("SDL_Event.jball", union SDL_Event, jball);
+    JADE_LAYOUT_MEMBER("SDL_Event.jhat", union SDL_Event, jhat);
+    JADE_LAYOUT_MEMBER("SDL_Event.jbutton", union SDL_Event, jbutton);
+    JADE_LAYOUT_MEMBER("SDL_Event.jbattery", union SDL_Event, jbattery);
+    JADE_LAYOUT_MEMBER("SDL_Event.gdevice", union SDL_Event, gdevice);
+    JADE_LAYOUT_MEMBER("SDL_Event.gaxis", union SDL_Event, gaxis);
+    JADE_LAYOUT_MEMBER("SDL_Event.gbutton", union SDL_Event, gbutton);
+    JADE_LAYOUT_MEMBER("SDL_Event.gtouchpad", union SDL_Event, gtouchpad);
+    JADE_LAYOUT_MEMBER("SDL_Event.gsensor", union SDL_Event, gsensor);
+    JADE_LAYOUT_MEMBER("SDL_Event.adevice", union SDL_Event, adevice);
+    JADE_LAYOUT_MEMBER("SDL_Event.cdevice", union SDL_Event, cdevice);
+    JADE_LAYOUT_MEMBER("SDL_Event.sensor", union SDL_Event, sensor);
+    JADE_LAYOUT_MEMBER("SDL_Event.quit", union SDL_Event, quit);
+    JADE_LAYOUT_MEMBER("SDL_Event.user", union SDL_Event, user);
+    JADE_LAYOUT_MEMBER("SDL_Event.tfinger", union SDL_Event, tfinger);
+    JADE_LAYOUT_MEMBER("SDL_Event.pinch", union SDL_Event, pinch);
+    JADE_LAYOUT_MEMBER("SDL_Event.pproximity", union SDL_Event, pproximity);
+    JADE_LAYOUT_MEMBER("SDL_Event.ptouch", union SDL_Event, ptouch);
+    JADE_LAYOUT_MEMBER("SDL_Event.pmotion", union SDL_Event, pmotion);
+    JADE_LAYOUT_MEMBER("SDL_Event.pbutton", union SDL_Event, pbutton);
+    JADE_LAYOUT_MEMBER("SDL_Event.paxis", union SDL_Event, paxis);
+    JADE_LAYOUT_MEMBER("SDL_Event.render", union SDL_Event, render);
+    JADE_LAYOUT_MEMBER("SDL_Event.drop", union SDL_Event, drop);
+    JADE_LAYOUT_MEMBER("SDL_Event.clipboard", union SDL_Event, clipboard);
+    JADE_LAYOUT_MEMBER("SDL_Event.padding", union SDL_Event, padding);
+    JADE_LAYOUT_MEMBER("SDL_Event.padding[0]", union SDL_Event, padding[0]);
+    JADE_LAYOUT_RECORD("SDL_FColor", struct SDL_FColor);
+    JADE_LAYOUT_MEMBER("SDL_FColor.r", struct SDL_FColor, r);
+    JADE_LAYOUT_MEMBER("SDL_FColor.g", struct SDL_FColor, g);
+    JADE_LAYOUT_MEMBER("SDL_FColor.b", struct SDL_FColor, b);
+    JADE_LAYOUT_MEMBER("SDL_FColor.a", struct SDL_FColor, a);
+    JADE_LAYOUT_RECORD("SDL_FPoint", struct SDL_FPoint);
+    JADE_LAYOUT_MEMBER("SDL_FPoint.x", struct SDL_FPoint, x);
+    JADE_LAYOUT_MEMBER("SDL_FPoint.y", struct SDL_FPoint, y);
+    JADE_LAYOUT_RECORD("SDL_FRect", struct SDL_FRect);
+    JADE_LAYOUT_MEMBER("SDL_FRect.x", struct SDL_FRect, x);
+    JADE_LAYOUT_MEMBER("SDL_FRect.y", struct SDL_FRect, y);
+    JADE_LAYOUT_MEMBER("SDL_FRect.w", struct SDL_FRect, w);
+    JADE_LAYOUT_MEMBER("SDL_FRect.h", struct SDL_FRect, h);
+    JADE_LAYOUT_RECORD("SDL_Finger", struct SDL_Finger);
+    JADE_LAYOUT_MEMBER("SDL_Finger.id", struct SDL_Finger, id);
+    JADE_LAYOUT_MEMBER("SDL_Finger.x", struct SDL_Finger, x);
+    JADE_LAYOUT_MEMBER("SDL_Finger.y", struct SDL_Finger, y);
+    JADE_LAYOUT_MEMBER("SDL_Finger.pressure", struct SDL_Finger, pressure);
+    JADE_LAYOUT_RECORD("SDL_GPUBlitInfo", struct SDL_GPUBlitInfo);
+    JADE_LAYOUT_MEMBER("SDL_GPUBlitInfo.source", struct SDL_GPUBlitInfo, source);
+    JADE_LAYOUT_MEMBER("SDL_GPUBlitInfo.destination", struct SDL_GPUBlitInfo, destination);
+    JADE_LAYOUT_MEMBER("SDL_GPUBlitInfo.load_op", struct SDL_GPUBlitInfo, load_op);
+    JADE_LAYOUT_MEMBER("SDL_GPUBlitInfo.clear_color", struct SDL_GPUBlitInfo, clear_color);
+    JADE_LAYOUT_MEMBER("SDL_GPUBlitInfo.flip_mode", struct SDL_GPUBlitInfo, flip_mode);
+    JADE_LAYOUT_MEMBER("SDL_GPUBlitInfo.filter", struct SDL_GPUBlitInfo, filter);
+    JADE_LAYOUT_MEMBER("SDL_GPUBlitInfo.cycle", struct SDL_GPUBlitInfo, cycle);
+    JADE_LAYOUT_MEMBER("SDL_GPUBlitInfo.padding1", struct SDL_GPUBlitInfo, padding1);
+    JADE_LAYOUT_MEMBER("SDL_GPUBlitInfo.padding2", struct SDL_GPUBlitInfo, padding2);
+    JADE_LAYOUT_MEMBER("SDL_GPUBlitInfo.padding3", struct SDL_GPUBlitInfo, padding3);
+    JADE_LAYOUT_RECORD("SDL_GPUBlitRegion", struct SDL_GPUBlitRegion);
+    JADE_LAYOUT_MEMBER("SDL_GPUBlitRegion.texture", struct SDL_GPUBlitRegion, texture);
+    JADE_LAYOUT_MEMBER("SDL_GPUBlitRegion.mip_level", struct SDL_GPUBlitRegion, mip_level);
+    JADE_LAYOUT_MEMBER("SDL_GPUBlitRegion.layer_or_depth_plane", struct SDL_GPUBlitRegion, layer_or_depth_plane);
+    JADE_LAYOUT_MEMBER("SDL_GPUBlitRegion.x", struct SDL_GPUBlitRegion, x);
+    JADE_LAYOUT_MEMBER("SDL_GPUBlitRegion.y", struct SDL_GPUBlitRegion, y);
+    JADE_LAYOUT_MEMBER("SDL_GPUBlitRegion.w", struct SDL_GPUBlitRegion, w);
+    JADE_LAYOUT_MEMBER("SDL_GPUBlitRegion.h", struct SDL_GPUBlitRegion, h);
+    JADE_LAYOUT_RECORD("SDL_GPUBufferBinding", struct SDL_GPUBufferBinding);
+    JADE_LAYOUT_MEMBER("SDL_GPUBufferBinding.buffer", struct SDL_GPUBufferBinding, buffer);
+    JADE_LAYOUT_MEMBER("SDL_GPUBufferBinding.offset", struct SDL_GPUBufferBinding, offset);
+    JADE_LAYOUT_RECORD("SDL_GPUBufferCreateInfo", struct SDL_GPUBufferCreateInfo);
+    JADE_LAYOUT_MEMBER("SDL_GPUBufferCreateInfo.usage", struct SDL_GPUBufferCreateInfo, usage);
+    JADE_LAYOUT_MEMBER("SDL_GPUBufferCreateInfo.size", struct SDL_GPUBufferCreateInfo, size);
+    JADE_LAYOUT_MEMBER("SDL_GPUBufferCreateInfo.props", struct SDL_GPUBufferCreateInfo, props);
+    JADE_LAYOUT_RECORD("SDL_GPUBufferLocation", struct SDL_GPUBufferLocation);
+    JADE_LAYOUT_MEMBER("SDL_GPUBufferLocation.buffer", struct SDL_GPUBufferLocation, buffer);
+    JADE_LAYOUT_MEMBER("SDL_GPUBufferLocation.offset", struct SDL_GPUBufferLocation, offset);
+    JADE_LAYOUT_RECORD("SDL_GPUBufferRegion", struct SDL_GPUBufferRegion);
+    JADE_LAYOUT_MEMBER("SDL_GPUBufferRegion.buffer", struct SDL_GPUBufferRegion, buffer);
+    JADE_LAYOUT_MEMBER("SDL_GPUBufferRegion.offset", struct SDL_GPUBufferRegion, offset);
+    JADE_LAYOUT_MEMBER("SDL_GPUBufferRegion.size", struct SDL_GPUBufferRegion, size);
+    JADE_LAYOUT_RECORD("SDL_GPUColorTargetBlendState", struct SDL_GPUColorTargetBlendState);
+    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetBlendState.src_color_blendfactor", struct SDL_GPUColorTargetBlendState, src_color_blendfactor);
+    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetBlendState.dst_color_blendfactor", struct SDL_GPUColorTargetBlendState, dst_color_blendfactor);
+    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetBlendState.color_blend_op", struct SDL_GPUColorTargetBlendState, color_blend_op);
+    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetBlendState.src_alpha_blendfactor", struct SDL_GPUColorTargetBlendState, src_alpha_blendfactor);
+    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetBlendState.dst_alpha_blendfactor", struct SDL_GPUColorTargetBlendState, dst_alpha_blendfactor);
+    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetBlendState.alpha_blend_op", struct SDL_GPUColorTargetBlendState, alpha_blend_op);
+    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetBlendState.color_write_mask", struct SDL_GPUColorTargetBlendState, color_write_mask);
+    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetBlendState.enable_blend", struct SDL_GPUColorTargetBlendState, enable_blend);
+    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetBlendState.enable_color_write_mask", struct SDL_GPUColorTargetBlendState, enable_color_write_mask);
+    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetBlendState.padding1", struct SDL_GPUColorTargetBlendState, padding1);
+    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetBlendState.padding2", struct SDL_GPUColorTargetBlendState, padding2);
+    JADE_LAYOUT_RECORD("SDL_GPUColorTargetDescription", struct SDL_GPUColorTargetDescription);
+    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetDescription.format", struct SDL_GPUColorTargetDescription, format);
+    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetDescription.blend_state", struct SDL_GPUColorTargetDescription, blend_state);
+    JADE_LAYOUT_RECORD("SDL_GPUColorTargetInfo", struct SDL_GPUColorTargetInfo);
+    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetInfo.texture", struct SDL_GPUColorTargetInfo, texture);
+    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetInfo.mip_level", struct SDL_GPUColorTargetInfo, mip_level);
+    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetInfo.layer_or_depth_plane", struct SDL_GPUColorTargetInfo, layer_or_depth_plane);
+    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetInfo.clear_color", struct SDL_GPUColorTargetInfo, clear_color);
+    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetInfo.load_op", struct SDL_GPUColorTargetInfo, load_op);
+    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetInfo.store_op", struct SDL_GPUColorTargetInfo, store_op);
+    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetInfo.resolve_texture", struct SDL_GPUColorTargetInfo, resolve_texture);
+    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetInfo.resolve_mip_level", struct SDL_GPUColorTargetInfo, resolve_mip_level);
+    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetInfo.resolve_layer", struct SDL_GPUColorTargetInfo, resolve_layer);
+    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetInfo.cycle", struct SDL_GPUColorTargetInfo, cycle);
+    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetInfo.cycle_resolve_texture", struct SDL_GPUColorTargetInfo, cycle_resolve_texture);
+    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetInfo.padding1", struct SDL_GPUColorTargetInfo, padding1);
+    JADE_LAYOUT_MEMBER("SDL_GPUColorTargetInfo.padding2", struct SDL_GPUColorTargetInfo, padding2);
+    JADE_LAYOUT_RECORD("SDL_GPUComputePipelineCreateInfo", struct SDL_GPUComputePipelineCreateInfo);
+    JADE_LAYOUT_MEMBER("SDL_GPUComputePipelineCreateInfo.code_size", struct SDL_GPUComputePipelineCreateInfo, code_size);
+    JADE_LAYOUT_MEMBER("SDL_GPUComputePipelineCreateInfo.code", struct SDL_GPUComputePipelineCreateInfo, code);
+    JADE_LAYOUT_MEMBER("SDL_GPUComputePipelineCreateInfo.entrypoint", struct SDL_GPUComputePipelineCreateInfo, entrypoint);
+    JADE_LAYOUT_MEMBER("SDL_GPUComputePipelineCreateInfo.format", struct SDL_GPUComputePipelineCreateInfo, format);
+    JADE_LAYOUT_MEMBER("SDL_GPUComputePipelineCreateInfo.num_samplers", struct SDL_GPUComputePipelineCreateInfo, num_samplers);
+    JADE_LAYOUT_MEMBER("SDL_GPUComputePipelineCreateInfo.num_readonly_storage_textures", struct SDL_GPUComputePipelineCreateInfo, num_readonly_storage_textures);
+    JADE_LAYOUT_MEMBER("SDL_GPUComputePipelineCreateInfo.num_readonly_storage_buffers", struct SDL_GPUComputePipelineCreateInfo, num_readonly_storage_buffers);
+    JADE_LAYOUT_MEMBER("SDL_GPUComputePipelineCreateInfo.num_readwrite_storage_textures", struct SDL_GPUComputePipelineCreateInfo, num_readwrite_storage_textures);
+    JADE_LAYOUT_MEMBER("SDL_GPUComputePipelineCreateInfo.num_readwrite_storage_buffers", struct SDL_GPUComputePipelineCreateInfo, num_readwrite_storage_buffers);
+    JADE_LAYOUT_MEMBER("SDL_GPUComputePipelineCreateInfo.num_uniform_buffers", struct SDL_GPUComputePipelineCreateInfo, num_uniform_buffers);
+    JADE_LAYOUT_MEMBER("SDL_GPUComputePipelineCreateInfo.threadcount_x", struct SDL_GPUComputePipelineCreateInfo, threadcount_x);
+    JADE_LAYOUT_MEMBER("SDL_GPUComputePipelineCreateInfo.threadcount_y", struct SDL_GPUComputePipelineCreateInfo, threadcount_y);
+    JADE_LAYOUT_MEMBER("SDL_GPUComputePipelineCreateInfo.threadcount_z", struct SDL_GPUComputePipelineCreateInfo, threadcount_z);
+    JADE_LAYOUT_MEMBER("SDL_GPUComputePipelineCreateInfo.props", struct SDL_GPUComputePipelineCreateInfo, props);
+    JADE_LAYOUT_RECORD("SDL_GPUDepthStencilState", struct SDL_GPUDepthStencilState);
+    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilState.compare_op", struct SDL_GPUDepthStencilState, compare_op);
+    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilState.back_stencil_state", struct SDL_GPUDepthStencilState, back_stencil_state);
+    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilState.front_stencil_state", struct SDL_GPUDepthStencilState, front_stencil_state);
+    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilState.compare_mask", struct SDL_GPUDepthStencilState, compare_mask);
+    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilState.write_mask", struct SDL_GPUDepthStencilState, write_mask);
+    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilState.enable_depth_test", struct SDL_GPUDepthStencilState, enable_depth_test);
+    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilState.enable_depth_write", struct SDL_GPUDepthStencilState, enable_depth_write);
+    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilState.enable_stencil_test", struct SDL_GPUDepthStencilState, enable_stencil_test);
+    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilState.padding1", struct SDL_GPUDepthStencilState, padding1);
+    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilState.padding2", struct SDL_GPUDepthStencilState, padding2);
+    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilState.padding3", struct SDL_GPUDepthStencilState, padding3);
+    JADE_LAYOUT_RECORD("SDL_GPUDepthStencilTargetInfo", struct SDL_GPUDepthStencilTargetInfo);
+    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilTargetInfo.texture", struct SDL_GPUDepthStencilTargetInfo, texture);
+    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilTargetInfo.clear_depth", struct SDL_GPUDepthStencilTargetInfo, clear_depth);
+    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilTargetInfo.load_op", struct SDL_GPUDepthStencilTargetInfo, load_op);
+    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilTargetInfo.store_op", struct SDL_GPUDepthStencilTargetInfo, store_op);
+    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilTargetInfo.stencil_load_op", struct SDL_GPUDepthStencilTargetInfo, stencil_load_op);
+    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilTargetInfo.stencil_store_op", struct SDL_GPUDepthStencilTargetInfo, stencil_store_op);
+    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilTargetInfo.cycle", struct SDL_GPUDepthStencilTargetInfo, cycle);
+    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilTargetInfo.clear_stencil", struct SDL_GPUDepthStencilTargetInfo, clear_stencil);
+    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilTargetInfo.mip_level", struct SDL_GPUDepthStencilTargetInfo, mip_level);
+    JADE_LAYOUT_MEMBER("SDL_GPUDepthStencilTargetInfo.layer", struct SDL_GPUDepthStencilTargetInfo, layer);
+    JADE_LAYOUT_RECORD("SDL_GPUGraphicsPipelineCreateInfo", struct SDL_GPUGraphicsPipelineCreateInfo);
+    JADE_LAYOUT_MEMBER("SDL_GPUGraphicsPipelineCreateInfo.vertex_shader", struct SDL_GPUGraphicsPipelineCreateInfo, vertex_shader);
+    JADE_LAYOUT_MEMBER("SDL_GPUGraphicsPipelineCreateInfo.fragment_shader", struct SDL_GPUGraphicsPipelineCreateInfo, fragment_shader);
+    JADE_LAYOUT_MEMBER("SDL_GPUGraphicsPipelineCreateInfo.vertex_input_state", struct SDL_GPUGraphicsPipelineCreateInfo, vertex_input_state);
+    JADE_LAYOUT_MEMBER("SDL_GPUGraphicsPipelineCreateInfo.primitive_type", struct SDL_GPUGraphicsPipelineCreateInfo, primitive_type);
+    JADE_LAYOUT_MEMBER("SDL_GPUGraphicsPipelineCreateInfo.rasterizer_state", struct SDL_GPUGraphicsPipelineCreateInfo, rasterizer_state);
+    JADE_LAYOUT_MEMBER("SDL_GPUGraphicsPipelineCreateInfo.multisample_state", struct SDL_GPUGraphicsPipelineCreateInfo, multisample_state);
+    JADE_LAYOUT_MEMBER("SDL_GPUGraphicsPipelineCreateInfo.depth_stencil_state", struct SDL_GPUGraphicsPipelineCreateInfo, depth_stencil_state);
+    JADE_LAYOUT_MEMBER("SDL_GPUGraphicsPipelineCreateInfo.target_info", struct SDL_GPUGraphicsPipelineCreateInfo, target_info);
+    JADE_LAYOUT_MEMBER("SDL_GPUGraphicsPipelineCreateInfo.props", struct SDL_GPUGraphicsPipelineCreateInfo, props);
+    JADE_LAYOUT_RECORD("SDL_GPUGraphicsPipelineTargetInfo", struct SDL_GPUGraphicsPipelineTargetInfo);
+    JADE_LAYOUT_MEMBER("SDL_GPUGraphicsPipelineTargetInfo.color_target_descriptions", struct SDL_GPUGraphicsPipelineTargetInfo, color_target_descriptions);
+    JADE_LAYOUT_MEMBER("SDL_GPUGraphicsPipelineTargetInfo.num_color_targets", struct SDL_GPUGraphicsPipelineTargetInfo, num_color_targets);
+    JADE_LAYOUT_MEMBER("SDL_GPUGraphicsPipelineTargetInfo.depth_stencil_format", struct SDL_GPUGraphicsPipelineTargetInfo, depth_stencil_format);
+    JADE_LAYOUT_MEMBER("SDL_GPUGraphicsPipelineTargetInfo.has_depth_stencil_target", struct SDL_GPUGraphicsPipelineTargetInfo, has_depth_stencil_target);
+    JADE_LAYOUT_MEMBER("SDL_GPUGraphicsPipelineTargetInfo.padding1", struct SDL_GPUGraphicsPipelineTargetInfo, padding1);
+    JADE_LAYOUT_MEMBER("SDL_GPUGraphicsPipelineTargetInfo.padding2", struct SDL_GPUGraphicsPipelineTargetInfo, padding2);
+    JADE_LAYOUT_MEMBER("SDL_GPUGraphicsPipelineTargetInfo.padding3", struct SDL_GPUGraphicsPipelineTargetInfo, padding3);
+    JADE_LAYOUT_RECORD("SDL_GPUIndexedIndirectDrawCommand", struct SDL_GPUIndexedIndirectDrawCommand);
+    JADE_LAYOUT_MEMBER("SDL_GPUIndexedIndirectDrawCommand.num_indices", struct SDL_GPUIndexedIndirectDrawCommand, num_indices);
+    JADE_LAYOUT_MEMBER("SDL_GPUIndexedIndirectDrawCommand.num_instances", struct SDL_GPUIndexedIndirectDrawCommand, num_instances);
+    JADE_LAYOUT_MEMBER("SDL_GPUIndexedIndirectDrawCommand.first_index", struct SDL_GPUIndexedIndirectDrawCommand, first_index);
+    JADE_LAYOUT_MEMBER("SDL_GPUIndexedIndirectDrawCommand.vertex_offset", struct SDL_GPUIndexedIndirectDrawCommand, vertex_offset);
+    JADE_LAYOUT_MEMBER("SDL_GPUIndexedIndirectDrawCommand.first_instance", struct SDL_GPUIndexedIndirectDrawCommand, first_instance);
+    JADE_LAYOUT_RECORD("SDL_GPUIndirectDispatchCommand", struct SDL_GPUIndirectDispatchCommand);
+    JADE_LAYOUT_MEMBER("SDL_GPUIndirectDispatchCommand.groupcount_x", struct SDL_GPUIndirectDispatchCommand, groupcount_x);
+    JADE_LAYOUT_MEMBER("SDL_GPUIndirectDispatchCommand.groupcount_y", struct SDL_GPUIndirectDispatchCommand, groupcount_y);
+    JADE_LAYOUT_MEMBER("SDL_GPUIndirectDispatchCommand.groupcount_z", struct SDL_GPUIndirectDispatchCommand, groupcount_z);
+    JADE_LAYOUT_RECORD("SDL_GPUIndirectDrawCommand", struct SDL_GPUIndirectDrawCommand);
+    JADE_LAYOUT_MEMBER("SDL_GPUIndirectDrawCommand.num_vertices", struct SDL_GPUIndirectDrawCommand, num_vertices);
+    JADE_LAYOUT_MEMBER("SDL_GPUIndirectDrawCommand.num_instances", struct SDL_GPUIndirectDrawCommand, num_instances);
+    JADE_LAYOUT_MEMBER("SDL_GPUIndirectDrawCommand.first_vertex", struct SDL_GPUIndirectDrawCommand, first_vertex);
+    JADE_LAYOUT_MEMBER("SDL_GPUIndirectDrawCommand.first_instance", struct SDL_GPUIndirectDrawCommand, first_instance);
+    JADE_LAYOUT_RECORD("SDL_GPUMultisampleState", struct SDL_GPUMultisampleState);
+    JADE_LAYOUT_MEMBER("SDL_GPUMultisampleState.sample_count", struct SDL_GPUMultisampleState, sample_count);
+    JADE_LAYOUT_MEMBER("SDL_GPUMultisampleState.sample_mask", struct SDL_GPUMultisampleState, sample_mask);
+    JADE_LAYOUT_MEMBER("SDL_GPUMultisampleState.enable_mask", struct SDL_GPUMultisampleState, enable_mask);
+    JADE_LAYOUT_MEMBER("SDL_GPUMultisampleState.enable_alpha_to_coverage", struct SDL_GPUMultisampleState, enable_alpha_to_coverage);
+    JADE_LAYOUT_MEMBER("SDL_GPUMultisampleState.padding2", struct SDL_GPUMultisampleState, padding2);
+    JADE_LAYOUT_MEMBER("SDL_GPUMultisampleState.padding3", struct SDL_GPUMultisampleState, padding3);
+    JADE_LAYOUT_RECORD("SDL_GPURasterizerState", struct SDL_GPURasterizerState);
+    JADE_LAYOUT_MEMBER("SDL_GPURasterizerState.fill_mode", struct SDL_GPURasterizerState, fill_mode);
+    JADE_LAYOUT_MEMBER("SDL_GPURasterizerState.cull_mode", struct SDL_GPURasterizerState, cull_mode);
+    JADE_LAYOUT_MEMBER("SDL_GPURasterizerState.front_face", struct SDL_GPURasterizerState, front_face);
+    JADE_LAYOUT_MEMBER("SDL_GPURasterizerState.depth_bias_constant_factor", struct SDL_GPURasterizerState, depth_bias_constant_factor);
+    JADE_LAYOUT_MEMBER("SDL_GPURasterizerState.depth_bias_clamp", struct SDL_GPURasterizerState, depth_bias_clamp);
+    JADE_LAYOUT_MEMBER("SDL_GPURasterizerState.depth_bias_slope_factor", struct SDL_GPURasterizerState, depth_bias_slope_factor);
+    JADE_LAYOUT_MEMBER("SDL_GPURasterizerState.enable_depth_bias", struct SDL_GPURasterizerState, enable_depth_bias);
+    JADE_LAYOUT_MEMBER("SDL_GPURasterizerState.enable_depth_clip", struct SDL_GPURasterizerState, enable_depth_clip);
+    JADE_LAYOUT_MEMBER("SDL_GPURasterizerState.padding1", struct SDL_GPURasterizerState, padding1);
+    JADE_LAYOUT_MEMBER("SDL_GPURasterizerState.padding2", struct SDL_GPURasterizerState, padding2);
+    JADE_LAYOUT_RECORD("SDL_GPURenderStateCreateInfo", struct SDL_GPURenderStateCreateInfo);
+    JADE_LAYOUT_MEMBER("SDL_GPURenderStateCreateInfo.fragment_shader", struct SDL_GPURenderStateCreateInfo, fragment_shader);
+    JADE_LAYOUT_MEMBER("SDL_GPURenderStateCreateInfo.num_sampler_bindings", struct SDL_GPURenderStateCreateInfo, num_sampler_bindings);
+    JADE_LAYOUT_MEMBER("SDL_GPURenderStateCreateInfo.sampler_bindings", struct SDL_GPURenderStateCreateInfo, sampler_bindings);
+    JADE_LAYOUT_MEMBER("SDL_GPURenderStateCreateInfo.num_storage_textures", struct SDL_GPURenderStateCreateInfo, num_storage_textures);
+    JADE_LAYOUT_MEMBER("SDL_GPURenderStateCreateInfo.storage_textures", struct SDL_GPURenderStateCreateInfo, storage_textures);
+    JADE_LAYOUT_MEMBER("SDL_GPURenderStateCreateInfo.num_storage_buffers", struct SDL_GPURenderStateCreateInfo, num_storage_buffers);
+    JADE_LAYOUT_MEMBER("SDL_GPURenderStateCreateInfo.storage_buffers", struct SDL_GPURenderStateCreateInfo, storage_buffers);
+    JADE_LAYOUT_MEMBER("SDL_GPURenderStateCreateInfo.props", struct SDL_GPURenderStateCreateInfo, props);
+    JADE_LAYOUT_RECORD("SDL_GPUSamplerCreateInfo", struct SDL_GPUSamplerCreateInfo);
+    JADE_LAYOUT_MEMBER("SDL_GPUSamplerCreateInfo.min_filter", struct SDL_GPUSamplerCreateInfo, min_filter);
+    JADE_LAYOUT_MEMBER("SDL_GPUSamplerCreateInfo.mag_filter", struct SDL_GPUSamplerCreateInfo, mag_filter);
+    JADE_LAYOUT_MEMBER("SDL_GPUSamplerCreateInfo.mipmap_mode", struct SDL_GPUSamplerCreateInfo, mipmap_mode);
+    JADE_LAYOUT_MEMBER("SDL_GPUSamplerCreateInfo.address_mode_u", struct SDL_GPUSamplerCreateInfo, address_mode_u);
+    JADE_LAYOUT_MEMBER("SDL_GPUSamplerCreateInfo.address_mode_v", struct SDL_GPUSamplerCreateInfo, address_mode_v);
+    JADE_LAYOUT_MEMBER("SDL_GPUSamplerCreateInfo.address_mode_w", struct SDL_GPUSamplerCreateInfo, address_mode_w);
+    JADE_LAYOUT_MEMBER("SDL_GPUSamplerCreateInfo.mip_lod_bias", struct SDL_GPUSamplerCreateInfo, mip_lod_bias);
+    JADE_LAYOUT_MEMBER("SDL_GPUSamplerCreateInfo.max_anisotropy", struct SDL_GPUSamplerCreateInfo, max_anisotropy);
+    JADE_LAYOUT_MEMBER("SDL_GPUSamplerCreateInfo.compare_op", struct SDL_GPUSamplerCreateInfo, compare_op);
+    JADE_LAYOUT_MEMBER("SDL_GPUSamplerCreateInfo.min_lod", struct SDL_GPUSamplerCreateInfo, min_lod);
+    JADE_LAYOUT_MEMBER("SDL_GPUSamplerCreateInfo.max_lod", struct SDL_GPUSamplerCreateInfo, max_lod);
+    JADE_LAYOUT_MEMBER("SDL_GPUSamplerCreateInfo.enable_anisotropy", struct SDL_GPUSamplerCreateInfo, enable_anisotropy);
+    JADE_LAYOUT_MEMBER("SDL_GPUSamplerCreateInfo.enable_compare", struct SDL_GPUSamplerCreateInfo, enable_compare);
+    JADE_LAYOUT_MEMBER("SDL_GPUSamplerCreateInfo.padding1", struct SDL_GPUSamplerCreateInfo, padding1);
+    JADE_LAYOUT_MEMBER("SDL_GPUSamplerCreateInfo.padding2", struct SDL_GPUSamplerCreateInfo, padding2);
+    JADE_LAYOUT_MEMBER("SDL_GPUSamplerCreateInfo.props", struct SDL_GPUSamplerCreateInfo, props);
+    JADE_LAYOUT_RECORD("SDL_GPUShaderCreateInfo", struct SDL_GPUShaderCreateInfo);
+    JADE_LAYOUT_MEMBER("SDL_GPUShaderCreateInfo.code_size", struct SDL_GPUShaderCreateInfo, code_size);
+    JADE_LAYOUT_MEMBER("SDL_GPUShaderCreateInfo.code", struct SDL_GPUShaderCreateInfo, code);
+    JADE_LAYOUT_MEMBER("SDL_GPUShaderCreateInfo.entrypoint", struct SDL_GPUShaderCreateInfo, entrypoint);
+    JADE_LAYOUT_MEMBER("SDL_GPUShaderCreateInfo.format", struct SDL_GPUShaderCreateInfo, format);
+    JADE_LAYOUT_MEMBER("SDL_GPUShaderCreateInfo.stage", struct SDL_GPUShaderCreateInfo, stage);
+    JADE_LAYOUT_MEMBER("SDL_GPUShaderCreateInfo.num_samplers", struct SDL_GPUShaderCreateInfo, num_samplers);
+    JADE_LAYOUT_MEMBER("SDL_GPUShaderCreateInfo.num_storage_textures", struct SDL_GPUShaderCreateInfo, num_storage_textures);
+    JADE_LAYOUT_MEMBER("SDL_GPUShaderCreateInfo.num_storage_buffers", struct SDL_GPUShaderCreateInfo, num_storage_buffers);
+    JADE_LAYOUT_MEMBER("SDL_GPUShaderCreateInfo.num_uniform_buffers", struct SDL_GPUShaderCreateInfo, num_uniform_buffers);
+    JADE_LAYOUT_MEMBER("SDL_GPUShaderCreateInfo.props", struct SDL_GPUShaderCreateInfo, props);
+    JADE_LAYOUT_RECORD("SDL_GPUStencilOpState", struct SDL_GPUStencilOpState);
+    JADE_LAYOUT_MEMBER("SDL_GPUStencilOpState.fail_op", struct SDL_GPUStencilOpState, fail_op);
+    JADE_LAYOUT_MEMBER("SDL_GPUStencilOpState.pass_op", struct SDL_GPUStencilOpState, pass_op);
+    JADE_LAYOUT_MEMBER("SDL_GPUStencilOpState.depth_fail_op", struct SDL_GPUStencilOpState, depth_fail_op);
+    JADE_LAYOUT_MEMBER("SDL_GPUStencilOpState.compare_op", struct SDL_GPUStencilOpState, compare_op);
+    JADE_LAYOUT_RECORD("SDL_GPUStorageBufferReadWriteBinding", struct SDL_GPUStorageBufferReadWriteBinding);
+    JADE_LAYOUT_MEMBER("SDL_GPUStorageBufferReadWriteBinding.buffer", struct SDL_GPUStorageBufferReadWriteBinding, buffer);
+    JADE_LAYOUT_MEMBER("SDL_GPUStorageBufferReadWriteBinding.cycle", struct SDL_GPUStorageBufferReadWriteBinding, cycle);
+    JADE_LAYOUT_MEMBER("SDL_GPUStorageBufferReadWriteBinding.padding1", struct SDL_GPUStorageBufferReadWriteBinding, padding1);
+    JADE_LAYOUT_MEMBER("SDL_GPUStorageBufferReadWriteBinding.padding2", struct SDL_GPUStorageBufferReadWriteBinding, padding2);
+    JADE_LAYOUT_MEMBER("SDL_GPUStorageBufferReadWriteBinding.padding3", struct SDL_GPUStorageBufferReadWriteBinding, padding3);
+    JADE_LAYOUT_RECORD("SDL_GPUStorageTextureReadWriteBinding", struct SDL_GPUStorageTextureReadWriteBinding);
+    JADE_LAYOUT_MEMBER("SDL_GPUStorageTextureReadWriteBinding.texture", struct SDL_GPUStorageTextureReadWriteBinding, texture);
+    JADE_LAYOUT_MEMBER("SDL_GPUStorageTextureReadWriteBinding.mip_level", struct SDL_GPUStorageTextureReadWriteBinding, mip_level);
+    JADE_LAYOUT_MEMBER("SDL_GPUStorageTextureReadWriteBinding.layer", struct SDL_GPUStorageTextureReadWriteBinding, layer);
+    JADE_LAYOUT_MEMBER("SDL_GPUStorageTextureReadWriteBinding.cycle", struct SDL_GPUStorageTextureReadWriteBinding, cycle);
+    JADE_LAYOUT_MEMBER("SDL_GPUStorageTextureReadWriteBinding.padding1", struct SDL_GPUStorageTextureReadWriteBinding, padding1);
+    JADE_LAYOUT_MEMBER("SDL_GPUStorageTextureReadWriteBinding.padding2", struct SDL_GPUStorageTextureReadWriteBinding, padding2);
+    JADE_LAYOUT_MEMBER("SDL_GPUStorageTextureReadWriteBinding.padding3", struct SDL_GPUStorageTextureReadWriteBinding, padding3);
+    JADE_LAYOUT_RECORD("SDL_GPUTextureCreateInfo", struct SDL_GPUTextureCreateInfo);
+    JADE_LAYOUT_MEMBER("SDL_GPUTextureCreateInfo.type", struct SDL_GPUTextureCreateInfo, type);
+    JADE_LAYOUT_MEMBER("SDL_GPUTextureCreateInfo.format", struct SDL_GPUTextureCreateInfo, format);
+    JADE_LAYOUT_MEMBER("SDL_GPUTextureCreateInfo.usage", struct SDL_GPUTextureCreateInfo, usage);
+    JADE_LAYOUT_MEMBER("SDL_GPUTextureCreateInfo.width", struct SDL_GPUTextureCreateInfo, width);
+    JADE_LAYOUT_MEMBER("SDL_GPUTextureCreateInfo.height", struct SDL_GPUTextureCreateInfo, height);
+    JADE_LAYOUT_MEMBER("SDL_GPUTextureCreateInfo.layer_count_or_depth", struct SDL_GPUTextureCreateInfo, layer_count_or_depth);
+    JADE_LAYOUT_MEMBER("SDL_GPUTextureCreateInfo.num_levels", struct SDL_GPUTextureCreateInfo, num_levels);
+    JADE_LAYOUT_MEMBER("SDL_GPUTextureCreateInfo.sample_count", struct SDL_GPUTextureCreateInfo, sample_count);
+    JADE_LAYOUT_MEMBER("SDL_GPUTextureCreateInfo.props", struct SDL_GPUTextureCreateInfo, props);
+    JADE_LAYOUT_RECORD("SDL_GPUTextureLocation", struct SDL_GPUTextureLocation);
+    JADE_LAYOUT_MEMBER("SDL_GPUTextureLocation.texture", struct SDL_GPUTextureLocation, texture);
+    JADE_LAYOUT_MEMBER("SDL_GPUTextureLocation.mip_level", struct SDL_GPUTextureLocation, mip_level);
+    JADE_LAYOUT_MEMBER("SDL_GPUTextureLocation.layer", struct SDL_GPUTextureLocation, layer);
+    JADE_LAYOUT_MEMBER("SDL_GPUTextureLocation.x", struct SDL_GPUTextureLocation, x);
+    JADE_LAYOUT_MEMBER("SDL_GPUTextureLocation.y", struct SDL_GPUTextureLocation, y);
+    JADE_LAYOUT_MEMBER("SDL_GPUTextureLocation.z", struct SDL_GPUTextureLocation, z);
+    JADE_LAYOUT_RECORD("SDL_GPUTextureRegion", struct SDL_GPUTextureRegion);
+    JADE_LAYOUT_MEMBER("SDL_GPUTextureRegion.texture", struct SDL_GPUTextureRegion, texture);
+    JADE_LAYOUT_MEMBER("SDL_GPUTextureRegion.mip_level", struct SDL_GPUTextureRegion, mip_level);
+    JADE_LAYOUT_MEMBER("SDL_GPUTextureRegion.layer", struct SDL_GPUTextureRegion, layer);
+    JADE_LAYOUT_MEMBER("SDL_GPUTextureRegion.x", struct SDL_GPUTextureRegion, x);
+    JADE_LAYOUT_MEMBER("SDL_GPUTextureRegion.y", struct SDL_GPUTextureRegion, y);
+    JADE_LAYOUT_MEMBER("SDL_GPUTextureRegion.z", struct SDL_GPUTextureRegion, z);
+    JADE_LAYOUT_MEMBER("SDL_GPUTextureRegion.w", struct SDL_GPUTextureRegion, w);
+    JADE_LAYOUT_MEMBER("SDL_GPUTextureRegion.h", struct SDL_GPUTextureRegion, h);
+    JADE_LAYOUT_MEMBER("SDL_GPUTextureRegion.d", struct SDL_GPUTextureRegion, d);
+    JADE_LAYOUT_RECORD("SDL_GPUTextureSamplerBinding", struct SDL_GPUTextureSamplerBinding);
+    JADE_LAYOUT_MEMBER("SDL_GPUTextureSamplerBinding.texture", struct SDL_GPUTextureSamplerBinding, texture);
+    JADE_LAYOUT_MEMBER("SDL_GPUTextureSamplerBinding.sampler", struct SDL_GPUTextureSamplerBinding, sampler);
+    JADE_LAYOUT_RECORD("SDL_GPUTextureTransferInfo", struct SDL_GPUTextureTransferInfo);
+    JADE_LAYOUT_MEMBER("SDL_GPUTextureTransferInfo.transfer_buffer", struct SDL_GPUTextureTransferInfo, transfer_buffer);
+    JADE_LAYOUT_MEMBER("SDL_GPUTextureTransferInfo.offset", struct SDL_GPUTextureTransferInfo, offset);
+    JADE_LAYOUT_MEMBER("SDL_GPUTextureTransferInfo.pixels_per_row", struct SDL_GPUTextureTransferInfo, pixels_per_row);
+    JADE_LAYOUT_MEMBER("SDL_GPUTextureTransferInfo.rows_per_layer", struct SDL_GPUTextureTransferInfo, rows_per_layer);
+    JADE_LAYOUT_RECORD("SDL_GPUTransferBufferCreateInfo", struct SDL_GPUTransferBufferCreateInfo);
+    JADE_LAYOUT_MEMBER("SDL_GPUTransferBufferCreateInfo.usage", struct SDL_GPUTransferBufferCreateInfo, usage);
+    JADE_LAYOUT_MEMBER("SDL_GPUTransferBufferCreateInfo.size", struct SDL_GPUTransferBufferCreateInfo, size);
+    JADE_LAYOUT_MEMBER("SDL_GPUTransferBufferCreateInfo.props", struct SDL_GPUTransferBufferCreateInfo, props);
+    JADE_LAYOUT_RECORD("SDL_GPUTransferBufferLocation", struct SDL_GPUTransferBufferLocation);
+    JADE_LAYOUT_MEMBER("SDL_GPUTransferBufferLocation.transfer_buffer", struct SDL_GPUTransferBufferLocation, transfer_buffer);
+    JADE_LAYOUT_MEMBER("SDL_GPUTransferBufferLocation.offset", struct SDL_GPUTransferBufferLocation, offset);
+    JADE_LAYOUT_RECORD("SDL_GPUVertexAttribute", struct SDL_GPUVertexAttribute);
+    JADE_LAYOUT_MEMBER("SDL_GPUVertexAttribute.location", struct SDL_GPUVertexAttribute, location);
+    JADE_LAYOUT_MEMBER("SDL_GPUVertexAttribute.buffer_slot", struct SDL_GPUVertexAttribute, buffer_slot);
+    JADE_LAYOUT_MEMBER("SDL_GPUVertexAttribute.format", struct SDL_GPUVertexAttribute, format);
+    JADE_LAYOUT_MEMBER("SDL_GPUVertexAttribute.offset", struct SDL_GPUVertexAttribute, offset);
+    JADE_LAYOUT_RECORD("SDL_GPUVertexBufferDescription", struct SDL_GPUVertexBufferDescription);
+    JADE_LAYOUT_MEMBER("SDL_GPUVertexBufferDescription.slot", struct SDL_GPUVertexBufferDescription, slot);
+    JADE_LAYOUT_MEMBER("SDL_GPUVertexBufferDescription.pitch", struct SDL_GPUVertexBufferDescription, pitch);
+    JADE_LAYOUT_MEMBER("SDL_GPUVertexBufferDescription.input_rate", struct SDL_GPUVertexBufferDescription, input_rate);
+    JADE_LAYOUT_MEMBER("SDL_GPUVertexBufferDescription.instance_step_rate", struct SDL_GPUVertexBufferDescription, instance_step_rate);
+    JADE_LAYOUT_RECORD("SDL_GPUVertexInputState", struct SDL_GPUVertexInputState);
+    JADE_LAYOUT_MEMBER("SDL_GPUVertexInputState.vertex_buffer_descriptions", struct SDL_GPUVertexInputState, vertex_buffer_descriptions);
+    JADE_LAYOUT_MEMBER("SDL_GPUVertexInputState.num_vertex_buffers", struct SDL_GPUVertexInputState, num_vertex_buffers);
+    JADE_LAYOUT_MEMBER("SDL_GPUVertexInputState.vertex_attributes", struct SDL_GPUVertexInputState, vertex_attributes);
+    JADE_LAYOUT_MEMBER("SDL_GPUVertexInputState.num_vertex_attributes", struct SDL_GPUVertexInputState, num_vertex_attributes);
+    JADE_LAYOUT_RECORD("SDL_GPUViewport", struct SDL_GPUViewport);
+    JADE_LAYOUT_MEMBER("SDL_GPUViewport.x", struct SDL_GPUViewport, x);
+    JADE_LAYOUT_MEMBER("SDL_GPUViewport.y", struct SDL_GPUViewport, y);
+    JADE_LAYOUT_MEMBER("SDL_GPUViewport.w", struct SDL_GPUViewport, w);
+    JADE_LAYOUT_MEMBER("SDL_GPUViewport.h", struct SDL_GPUViewport, h);
+    JADE_LAYOUT_MEMBER("SDL_GPUViewport.min_depth", struct SDL_GPUViewport, min_depth);
+    JADE_LAYOUT_MEMBER("SDL_GPUViewport.max_depth", struct SDL_GPUViewport, max_depth);
+    JADE_LAYOUT_RECORD("SDL_GPUVulkanOptions", struct SDL_GPUVulkanOptions);
+    JADE_LAYOUT_MEMBER("SDL_GPUVulkanOptions.vulkan_api_version", struct SDL_GPUVulkanOptions, vulkan_api_version);
+    JADE_LAYOUT_MEMBER("SDL_GPUVulkanOptions.feature_list", struct SDL_GPUVulkanOptions, feature_list);
+    JADE_LAYOUT_MEMBER("SDL_GPUVulkanOptions.vulkan_10_physical_device_features", struct SDL_GPUVulkanOptions, vulkan_10_physical_device_features);
+    JADE_LAYOUT_MEMBER("SDL_GPUVulkanOptions.device_extension_count", struct SDL_GPUVulkanOptions, device_extension_count);
+    JADE_LAYOUT_MEMBER("SDL_GPUVulkanOptions.device_extension_names", struct SDL_GPUVulkanOptions, device_extension_names);
+    JADE_LAYOUT_MEMBER("SDL_GPUVulkanOptions.instance_extension_count", struct SDL_GPUVulkanOptions, instance_extension_count);
+    JADE_LAYOUT_MEMBER("SDL_GPUVulkanOptions.instance_extension_names", struct SDL_GPUVulkanOptions, instance_extension_names);
+    JADE_LAYOUT_RECORD("SDL_GUID", struct SDL_GUID);
+    JADE_LAYOUT_MEMBER("SDL_GUID.data", struct SDL_GUID, data);
+    JADE_LAYOUT_MEMBER("SDL_GUID.data[0]", struct SDL_GUID, data[0]);
+    JADE_LAYOUT_RECORD("SDL_GamepadAxisEvent", struct SDL_GamepadAxisEvent);
+    JADE_LAYOUT_MEMBER("SDL_GamepadAxisEvent.type", struct SDL_GamepadAxisEvent, type);
+    JADE_LAYOUT_MEMBER("SDL_GamepadAxisEvent.reserved", struct SDL_GamepadAxisEvent, reserved);
+    JADE_LAYOUT_MEMBER("SDL_GamepadAxisEvent.timestamp", struct SDL_GamepadAxisEvent, timestamp);
+    JADE_LAYOUT_MEMBER("SDL_GamepadAxisEvent.which", struct SDL_GamepadAxisEvent, which);
+    JADE_LAYOUT_MEMBER("SDL_GamepadAxisEvent.axis", struct SDL_GamepadAxisEvent, axis);
+    JADE_LAYOUT_MEMBER("SDL_GamepadAxisEvent.padding1", struct SDL_GamepadAxisEvent, padding1);
+    JADE_LAYOUT_MEMBER("SDL_GamepadAxisEvent.padding2", struct SDL_GamepadAxisEvent, padding2);
+    JADE_LAYOUT_MEMBER("SDL_GamepadAxisEvent.padding3", struct SDL_GamepadAxisEvent, padding3);
+    JADE_LAYOUT_MEMBER("SDL_GamepadAxisEvent.value", struct SDL_GamepadAxisEvent, value);
+    JADE_LAYOUT_MEMBER("SDL_GamepadAxisEvent.padding4", struct SDL_GamepadAxisEvent, padding4);
+    JADE_LAYOUT_RECORD("SDL_GamepadBinding", struct SDL_GamepadBinding);
+    JADE_LAYOUT_MEMBER("SDL_GamepadBinding.input_type", struct SDL_GamepadBinding, input_type);
+    JADE_LAYOUT_MEMBER("SDL_GamepadBinding.input", struct SDL_GamepadBinding, input);
+    JADE_LAYOUT_MEMBER("SDL_GamepadBinding.output_type", struct SDL_GamepadBinding, output_type);
+    JADE_LAYOUT_MEMBER("SDL_GamepadBinding.output", struct SDL_GamepadBinding, output);
+    JADE_LAYOUT_NESTED_RECORD("SDL_GamepadBinding_input", struct SDL_GamepadBinding, input);
+    JADE_LAYOUT_NESTED_MEMBER("SDL_GamepadBinding_input.button", struct SDL_GamepadBinding, input, button);
+    JADE_LAYOUT_NESTED_MEMBER("SDL_GamepadBinding_input.axis", struct SDL_GamepadBinding, input, axis);
+    JADE_LAYOUT_NESTED_MEMBER("SDL_GamepadBinding_input.hat", struct SDL_GamepadBinding, input, hat);
+    JADE_LAYOUT_NESTED_RECORD("SDL_GamepadBinding_input_axis", struct SDL_GamepadBinding, input.axis);
+    JADE_LAYOUT_NESTED_MEMBER("SDL_GamepadBinding_input_axis.axis", struct SDL_GamepadBinding, input.axis, axis);
+    JADE_LAYOUT_NESTED_MEMBER("SDL_GamepadBinding_input_axis.axis_min", struct SDL_GamepadBinding, input.axis, axis_min);
+    JADE_LAYOUT_NESTED_MEMBER("SDL_GamepadBinding_input_axis.axis_max", struct SDL_GamepadBinding, input.axis, axis_max);
+    JADE_LAYOUT_NESTED_RECORD("SDL_GamepadBinding_input_hat", struct SDL_GamepadBinding, input.hat);
+    JADE_LAYOUT_NESTED_MEMBER("SDL_GamepadBinding_input_hat.hat", struct SDL_GamepadBinding, input.hat, hat);
+    JADE_LAYOUT_NESTED_MEMBER("SDL_GamepadBinding_input_hat.hat_mask", struct SDL_GamepadBinding, input.hat, hat_mask);
+    JADE_LAYOUT_NESTED_RECORD("SDL_GamepadBinding_output", struct SDL_GamepadBinding, output);
+    JADE_LAYOUT_NESTED_MEMBER("SDL_GamepadBinding_output.button", struct SDL_GamepadBinding, output, button);
+    JADE_LAYOUT_NESTED_MEMBER("SDL_GamepadBinding_output.axis", struct SDL_GamepadBinding, output, axis);
+    JADE_LAYOUT_NESTED_RECORD("SDL_GamepadBinding_output_axis", struct SDL_GamepadBinding, output.axis);
+    JADE_LAYOUT_NESTED_MEMBER("SDL_GamepadBinding_output_axis.axis", struct SDL_GamepadBinding, output.axis, axis);
+    JADE_LAYOUT_NESTED_MEMBER("SDL_GamepadBinding_output_axis.axis_min", struct SDL_GamepadBinding, output.axis, axis_min);
+    JADE_LAYOUT_NESTED_MEMBER("SDL_GamepadBinding_output_axis.axis_max", struct SDL_GamepadBinding, output.axis, axis_max);
+    JADE_LAYOUT_RECORD("SDL_GamepadButtonEvent", struct SDL_GamepadButtonEvent);
+    JADE_LAYOUT_MEMBER("SDL_GamepadButtonEvent.type", struct SDL_GamepadButtonEvent, type);
+    JADE_LAYOUT_MEMBER("SDL_GamepadButtonEvent.reserved", struct SDL_GamepadButtonEvent, reserved);
+    JADE_LAYOUT_MEMBER("SDL_GamepadButtonEvent.timestamp", struct SDL_GamepadButtonEvent, timestamp);
+    JADE_LAYOUT_MEMBER("SDL_GamepadButtonEvent.which", struct SDL_GamepadButtonEvent, which);
+    JADE_LAYOUT_MEMBER("SDL_GamepadButtonEvent.button", struct SDL_GamepadButtonEvent, button);
+    JADE_LAYOUT_MEMBER("SDL_GamepadButtonEvent.down", struct SDL_GamepadButtonEvent, down);
+    JADE_LAYOUT_MEMBER("SDL_GamepadButtonEvent.padding1", struct SDL_GamepadButtonEvent, padding1);
+    JADE_LAYOUT_MEMBER("SDL_GamepadButtonEvent.padding2", struct SDL_GamepadButtonEvent, padding2);
+    JADE_LAYOUT_RECORD("SDL_GamepadDeviceEvent", struct SDL_GamepadDeviceEvent);
+    JADE_LAYOUT_MEMBER("SDL_GamepadDeviceEvent.type", struct SDL_GamepadDeviceEvent, type);
+    JADE_LAYOUT_MEMBER("SDL_GamepadDeviceEvent.reserved", struct SDL_GamepadDeviceEvent, reserved);
+    JADE_LAYOUT_MEMBER("SDL_GamepadDeviceEvent.timestamp", struct SDL_GamepadDeviceEvent, timestamp);
+    JADE_LAYOUT_MEMBER("SDL_GamepadDeviceEvent.which", struct SDL_GamepadDeviceEvent, which);
+    JADE_LAYOUT_RECORD("SDL_GamepadSensorEvent", struct SDL_GamepadSensorEvent);
+    JADE_LAYOUT_MEMBER("SDL_GamepadSensorEvent.type", struct SDL_GamepadSensorEvent, type);
+    JADE_LAYOUT_MEMBER("SDL_GamepadSensorEvent.reserved", struct SDL_GamepadSensorEvent, reserved);
+    JADE_LAYOUT_MEMBER("SDL_GamepadSensorEvent.timestamp", struct SDL_GamepadSensorEvent, timestamp);
+    JADE_LAYOUT_MEMBER("SDL_GamepadSensorEvent.which", struct SDL_GamepadSensorEvent, which);
+    JADE_LAYOUT_MEMBER("SDL_GamepadSensorEvent.sensor", struct SDL_GamepadSensorEvent, sensor);
+    JADE_LAYOUT_MEMBER("SDL_GamepadSensorEvent.data", struct SDL_GamepadSensorEvent, data);
+    JADE_LAYOUT_MEMBER("SDL_GamepadSensorEvent.data[0]", struct SDL_GamepadSensorEvent, data[0]);
+    JADE_LAYOUT_MEMBER("SDL_GamepadSensorEvent.sensor_timestamp", struct SDL_GamepadSensorEvent, sensor_timestamp);
+    JADE_LAYOUT_RECORD("SDL_GamepadTouchpadEvent", struct SDL_GamepadTouchpadEvent);
+    JADE_LAYOUT_MEMBER("SDL_GamepadTouchpadEvent.type", struct SDL_GamepadTouchpadEvent, type);
+    JADE_LAYOUT_MEMBER("SDL_GamepadTouchpadEvent.reserved", struct SDL_GamepadTouchpadEvent, reserved);
+    JADE_LAYOUT_MEMBER("SDL_GamepadTouchpadEvent.timestamp", struct SDL_GamepadTouchpadEvent, timestamp);
+    JADE_LAYOUT_MEMBER("SDL_GamepadTouchpadEvent.which", struct SDL_GamepadTouchpadEvent, which);
+    JADE_LAYOUT_MEMBER("SDL_GamepadTouchpadEvent.touchpad", struct SDL_GamepadTouchpadEvent, touchpad);
+    JADE_LAYOUT_MEMBER("SDL_GamepadTouchpadEvent.finger", struct SDL_GamepadTouchpadEvent, finger);
+    JADE_LAYOUT_MEMBER("SDL_GamepadTouchpadEvent.x", struct SDL_GamepadTouchpadEvent, x);
+    JADE_LAYOUT_MEMBER("SDL_GamepadTouchpadEvent.y", struct SDL_GamepadTouchpadEvent, y);
+    JADE_LAYOUT_MEMBER("SDL_GamepadTouchpadEvent.pressure", struct SDL_GamepadTouchpadEvent, pressure);
+    JADE_LAYOUT_RECORD("SDL_HapticCondition", struct SDL_HapticCondition);
+    JADE_LAYOUT_MEMBER("SDL_HapticCondition.type", struct SDL_HapticCondition, type);
+    JADE_LAYOUT_MEMBER("SDL_HapticCondition.direction", struct SDL_HapticCondition, direction);
+    JADE_LAYOUT_MEMBER("SDL_HapticCondition.length", struct SDL_HapticCondition, length);
+    JADE_LAYOUT_MEMBER("SDL_HapticCondition.delay", struct SDL_HapticCondition, delay);
+    JADE_LAYOUT_MEMBER("SDL_HapticCondition.button", struct SDL_HapticCondition, button);
+    JADE_LAYOUT_MEMBER("SDL_HapticCondition.interval", struct SDL_HapticCondition, interval);
+    JADE_LAYOUT_MEMBER("SDL_HapticCondition.right_sat", struct SDL_HapticCondition, right_sat);
+    JADE_LAYOUT_MEMBER("SDL_HapticCondition.right_sat[0]", struct SDL_HapticCondition, right_sat[0]);
+    JADE_LAYOUT_MEMBER("SDL_HapticCondition.left_sat", struct SDL_HapticCondition, left_sat);
+    JADE_LAYOUT_MEMBER("SDL_HapticCondition.left_sat[0]", struct SDL_HapticCondition, left_sat[0]);
+    JADE_LAYOUT_MEMBER("SDL_HapticCondition.right_coeff", struct SDL_HapticCondition, right_coeff);
+    JADE_LAYOUT_MEMBER("SDL_HapticCondition.right_coeff[0]", struct SDL_HapticCondition, right_coeff[0]);
+    JADE_LAYOUT_MEMBER("SDL_HapticCondition.left_coeff", struct SDL_HapticCondition, left_coeff);
+    JADE_LAYOUT_MEMBER("SDL_HapticCondition.left_coeff[0]", struct SDL_HapticCondition, left_coeff[0]);
+    JADE_LAYOUT_MEMBER("SDL_HapticCondition.deadband", struct SDL_HapticCondition, deadband);
+    JADE_LAYOUT_MEMBER("SDL_HapticCondition.deadband[0]", struct SDL_HapticCondition, deadband[0]);
+    JADE_LAYOUT_MEMBER("SDL_HapticCondition.center", struct SDL_HapticCondition, center);
+    JADE_LAYOUT_MEMBER("SDL_HapticCondition.center[0]", struct SDL_HapticCondition, center[0]);
+    JADE_LAYOUT_RECORD("SDL_HapticConstant", struct SDL_HapticConstant);
+    JADE_LAYOUT_MEMBER("SDL_HapticConstant.type", struct SDL_HapticConstant, type);
+    JADE_LAYOUT_MEMBER("SDL_HapticConstant.direction", struct SDL_HapticConstant, direction);
+    JADE_LAYOUT_MEMBER("SDL_HapticConstant.length", struct SDL_HapticConstant, length);
+    JADE_LAYOUT_MEMBER("SDL_HapticConstant.delay", struct SDL_HapticConstant, delay);
+    JADE_LAYOUT_MEMBER("SDL_HapticConstant.button", struct SDL_HapticConstant, button);
+    JADE_LAYOUT_MEMBER("SDL_HapticConstant.interval", struct SDL_HapticConstant, interval);
+    JADE_LAYOUT_MEMBER("SDL_HapticConstant.level", struct SDL_HapticConstant, level);
+    JADE_LAYOUT_MEMBER("SDL_HapticConstant.attack_length", struct SDL_HapticConstant, attack_length);
+    JADE_LAYOUT_MEMBER("SDL_HapticConstant.attack_level", struct SDL_HapticConstant, attack_level);
+    JADE_LAYOUT_MEMBER("SDL_HapticConstant.fade_length", struct SDL_HapticConstant, fade_length);
+    JADE_LAYOUT_MEMBER("SDL_HapticConstant.fade_level", struct SDL_HapticConstant, fade_level);
+    JADE_LAYOUT_RECORD("SDL_HapticCustom", struct SDL_HapticCustom);
+    JADE_LAYOUT_MEMBER("SDL_HapticCustom.type", struct SDL_HapticCustom, type);
+    JADE_LAYOUT_MEMBER("SDL_HapticCustom.direction", struct SDL_HapticCustom, direction);
+    JADE_LAYOUT_MEMBER("SDL_HapticCustom.length", struct SDL_HapticCustom, length);
+    JADE_LAYOUT_MEMBER("SDL_HapticCustom.delay", struct SDL_HapticCustom, delay);
+    JADE_LAYOUT_MEMBER("SDL_HapticCustom.button", struct SDL_HapticCustom, button);
+    JADE_LAYOUT_MEMBER("SDL_HapticCustom.interval", struct SDL_HapticCustom, interval);
+    JADE_LAYOUT_MEMBER("SDL_HapticCustom.channels", struct SDL_HapticCustom, channels);
+    JADE_LAYOUT_MEMBER("SDL_HapticCustom.period", struct SDL_HapticCustom, period);
+    JADE_LAYOUT_MEMBER("SDL_HapticCustom.samples", struct SDL_HapticCustom, samples);
+    JADE_LAYOUT_MEMBER("SDL_HapticCustom.data", struct SDL_HapticCustom, data);
+    JADE_LAYOUT_MEMBER("SDL_HapticCustom.attack_length", struct SDL_HapticCustom, attack_length);
+    JADE_LAYOUT_MEMBER("SDL_HapticCustom.attack_level", struct SDL_HapticCustom, attack_level);
+    JADE_LAYOUT_MEMBER("SDL_HapticCustom.fade_length", struct SDL_HapticCustom, fade_length);
+    JADE_LAYOUT_MEMBER("SDL_HapticCustom.fade_level", struct SDL_HapticCustom, fade_level);
+    JADE_LAYOUT_RECORD("SDL_HapticDirection", struct SDL_HapticDirection);
+    JADE_LAYOUT_MEMBER("SDL_HapticDirection.type", struct SDL_HapticDirection, type);
+    JADE_LAYOUT_MEMBER("SDL_HapticDirection.dir", struct SDL_HapticDirection, dir);
+    JADE_LAYOUT_MEMBER("SDL_HapticDirection.dir[0]", struct SDL_HapticDirection, dir[0]);
+    JADE_LAYOUT_RECORD("SDL_HapticEffect", union SDL_HapticEffect);
+    JADE_LAYOUT_MEMBER("SDL_HapticEffect.type", union SDL_HapticEffect, type);
+    JADE_LAYOUT_MEMBER("SDL_HapticEffect.constant", union SDL_HapticEffect, constant);
+    JADE_LAYOUT_MEMBER("SDL_HapticEffect.periodic", union SDL_HapticEffect, periodic);
+    JADE_LAYOUT_MEMBER("SDL_HapticEffect.condition", union SDL_HapticEffect, condition);
+    JADE_LAYOUT_MEMBER("SDL_HapticEffect.ramp", union SDL_HapticEffect, ramp);
+    JADE_LAYOUT_MEMBER("SDL_HapticEffect.leftright", union SDL_HapticEffect, leftright);
+    JADE_LAYOUT_MEMBER("SDL_HapticEffect.custom", union SDL_HapticEffect, custom);
+    JADE_LAYOUT_RECORD("SDL_HapticLeftRight", struct SDL_HapticLeftRight);
+    JADE_LAYOUT_MEMBER("SDL_HapticLeftRight.type", struct SDL_HapticLeftRight, type);
+    JADE_LAYOUT_MEMBER("SDL_HapticLeftRight.length", struct SDL_HapticLeftRight, length);
+    JADE_LAYOUT_MEMBER("SDL_HapticLeftRight.large_magnitude", struct SDL_HapticLeftRight, large_magnitude);
+    JADE_LAYOUT_MEMBER("SDL_HapticLeftRight.small_magnitude", struct SDL_HapticLeftRight, small_magnitude);
+    JADE_LAYOUT_RECORD("SDL_HapticPeriodic", struct SDL_HapticPeriodic);
+    JADE_LAYOUT_MEMBER("SDL_HapticPeriodic.type", struct SDL_HapticPeriodic, type);
+    JADE_LAYOUT_MEMBER("SDL_HapticPeriodic.direction", struct SDL_HapticPeriodic, direction);
+    JADE_LAYOUT_MEMBER("SDL_HapticPeriodic.length", struct SDL_HapticPeriodic, length);
+    JADE_LAYOUT_MEMBER("SDL_HapticPeriodic.delay", struct SDL_HapticPeriodic, delay);
+    JADE_LAYOUT_MEMBER("SDL_HapticPeriodic.button", struct SDL_HapticPeriodic, button);
+    JADE_LAYOUT_MEMBER("SDL_HapticPeriodic.interval", struct SDL_HapticPeriodic, interval);
+    JADE_LAYOUT_MEMBER("SDL_HapticPeriodic.period", struct SDL_HapticPeriodic, period);
+    JADE_LAYOUT_MEMBER("SDL_HapticPeriodic.magnitude", struct SDL_HapticPeriodic, magnitude);
+    JADE_LAYOUT_MEMBER("SDL_HapticPeriodic.offset", struct SDL_HapticPeriodic, offset);
+    JADE_LAYOUT_MEMBER("SDL_HapticPeriodic.phase", struct SDL_HapticPeriodic, phase);
+    JADE_LAYOUT_MEMBER("SDL_HapticPeriodic.attack_length", struct SDL_HapticPeriodic, attack_length);
+    JADE_LAYOUT_MEMBER("SDL_HapticPeriodic.attack_level", struct SDL_HapticPeriodic, attack_level);
+    JADE_LAYOUT_MEMBER("SDL_HapticPeriodic.fade_length", struct SDL_HapticPeriodic, fade_length);
+    JADE_LAYOUT_MEMBER("SDL_HapticPeriodic.fade_level", struct SDL_HapticPeriodic, fade_level);
+    JADE_LAYOUT_RECORD("SDL_HapticRamp", struct SDL_HapticRamp);
+    JADE_LAYOUT_MEMBER("SDL_HapticRamp.type", struct SDL_HapticRamp, type);
+    JADE_LAYOUT_MEMBER("SDL_HapticRamp.direction", struct SDL_HapticRamp, direction);
+    JADE_LAYOUT_MEMBER("SDL_HapticRamp.length", struct SDL_HapticRamp, length);
+    JADE_LAYOUT_MEMBER("SDL_HapticRamp.delay", struct SDL_HapticRamp, delay);
+    JADE_LAYOUT_MEMBER("SDL_HapticRamp.button", struct SDL_HapticRamp, button);
+    JADE_LAYOUT_MEMBER("SDL_HapticRamp.interval", struct SDL_HapticRamp, interval);
+    JADE_LAYOUT_MEMBER("SDL_HapticRamp.start", struct SDL_HapticRamp, start);
+    JADE_LAYOUT_MEMBER("SDL_HapticRamp.end", struct SDL_HapticRamp, end);
+    JADE_LAYOUT_MEMBER("SDL_HapticRamp.attack_length", struct SDL_HapticRamp, attack_length);
+    JADE_LAYOUT_MEMBER("SDL_HapticRamp.attack_level", struct SDL_HapticRamp, attack_level);
+    JADE_LAYOUT_MEMBER("SDL_HapticRamp.fade_length", struct SDL_HapticRamp, fade_length);
+    JADE_LAYOUT_MEMBER("SDL_HapticRamp.fade_level", struct SDL_HapticRamp, fade_level);
+    JADE_LAYOUT_RECORD("SDL_IOStreamInterface", struct SDL_IOStreamInterface);
+    JADE_LAYOUT_MEMBER("SDL_IOStreamInterface.version", struct SDL_IOStreamInterface, version);
+    JADE_LAYOUT_MEMBER("SDL_IOStreamInterface.size", struct SDL_IOStreamInterface, size);
+    JADE_LAYOUT_MEMBER("SDL_IOStreamInterface.seek", struct SDL_IOStreamInterface, seek);
+    JADE_LAYOUT_MEMBER("SDL_IOStreamInterface.read", struct SDL_IOStreamInterface, read);
+    JADE_LAYOUT_MEMBER("SDL_IOStreamInterface.write", struct SDL_IOStreamInterface, write);
+    JADE_LAYOUT_MEMBER("SDL_IOStreamInterface.flush", struct SDL_IOStreamInterface, flush);
+    JADE_LAYOUT_MEMBER("SDL_IOStreamInterface.close", struct SDL_IOStreamInterface, close);
+    JADE_LAYOUT_RECORD("SDL_InitState", struct SDL_InitState);
+    JADE_LAYOUT_MEMBER("SDL_InitState.status", struct SDL_InitState, status);
+    JADE_LAYOUT_MEMBER("SDL_InitState.thread", struct SDL_InitState, thread);
+    JADE_LAYOUT_MEMBER("SDL_InitState.reserved", struct SDL_InitState, reserved);
+    JADE_LAYOUT_RECORD("SDL_JoyAxisEvent", struct SDL_JoyAxisEvent);
+    JADE_LAYOUT_MEMBER("SDL_JoyAxisEvent.type", struct SDL_JoyAxisEvent, type);
+    JADE_LAYOUT_MEMBER("SDL_JoyAxisEvent.reserved", struct SDL_JoyAxisEvent, reserved);
+    JADE_LAYOUT_MEMBER("SDL_JoyAxisEvent.timestamp", struct SDL_JoyAxisEvent, timestamp);
+    JADE_LAYOUT_MEMBER("SDL_JoyAxisEvent.which", struct SDL_JoyAxisEvent, which);
+    JADE_LAYOUT_MEMBER("SDL_JoyAxisEvent.axis", struct SDL_JoyAxisEvent, axis);
+    JADE_LAYOUT_MEMBER("SDL_JoyAxisEvent.padding1", struct SDL_JoyAxisEvent, padding1);
+    JADE_LAYOUT_MEMBER("SDL_JoyAxisEvent.padding2", struct SDL_JoyAxisEvent, padding2);
+    JADE_LAYOUT_MEMBER("SDL_JoyAxisEvent.padding3", struct SDL_JoyAxisEvent, padding3);
+    JADE_LAYOUT_MEMBER("SDL_JoyAxisEvent.value", struct SDL_JoyAxisEvent, value);
+    JADE_LAYOUT_MEMBER("SDL_JoyAxisEvent.padding4", struct SDL_JoyAxisEvent, padding4);
+    JADE_LAYOUT_RECORD("SDL_JoyBallEvent", struct SDL_JoyBallEvent);
+    JADE_LAYOUT_MEMBER("SDL_JoyBallEvent.type", struct SDL_JoyBallEvent, type);
+    JADE_LAYOUT_MEMBER("SDL_JoyBallEvent.reserved", struct SDL_JoyBallEvent, reserved);
+    JADE_LAYOUT_MEMBER("SDL_JoyBallEvent.timestamp", struct SDL_JoyBallEvent, timestamp);
+    JADE_LAYOUT_MEMBER("SDL_JoyBallEvent.which", struct SDL_JoyBallEvent, which);
+    JADE_LAYOUT_MEMBER("SDL_JoyBallEvent.ball", struct SDL_JoyBallEvent, ball);
+    JADE_LAYOUT_MEMBER("SDL_JoyBallEvent.padding1", struct SDL_JoyBallEvent, padding1);
+    JADE_LAYOUT_MEMBER("SDL_JoyBallEvent.padding2", struct SDL_JoyBallEvent, padding2);
+    JADE_LAYOUT_MEMBER("SDL_JoyBallEvent.padding3", struct SDL_JoyBallEvent, padding3);
+    JADE_LAYOUT_MEMBER("SDL_JoyBallEvent.xrel", struct SDL_JoyBallEvent, xrel);
+    JADE_LAYOUT_MEMBER("SDL_JoyBallEvent.yrel", struct SDL_JoyBallEvent, yrel);
+    JADE_LAYOUT_RECORD("SDL_JoyBatteryEvent", struct SDL_JoyBatteryEvent);
+    JADE_LAYOUT_MEMBER("SDL_JoyBatteryEvent.type", struct SDL_JoyBatteryEvent, type);
+    JADE_LAYOUT_MEMBER("SDL_JoyBatteryEvent.reserved", struct SDL_JoyBatteryEvent, reserved);
+    JADE_LAYOUT_MEMBER("SDL_JoyBatteryEvent.timestamp", struct SDL_JoyBatteryEvent, timestamp);
+    JADE_LAYOUT_MEMBER("SDL_JoyBatteryEvent.which", struct SDL_JoyBatteryEvent, which);
+    JADE_LAYOUT_MEMBER("SDL_JoyBatteryEvent.state", struct SDL_JoyBatteryEvent, state);
+    JADE_LAYOUT_MEMBER("SDL_JoyBatteryEvent.percent", struct SDL_JoyBatteryEvent, percent);
+    JADE_LAYOUT_RECORD("SDL_JoyButtonEvent", struct SDL_JoyButtonEvent);
+    JADE_LAYOUT_MEMBER("SDL_JoyButtonEvent.type", struct SDL_JoyButtonEvent, type);
+    JADE_LAYOUT_MEMBER("SDL_JoyButtonEvent.reserved", struct SDL_JoyButtonEvent, reserved);
+    JADE_LAYOUT_MEMBER("SDL_JoyButtonEvent.timestamp", struct SDL_JoyButtonEvent, timestamp);
+    JADE_LAYOUT_MEMBER("SDL_JoyButtonEvent.which", struct SDL_JoyButtonEvent, which);
+    JADE_LAYOUT_MEMBER("SDL_JoyButtonEvent.button", struct SDL_JoyButtonEvent, button);
+    JADE_LAYOUT_MEMBER("SDL_JoyButtonEvent.down", struct SDL_JoyButtonEvent, down);
+    JADE_LAYOUT_MEMBER("SDL_JoyButtonEvent.padding1", struct SDL_JoyButtonEvent, padding1);
+    JADE_LAYOUT_MEMBER("SDL_JoyButtonEvent.padding2", struct SDL_JoyButtonEvent, padding2);
+    JADE_LAYOUT_RECORD("SDL_JoyDeviceEvent", struct SDL_JoyDeviceEvent);
+    JADE_LAYOUT_MEMBER("SDL_JoyDeviceEvent.type", struct SDL_JoyDeviceEvent, type);
+    JADE_LAYOUT_MEMBER("SDL_JoyDeviceEvent.reserved", struct SDL_JoyDeviceEvent, reserved);
+    JADE_LAYOUT_MEMBER("SDL_JoyDeviceEvent.timestamp", struct SDL_JoyDeviceEvent, timestamp);
+    JADE_LAYOUT_MEMBER("SDL_JoyDeviceEvent.which", struct SDL_JoyDeviceEvent, which);
+    JADE_LAYOUT_RECORD("SDL_JoyHatEvent", struct SDL_JoyHatEvent);
+    JADE_LAYOUT_MEMBER("SDL_JoyHatEvent.type", struct SDL_JoyHatEvent, type);
+    JADE_LAYOUT_MEMBER("SDL_JoyHatEvent.reserved", struct SDL_JoyHatEvent, reserved);
+    JADE_LAYOUT_MEMBER("SDL_JoyHatEvent.timestamp", struct SDL_JoyHatEvent, timestamp);
+    JADE_LAYOUT_MEMBER("SDL_JoyHatEvent.which", struct SDL_JoyHatEvent, which);
+    JADE_LAYOUT_MEMBER("SDL_JoyHatEvent.hat", struct SDL_JoyHatEvent, hat);
+    JADE_LAYOUT_MEMBER("SDL_JoyHatEvent.value", struct SDL_JoyHatEvent, value);
+    JADE_LAYOUT_MEMBER("SDL_JoyHatEvent.padding1", struct SDL_JoyHatEvent, padding1);
+    JADE_LAYOUT_MEMBER("SDL_JoyHatEvent.padding2", struct SDL_JoyHatEvent, padding2);
+    JADE_LAYOUT_RECORD("SDL_KeyboardDeviceEvent", struct SDL_KeyboardDeviceEvent);
+    JADE_LAYOUT_MEMBER("SDL_KeyboardDeviceEvent.type", struct SDL_KeyboardDeviceEvent, type);
+    JADE_LAYOUT_MEMBER("SDL_KeyboardDeviceEvent.reserved", struct SDL_KeyboardDeviceEvent, reserved);
+    JADE_LAYOUT_MEMBER("SDL_KeyboardDeviceEvent.timestamp", struct SDL_KeyboardDeviceEvent, timestamp);
+    JADE_LAYOUT_MEMBER("SDL_KeyboardDeviceEvent.which", struct SDL_KeyboardDeviceEvent, which);
+    JADE_LAYOUT_RECORD("SDL_KeyboardEvent", struct SDL_KeyboardEvent);
+    JADE_LAYOUT_MEMBER("SDL_KeyboardEvent.type", struct SDL_KeyboardEvent, type);
+    JADE_LAYOUT_MEMBER("SDL_KeyboardEvent.reserved", struct SDL_KeyboardEvent, reserved);
+    JADE_LAYOUT_MEMBER("SDL_KeyboardEvent.timestamp", struct SDL_KeyboardEvent, timestamp);
+    JADE_LAYOUT_MEMBER("SDL_KeyboardEvent.windowID", struct SDL_KeyboardEvent, windowID);
+    JADE_LAYOUT_MEMBER("SDL_KeyboardEvent.which", struct SDL_KeyboardEvent, which);
+    JADE_LAYOUT_MEMBER("SDL_KeyboardEvent.scancode", struct SDL_KeyboardEvent, scancode);
+    JADE_LAYOUT_MEMBER("SDL_KeyboardEvent.key", struct SDL_KeyboardEvent, key);
+    JADE_LAYOUT_MEMBER("SDL_KeyboardEvent.mod", struct SDL_KeyboardEvent, mod);
+    JADE_LAYOUT_MEMBER("SDL_KeyboardEvent.raw", struct SDL_KeyboardEvent, raw);
+    JADE_LAYOUT_MEMBER("SDL_KeyboardEvent.down", struct SDL_KeyboardEvent, down);
+    JADE_LAYOUT_MEMBER("SDL_KeyboardEvent.repeat", struct SDL_KeyboardEvent, repeat);
+    JADE_LAYOUT_RECORD("SDL_Locale", struct SDL_Locale);
+    JADE_LAYOUT_MEMBER("SDL_Locale.language", struct SDL_Locale, language);
+    JADE_LAYOUT_MEMBER("SDL_Locale.country", struct SDL_Locale, country);
+    JADE_LAYOUT_RECORD("SDL_MessageBoxButtonData", struct SDL_MessageBoxButtonData);
+    JADE_LAYOUT_MEMBER("SDL_MessageBoxButtonData.flags", struct SDL_MessageBoxButtonData, flags);
+    JADE_LAYOUT_MEMBER("SDL_MessageBoxButtonData.buttonID", struct SDL_MessageBoxButtonData, buttonID);
+    JADE_LAYOUT_MEMBER("SDL_MessageBoxButtonData.text", struct SDL_MessageBoxButtonData, text);
+    JADE_LAYOUT_RECORD("SDL_MessageBoxColor", struct SDL_MessageBoxColor);
+    JADE_LAYOUT_MEMBER("SDL_MessageBoxColor.r", struct SDL_MessageBoxColor, r);
+    JADE_LAYOUT_MEMBER("SDL_MessageBoxColor.g", struct SDL_MessageBoxColor, g);
+    JADE_LAYOUT_MEMBER("SDL_MessageBoxColor.b", struct SDL_MessageBoxColor, b);
+    JADE_LAYOUT_RECORD("SDL_MessageBoxColorScheme", struct SDL_MessageBoxColorScheme);
+    JADE_LAYOUT_MEMBER("SDL_MessageBoxColorScheme.colors", struct SDL_MessageBoxColorScheme, colors);
+    JADE_LAYOUT_MEMBER("SDL_MessageBoxColorScheme.colors[0]", struct SDL_MessageBoxColorScheme, colors[0]);
+    JADE_LAYOUT_RECORD("SDL_MessageBoxData", struct SDL_MessageBoxData);
+    JADE_LAYOUT_MEMBER("SDL_MessageBoxData.flags", struct SDL_MessageBoxData, flags);
+    JADE_LAYOUT_MEMBER("SDL_MessageBoxData.window", struct SDL_MessageBoxData, window);
+    JADE_LAYOUT_MEMBER("SDL_MessageBoxData.title", struct SDL_MessageBoxData, title);
+    JADE_LAYOUT_MEMBER("SDL_MessageBoxData.message", struct SDL_MessageBoxData, message);
+    JADE_LAYOUT_MEMBER("SDL_MessageBoxData.numbuttons", struct SDL_MessageBoxData, numbuttons);
+    JADE_LAYOUT_MEMBER("SDL_MessageBoxData.buttons", struct SDL_MessageBoxData, buttons);
+    JADE_LAYOUT_MEMBER("SDL_MessageBoxData.colorScheme", struct SDL_MessageBoxData, colorScheme);
+    JADE_LAYOUT_RECORD("SDL_MouseButtonEvent", struct SDL_MouseButtonEvent);
+    JADE_LAYOUT_MEMBER("SDL_MouseButtonEvent.type", struct SDL_MouseButtonEvent, type);
+    JADE_LAYOUT_MEMBER("SDL_MouseButtonEvent.reserved", struct SDL_MouseButtonEvent, reserved);
+    JADE_LAYOUT_MEMBER("SDL_MouseButtonEvent.timestamp", struct SDL_MouseButtonEvent, timestamp);
+    JADE_LAYOUT_MEMBER("SDL_MouseButtonEvent.windowID", struct SDL_MouseButtonEvent, windowID);
+    JADE_LAYOUT_MEMBER("SDL_MouseButtonEvent.which", struct SDL_MouseButtonEvent, which);
+    JADE_LAYOUT_MEMBER("SDL_MouseButtonEvent.button", struct SDL_MouseButtonEvent, button);
+    JADE_LAYOUT_MEMBER("SDL_MouseButtonEvent.down", struct SDL_MouseButtonEvent, down);
+    JADE_LAYOUT_MEMBER("SDL_MouseButtonEvent.clicks", struct SDL_MouseButtonEvent, clicks);
+    JADE_LAYOUT_MEMBER("SDL_MouseButtonEvent.padding", struct SDL_MouseButtonEvent, padding);
+    JADE_LAYOUT_MEMBER("SDL_MouseButtonEvent.x", struct SDL_MouseButtonEvent, x);
+    JADE_LAYOUT_MEMBER("SDL_MouseButtonEvent.y", struct SDL_MouseButtonEvent, y);
+    JADE_LAYOUT_RECORD("SDL_MouseDeviceEvent", struct SDL_MouseDeviceEvent);
+    JADE_LAYOUT_MEMBER("SDL_MouseDeviceEvent.type", struct SDL_MouseDeviceEvent, type);
+    JADE_LAYOUT_MEMBER("SDL_MouseDeviceEvent.reserved", struct SDL_MouseDeviceEvent, reserved);
+    JADE_LAYOUT_MEMBER("SDL_MouseDeviceEvent.timestamp", struct SDL_MouseDeviceEvent, timestamp);
+    JADE_LAYOUT_MEMBER("SDL_MouseDeviceEvent.which", struct SDL_MouseDeviceEvent, which);
+    JADE_LAYOUT_RECORD("SDL_MouseMotionEvent", struct SDL_MouseMotionEvent);
+    JADE_LAYOUT_MEMBER("SDL_MouseMotionEvent.type", struct SDL_MouseMotionEvent, type);
+    JADE_LAYOUT_MEMBER("SDL_MouseMotionEvent.reserved", struct SDL_MouseMotionEvent, reserved);
+    JADE_LAYOUT_MEMBER("SDL_MouseMotionEvent.timestamp", struct SDL_MouseMotionEvent, timestamp);
+    JADE_LAYOUT_MEMBER("SDL_MouseMotionEvent.windowID", struct SDL_MouseMotionEvent, windowID);
+    JADE_LAYOUT_MEMBER("SDL_MouseMotionEvent.which", struct SDL_MouseMotionEvent, which);
+    JADE_LAYOUT_MEMBER("SDL_MouseMotionEvent.state", struct SDL_MouseMotionEvent, state);
+    JADE_LAYOUT_MEMBER("SDL_MouseMotionEvent.x", struct SDL_MouseMotionEvent, x);
+    JADE_LAYOUT_MEMBER("SDL_MouseMotionEvent.y", struct SDL_MouseMotionEvent, y);
+    JADE_LAYOUT_MEMBER("SDL_MouseMotionEvent.xrel", struct SDL_MouseMotionEvent, xrel);
+    JADE_LAYOUT_MEMBER("SDL_MouseMotionEvent.yrel", struct SDL_MouseMotionEvent, yrel);
+    JADE_LAYOUT_RECORD("SDL_MouseWheelEvent", struct SDL_MouseWheelEvent);
+    JADE_LAYOUT_MEMBER("SDL_MouseWheelEvent.type", struct SDL_MouseWheelEvent, type);
+    JADE_LAYOUT_MEMBER("SDL_MouseWheelEvent.reserved", struct SDL_MouseWheelEvent, reserved);
+    JADE_LAYOUT_MEMBER("SDL_MouseWheelEvent.timestamp", struct SDL_MouseWheelEvent, timestamp);
+    JADE_LAYOUT_MEMBER("SDL_MouseWheelEvent.windowID", struct SDL_MouseWheelEvent, windowID);
+    JADE_LAYOUT_MEMBER("SDL_MouseWheelEvent.which", struct SDL_MouseWheelEvent, which);
+    JADE_LAYOUT_MEMBER("SDL_MouseWheelEvent.x", struct SDL_MouseWheelEvent, x);
+    JADE_LAYOUT_MEMBER("SDL_MouseWheelEvent.y", struct SDL_MouseWheelEvent, y);
+    JADE_LAYOUT_MEMBER("SDL_MouseWheelEvent.direction", struct SDL_MouseWheelEvent, direction);
+    JADE_LAYOUT_MEMBER("SDL_MouseWheelEvent.mouse_x", struct SDL_MouseWheelEvent, mouse_x);
+    JADE_LAYOUT_MEMBER("SDL_MouseWheelEvent.mouse_y", struct SDL_MouseWheelEvent, mouse_y);
+    JADE_LAYOUT_MEMBER("SDL_MouseWheelEvent.integer_x", struct SDL_MouseWheelEvent, integer_x);
+    JADE_LAYOUT_MEMBER("SDL_MouseWheelEvent.integer_y", struct SDL_MouseWheelEvent, integer_y);
+    JADE_LAYOUT_RECORD("SDL_Palette", struct SDL_Palette);
+    JADE_LAYOUT_MEMBER("SDL_Palette.ncolors", struct SDL_Palette, ncolors);
+    JADE_LAYOUT_MEMBER("SDL_Palette.colors", struct SDL_Palette, colors);
+    JADE_LAYOUT_MEMBER("SDL_Palette.version", struct SDL_Palette, version);
+    JADE_LAYOUT_MEMBER("SDL_Palette.refcount", struct SDL_Palette, refcount);
+    JADE_LAYOUT_RECORD("SDL_PathInfo", struct SDL_PathInfo);
+    JADE_LAYOUT_MEMBER("SDL_PathInfo.type", struct SDL_PathInfo, type);
+    JADE_LAYOUT_MEMBER("SDL_PathInfo.size", struct SDL_PathInfo, size);
+    JADE_LAYOUT_MEMBER("SDL_PathInfo.create_time", struct SDL_PathInfo, create_time);
+    JADE_LAYOUT_MEMBER("SDL_PathInfo.modify_time", struct SDL_PathInfo, modify_time);
+    JADE_LAYOUT_MEMBER("SDL_PathInfo.access_time", struct SDL_PathInfo, access_time);
+    JADE_LAYOUT_RECORD("SDL_PenAxisEvent", struct SDL_PenAxisEvent);
+    JADE_LAYOUT_MEMBER("SDL_PenAxisEvent.type", struct SDL_PenAxisEvent, type);
+    JADE_LAYOUT_MEMBER("SDL_PenAxisEvent.reserved", struct SDL_PenAxisEvent, reserved);
+    JADE_LAYOUT_MEMBER("SDL_PenAxisEvent.timestamp", struct SDL_PenAxisEvent, timestamp);
+    JADE_LAYOUT_MEMBER("SDL_PenAxisEvent.windowID", struct SDL_PenAxisEvent, windowID);
+    JADE_LAYOUT_MEMBER("SDL_PenAxisEvent.which", struct SDL_PenAxisEvent, which);
+    JADE_LAYOUT_MEMBER("SDL_PenAxisEvent.pen_state", struct SDL_PenAxisEvent, pen_state);
+    JADE_LAYOUT_MEMBER("SDL_PenAxisEvent.x", struct SDL_PenAxisEvent, x);
+    JADE_LAYOUT_MEMBER("SDL_PenAxisEvent.y", struct SDL_PenAxisEvent, y);
+    JADE_LAYOUT_MEMBER("SDL_PenAxisEvent.axis", struct SDL_PenAxisEvent, axis);
+    JADE_LAYOUT_MEMBER("SDL_PenAxisEvent.value", struct SDL_PenAxisEvent, value);
+    JADE_LAYOUT_MEMBER("SDL_PenAxisEvent.device_type", struct SDL_PenAxisEvent, device_type);
+    JADE_LAYOUT_RECORD("SDL_PenButtonEvent", struct SDL_PenButtonEvent);
+    JADE_LAYOUT_MEMBER("SDL_PenButtonEvent.type", struct SDL_PenButtonEvent, type);
+    JADE_LAYOUT_MEMBER("SDL_PenButtonEvent.reserved", struct SDL_PenButtonEvent, reserved);
+    JADE_LAYOUT_MEMBER("SDL_PenButtonEvent.timestamp", struct SDL_PenButtonEvent, timestamp);
+    JADE_LAYOUT_MEMBER("SDL_PenButtonEvent.windowID", struct SDL_PenButtonEvent, windowID);
+    JADE_LAYOUT_MEMBER("SDL_PenButtonEvent.which", struct SDL_PenButtonEvent, which);
+    JADE_LAYOUT_MEMBER("SDL_PenButtonEvent.pen_state", struct SDL_PenButtonEvent, pen_state);
+    JADE_LAYOUT_MEMBER("SDL_PenButtonEvent.x", struct SDL_PenButtonEvent, x);
+    JADE_LAYOUT_MEMBER("SDL_PenButtonEvent.y", struct SDL_PenButtonEvent, y);
+    JADE_LAYOUT_MEMBER("SDL_PenButtonEvent.button", struct SDL_PenButtonEvent, button);
+    JADE_LAYOUT_MEMBER("SDL_PenButtonEvent.down", struct SDL_PenButtonEvent, down);
+    JADE_LAYOUT_MEMBER("SDL_PenButtonEvent.device_type", struct SDL_PenButtonEvent, device_type);
+    JADE_LAYOUT_RECORD("SDL_PenMotionEvent", struct SDL_PenMotionEvent);
+    JADE_LAYOUT_MEMBER("SDL_PenMotionEvent.type", struct SDL_PenMotionEvent, type);
+    JADE_LAYOUT_MEMBER("SDL_PenMotionEvent.reserved", struct SDL_PenMotionEvent, reserved);
+    JADE_LAYOUT_MEMBER("SDL_PenMotionEvent.timestamp", struct SDL_PenMotionEvent, timestamp);
+    JADE_LAYOUT_MEMBER("SDL_PenMotionEvent.windowID", struct SDL_PenMotionEvent, windowID);
+    JADE_LAYOUT_MEMBER("SDL_PenMotionEvent.which", struct SDL_PenMotionEvent, which);
+    JADE_LAYOUT_MEMBER("SDL_PenMotionEvent.pen_state", struct SDL_PenMotionEvent, pen_state);
+    JADE_LAYOUT_MEMBER("SDL_PenMotionEvent.x", struct SDL_PenMotionEvent, x);
+    JADE_LAYOUT_MEMBER("SDL_PenMotionEvent.y", struct SDL_PenMotionEvent, y);
+    JADE_LAYOUT_MEMBER("SDL_PenMotionEvent.device_type", struct SDL_PenMotionEvent, device_type);
+    JADE_LAYOUT_RECORD("SDL_PenProximityEvent", struct SDL_PenProximityEvent);
+    JADE_LAYOUT_MEMBER("SDL_PenProximityEvent.type", struct SDL_PenProximityEvent, type);
+    JADE_LAYOUT_MEMBER("SDL_PenProximityEvent.reserved", struct SDL_PenProximityEvent, reserved);
+    JADE_LAYOUT_MEMBER("SDL_PenProximityEvent.timestamp", struct SDL_PenProximityEvent, timestamp);
+    JADE_LAYOUT_MEMBER("SDL_PenProximityEvent.windowID", struct SDL_PenProximityEvent, windowID);
+    JADE_LAYOUT_MEMBER("SDL_PenProximityEvent.which", struct SDL_PenProximityEvent, which);
+    JADE_LAYOUT_MEMBER("SDL_PenProximityEvent.pen_state", struct SDL_PenProximityEvent, pen_state);
+    JADE_LAYOUT_MEMBER("SDL_PenProximityEvent.device_type", struct SDL_PenProximityEvent, device_type);
+    JADE_LAYOUT_RECORD("SDL_PenTouchEvent", struct SDL_PenTouchEvent);
+    JADE_LAYOUT_MEMBER("SDL_PenTouchEvent.type", struct SDL_PenTouchEvent, type);
+    JADE_LAYOUT_MEMBER("SDL_PenTouchEvent.reserved", struct SDL_PenTouchEvent, reserved);
+    JADE_LAYOUT_MEMBER("SDL_PenTouchEvent.timestamp", struct SDL_PenTouchEvent, timestamp);
+    JADE_LAYOUT_MEMBER("SDL_PenTouchEvent.windowID", struct SDL_PenTouchEvent, windowID);
+    JADE_LAYOUT_MEMBER("SDL_PenTouchEvent.which", struct SDL_PenTouchEvent, which);
+    JADE_LAYOUT_MEMBER("SDL_PenTouchEvent.pen_state", struct SDL_PenTouchEvent, pen_state);
+    JADE_LAYOUT_MEMBER("SDL_PenTouchEvent.x", struct SDL_PenTouchEvent, x);
+    JADE_LAYOUT_MEMBER("SDL_PenTouchEvent.y", struct SDL_PenTouchEvent, y);
+    JADE_LAYOUT_MEMBER("SDL_PenTouchEvent.eraser", struct SDL_PenTouchEvent, eraser);
+    JADE_LAYOUT_MEMBER("SDL_PenTouchEvent.down", struct SDL_PenTouchEvent, down);
+    JADE_LAYOUT_MEMBER("SDL_PenTouchEvent.device_type", struct SDL_PenTouchEvent, device_type);
+    JADE_LAYOUT_RECORD("SDL_PinchFingerEvent", struct SDL_PinchFingerEvent);
+    JADE_LAYOUT_MEMBER("SDL_PinchFingerEvent.type", struct SDL_PinchFingerEvent, type);
+    JADE_LAYOUT_MEMBER("SDL_PinchFingerEvent.reserved", struct SDL_PinchFingerEvent, reserved);
+    JADE_LAYOUT_MEMBER("SDL_PinchFingerEvent.timestamp", struct SDL_PinchFingerEvent, timestamp);
+    JADE_LAYOUT_MEMBER("SDL_PinchFingerEvent.scale", struct SDL_PinchFingerEvent, scale);
+    JADE_LAYOUT_MEMBER("SDL_PinchFingerEvent.windowID", struct SDL_PinchFingerEvent, windowID);
+    JADE_LAYOUT_RECORD("SDL_PixelFormatDetails", struct SDL_PixelFormatDetails);
+    JADE_LAYOUT_MEMBER("SDL_PixelFormatDetails.format", struct SDL_PixelFormatDetails, format);
+    JADE_LAYOUT_MEMBER("SDL_PixelFormatDetails.bits_per_pixel", struct SDL_PixelFormatDetails, bits_per_pixel);
+    JADE_LAYOUT_MEMBER("SDL_PixelFormatDetails.bytes_per_pixel", struct SDL_PixelFormatDetails, bytes_per_pixel);
+    JADE_LAYOUT_MEMBER("SDL_PixelFormatDetails.padding", struct SDL_PixelFormatDetails, padding);
+    JADE_LAYOUT_MEMBER("SDL_PixelFormatDetails.padding[0]", struct SDL_PixelFormatDetails, padding[0]);
+    JADE_LAYOUT_MEMBER("SDL_PixelFormatDetails.Rmask", struct SDL_PixelFormatDetails, Rmask);
+    JADE_LAYOUT_MEMBER("SDL_PixelFormatDetails.Gmask", struct SDL_PixelFormatDetails, Gmask);
+    JADE_LAYOUT_MEMBER("SDL_PixelFormatDetails.Bmask", struct SDL_PixelFormatDetails, Bmask);
+    JADE_LAYOUT_MEMBER("SDL_PixelFormatDetails.Amask", struct SDL_PixelFormatDetails, Amask);
+    JADE_LAYOUT_MEMBER("SDL_PixelFormatDetails.Rbits", struct SDL_PixelFormatDetails, Rbits);
+    JADE_LAYOUT_MEMBER("SDL_PixelFormatDetails.Gbits", struct SDL_PixelFormatDetails, Gbits);
+    JADE_LAYOUT_MEMBER("SDL_PixelFormatDetails.Bbits", struct SDL_PixelFormatDetails, Bbits);
+    JADE_LAYOUT_MEMBER("SDL_PixelFormatDetails.Abits", struct SDL_PixelFormatDetails, Abits);
+    JADE_LAYOUT_MEMBER("SDL_PixelFormatDetails.Rshift", struct SDL_PixelFormatDetails, Rshift);
+    JADE_LAYOUT_MEMBER("SDL_PixelFormatDetails.Gshift", struct SDL_PixelFormatDetails, Gshift);
+    JADE_LAYOUT_MEMBER("SDL_PixelFormatDetails.Bshift", struct SDL_PixelFormatDetails, Bshift);
+    JADE_LAYOUT_MEMBER("SDL_PixelFormatDetails.Ashift", struct SDL_PixelFormatDetails, Ashift);
+    JADE_LAYOUT_RECORD("SDL_Point", struct SDL_Point);
+    JADE_LAYOUT_MEMBER("SDL_Point.x", struct SDL_Point, x);
+    JADE_LAYOUT_MEMBER("SDL_Point.y", struct SDL_Point, y);
+    JADE_LAYOUT_RECORD("SDL_QuitEvent", struct SDL_QuitEvent);
+    JADE_LAYOUT_MEMBER("SDL_QuitEvent.type", struct SDL_QuitEvent, type);
+    JADE_LAYOUT_MEMBER("SDL_QuitEvent.reserved", struct SDL_QuitEvent, reserved);
+    JADE_LAYOUT_MEMBER("SDL_QuitEvent.timestamp", struct SDL_QuitEvent, timestamp);
+    JADE_LAYOUT_RECORD("SDL_Rect", struct SDL_Rect);
+    JADE_LAYOUT_MEMBER("SDL_Rect.x", struct SDL_Rect, x);
+    JADE_LAYOUT_MEMBER("SDL_Rect.y", struct SDL_Rect, y);
+    JADE_LAYOUT_MEMBER("SDL_Rect.w", struct SDL_Rect, w);
+    JADE_LAYOUT_MEMBER("SDL_Rect.h", struct SDL_Rect, h);
+    JADE_LAYOUT_RECORD("SDL_RenderEvent", struct SDL_RenderEvent);
+    JADE_LAYOUT_MEMBER("SDL_RenderEvent.type", struct SDL_RenderEvent, type);
+    JADE_LAYOUT_MEMBER("SDL_RenderEvent.reserved", struct SDL_RenderEvent, reserved);
+    JADE_LAYOUT_MEMBER("SDL_RenderEvent.timestamp", struct SDL_RenderEvent, timestamp);
+    JADE_LAYOUT_MEMBER("SDL_RenderEvent.windowID", struct SDL_RenderEvent, windowID);
+    JADE_LAYOUT_RECORD("SDL_SensorEvent", struct SDL_SensorEvent);
+    JADE_LAYOUT_MEMBER("SDL_SensorEvent.type", struct SDL_SensorEvent, type);
+    JADE_LAYOUT_MEMBER("SDL_SensorEvent.reserved", struct SDL_SensorEvent, reserved);
+    JADE_LAYOUT_MEMBER("SDL_SensorEvent.timestamp", struct SDL_SensorEvent, timestamp);
+    JADE_LAYOUT_MEMBER("SDL_SensorEvent.which", struct SDL_SensorEvent, which);
+    JADE_LAYOUT_MEMBER("SDL_SensorEvent.data", struct SDL_SensorEvent, data);
+    JADE_LAYOUT_MEMBER("SDL_SensorEvent.data[0]", struct SDL_SensorEvent, data[0]);
+    JADE_LAYOUT_MEMBER("SDL_SensorEvent.sensor_timestamp", struct SDL_SensorEvent, sensor_timestamp);
+    JADE_LAYOUT_RECORD("SDL_StorageInterface", struct SDL_StorageInterface);
+    JADE_LAYOUT_MEMBER("SDL_StorageInterface.version", struct SDL_StorageInterface, version);
+    JADE_LAYOUT_MEMBER("SDL_StorageInterface.close", struct SDL_StorageInterface, close);
+    JADE_LAYOUT_MEMBER("SDL_StorageInterface.ready", struct SDL_StorageInterface, ready);
+    JADE_LAYOUT_MEMBER("SDL_StorageInterface.enumerate", struct SDL_StorageInterface, enumerate);
+    JADE_LAYOUT_MEMBER("SDL_StorageInterface.info", struct SDL_StorageInterface, info);
+    JADE_LAYOUT_MEMBER("SDL_StorageInterface.read_file", struct SDL_StorageInterface, read_file);
+    JADE_LAYOUT_MEMBER("SDL_StorageInterface.write_file", struct SDL_StorageInterface, write_file);
+    JADE_LAYOUT_MEMBER("SDL_StorageInterface.mkdir", struct SDL_StorageInterface, mkdir);
+    JADE_LAYOUT_MEMBER("SDL_StorageInterface.remove", struct SDL_StorageInterface, remove);
+    JADE_LAYOUT_MEMBER("SDL_StorageInterface.rename", struct SDL_StorageInterface, rename);
+    JADE_LAYOUT_MEMBER("SDL_StorageInterface.copy", struct SDL_StorageInterface, copy);
+    JADE_LAYOUT_MEMBER("SDL_StorageInterface.space_remaining", struct SDL_StorageInterface, space_remaining);
+    JADE_LAYOUT_RECORD("SDL_Surface", struct SDL_Surface);
+    JADE_LAYOUT_MEMBER("SDL_Surface.flags", struct SDL_Surface, flags);
+    JADE_LAYOUT_MEMBER("SDL_Surface.format", struct SDL_Surface, format);
+    JADE_LAYOUT_MEMBER("SDL_Surface.w", struct SDL_Surface, w);
+    JADE_LAYOUT_MEMBER("SDL_Surface.h", struct SDL_Surface, h);
+    JADE_LAYOUT_MEMBER("SDL_Surface.pitch", struct SDL_Surface, pitch);
+    JADE_LAYOUT_MEMBER("SDL_Surface.pixels", struct SDL_Surface, pixels);
+    JADE_LAYOUT_MEMBER("SDL_Surface.refcount", struct SDL_Surface, refcount);
+    JADE_LAYOUT_MEMBER("SDL_Surface.reserved", struct SDL_Surface, reserved);
+    JADE_LAYOUT_RECORD("SDL_TextEditingCandidatesEvent", struct SDL_TextEditingCandidatesEvent);
+    JADE_LAYOUT_MEMBER("SDL_TextEditingCandidatesEvent.type", struct SDL_TextEditingCandidatesEvent, type);
+    JADE_LAYOUT_MEMBER("SDL_TextEditingCandidatesEvent.reserved", struct SDL_TextEditingCandidatesEvent, reserved);
+    JADE_LAYOUT_MEMBER("SDL_TextEditingCandidatesEvent.timestamp", struct SDL_TextEditingCandidatesEvent, timestamp);
+    JADE_LAYOUT_MEMBER("SDL_TextEditingCandidatesEvent.windowID", struct SDL_TextEditingCandidatesEvent, windowID);
+    JADE_LAYOUT_MEMBER("SDL_TextEditingCandidatesEvent.candidates", struct SDL_TextEditingCandidatesEvent, candidates);
+    JADE_LAYOUT_MEMBER("SDL_TextEditingCandidatesEvent.num_candidates", struct SDL_TextEditingCandidatesEvent, num_candidates);
+    JADE_LAYOUT_MEMBER("SDL_TextEditingCandidatesEvent.selected_candidate", struct SDL_TextEditingCandidatesEvent, selected_candidate);
+    JADE_LAYOUT_MEMBER("SDL_TextEditingCandidatesEvent.horizontal", struct SDL_TextEditingCandidatesEvent, horizontal);
+    JADE_LAYOUT_MEMBER("SDL_TextEditingCandidatesEvent.padding1", struct SDL_TextEditingCandidatesEvent, padding1);
+    JADE_LAYOUT_MEMBER("SDL_TextEditingCandidatesEvent.padding2", struct SDL_TextEditingCandidatesEvent, padding2);
+    JADE_LAYOUT_MEMBER("SDL_TextEditingCandidatesEvent.padding3", struct SDL_TextEditingCandidatesEvent, padding3);
+    JADE_LAYOUT_RECORD("SDL_TextEditingEvent", struct SDL_TextEditingEvent);
+    JADE_LAYOUT_MEMBER("SDL_TextEditingEvent.type", struct SDL_TextEditingEvent, type);
+    JADE_LAYOUT_MEMBER("SDL_TextEditingEvent.reserved", struct SDL_TextEditingEvent, reserved);
+    JADE_LAYOUT_MEMBER("SDL_TextEditingEvent.timestamp", struct SDL_TextEditingEvent, timestamp);
+    JADE_LAYOUT_MEMBER("SDL_TextEditingEvent.windowID", struct SDL_TextEditingEvent, windowID);
+    JADE_LAYOUT_MEMBER("SDL_TextEditingEvent.text", struct SDL_TextEditingEvent, text);
+    JADE_LAYOUT_MEMBER("SDL_TextEditingEvent.start", struct SDL_TextEditingEvent, start);
+    JADE_LAYOUT_MEMBER("SDL_TextEditingEvent.length", struct SDL_TextEditingEvent, length);
+    JADE_LAYOUT_RECORD("SDL_TextInputEvent", struct SDL_TextInputEvent);
+    JADE_LAYOUT_MEMBER("SDL_TextInputEvent.type", struct SDL_TextInputEvent, type);
+    JADE_LAYOUT_MEMBER("SDL_TextInputEvent.reserved", struct SDL_TextInputEvent, reserved);
+    JADE_LAYOUT_MEMBER("SDL_TextInputEvent.timestamp", struct SDL_TextInputEvent, timestamp);
+    JADE_LAYOUT_MEMBER("SDL_TextInputEvent.windowID", struct SDL_TextInputEvent, windowID);
+    JADE_LAYOUT_MEMBER("SDL_TextInputEvent.text", struct SDL_TextInputEvent, text);
+    JADE_LAYOUT_RECORD("SDL_Texture", struct SDL_Texture);
+    JADE_LAYOUT_MEMBER("SDL_Texture.format", struct SDL_Texture, format);
+    JADE_LAYOUT_MEMBER("SDL_Texture.w", struct SDL_Texture, w);
+    JADE_LAYOUT_MEMBER("SDL_Texture.h", struct SDL_Texture, h);
+    JADE_LAYOUT_MEMBER("SDL_Texture.refcount", struct SDL_Texture, refcount);
+    JADE_LAYOUT_RECORD("SDL_TouchFingerEvent", struct SDL_TouchFingerEvent);
+    JADE_LAYOUT_MEMBER("SDL_TouchFingerEvent.type", struct SDL_TouchFingerEvent, type);
+    JADE_LAYOUT_MEMBER("SDL_TouchFingerEvent.reserved", struct SDL_TouchFingerEvent, reserved);
+    JADE_LAYOUT_MEMBER("SDL_TouchFingerEvent.timestamp", struct SDL_TouchFingerEvent, timestamp);
+    JADE_LAYOUT_MEMBER("SDL_TouchFingerEvent.touchID", struct SDL_TouchFingerEvent, touchID);
+    JADE_LAYOUT_MEMBER("SDL_TouchFingerEvent.fingerID", struct SDL_TouchFingerEvent, fingerID);
+    JADE_LAYOUT_MEMBER("SDL_TouchFingerEvent.x", struct SDL_TouchFingerEvent, x);
+    JADE_LAYOUT_MEMBER("SDL_TouchFingerEvent.y", struct SDL_TouchFingerEvent, y);
+    JADE_LAYOUT_MEMBER("SDL_TouchFingerEvent.dx", struct SDL_TouchFingerEvent, dx);
+    JADE_LAYOUT_MEMBER("SDL_TouchFingerEvent.dy", struct SDL_TouchFingerEvent, dy);
+    JADE_LAYOUT_MEMBER("SDL_TouchFingerEvent.pressure", struct SDL_TouchFingerEvent, pressure);
+    JADE_LAYOUT_MEMBER("SDL_TouchFingerEvent.windowID", struct SDL_TouchFingerEvent, windowID);
+    JADE_LAYOUT_RECORD("SDL_UserEvent", struct SDL_UserEvent);
+    JADE_LAYOUT_MEMBER("SDL_UserEvent.type", struct SDL_UserEvent, type);
+    JADE_LAYOUT_MEMBER("SDL_UserEvent.reserved", struct SDL_UserEvent, reserved);
+    JADE_LAYOUT_MEMBER("SDL_UserEvent.timestamp", struct SDL_UserEvent, timestamp);
+    JADE_LAYOUT_MEMBER("SDL_UserEvent.windowID", struct SDL_UserEvent, windowID);
+    JADE_LAYOUT_MEMBER("SDL_UserEvent.code", struct SDL_UserEvent, code);
+    JADE_LAYOUT_MEMBER("SDL_UserEvent.data1", struct SDL_UserEvent, data1);
+    JADE_LAYOUT_MEMBER("SDL_UserEvent.data2", struct SDL_UserEvent, data2);
+    JADE_LAYOUT_RECORD("SDL_Vertex", struct SDL_Vertex);
+    JADE_LAYOUT_MEMBER("SDL_Vertex.position", struct SDL_Vertex, position);
+    JADE_LAYOUT_MEMBER("SDL_Vertex.color", struct SDL_Vertex, color);
+    JADE_LAYOUT_MEMBER("SDL_Vertex.tex_coord", struct SDL_Vertex, tex_coord);
+    JADE_LAYOUT_RECORD("SDL_VirtualJoystickDesc", struct SDL_VirtualJoystickDesc);
+    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.version", struct SDL_VirtualJoystickDesc, version);
+    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.type", struct SDL_VirtualJoystickDesc, type);
+    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.padding", struct SDL_VirtualJoystickDesc, padding);
+    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.vendor_id", struct SDL_VirtualJoystickDesc, vendor_id);
+    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.product_id", struct SDL_VirtualJoystickDesc, product_id);
+    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.naxes", struct SDL_VirtualJoystickDesc, naxes);
+    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.nbuttons", struct SDL_VirtualJoystickDesc, nbuttons);
+    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.nballs", struct SDL_VirtualJoystickDesc, nballs);
+    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.nhats", struct SDL_VirtualJoystickDesc, nhats);
+    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.ntouchpads", struct SDL_VirtualJoystickDesc, ntouchpads);
+    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.nsensors", struct SDL_VirtualJoystickDesc, nsensors);
+    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.padding2", struct SDL_VirtualJoystickDesc, padding2);
+    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.padding2[0]", struct SDL_VirtualJoystickDesc, padding2[0]);
+    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.button_mask", struct SDL_VirtualJoystickDesc, button_mask);
+    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.axis_mask", struct SDL_VirtualJoystickDesc, axis_mask);
+    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.name", struct SDL_VirtualJoystickDesc, name);
+    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.touchpads", struct SDL_VirtualJoystickDesc, touchpads);
+    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.sensors", struct SDL_VirtualJoystickDesc, sensors);
+    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.userdata", struct SDL_VirtualJoystickDesc, userdata);
+    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.Update", struct SDL_VirtualJoystickDesc, Update);
+    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.SetPlayerIndex", struct SDL_VirtualJoystickDesc, SetPlayerIndex);
+    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.Rumble", struct SDL_VirtualJoystickDesc, Rumble);
+    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.RumbleTriggers", struct SDL_VirtualJoystickDesc, RumbleTriggers);
+    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.SetLED", struct SDL_VirtualJoystickDesc, SetLED);
+    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.SendEffect", struct SDL_VirtualJoystickDesc, SendEffect);
+    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.SetSensorsEnabled", struct SDL_VirtualJoystickDesc, SetSensorsEnabled);
+    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickDesc.Cleanup", struct SDL_VirtualJoystickDesc, Cleanup);
+    JADE_LAYOUT_RECORD("SDL_VirtualJoystickSensorDesc", struct SDL_VirtualJoystickSensorDesc);
+    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickSensorDesc.type", struct SDL_VirtualJoystickSensorDesc, type);
+    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickSensorDesc.rate", struct SDL_VirtualJoystickSensorDesc, rate);
+    JADE_LAYOUT_RECORD("SDL_VirtualJoystickTouchpadDesc", struct SDL_VirtualJoystickTouchpadDesc);
+    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickTouchpadDesc.nfingers", struct SDL_VirtualJoystickTouchpadDesc, nfingers);
+    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickTouchpadDesc.padding", struct SDL_VirtualJoystickTouchpadDesc, padding);
+    JADE_LAYOUT_MEMBER("SDL_VirtualJoystickTouchpadDesc.padding[0]", struct SDL_VirtualJoystickTouchpadDesc, padding[0]);
+    JADE_LAYOUT_RECORD("SDL_WindowEvent", struct SDL_WindowEvent);
+    JADE_LAYOUT_MEMBER("SDL_WindowEvent.type", struct SDL_WindowEvent, type);
+    JADE_LAYOUT_MEMBER("SDL_WindowEvent.reserved", struct SDL_WindowEvent, reserved);
+    JADE_LAYOUT_MEMBER("SDL_WindowEvent.timestamp", struct SDL_WindowEvent, timestamp);
+    JADE_LAYOUT_MEMBER("SDL_WindowEvent.windowID", struct SDL_WindowEvent, windowID);
+    JADE_LAYOUT_MEMBER("SDL_WindowEvent.data1", struct SDL_WindowEvent, data1);
+    JADE_LAYOUT_MEMBER("SDL_WindowEvent.data2", struct SDL_WindowEvent, data2);
+    JADE_LAYOUT_RECORD("SDL_hid_device_info", struct SDL_hid_device_info);
+    JADE_LAYOUT_MEMBER("SDL_hid_device_info.path", struct SDL_hid_device_info, path);
+    JADE_LAYOUT_MEMBER("SDL_hid_device_info.vendor_id", struct SDL_hid_device_info, vendor_id);
+    JADE_LAYOUT_MEMBER("SDL_hid_device_info.product_id", struct SDL_hid_device_info, product_id);
+    JADE_LAYOUT_MEMBER("SDL_hid_device_info.serial_number", struct SDL_hid_device_info, serial_number);
+    JADE_LAYOUT_MEMBER("SDL_hid_device_info.release_number", struct SDL_hid_device_info, release_number);
+    JADE_LAYOUT_MEMBER("SDL_hid_device_info.manufacturer_string", struct SDL_hid_device_info, manufacturer_string);
+    JADE_LAYOUT_MEMBER("SDL_hid_device_info.product_string", struct SDL_hid_device_info, product_string);
+    JADE_LAYOUT_MEMBER("SDL_hid_device_info.usage_page", struct SDL_hid_device_info, usage_page);
+    JADE_LAYOUT_MEMBER("SDL_hid_device_info.usage", struct SDL_hid_device_info, usage);
+    JADE_LAYOUT_MEMBER("SDL_hid_device_info.interface_number", struct SDL_hid_device_info, interface_number);
+    JADE_LAYOUT_MEMBER("SDL_hid_device_info.interface_class", struct SDL_hid_device_info, interface_class);
+    JADE_LAYOUT_MEMBER("SDL_hid_device_info.interface_subclass", struct SDL_hid_device_info, interface_subclass);
+    JADE_LAYOUT_MEMBER("SDL_hid_device_info.interface_protocol", struct SDL_hid_device_info, interface_protocol);
+    JADE_LAYOUT_MEMBER("SDL_hid_device_info.bus_type", struct SDL_hid_device_info, bus_type);
+    JADE_LAYOUT_MEMBER("SDL_hid_device_info.next", struct SDL_hid_device_info, next);
+    JADE_LAYOUT_END;
+
     return entries;
 }
