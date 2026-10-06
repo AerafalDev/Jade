@@ -13,7 +13,9 @@ FROM quay.io/pypa/manylinux_2_28_aarch64@sha256:f5f03dedf61b47d69d0742d36047db78
 ARG TARGETARCH
 FROM base-${TARGETARCH}
 
-RUN dnf install -y \
+# Every package comes from AlmaLinux's own repositories; EPEL, which the image enables, is left out
+# so that its mirrors cannot fail the build.
+RUN dnf install -y --disablerepo=epel \
         libX11-devel libXext-devel libXcursor-devel libXfixes-devel libXi-devel libXrandr-devel \
         libXScrnSaver-devel libXtst-devel libxcb-devel \
         wayland-devel wayland-protocols-devel libxkbcommon-devel \
