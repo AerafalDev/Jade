@@ -27,14 +27,15 @@ internal static class NativeFetch
     private const string Branch = "main";
 
     /// <summary>The usage line, printed with an argument error.</summary>
-    private const string Usage = "usage: dotnet run scripts/fetch-native.cs [--rid <runtime identifier>]... [--run <run id>]";
+    private const string Usage = "usage: dotnet run scripts/fetch-native.cs [--rid <runtime identifier>]... | --package [--run <run id>]";
 
     /// <summary>Runs the fetch.</summary>
     /// <param name="scriptDirectory">The directory of the entry-point script, <c>scripts/</c> in the repository.</param>
     /// <param name="arguments">
     /// The command-line arguments: <c>--rid</c>, repeatable, selects the runtime identifiers, the
-    /// host's by default; <c>--run</c> takes the artifacts of a given run instead of the newest
-    /// matching run of <c>main</c>.
+    /// host's by default; <c>--package</c> fetches the shipped libraries of every runtime identifier
+    /// for the <c>Jade.Native</c> packages instead; <c>--run</c> takes the artifacts of a given run
+    /// instead of the newest matching run of <c>main</c>.
     /// </param>
     /// <param name="output">Receives the progress and the fetched files.</param>
     /// <param name="error">Receives the error messages.</param>
@@ -44,16 +45,14 @@ internal static class NativeFetch
     {
         try
         {
-            var (runtimeIdentifiers, runId) = ParseArguments(arguments);
+            var (runtimeIdentifiers, runId, package) = ParseArguments(arguments);
             var layout = BuildLayout.FromScriptDirectory(scriptDirectory);
-            IReadOnlyList<NativeArtifact> artifacts = runtimeIdentifiers.Count == 0
-                ? [FindArtifact(NativeTarget.ForHost(HostPlatform.Current).RuntimeIdentifier)]
-                : runtimeIdentifiers.Select(FindArtifact).ToList();
+            var downloads = package ? GetPackageDownloads(layout) : GetLocalDownloads(layout, runtimeIdentifiers);
             var gitHub = new GitHubCli(Repository);
             var inputs = new NativeInputs(layout.Root);
             var run = runId is { } id
                 ? await gitHub.GetRunAsync(id, cancellationToken).ConfigureAwait(false)
-                : await FindRunAsync(gitHub, inputs, artifacts, output, cancellationToken).ConfigureAwait(false);
+                : await FindRunAsync(gitHub, inputs, downloads, output, cancellationToken).ConfigureAwait(false);
 
             if (runId is not null && !await inputs.MatchAsync(run.HeadSha, cancellationToken).ConfigureAwait(false))
             {
@@ -62,10 +61,9 @@ internal static class NativeFetch
 
             await output.WriteLineAsync(string.Create(CultureInfo.InvariantCulture, $"Fetching from run {run.Id} of {Repository} ({run.HeadSha})").AsMemory(), cancellationToken).ConfigureAwait(false);
 
-            foreach (var artifact in artifacts)
+            foreach (var download in downloads)
             {
-                await FetchAsync(gitHub, run, artifact.LibrariesArtifact, layout.GetOutputDirectory(artifact.RuntimeIdentifier), output, cancellationToken).ConfigureAwait(false);
-                await FetchAsync(gitHub, run, artifact.TestArtifact, layout.GetTestOutputDirectory(artifact.RuntimeIdentifier), output, cancellationToken).ConfigureAwait(false);
+                await FetchAsync(gitHub, run, download, output, cancellationToken).ConfigureAwait(false);
             }
 
             return SuccessExitCode;
@@ -91,14 +89,14 @@ internal static class NativeFetch
     /// <summary>Finds the newest run of <c>main</c> whose inputs equal the checkout's and that still has the artifacts.</summary>
     /// <param name="gitHub">The GitHub CLI.</param>
     /// <param name="inputs">The native build inputs of the checkout.</param>
-    /// <param name="artifacts">The artifacts to fetch.</param>
+    /// <param name="downloads">The artifacts to fetch.</param>
     /// <param name="output">Receives a line for each run passed over.</param>
     /// <param name="cancellationToken">Stops the tools.</param>
     /// <returns>The run.</returns>
     /// <exception cref="InvalidDataException">No such run exists.</exception>
-    private static async Task<WorkflowRun> FindRunAsync(GitHubCli gitHub, NativeInputs inputs, IReadOnlyList<NativeArtifact> artifacts, TextWriter output, CancellationToken cancellationToken)
+    private static async Task<WorkflowRun> FindRunAsync(GitHubCli gitHub, NativeInputs inputs, List<ArtifactDownload> downloads, TextWriter output, CancellationToken cancellationToken)
     {
-        foreach (var run in await gitHub.ListRunsWithArtifactAsync(artifacts[0].LibrariesArtifact, Branch, cancellationToken).ConfigureAwait(false))
+        foreach (var run in await gitHub.ListRunsWithArtifactAsync(downloads[0].Name, Branch, cancellationToken).ConfigureAwait(false))
         {
             if (!await inputs.MatchAsync(run.HeadSha, cancellationToken).ConfigureAwait(false))
             {
@@ -107,7 +105,7 @@ internal static class NativeFetch
 
             var available = await gitHub.ListArtifactsAsync(run, cancellationToken).ConfigureAwait(false);
 
-            if (artifacts.All(artifact => available.Contains(artifact.LibrariesArtifact) && available.Contains(artifact.TestArtifact)))
+            if (downloads.All(download => available.Contains(download.Name)))
             {
                 return run;
             }
@@ -122,37 +120,38 @@ internal static class NativeFetch
     /// <summary>Downloads an artifact, verifies the attestation of every file, and installs it.</summary>
     /// <param name="gitHub">The GitHub CLI.</param>
     /// <param name="run">The run.</param>
-    /// <param name="name">The artifact's name.</param>
-    /// <param name="directory">The directory the files replace the content of.</param>
+    /// <param name="download">The artifact and the directory it replaces the content of.</param>
     /// <param name="output">Receives a line for each verified file.</param>
     /// <param name="cancellationToken">Stops the tools.</param>
     /// <returns>A task that completes when the files are installed.</returns>
     /// <remarks>The files are verified before anything is replaced, so a failed fetch leaves the previous libraries in place.</remarks>
-    private static async Task FetchAsync(GitHubCli gitHub, WorkflowRun run, string name, string directory, TextWriter output, CancellationToken cancellationToken)
+    private static async Task FetchAsync(GitHubCli gitHub, WorkflowRun run, ArtifactDownload download, TextWriter output, CancellationToken cancellationToken)
     {
-        var staging = directory + ".partial";
+        var staging = download.Directory + ".partial";
 
         DeleteDirectory(staging);
-        await gitHub.DownloadAsync(run, name, staging, cancellationToken).ConfigureAwait(false);
+        await gitHub.DownloadAsync(run, download.Name, staging, cancellationToken).ConfigureAwait(false);
 
         foreach (var file in Directory.EnumerateFiles(staging, "*", SearchOption.AllDirectories).Order(StringComparer.Ordinal))
         {
             await gitHub.VerifyAsync(run, file, cancellationToken).ConfigureAwait(false);
-            await output.WriteLineAsync($"{name}: {Path.GetRelativePath(staging, file)} verified".AsMemory(), cancellationToken).ConfigureAwait(false);
+            await output.WriteLineAsync($"{download.Name}: {Path.GetRelativePath(staging, file)} verified".AsMemory(), cancellationToken).ConfigureAwait(false);
         }
 
-        DeleteDirectory(directory);
-        Directory.Move(staging, directory);
+        DeleteDirectory(download.Directory);
+        _ = Directory.CreateDirectory(Path.GetDirectoryName(download.Directory)!);
+        Directory.Move(staging, download.Directory);
     }
 
     /// <summary>Parses the command line.</summary>
     /// <param name="arguments">The arguments.</param>
-    /// <returns>The requested runtime identifiers and run, if any.</returns>
-    /// <exception cref="InvalidDataException">An argument is unknown or lacks its value.</exception>
-    private static (IReadOnlyList<string> RuntimeIdentifiers, long? RunId) ParseArguments(IReadOnlyList<string> arguments)
+    /// <returns>The requested runtime identifiers, run if any, and whether the packages' natives are requested.</returns>
+    /// <exception cref="InvalidDataException">An argument is unknown, lacks its value, or <c>--package</c> comes with <c>--rid</c>.</exception>
+    private static (IReadOnlyList<string> RuntimeIdentifiers, long? RunId, bool Package) ParseArguments(IReadOnlyList<string> arguments)
     {
         var runtimeIdentifiers = new List<string>();
         long? runId = null;
+        var package = false;
 
         for (var index = 0; index < arguments.Count; index++)
         {
@@ -165,12 +164,56 @@ internal static class NativeFetch
                     runId = id;
                     index++;
                     break;
+                case "--package":
+                    package = true;
+                    break;
                 default:
                     throw new InvalidDataException($"Unexpected argument '{arguments[index]}'.\n{Usage}");
             }
         }
 
-        return (runtimeIdentifiers, runId);
+        return package && runtimeIdentifiers.Count > 0
+            ? throw new InvalidDataException($"--package fetches every runtime identifier and takes no --rid.\n{Usage}")
+            : (runtimeIdentifiers, runId, package);
+    }
+
+    /// <summary>Gets the artifacts that local work needs: the libraries and the layout libraries of runtime identifiers.</summary>
+    /// <param name="layout">The repository layout.</param>
+    /// <param name="runtimeIdentifiers">The runtime identifiers, or none for the host's.</param>
+    /// <returns>The artifacts, installed where <c>build-native.cs</c> installs its outputs, so that the tests find them.</returns>
+    private static List<ArtifactDownload> GetLocalDownloads(BuildLayout layout, IReadOnlyList<string> runtimeIdentifiers)
+    {
+        IEnumerable<string> selected = runtimeIdentifiers.Count == 0 ? [NativeTarget.ForHost(HostPlatform.Current).RuntimeIdentifier] : runtimeIdentifiers;
+
+        return
+        [
+            .. selected.Select(FindArtifact).SelectMany(artifact => new ArtifactDownload[]
+            {
+                new(artifact.LibrariesArtifact, layout.GetOutputDirectory(artifact.RuntimeIdentifier)),
+                new(artifact.TestArtifact, layout.GetTestOutputDirectory(artifact.RuntimeIdentifier)),
+            }),
+        ];
+    }
+
+    /// <summary>Gets the artifacts that the <c>Jade.Native</c> packages are packed from: the libraries of every runtime identifier.</summary>
+    /// <param name="layout">The repository layout.</param>
+    /// <returns>
+    /// One artifact per name, installed into <c>artifacts/native/package/</c> under the name the
+    /// workflow gives it without its prefix, where the packaging projects read them (ADR 0039).
+    /// </returns>
+    /// <remarks>
+    /// The layout libraries are left out: the packages never ship them (ADR 0036). The macOS and
+    /// iOS artifacts each hold several runtime identifiers, as universal libraries and xcframeworks.
+    /// </remarks>
+    private static List<ArtifactDownload> GetPackageDownloads(BuildLayout layout)
+    {
+        return
+        [
+            .. NativeTarget.All
+                .Select(static target => NativeArtifact.For(target.RuntimeIdentifier))
+                .DistinctBy(static artifact => artifact.Name)
+                .Select(artifact => new ArtifactDownload(artifact.LibrariesArtifact, Path.Combine(layout.NativeArtifactsDirectory, "package", artifact.Name))),
+        ];
     }
 
     /// <summary>Gets the artifacts of a runtime identifier.</summary>

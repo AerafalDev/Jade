@@ -1,0 +1,25 @@
+<Project>
+
+  <PropertyGroup>
+    <_JadeNativeWgpuMinimumIOSVersion>14.0</_JadeNativeWgpuMinimumIOSVersion>
+    <_JadeNativeWgpuMinimumAndroidVersion>26.0</_JadeNativeWgpuMinimumAndroidVersion>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetPlatformIdentifier)' == 'ios'">
+    <NativeReference Include="$(MSBuildThisFileDirectory)ios/webgpu_dawn.xcframework" ForceLoad="true" Frameworks="CoreFoundation Foundation IOSurface Metal QuartzCore" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(RuntimeIdentifier)' == 'browser-wasm'">
+    <NativeFileReference Include="$(MSBuildThisFileDirectory)browser-wasm/webgpu_dawn.a" />
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(RuntimeIdentifier)' == 'browser-wasm'">
+    <EmccExtraLDFlags>$(EmccExtraLDFlags) --js-library=&quot;$(MSBuildThisFileDirectory)browser-wasm/library_webgpu_enum_tables.js&quot; --js-library=&quot;$(MSBuildThisFileDirectory)browser-wasm/library_webgpu_generated_sig_info.js&quot; --js-library=&quot;$(MSBuildThisFileDirectory)browser-wasm/library_webgpu_generated_struct_info.js&quot; --js-library=&quot;$(MSBuildThisFileDirectory)browser-wasm/library_webgpu.js&quot; --closure-args=&quot;--externs='$(MSBuildThisFileDirectory)browser-wasm/webgpu-externs.js'&quot;</EmccExtraLDFlags>
+  </PropertyGroup>
+
+  <Target Name="_JadeNativeWgpuCheckMinimumOSVersion" BeforeTargets="PrepareForBuild" Condition="'$(SupportedOSPlatformVersion)' != ''">
+    <Error Code="JADENATIVE001" Condition="'$(TargetPlatformIdentifier)' == 'ios' and '$(OutputType)' == 'Exe' and $([MSBuild]::VersionLessThan('$(SupportedOSPlatformVersion)', '$(_JadeNativeWgpuMinimumIOSVersion)'))" Text="Jade.Native.Wgpu requires iOS $(_JadeNativeWgpuMinimumIOSVersion) or later, but SupportedOSPlatformVersion is $(SupportedOSPlatformVersion). Set SupportedOSPlatformVersion to $(_JadeNativeWgpuMinimumIOSVersion) or higher." />
+    <Error Code="JADENATIVE001" Condition="'$(TargetPlatformIdentifier)' == 'android' and '$(AndroidApplication)' == 'true' and $([MSBuild]::VersionLessThan('$(SupportedOSPlatformVersion)', '$(_JadeNativeWgpuMinimumAndroidVersion)'))" Text="Jade.Native.Wgpu requires Android API level $(_JadeNativeWgpuMinimumAndroidVersion) or later, but SupportedOSPlatformVersion is $(SupportedOSPlatformVersion). Set SupportedOSPlatformVersion to $(_JadeNativeWgpuMinimumAndroidVersion) or higher." />
+  </Target>
+
+</Project>

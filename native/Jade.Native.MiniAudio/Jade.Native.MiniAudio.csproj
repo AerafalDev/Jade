@@ -9,4 +9,13 @@
     <Description>Native audio binaries for Jade.</Description>
   </PropertyGroup>
 
+  <ItemGroup>
+    <JadeNativeFile Include="linux-x64/libminiaudio.so;linux-arm64/libminiaudio.so" />
+    <JadeNativeFile Include="win-x64/miniaudio.dll;win-arm64/miniaudio.dll" />
+    <JadeNativeFile Include="osx/libminiaudio.dylib" />
+    <JadeNativeFile Include="android-arm64/libminiaudio.so;android-x64/libminiaudio.so" />
+    <JadeNativeFile Include="ios/miniaudio.xcframework/Info.plist;ios/miniaudio.xcframework/ios-arm64/libminiaudio.a;ios/miniaudio.xcframework/ios-arm64_x86_64-simulator/libminiaudio.a" />
+    <JadeNativeFile Include="browser-wasm/miniaudio.a" />
+  </ItemGroup>
+
 </Project>

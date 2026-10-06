@@ -20,8 +20,8 @@ Status: `done`, `next`, `planned`.
 | 8 | Generator: SDL3 and miniaudio raw layers | 5, 6 | done |
 | 9 | Generated layout tests on the host | 6, 7, 8 | done |
 | 10 | Native CI matrix for every RID | 3, 6 | done |
-| 11 | `Jade.Native.*` packaging | 10 | next |
-| 12 | WebGPU idiomatic layer | 7 | planned |
+| 11 | `Jade.Native.*` packaging | 10 | done |
+| 12 | WebGPU idiomatic layer | 7 | next |
 | 13 | SDL3 and miniaudio idiomatic layers | 8 | planned |
 | 14 | Desktop sample | 9, 11, 12, 13 | planned |
 | 15 | Browser sample | 14, 20 | planned |
@@ -187,19 +187,27 @@ runtimes, triggers without cache, artifacts and attestations, `fetch-native.cs`,
 OpenSSF Scorecard workflow was removed on the way ([0037](adr/0037-github-repository-baseline.md),
 supersedes 0017).
 
-### 11. `Jade.Native.*` packaging
+### 11. `Jade.Native.*` packaging (done, 2026-10-07)
 
-- `runtimes/{rid}/native`, `runtimes/osx/native`, `buildTransitive/` targets for iOS and the
-  browser ([0011](adr/0011-native-package-layout.md)).
-- How the packages surface the minimum OS versions of [0024](adr/0024-minimum-os-versions.md),
-  which are above .NET 11's floors on iOS and Android.
-- Pack from the attested artifacts of the native workflow ([0038](adr/0038-native-ci.md)), and
-  verify them first. The iOS archives are static: the `buildTransitive/` targets link libc++ and
-  the frameworks SDL3, Dawn and miniaudio need (miniaudio's `MA_NO_RUNTIME_LINKING` needs
-  CoreFoundation, CoreAudio and AudioToolbox). The browser targets pass Emdawnwebgpu's four
-  JavaScript libraries and `webgpu-externs.js` to the link. SDL3's macOS library keeps the install
-  name `@rpath/libSDL3.0.dylib`.
-- Done when the packages pass package validation and contain every RID.
+The three packages hold the natives of the 12 runtime identifiers: `runtimes/{rid}/native/`
+(with `dxcompiler.dll` on Windows), `runtimes/osx/native/` for the universal libraries, and under
+`buildTransitive/` the iOS xcframeworks, the browser archives with Emdawnwebgpu's four
+JavaScript libraries and `webgpu-externs.js`, and one targets file per package: a
+`NativeReference` with `ForceLoad` and the frameworks each library needs on iOS (read in the
+pinned sources and checked against the undefined symbols of the CI's archives), a
+`NativeFileReference` and the `emcc` options in the browser, and a `JADENATIVE001` error for an
+iOS or Android application below iOS 14.0 or API 26. They declare no target framework and no
+dependency; each carries the repository's `THIRD-PARTY-NOTICES.md`. `scripts/fetch-native.cs --package`
+fetches the shipped artifacts of every runtime identifier into `artifacts/native/package/`, and
+every fetch now verifies each file against an attestation of the run it comes from (the check of
+the run's `head_sha` rejected every pull request run). Each `native/` project lists its files;
+`native/Directory.Build.targets` maps them and fails on a missing one. The `package` job of
+`native.yml` packs them on every run, inside the `natives` check. `Jade.Tests` compares the
+minimums of the targets with `build/versions.json`. A throwaway `linux-x64` application ran the
+packaged natives and a throwaway browser application linked them; iOS and Android consumption
+are not verified. Decision: [0039](adr/0039-native-packaging.md) (source of the natives, package
+content, `buildTransitive/` targets, minimum OS check); the P/Invoke resolution on iOS moves to
+task 17 (maintainer's decision).
 
 ### 12. WebGPU idiomatic layer
 
@@ -230,6 +238,9 @@ supersedes 0017).
 ### 14. Desktop sample
 
 - Window, WebGPU clear color, sound playback, on Windows, Linux and macOS; NativeAOT publish.
+- The interop packages depend on their native package, so that applications get the natives
+  transitively ([0011](adr/0011-native-package-layout.md)); the native packages come from the
+  `package` job of the native workflow ([0039](adr/0039-native-packaging.md)).
 - Done when the sample runs from the packages on the three desktop platforms in CI.
 
 ### 15. Browser sample
@@ -248,6 +259,14 @@ supersedes 0017).
 ### 17. iOS sample
 
 - xcframework through `buildTransitive/`, lifecycle handling.
+- **Decision to take:** how the interop's P/Invokes reach the statically linked libraries. Under
+  .NET for iOS, `xamarin_pinvoke_override` resolves only `__Internal` with `dlsym`, and only the
+  `__Internal` P/Invokes are exported; CoreCLR is the default runtime
+  ([0039](adr/0039-native-packaging.md)). Options: `__Internal` imports on iOS, a
+  `DllImportResolver` to the main program with the imported functions kept and exported
+  (`ReferenceNativeSymbol` items generated per library), `DirectPInvoke` under NativeAOT, or
+  dynamic frameworks (reopens [0038](adr/0038-native-ci.md)).
+- Verify the frameworks of the packages' targets by linking the application.
 - Done when the sample runs on the simulator; device testing is reported as not verified unless a
   device is available.
 
@@ -292,6 +311,7 @@ supersedes 0017).
 | How the layout tests reach statically linked layout libraries | 18 |
 | `required` members, public constants, the `Buffer` name | 12 |
 | Emulator tests | 16 |
+| P/Invoke resolution against statically linked libraries on iOS | 17 |
 | Package versioning and release workflow | 19 |
 
 ## Later milestones

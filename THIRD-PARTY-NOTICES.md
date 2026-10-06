@@ -3,7 +3,7 @@
 Jade is licensed under the [MIT license](LICENSE). The native packages `Jade.Native.Wgpu`,
 `Jade.Native.Sdl` and `Jade.Native.MiniAudio` contain binaries that Jade builds from the
 third-party sources below, at the versions pinned in [`build/versions.json`](build/versions.json).
-This file reproduces their licenses and notices.
+This file reproduces their licenses and notices; each of the three packages carries it.
 
 The list follows the build options of [`build/`](build) for Jade's targets, read in the pinned
 sources. For `linux-x64`, it was checked against every source file and header compiled into the

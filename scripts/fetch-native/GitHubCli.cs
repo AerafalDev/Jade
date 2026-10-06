@@ -19,6 +19,13 @@ internal sealed class GitHubCli(string repository)
     /// </remarks>
     private const int ArtifactCount = 100;
 
+    /// <summary>The number of attestations of one file read, newest first.</summary>
+    /// <remarks>
+    /// Every run that builds an unchanged file attests it again, so the attestations of the runs a
+    /// fetch takes, the newest of <c>main</c> or the current one, come first.
+    /// </remarks>
+    private const int AttestationCount = 100;
+
     /// <summary>Lists the runs of a branch that still have an artifact, newest first.</summary>
     /// <param name="name">The artifact's name.</param>
     /// <param name="branch">The branch.</param>
@@ -92,26 +99,45 @@ internal sealed class GitHubCli(string repository)
         return Command.RunAsync("gh", ["run", "download", run.Id.ToString(CultureInfo.InvariantCulture), "--repo", repository, "--name", name, "--dir", directory], environment: null, workingDirectory: null, cancellationToken);
     }
 
-    /// <summary>Verifies that a file has a provenance attestation of the native workflow, for the commit of a run.</summary>
+    /// <summary>Verifies that a file has a provenance attestation of the native workflow, signed by a given run.</summary>
     /// <param name="run">The run the file comes from.</param>
     /// <param name="path">The file.</param>
     /// <param name="cancellationToken">Stops <c>gh</c>.</param>
     /// <returns>A task that completes when the file is verified.</returns>
-    /// <exception cref="CommandFailedException">No such attestation exists.</exception>
-    public Task VerifyAsync(WorkflowRun run, string path, CancellationToken cancellationToken)
+    /// <exception cref="CommandFailedException">No attestation of the native workflow is valid for the file.</exception>
+    /// <exception cref="InvalidDataException">None of them was signed by the run.</exception>
+    /// <remarks>
+    /// The run is matched through the run invocation URI of the verified signing certificate,
+    /// rather than its source digest: a pull request run attests the merge commit it built, which
+    /// the run's <c>head_sha</c> is not. A file that several runs built identically has one
+    /// attestation per run, newest first.
+    /// </remarks>
+    public async Task VerifyAsync(WorkflowRun run, string path, CancellationToken cancellationToken)
     {
-        return Command.ReadAsync(
+        var json = await Command.ReadAsync(
             "gh",
             [
                 "attestation", "verify", path,
                 "--repo", repository,
                 "--signer-workflow", $"{repository}/{WorkflowPath}",
-                "--source-digest", run.HeadSha,
                 "--deny-self-hosted-runners",
+                "--limit", AttestationCount.ToString(CultureInfo.InvariantCulture),
                 "--format", "json",
             ],
             environment: null,
-            cancellationToken);
+            cancellationToken).ConfigureAwait(false);
+
+        using var document = JsonDocument.Parse(json);
+
+        var runUri = string.Create(CultureInfo.InvariantCulture, $"https://github.com/{repository}/actions/runs/{run.Id}/attempts/");
+        var signedByRun = document.RootElement.EnumerateArray().Any(result =>
+            result.GetProperty("verificationResult").GetProperty("signature").GetProperty("certificate").GetProperty("runInvocationURI").GetString() is { } uri
+            && uri.StartsWith(runUri, StringComparison.Ordinal));
+
+        if (!signedByRun)
+        {
+            throw new InvalidDataException(string.Create(CultureInfo.InvariantCulture, $"{path} has attestations of {WorkflowPath}, but none from run {run.Id}."));
+        }
     }
 
     /// <summary>Reads a run from its JSON.</summary>

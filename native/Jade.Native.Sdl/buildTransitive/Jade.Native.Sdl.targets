@@ -1,0 +1,21 @@
+<Project>
+
+  <PropertyGroup>
+    <_JadeNativeSdlMinimumIOSVersion>14.0</_JadeNativeSdlMinimumIOSVersion>
+    <_JadeNativeSdlMinimumAndroidVersion>26.0</_JadeNativeSdlMinimumAndroidVersion>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetPlatformIdentifier)' == 'ios'">
+    <NativeReference Include="$(MSBuildThisFileDirectory)ios/SDL3.xcframework" ForceLoad="true" Frameworks="AVFoundation CoreBluetooth CoreFoundation CoreGraphics CoreHaptics CoreMedia CoreMotion CoreVideo Foundation GameController Metal OpenGLES QuartzCore UIKit" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(RuntimeIdentifier)' == 'browser-wasm'">
+    <NativeFileReference Include="$(MSBuildThisFileDirectory)browser-wasm/SDL3.a" />
+  </ItemGroup>
+
+  <Target Name="_JadeNativeSdlCheckMinimumOSVersion" BeforeTargets="PrepareForBuild" Condition="'$(SupportedOSPlatformVersion)' != ''">
+    <Error Code="JADENATIVE001" Condition="'$(TargetPlatformIdentifier)' == 'ios' and '$(OutputType)' == 'Exe' and $([MSBuild]::VersionLessThan('$(SupportedOSPlatformVersion)', '$(_JadeNativeSdlMinimumIOSVersion)'))" Text="Jade.Native.Sdl requires iOS $(_JadeNativeSdlMinimumIOSVersion) or later, but SupportedOSPlatformVersion is $(SupportedOSPlatformVersion). Set SupportedOSPlatformVersion to $(_JadeNativeSdlMinimumIOSVersion) or higher." />
+    <Error Code="JADENATIVE001" Condition="'$(TargetPlatformIdentifier)' == 'android' and '$(AndroidApplication)' == 'true' and $([MSBuild]::VersionLessThan('$(SupportedOSPlatformVersion)', '$(_JadeNativeSdlMinimumAndroidVersion)'))" Text="Jade.Native.Sdl requires Android API level $(_JadeNativeSdlMinimumAndroidVersion) or later, but SupportedOSPlatformVersion is $(SupportedOSPlatformVersion). Set SupportedOSPlatformVersion to $(_JadeNativeSdlMinimumAndroidVersion) or higher." />
+  </Target>
+
+</Project>

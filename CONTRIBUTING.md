@@ -62,6 +62,14 @@ identifiers; `--run <id>` takes the artifacts of a given run, such as a pull req
 same condition on the inputs. A branch that changes the inputs builds its natives locally or through
 its pull request's run.
 
+### Packing the native packages
+
+The `Jade.Native.*` packages are packed only from the natives that CI built and attested
+([0039](docs/adr/0039-native-packaging.md)). `dotnet run scripts/fetch-native.cs --package`
+downloads and verifies the libraries of every runtime identifier into `artifacts/native/package/`,
+from the same run as above or from `--run <id>`; the pack command then packs them, and fails if a
+file is missing. Without that directory, `dotnet pack` skips the three projects.
+
 ### Building them
 
 `dotnet run scripts/build-native.cs` builds Dawn, SDL3 and miniaudio into

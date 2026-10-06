@@ -1,5 +1,7 @@
+using System.Globalization;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 
 namespace Jade.Tests;
 
@@ -33,6 +35,23 @@ internal sealed partial class NativeVersionsTests
             .ToList();
 
         Assert.IsEmpty(notPinned, $"Dependencies without a full commit hash: {string.Join(", ", notPinned)}");
+    }
+
+    [TestMethod]
+    [DataRow("Jade.Native.Wgpu")]
+    [DataRow("Jade.Native.Sdl")]
+    [DataRow("Jade.Native.MiniAudio")]
+    public void NativePackageRequiresTheMinimumOsVersions(string package)
+    {
+        var minimumOs = _versions.GetProperty("minimumOs");
+        var prefix = "_" + package.Replace(".", string.Empty, StringComparison.Ordinal);
+        var properties = XDocument.Load(Path.Combine(AppContext.BaseDirectory, "native", package + ".targets"))
+            .Descendants("PropertyGroup")
+            .Elements()
+            .ToDictionary(static property => property.Name.LocalName, static property => property.Value, StringComparer.Ordinal);
+
+        Assert.AreEqual(minimumOs.GetProperty("ios").GetString(), properties[prefix + "MinimumIOSVersion"]);
+        Assert.AreEqual(string.Create(CultureInfo.InvariantCulture, $"{minimumOs.GetProperty("androidApiLevel").GetInt32()}.0"), properties[prefix + "MinimumAndroidVersion"]);
     }
 
     private static JsonElement LoadVersions()

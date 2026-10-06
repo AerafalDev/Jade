@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <None Include="../../build/versions.json" Link="versions.json" CopyToOutputDirectory="PreserveNewest" Visible="false" />
+    <None Include="../../native/*/buildTransitive/*.targets" Link="native/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" Visible="false" />
   </ItemGroup>
 
 </Project>
