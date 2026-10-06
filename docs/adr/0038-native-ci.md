@@ -25,8 +25,9 @@ Verified on 2026-10-05 and 2026-10-06:
   with `GITHUB_TOKEN` start no workflow run, except `workflow_dispatch` and `repository_dispatch`,
   and pull request events wait for an approval.
 - Runner images (`actions/runner-images` and `actions/partner-runner-images` READMEs):
-  `ubuntu-24.04` has NDK `28.2.13676358` under `$ANDROID_HOME/ndk/` (its default NDK is another
-  one), Docker and Ninja; `ubuntu-24.04-arm` has Docker; `windows-2025` and `windows-11-arm` have
+  `ubuntu-24.04` has Docker, Ninja and the Android command-line tools, and image
+  `20261004.327` dropped NDK `28.2.13676358`, which `20260927.320` had (its default NDK is
+  another one); `ubuntu-24.04-arm` has Docker; `windows-2025` and `windows-11-arm` have
   Visual Studio 2022 17.14 with the ARM64 tools, the Windows SDK 10.0.26100, Ninja, Python 3, git
   and jq; `macos-26` has Xcode 26.6 by default, with the iOS 26.5 SDK.
 - `quay.io/pypa/manylinux_2_28_x86_64` and `_aarch64`, tag `2026.10.03-1`, the newest: AlmaLinux
@@ -88,7 +89,7 @@ Verified on 2026-10-05 and 2026-10-06:
 | `win-x64`, `win-arm64` | `windows-2025`, `windows-11-arm` | Natively, with MSVC; DXC built for its own architecture |
 | `osx-arm64`, `osx-x64` | `macos-26` | One job per architecture, then `lipo` into universal libraries |
 | `ios-arm64`, `iossimulator-arm64`, `iossimulator-x64` | `macos-26` | One job per slice, then `lipo` for the simulator and one xcframework per library |
-| `android-arm64`, `android-x64` | `ubuntu-24.04` | The image's NDK, checked by revision |
+| `android-arm64`, `android-x64` | `ubuntu-24.04` | The pinned NDK installed with `sdkmanager`, checked by revision |
 | `browser-wasm` | `ubuntu-24.04` | The workload's Emscripten, with the workload set of `build/versions.json` |
 
 - Only standard GitHub-hosted runners, with pinned images ([0022](0022-ci-runners-and-caching.md));
