@@ -362,8 +362,13 @@ jobs:
         with:
           global-json-file: global.json
 
-      # The runner image has the pinned NDK under $ANDROID_HOME/ndk/; build-native.cs checks its
-      # revision.
+      # Runner images drop NDK versions as they update (20261004.327 removed 28.2), so the pinned
+      # one is installed into $ANDROID_HOME/ndk/, where build-native.cs finds it by revision.
+      - name: Install the Android NDK
+        run: |
+          revision=$(jq -r .toolchains.androidNdk.revision build/versions.json)
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --install "ndk;$revision" < /dev/null
+
       - name: Build
         env:
           RID: ${{ matrix.rid }}
