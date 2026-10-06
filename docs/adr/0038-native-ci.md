@@ -42,7 +42,14 @@ Verified on 2026-10-05 and 2026-10-06:
   macOS. `xmake config` stores the build directory relative to the project directory, and with
   `--project` xmake reads it back relative to the working directory (`config.builddir` in
   `core/project/config.lua`), which put the build outside the repository. `package.tools.cmake`
-  selects the simulator SDK for `x86_64` only.
+  selects the simulator SDK for `x86_64` only, and gives every CMake build on Windows one
+  directory for the compilers' PDB files: DXC compiles its Release build with `/Zi` unless
+  `CMAKE_MSVC_DEBUG_INFORMATION_FORMAT` is set (`cmake/modules/HandleLLVMOptions.cmake` at
+  `9757d44`), and its parallel `cl.exe` processes failed on the shared `vc140.pdb` (C1041), with
+  `/FS` as well. Dawn and DXC require CMake versions older than CMP0141, so CMake adds no flag of its
+  own for that variable. A file's
+  `sourcekind` of `mm` does not compile a `.c` file as Objective-C: xmake only adds `-x` for C and
+  C++ (`add_sourceflags` in `modules/core/tools/gcc.lua`).
 - The workload's Emscripten, run outside MSBuild: the pack's `.emscripten` reads
   `DOTNET_EMSCRIPTEN_LLVM_ROOT`, `DOTNET_EMSCRIPTEN_BINARYEN_ROOT` and `DOTNET_EMSCRIPTEN_NODE_JS`,
   as `BrowserWasmApp.targets` sets them; the Cache pack's `sanity.txt` names the LLVM directory of
@@ -56,10 +63,20 @@ Verified on 2026-10-05 and 2026-10-06:
   `wgpuAdapterSetLabel`. `DAWN_USE_BUILT_DXC` builds `dxcompiler.dll` but the install rules leave
   it in the build directory. Windows needs the DXC entry of `DEPS` without its submodules, as
   Dawn's own fetch script clones it, and `third_party/directx-headers` only serves other hosts. The
-  longest path of the pinned DXC is 133 characters, past `MAX_PATH` from the source cache.
-- In the glibc 2.28 container, the `linux-x64` libraries require at most `GLIBC_2.27`; only Dawn
-  depends on `libstdc++.so.6` (`GLIBCXX_3.4.22`), and the layout libraries on nothing. The tests
-  pass on CachyOS with them.
+  longest path of the pinned DXC is 133 characters, past `MAX_PATH` from the source cache. Abseil
+  replaces `CMAKE_MSVC_RUNTIME_LIBRARY` with the DLL runtime unless `ABSL_MSVC_STATIC_RUNTIME` is
+  on (`third_party/abseil-cpp/CMakeLists.txt`); DXC's LLVM takes its CRT from the Release flags.
+- In the glibc 2.28 container, the libraries require at most `GLIBC_2.27`, on both
+  architectures; only Dawn depends on `libstdc++.so.6` (`GLIBCXX_3.4.22`), and the layout
+  libraries on nothing. The tests pass on CachyOS with the `linux-x64` ones. Run as the
+  container's PID 1, .NET receives the build's orphaned processes, and its reaping of its own
+  children failed with `ECHILD` ("Error while reaping child. errno = 10") on `linux-arm64` and
+  hung on `linux-x64`; `docker run --init` avoids it. The runner's Ninja 1.13 rejects the deps
+  log of the container's Ninja 1.8.2.
+- SDL3 versions its ELF symbols (`SDL_Init@@SDL3_0.0.0`), as `llvm-nm --dynamic` lists them.
+- Durations on the standard runners, Dawn included: the browser about 2 minutes, macOS, iOS,
+  Linux and Android 13 to 21 minutes per job, Windows about an hour, DXC doubling the steps of
+  Dawn's build (2,446 against 1,269 on Linux).
 
 ## Decision
 
@@ -85,7 +102,8 @@ Verified on 2026-10-05 and 2026-10-06:
 - The Linux libraries are built in `build/linux/Dockerfile`: the `manylinux_2_28` image pinned by
   digest for each architecture, the development packages of SDL3's features, and libdecor 0.2.5
   and liburing 2.15 built from their release commits, for SDL3's build only. The container runs as
-  the runner's user, so xmake never runs as root, and mounts the runner's .NET SDK.
+  the runner's user with `--init`, so xmake never runs as root and .NET is never PID 1, and
+  mounts the runner's .NET SDK.
 - `build-native.cs --install-tools` installs the xmake and CMake of `build/versions.json` into
   `artifacts/native/tools/`, from release archives whose SHA-256 the file pins, and puts them first
   on `PATH`. Linux and macOS build xmake from its source archive. CI always installs them; a local
@@ -94,9 +112,16 @@ Verified on 2026-10-05 and 2026-10-06:
   `artifacts/native/obj/<rid>/`.
 - The browser build finds the workload's packs in the .NET installation that runs it, checks that
   their names and `emcc --version` match `toolchains.emscripten`, and builds with a writable copy
-  of the Cache pack and `EM_IGNORE_SANITY`. CI installs the workload with the pinned
-  `workloadVersion`.
+  of the Cache pack and `EM_IGNORE_SANITY`. It uses the pack's own `.emscripten` through the
+  `DOTNET_EMSCRIPTEN_*` variables rather than the separate `EM_CONFIG` that
+  [0025](0025-browser-natives-with-workload-emscripten.md) foresaw. CI installs the workload with
+  the pinned `workloadVersion`.
 - Android: the NDK is found by the revision in its `source.properties`, never by its path.
+- `build-native.cs` checks the exports of the libraries it can load in its own process, and reads
+  the others with `nm` (the NDK's or the workload's `llvm-nm`, `xcrun nm`), symbol versions
+  stripped. It lists the source directories that Ninja recorded for the CMake builds, with the
+  Ninja that ran them, for the check of `THIRD-PARTY-NOTICES.md`; a failed package build shows
+  xmake's install log in CI.
 
 ### Compile targets and runtimes
 
@@ -106,7 +131,7 @@ Verified on 2026-10-05 and 2026-10-06:
   `CMAKE_OSX_DEPLOYMENT_TARGET`, `ANDROID_PLATFORM` 26 through `--ndk_sdkver`, and glibc 2.28 as
   the container's own.
 - Nothing has to be installed beside the libraries: Windows uses the static CRT (`/MT`) for Dawn,
-  DXC, SDL3 and miniaudio; Linux links the system's `libstdc++` through `gcc-toolset-14`, as
+  DXC, SDL3 and miniaudio, abseil included, and DXC writes no PDB while compiling; Linux links the system's `libstdc++` through `gcc-toolset-14`, as
   manylinux does, and .NET depends on it already; Android links `c++_static` into Dawn, the only
   C++ library, whose API is C; Apple platforms use the system's libc++; in the browser the
   application's link brings Emscripten's.
@@ -114,8 +139,8 @@ Verified on 2026-10-05 and 2026-10-06:
   (`webgpu_dawn.xcframework`, `SDL3.xcframework`, `miniaudio.xcframework`) with the device slice
   and a universal simulator slice; archives named after the imported module in the browser
   ([0025](0025-browser-natives-with-workload-emscripten.md)), with Emdawnwebgpu's JavaScript
-  libraries and externs beside `webgpu_dawn.a`. miniaudio is compiled as Objective-C for iOS. The
-  layout libraries follow the same forms.
+  libraries and externs beside `webgpu_dawn.a`. miniaudio is compiled as Objective-C for iOS
+  (`-xobjective-c`). The layout libraries follow the same forms.
 - Per-platform lists of required SDL3 features in `build/sdl/xmake.lua`: each holds the features
   that depend on a detection there (development packages, SDK headers or frameworks).
 
@@ -160,9 +185,9 @@ Verified on 2026-10-05 and 2026-10-06:
 
 ## Consequences
 
-- A change to `build/` or to the native scripts costs one native run, about an hour of runners
-  for the longest jobs, on the pull request and again on `main`; other pull requests pay the
-  `changes` job only.
+- A change to `build/` or to the native scripts costs one native run, about an hour for the
+  Windows jobs and 20 minutes for the others, on the pull request and again on `main`; other pull
+  requests pay the `changes` job only.
 - The ruleset requires `natives` and `analyze (c-cpp)` ([0037](0037-github-repository-baseline.md)).
 - Contributors can work against the CI's natives without building them, with the GitHub CLI
   signed in; a branch that changes the inputs builds its own, locally or through its pull
