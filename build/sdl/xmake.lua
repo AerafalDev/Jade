@@ -119,7 +119,7 @@ package("sdl")
             table.insert(configs, "-DCMAKE_OSX_SYSROOT=iphonesimulator")
         end
         if package:is_plat("android") then
-            -- SDL's Java sources ship with the Android sample, not as a jar built here.
+            -- SDL3's Java side (SDLActivity) belongs to the application, not to a jar built here.
             table.insert(configs, "-DSDL_ANDROID_JAR=OFF")
         end
         cmake.install(package, configs)

@@ -12,9 +12,9 @@ target("miniaudio")
     add_forceincludes(path.join(os.scriptdir(), "config.h"))
     add_includedirs(get_config("miniaudio_source"))
     if is_plat("windows") then
-        -- MSVC warns about conversions in miniaudio's own code (C4244 in its dr_wav, an implicit
-        -- uint64 to uint32), which GCC and Clang do not: that third-party file keeps its warnings
-        -- in the log but not as errors (docs/adr/0038). The flags of a file follow the target's.
+        -- MSVC warns in miniaudio's own dr_wav (C4244, a uint64 to uint32 conversion) where GCC
+        -- and Clang do not: that third-party file keeps its warnings in the log, not as errors
+        -- (docs/adr/0038). A file's flags come after the target's /WX.
         add_files(path.join(get_config("miniaudio_source"), "miniaudio.c"), {cflags = "/WX-"})
     else
         add_files(path.join(get_config("miniaudio_source"), "miniaudio.c"))

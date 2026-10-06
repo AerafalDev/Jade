@@ -6,7 +6,7 @@ name: Natives
 on:
   pull_request:
   push:
-    branches: [main, ci/native-matrix]
+    branches: [main]
   schedule:
     # Monthly, so that main always has artifacts younger than their 90-day retention.
     - cron: '37 4 1 * *'
@@ -179,8 +179,6 @@ jobs:
           RID: ${{ matrix.rid }}
         run: dotnet run scripts/build-native.cs --rid "$RID" --install-tools
 
-      # xmake keeps the full output of a failed package build in its install log, and only shows
-      # its end.
       - name: Show the logs of failed package builds
         if: failure()
         shell: bash
@@ -238,15 +236,13 @@ jobs:
           RID: ${{ matrix.rid }}
         run: dotnet run scripts/build-native.cs --rid "$RID" --install-tools
 
-      # Single-architecture builds, merged by the apple-merge job: only its outputs are shipped
-      # and attested.
-      # xmake keeps the full output of a failed package build in its install log, and only shows
-      # its end.
       - name: Show the logs of failed package builds
         if: failure()
         shell: bash
         run: find artifacts/native/obj -path '*installdir.failed/logs/*' -type f -exec tail -n 300 {} +
 
+      # Single-architecture builds, merged by the apple-merge job: only its outputs are shipped
+      # and attested.
       - name: Upload the libraries
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
@@ -362,8 +358,8 @@ jobs:
         with:
           global-json-file: global.json
 
-      # Runner images drop NDK versions as they update (20261004.327 removed 28.2), so the pinned
-      # one is installed into $ANDROID_HOME/ndk/, where build-native.cs finds it by revision.
+      # Runner images drop NDK versions as they update: the pinned one is installed into
+      # $ANDROID_HOME/ndk/, where build-native.cs finds it by its revision.
       - name: Install the Android NDK
         run: |
           revision=$(jq -r .toolchains.androidNdk.revision build/versions.json)
@@ -374,8 +370,6 @@ jobs:
           RID: ${{ matrix.rid }}
         run: dotnet run scripts/build-native.cs --rid "$RID" --install-tools
 
-      # xmake keeps the full output of a failed package build in its install log, and only shows
-      # its end.
       - name: Show the logs of failed package builds
         if: failure()
         shell: bash
@@ -435,8 +429,6 @@ jobs:
       - name: Build
         run: dotnet run scripts/build-native.cs --rid browser-wasm --install-tools
 
-      # xmake keeps the full output of a failed package build in its install log, and only shows
-      # its end.
       - name: Show the logs of failed package builds
         if: failure()
         shell: bash

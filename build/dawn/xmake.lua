@@ -61,10 +61,9 @@ package("dawn")
             -- Abseil replaces CMAKE_MSVC_RUNTIME_LIBRARY with the DLL runtime unless told
             -- otherwise, which would mix it with the static CRT of everything else (docs/adr/0038).
             table.insert(configs, "-DABSL_MSVC_STATIC_RUNTIME=ON")
-            -- DXC compiles its Release build with /Zi unless this is set, and xmake points every
-            -- compiler of the build at one PDB directory, where the parallel cl.exe processes
-            -- fail on the same vc140.pdb (C1041), with /FS too. Dawn and DXC predate CMP0141, so
-            -- CMake adds no flag of its own for it: nothing writes a PDB while compiling.
+            -- DXC adds /Zi to its Release build unless this is set, and its parallel cl.exe then
+            -- fail on the one PDB directory xmake gives the build (C1041), even with /FS. Dawn and
+            -- DXC predate CMP0141, so CMake adds no flag for it.
             table.insert(configs, "-DCMAKE_MSVC_DEBUG_INFORMATION_FORMAT=Embedded")
         end
         if package:is_plat("macosx", "iphoneos") then
@@ -86,7 +85,6 @@ package_end()
 
 add_requires("dawn", {system = false, configs = jade_package_configs("dawn")})
 
--- The files of the package that the Jade.Native.Wgpu package ships, by platform.
 local function dawn_files(target, package)
     local installdir = package:installdir()
     if target:is_plat("windows") then

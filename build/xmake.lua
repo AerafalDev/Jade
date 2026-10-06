@@ -7,7 +7,8 @@
 set_xmakever("3.1.1")
 set_project("jade-natives")
 
--- The runtime identifiers of docs/adr/0012, as xmake names them (scripts/build-native/Build/NativeTarget.cs).
+-- The runtime identifiers of docs/adr/0012, as xmake names them
+-- (scripts/build-native/Build/NativeTarget.cs).
 set_allowedplats("linux", "windows", "macosx", "iphoneos", "android", "wasm")
 set_allowedarchs(
     "linux|x86_64", "linux|arm64",
@@ -53,9 +54,9 @@ function jade_library_kind()
     return is_plat("iphoneos", "wasm") and "static" or "shared"
 end
 
--- The C runtime of the targets of this project: the static CRT on Windows, so that no Visual C++
--- redistributable is needed, and the static libc++ of the NDK on Android. xmake applies the
--- --runtimes configuration to the targets, and the packages get it explicitly.
+-- xmake applies --runtimes to the targets but not to the packages, which get it here with their
+-- build key: the static CRT on Windows, so that no Visual C++ redistributable is needed, and the
+-- NDK's static libc++ on Android (docs/adr/0038).
 function jade_package_configs(name)
     return {key = get_config(name .. "_key"), runtimes = get_config("runtimes")}
 end
