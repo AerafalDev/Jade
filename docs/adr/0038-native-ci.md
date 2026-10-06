@@ -141,6 +141,10 @@ Verified on 2026-10-05 and 2026-10-06:
   ([0025](0025-browser-natives-with-workload-emscripten.md)), with Emdawnwebgpu's JavaScript
   libraries and externs beside `webgpu_dawn.a`. miniaudio is compiled as Objective-C for iOS
   (`-xobjective-c`). The layout libraries follow the same forms.
+- The layout libraries fill their table when the exported function runs, through statement
+  macros of `build/layout/jade_layout.h`: MSVC's C compiler refuses these `offsetof` expressions in
+  a static initializer (C2099), which GCC and Clang accept. The table the C# tests read is
+  unchanged ([0036](0036-generated-layout-tests.md)).
 - Warnings stay errors everywhere except in one third-party file: with MSVC, `miniaudio.c` is
   compiled with `/WX-`, since MSVC warns in miniaudio's embedded dr_wav (C4244, an implicit
   `ma_uint64` to `ma_uint32` in `miniaudio.h`) where GCC and Clang do not. Its warnings stay in the
