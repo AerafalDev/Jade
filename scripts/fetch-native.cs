@@ -1,7 +1,9 @@
 #!/usr/bin/env dotnet
 #:include fetch-native/*.cs
+#:include build-native/Build/ExpectedLibrary.cs
 #:include build-native/Build/HostPlatform.cs
 #:include build-native/Build/NativePlatform.cs
+#:include build-native/Build/NativeTarget.cs
 #:include build-native/Configuration/BuildLayout.cs
 #:include build-native/Tools/Command.cs
 #:include build-native/Tools/CommandFailedException.cs

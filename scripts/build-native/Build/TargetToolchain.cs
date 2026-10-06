@@ -52,8 +52,8 @@ internal sealed record TargetToolchain(IReadOnlyList<string> Options, IReadOnlyD
                     [
                         "--ndk=" + ndk,
                         "--ndk_sdkver=" + minimum.AndroidApiLevel.ToString(CultureInfo.InvariantCulture),
-                        // Dawn is the only C++ library and exposes a C API, so the C++ runtime is linked into it
-                        // rather than shipped as libc++_shared.so beside it.
+                        // Dawn is the only C++ library and exposes a C API, so the C++ runtime is
+                        // linked into it rather than shipped as libc++_shared.so beside it.
                         "--runtimes=c++_static",
                     ],
                     new Dictionary<string, string?>(),

@@ -34,7 +34,7 @@ internal sealed partial record EmscriptenWorkload(string ToolsDirectory, string 
     public static async Task<EmscriptenWorkload> LocateAsync(PinnedEmscripten pinned, HostPlatform host, string cacheDirectory, CancellationToken cancellationToken)
     {
         var packs = Path.GetFullPath(Path.Combine(RuntimeEnvironment.GetRuntimeDirectory(), "..", "..", "..", "packs"));
-        var rid = $"{(host.Platform == NativePlatform.MacOS ? "osx" : host.Platform == NativePlatform.Windows ? "win" : "linux")}-{host.ArchitectureKey}";
+        var rid = NativeTarget.ForHost(host).RuntimeIdentifier;
         var prefix = "Microsoft.NET.Runtime.Emscripten.";
         var sdkPack = Path.Combine(packs, $"{prefix}{pinned.PackVersion}.Sdk.{rid}");
 

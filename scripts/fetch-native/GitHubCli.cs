@@ -12,27 +12,46 @@ internal sealed class GitHubCli(string repository)
     /// <summary>The workflow that builds and attests the natives.</summary>
     public const string WorkflowPath = ".github/workflows/native.yml";
 
-    /// <summary>The number of runs read from the newest, enough to cover the 90-day artifact retention of a monthly schedule.</summary>
-    private const int RunCount = 50;
+    /// <summary>The number of artifacts of one name read, newest first.</summary>
+    /// <remarks>
+    /// <c>main</c> builds only when the native build inputs change and once a month, so far fewer
+    /// artifacts of one name live within their 90-day retention.
+    /// </remarks>
+    private const int ArtifactCount = 100;
 
-    /// <summary>Lists the successful runs of the native workflow on a branch, newest first.</summary>
+    /// <summary>Lists the runs of a branch that still have an artifact, newest first.</summary>
+    /// <param name="name">The artifact's name.</param>
     /// <param name="branch">The branch.</param>
     /// <param name="cancellationToken">Stops <c>gh</c>.</param>
     /// <returns>The runs.</returns>
-    public async Task<IReadOnlyList<WorkflowRun>> ListSuccessfulRunsAsync(string branch, CancellationToken cancellationToken)
+    /// <remarks>
+    /// Runs of the branch whose builds were skipped have no artifact, so they are not listed: the
+    /// artifacts, not the runs, are searched.
+    /// </remarks>
+    public async Task<IReadOnlyList<WorkflowRun>> ListRunsWithArtifactAsync(string name, string branch, CancellationToken cancellationToken)
     {
-        var json = await ApiAsync($"repos/{repository}/actions/workflows/{Path.GetFileName(WorkflowPath)}/runs?branch={Uri.EscapeDataString(branch)}&status=success&per_page={RunCount}", cancellationToken).ConfigureAwait(false);
+        var json = await ApiAsync(string.Create(CultureInfo.InvariantCulture, $"repos/{repository}/actions/artifacts?name={Uri.EscapeDataString(name)}&per_page={ArtifactCount}"), cancellationToken).ConfigureAwait(false);
 
         using var document = JsonDocument.Parse(json);
 
-        return [.. document.RootElement.GetProperty("workflow_runs").EnumerateArray().Select(ReadRun)];
+        return
+        [
+            .. document.RootElement.GetProperty("artifacts").EnumerateArray()
+                .Where(artifact => !artifact.GetProperty("expired").GetBoolean() && artifact.GetProperty("workflow_run").GetProperty("head_branch").GetString() == branch)
+                .Select(static artifact => ReadRun(artifact.GetProperty("workflow_run")))
+                .DistinctBy(static run => run.Id),
+        ];
     }
 
     /// <summary>Gets a run of the native workflow.</summary>
     /// <param name="id">The run's identifier.</param>
     /// <param name="cancellationToken">Stops <c>gh</c>.</param>
     /// <returns>The run.</returns>
-    /// <exception cref="InvalidDataException">The run belongs to another workflow or did not succeed.</exception>
+    /// <exception cref="InvalidDataException">The run belongs to another workflow.</exception>
+    /// <remarks>
+    /// A run whose other jobs failed is accepted: each artifact is uploaded once its own build has
+    /// passed, and its attestation is verified anyway.
+    /// </remarks>
     public async Task<WorkflowRun> GetRunAsync(long id, CancellationToken cancellationToken)
     {
         var json = await ApiAsync(string.Create(CultureInfo.InvariantCulture, $"repos/{repository}/actions/runs/{id}"), cancellationToken).ConfigureAwait(false);
@@ -43,8 +62,6 @@ internal sealed class GitHubCli(string repository)
 
         return root.GetProperty("path").GetString() != WorkflowPath
             ? throw new InvalidDataException(string.Create(CultureInfo.InvariantCulture, $"Run {id} is not a run of {WorkflowPath}."))
-            : root.GetProperty("conclusion").GetString() != "success"
-            ? throw new InvalidDataException(string.Create(CultureInfo.InvariantCulture, $"Run {id} did not succeed."))
             : ReadRun(root);
     }
 
@@ -98,7 +115,7 @@ internal sealed class GitHubCli(string repository)
     }
 
     /// <summary>Reads a run from its JSON.</summary>
-    /// <param name="run">The run's JSON object.</param>
+    /// <param name="run">The run's JSON object, or the <c>workflow_run</c> of an artifact.</param>
     /// <returns>The run.</returns>
     private static WorkflowRun ReadRun(JsonElement run)
     {
