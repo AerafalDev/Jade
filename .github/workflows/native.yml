@@ -114,23 +114,12 @@ jobs:
             echo "$(basename "$library"): ${glibc:-none} ${cxx:-}"
           done
 
-      # THIRD-PARTY-NOTICES.md covers what this lists: the directories of the pinned sources
-      # whose files the CMake builds compiled or included (docs/adr/0031).
       # xmake keeps the full output of a failed package build in its install log, and only shows
       # its end.
       - name: Show the logs of failed package builds
         if: failure()
         shell: bash
         run: find artifacts/native/obj -path '*installdir.failed/logs/*' -type f -exec tail -n 300 {} +
-
-      - name: List the compiled source directories
-        shell: bash
-        env:
-          RID: ${{ matrix.rid }}
-        run: |
-          find "artifacts/native/obj/$RID/build/.packages" -name build.ninja | while read -r file; do
-            ninja -C "$(dirname "$file")" -t deps
-          done | tr '\134' / | grep -o 'native/sources/[^ ]*' | sed 's,/[^/]*$,,' | cut -d / -f 3,5-7 | sort -u
 
       - name: Upload the libraries
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -190,23 +179,12 @@ jobs:
           RID: ${{ matrix.rid }}
         run: dotnet run scripts/build-native.cs --rid "$RID" --install-tools
 
-      # THIRD-PARTY-NOTICES.md covers what this lists: the directories of the pinned sources
-      # whose files the CMake builds compiled or included (docs/adr/0031).
       # xmake keeps the full output of a failed package build in its install log, and only shows
       # its end.
       - name: Show the logs of failed package builds
         if: failure()
         shell: bash
         run: find artifacts/native/obj -path '*installdir.failed/logs/*' -type f -exec tail -n 300 {} +
-
-      - name: List the compiled source directories
-        shell: bash
-        env:
-          RID: ${{ matrix.rid }}
-        run: |
-          find "artifacts/native/obj/$RID/build/.packages" -name build.ninja | while read -r file; do
-            ninja -C "$(dirname "$file")" -t deps
-          done | tr '\134' / | grep -o 'native/sources/[^ ]*' | sed 's,/[^/]*$,,' | cut -d / -f 3,5-7 | sort -u
 
       - name: Upload the libraries
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -262,23 +240,12 @@ jobs:
 
       # Single-architecture builds, merged by the apple-merge job: only its outputs are shipped
       # and attested.
-      # THIRD-PARTY-NOTICES.md covers what this lists: the directories of the pinned sources
-      # whose files the CMake builds compiled or included (docs/adr/0031).
       # xmake keeps the full output of a failed package build in its install log, and only shows
       # its end.
       - name: Show the logs of failed package builds
         if: failure()
         shell: bash
         run: find artifacts/native/obj -path '*installdir.failed/logs/*' -type f -exec tail -n 300 {} +
-
-      - name: List the compiled source directories
-        shell: bash
-        env:
-          RID: ${{ matrix.rid }}
-        run: |
-          find "artifacts/native/obj/$RID/build/.packages" -name build.ninja | while read -r file; do
-            ninja -C "$(dirname "$file")" -t deps
-          done | tr '\134' / | grep -o 'native/sources/[^ ]*' | sed 's,/[^/]*$,,' | cut -d / -f 3,5-7 | sort -u
 
       - name: Upload the libraries
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -402,23 +369,12 @@ jobs:
           RID: ${{ matrix.rid }}
         run: dotnet run scripts/build-native.cs --rid "$RID" --install-tools
 
-      # THIRD-PARTY-NOTICES.md covers what this lists: the directories of the pinned sources
-      # whose files the CMake builds compiled or included (docs/adr/0031).
       # xmake keeps the full output of a failed package build in its install log, and only shows
       # its end.
       - name: Show the logs of failed package builds
         if: failure()
         shell: bash
         run: find artifacts/native/obj -path '*installdir.failed/logs/*' -type f -exec tail -n 300 {} +
-
-      - name: List the compiled source directories
-        shell: bash
-        env:
-          RID: ${{ matrix.rid }}
-        run: |
-          find "artifacts/native/obj/$RID/build/.packages" -name build.ninja | while read -r file; do
-            ninja -C "$(dirname "$file")" -t deps
-          done | tr '\134' / | grep -o 'native/sources/[^ ]*' | sed 's,/[^/]*$,,' | cut -d / -f 3,5-7 | sort -u
 
       - name: Upload the libraries
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -474,23 +430,12 @@ jobs:
       - name: Build
         run: dotnet run scripts/build-native.cs --rid browser-wasm --install-tools
 
-      # THIRD-PARTY-NOTICES.md covers what this lists: the directories of the pinned sources
-      # whose files the CMake builds compiled or included (docs/adr/0031).
       # xmake keeps the full output of a failed package build in its install log, and only shows
       # its end.
       - name: Show the logs of failed package builds
         if: failure()
         shell: bash
         run: find artifacts/native/obj -path '*installdir.failed/logs/*' -type f -exec tail -n 300 {} +
-
-      - name: List the compiled source directories
-        shell: bash
-        env:
-          RID: browser-wasm
-        run: |
-          find "artifacts/native/obj/$RID/build/.packages" -name build.ninja | while read -r file; do
-            ninja -C "$(dirname "$file")" -t deps
-          done | tr '\134' / | grep -o 'native/sources/[^ ]*' | sed 's,/[^/]*$,,' | cut -d / -f 3,5-7 | sort -u
 
       - name: Upload the libraries
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
