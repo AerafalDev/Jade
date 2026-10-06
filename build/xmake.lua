@@ -56,8 +56,12 @@ end
 -- The C runtime of the targets of this project: the static CRT on Windows, so that no Visual C++
 -- redistributable is needed, and the static libc++ of the NDK on Android. xmake applies the
 -- --runtimes configuration to the targets, and the packages get it explicitly.
+--
+-- On Windows, xmake gives a CMake build one directory for the compilers' PDB files, and the
+-- parallel cl.exe processes of DXC, which compiles with debug information, then write the same
+-- vc140.pdb: /FS serializes those writes.
 function jade_package_configs(name)
-    return {key = get_config(name .. "_key"), runtimes = get_config("runtimes")}
+    return {key = get_config(name .. "_key"), runtimes = get_config("runtimes"), cxflags = is_plat("windows") and "/FS" or nil}
 end
 
 includes("dawn", "sdl", "miniaudio", "layout")

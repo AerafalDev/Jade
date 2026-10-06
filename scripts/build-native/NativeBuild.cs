@@ -82,6 +82,7 @@ internal static class NativeBuild
             await OutputCheck.VerifyAsync(outputDirectory, target.Libraries, toolchain.Symbols, output, cancellationToken).ConfigureAwait(false);
             await output.WriteLineAsync($"Built the test libraries of {target.RuntimeIdentifier} into {testOutputDirectory}:".AsMemory(), cancellationToken).ConfigureAwait(false);
             await OutputCheck.VerifyAsync(testOutputDirectory, target.TestLibraries, toolchain.Symbols, output, cancellationToken).ConfigureAwait(false);
+            await SourceReport.WriteAsync(Path.Combine(layout.GetObjectDirectory(target.RuntimeIdentifier), "build"), output, cancellationToken).ConfigureAwait(false);
 
             return SuccessExitCode;
         }
