@@ -11,7 +11,15 @@ target("miniaudio")
     set_warnings("all", "error")
     add_forceincludes(path.join(os.scriptdir(), "config.h"))
     add_includedirs(get_config("miniaudio_source"))
-    add_files(path.join(get_config("miniaudio_source"), "miniaudio.c"), "jade_miniaudio.c")
+    if is_plat("windows") then
+        -- MSVC warns about conversions in miniaudio's own code (C4244 in its dr_wav, an implicit
+        -- uint64 to uint32), which GCC and Clang do not: that third-party file keeps its warnings
+        -- in the log but not as errors (docs/adr/0038). The flags of a file follow the target's.
+        add_files(path.join(get_config("miniaudio_source"), "miniaudio.c"), {cflags = "/WX-"})
+    else
+        add_files(path.join(get_config("miniaudio_source"), "miniaudio.c"))
+    end
+    add_files("jade_miniaudio.c")
 
     if is_plat("iphoneos") then
         -- miniaudio's iOS backend uses AVAudioSession, so it compiles as Objective-C (miniaudio.h,
