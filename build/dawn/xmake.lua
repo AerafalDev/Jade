@@ -61,6 +61,11 @@ package("dawn")
             -- Abseil replaces CMAKE_MSVC_RUNTIME_LIBRARY with the DLL runtime unless told
             -- otherwise, which would mix it with the static CRT of everything else (docs/adr/0038).
             table.insert(configs, "-DABSL_MSVC_STATIC_RUNTIME=ON")
+            -- DXC compiles its Release build with /Zi unless this is set, and xmake points every
+            -- compiler of the build at one PDB directory, where the parallel cl.exe processes
+            -- fail on the same vc140.pdb (C1041), with /FS too. Dawn and DXC predate CMP0141, so
+            -- CMake adds no flag of its own for it: nothing writes a PDB while compiling.
+            table.insert(configs, "-DCMAKE_MSVC_DEBUG_INFORMATION_FORMAT=Embedded")
         end
         if package:is_plat("macosx", "iphoneos") then
             table.insert(configs, "-DCMAKE_OSX_DEPLOYMENT_TARGET=" .. get_config("target_minver"))
