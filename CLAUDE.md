@@ -239,15 +239,17 @@ by [0037](docs/adr/0037-github-repository-baseline.md), which records every sett
   required; all actions allowed.
 - Ruleset `main` (id `24485772`) on the default branch, no bypass: pull request required
   (0 approvals, squash only), no deletion, no force push, linear history, required status checks
-  `format`, `build (linux)`, `build (windows)`, `build (macos)`, `analyze (csharp)` and
-  `analyze (actions)` from GitHub Actions (app id `15368`), branch up to date with `main`.
+  `format`, `build (linux)`, `build (windows)`, `build (macos)`, `analyze (csharp)`,
+  `analyze (actions)`, `analyze (c-cpp)` and `natives` from GitHub Actions (app id `15368`), branch
+  up to date with `main` (the last two since 2026-10-07).
 - The ruleset API turned on `require_extra_approval_for_unattributed_changes` by default: a pull
   request opened by Copilot under its own identity needs one extra approval from someone with
   write access. It stays enabled; with zero required approvals it has no effect, Dependabot pull
   requests included. Declare it explicitly in every ruleset update, since an omitted value is
   reset to `true`. A ruleset update is a `PUT` of the whole ruleset with `gh api`.
 
-Pending: provenance attestations for the packages (task 19). The social
+Provenance attestations cover the native artifacts; those of the packages are pending (task 19).
+The social
 preview image (`docs/assets/social-preview.jpg`) is uploaded by hand in the repository settings;
 the REST API has no endpoint for it.
 

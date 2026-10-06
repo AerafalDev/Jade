@@ -325,8 +325,8 @@ GitHub settings, security features and their phasing are described in
 | `labels.yml` | changes to `.github/labels.yml` | Synchronizes the repository labels with `gh`; dry run on pull requests |
 | `labeler.yml` | pull requests (`pull_request_target`) | Applies the area labels of `.github/labeler.yml` from the changed paths |
 
-- The `main` ruleset requires `format`, the three `build` checks and the two CodeQL `analyze`
-  checks, on a branch up to date with `main`.
+- The `main` ruleset requires `format`, the three `build` checks, the three CodeQL `analyze`
+  checks and `natives`, on a branch up to date with `main`.
 - Every workflow sets `permissions: {}` at the top and grants each job only what it needs; every
   action is pinned to a full commit SHA with its version in a comment, and Dependabot updates them
   weekly, with the NuGet packages, after a seven-day cooldown.
