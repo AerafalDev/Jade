@@ -1,0 +1,475 @@
+name: Natives
+
+# Builds the native libraries and the layout libraries for every runtime identifier, and attests
+# them (docs/adr/0038). The builds only run when an input of the native build changes; the
+# natives job reports the result either way, for the ruleset.
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    # Monthly, so that main always has artifacts younger than their 90-day retention.
+    - cron: '37 4 1 * *'
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  changes:
+    name: changes
+    runs-on: ubuntu-slim
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    outputs:
+      build: ${{ steps.inputs.outputs.build }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # The inputs are those that scripts/fetch-native.cs compares with a run's commit.
+      - name: Compare the native build inputs
+        id: inputs
+        shell: bash
+        env:
+          EVENT: ${{ github.event_name }}
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
+          PUSH_BEFORE: ${{ github.event.before }}
+        run: |
+          case "$EVENT" in
+            pull_request) base="$PR_BASE" ;;
+            push) base="$PUSH_BEFORE" ;;
+            *) base="" ;;
+          esac
+          if [[ -z "$base" || "$base" =~ ^0+$ ]] || ! git fetch --quiet --depth 1 origin "$base"; then
+            echo "build=true" >> "$GITHUB_OUTPUT"
+          elif git diff --quiet "$base" HEAD -- build scripts/build-native.cs scripts/build-native global.json .github/workflows/native.yml; then
+            echo "build=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "build=true" >> "$GITHUB_OUTPUT"
+          fi
+
+  linux:
+    name: native (${{ matrix.rid }})
+    needs: changes
+    if: needs.changes.outputs.build == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - rid: linux-x64
+            os: ubuntu-24.04
+          - rid: linux-arm64
+            os: ubuntu-24.04-arm
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 240
+    permissions:
+      contents: read
+      id-token: write # sign the provenance attestation
+      attestations: write # store the provenance attestation
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+
+      - name: Build the glibc 2.28 environment
+        run: docker build --tag jade-native-linux build/linux
+
+      # xmake refuses to run as root, and the outputs belong to the runner's user. --init keeps
+      # .NET from being the container's PID 1: the build's orphaned processes would be reparented
+      # to it, and its reaping of its own children then fails with ECHILD or hangs.
+      - name: Build
+        env:
+          RID: ${{ matrix.rid }}
+        run: >
+          docker run --rm --init --user "$(id -u):$(id -g)"
+          --env HOME=/tmp --env DOTNET_ROOT=/opt/dotnet --env DOTNET_NOLOGO --env DOTNET_CLI_TELEMETRY_OPTOUT --env RID
+          --volume "$DOTNET_ROOT:/opt/dotnet:ro" --volume "$GITHUB_WORKSPACE:/work" --workdir /work
+          jade-native-linux
+          bash -c 'PATH=/opt/dotnet:$PATH dotnet run scripts/build-native.cs --rid "$RID" --install-tools'
+
+      - name: Report the glibc and C++ runtime versions required
+        env:
+          RID: ${{ matrix.rid }}
+        run: |
+          for library in "artifacts/native/bin/$RID"/* "artifacts/native/test/$RID"/*; do
+            glibc=$(objdump -T "$library" | grep -o 'GLIBC_[0-9.]*' | sort -uV | tail -n 1)
+            cxx=$(objdump -T "$library" | grep -o 'GLIBCXX_[0-9.]*' | sort -uV | tail -n 1)
+            echo "$(basename "$library"): ${glibc:-none} ${cxx:-}"
+          done
+
+      # xmake keeps the full output of a failed package build in its install log, and only shows
+      # its end.
+      - name: Show the logs of failed package builds
+        if: failure()
+        shell: bash
+        run: find artifacts/native/obj -path '*installdir.failed/logs/*' -type f -exec tail -n 300 {} +
+
+      - name: Upload the libraries
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: native-${{ matrix.rid }}
+          path: artifacts/native/bin/${{ matrix.rid }}/
+          if-no-files-found: error
+
+      - name: Upload the layout libraries
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: native-test-${{ matrix.rid }}
+          path: artifacts/native/test/${{ matrix.rid }}/
+          if-no-files-found: error
+
+      # Pull requests from forks get no OIDC token.
+      - name: Attest
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+        with:
+          subject-path: |
+            artifacts/native/bin/${{ matrix.rid }}/*
+            artifacts/native/test/${{ matrix.rid }}/*
+
+  windows:
+    name: native (${{ matrix.rid }})
+    needs: changes
+    if: needs.changes.outputs.build == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - rid: win-x64
+            os: windows-2025
+          - rid: win-arm64
+            os: windows-11-arm
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 300
+    permissions:
+      contents: read
+      id-token: write # sign the provenance attestation
+      attestations: write # store the provenance attestation
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+
+      - name: Build
+        shell: bash
+        env:
+          RID: ${{ matrix.rid }}
+        run: dotnet run scripts/build-native.cs --rid "$RID" --install-tools
+
+      - name: Show the logs of failed package builds
+        if: failure()
+        shell: bash
+        run: find artifacts/native/obj -path '*installdir.failed/logs/*' -type f -exec tail -n 300 {} +
+
+      - name: Upload the libraries
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: native-${{ matrix.rid }}
+          path: artifacts/native/bin/${{ matrix.rid }}/
+          if-no-files-found: error
+
+      - name: Upload the layout libraries
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: native-test-${{ matrix.rid }}
+          path: artifacts/native/test/${{ matrix.rid }}/
+          if-no-files-found: error
+
+      - name: Attest
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+        with:
+          subject-path: |
+            artifacts/native/bin/${{ matrix.rid }}/*
+            artifacts/native/test/${{ matrix.rid }}/*
+
+  apple:
+    name: native (${{ matrix.rid }})
+    needs: changes
+    if: needs.changes.outputs.build == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        rid: [osx-arm64, osx-x64, ios-arm64, iossimulator-arm64, iossimulator-x64]
+    runs-on: macos-26
+    timeout-minutes: 300
+    permissions:
+      contents: read
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.6.app/Contents/Developer
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+
+      - name: Build
+        env:
+          RID: ${{ matrix.rid }}
+        run: dotnet run scripts/build-native.cs --rid "$RID" --install-tools
+
+      - name: Show the logs of failed package builds
+        if: failure()
+        shell: bash
+        run: find artifacts/native/obj -path '*installdir.failed/logs/*' -type f -exec tail -n 300 {} +
+
+      # Single-architecture builds, merged by the apple-merge job: only its outputs are shipped
+      # and attested.
+      - name: Upload the libraries
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: apple-${{ matrix.rid }}
+          path: |
+            artifacts/native/bin/${{ matrix.rid }}/
+            artifacts/native/test/${{ matrix.rid }}/
+          if-no-files-found: error
+          retention-days: 1
+
+  apple-merge:
+    name: native (apple)
+    needs: apple
+    runs-on: macos-26
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      id-token: write # sign the provenance attestation
+      attestations: write # store the provenance attestation
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.6.app/Contents/Developer
+    steps:
+      - name: Download the single-architecture builds
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: apple-*
+          path: artifacts/native
+          merge-multiple: true
+
+      # macOS ships universal libraries (docs/adr/0012); iOS ships an xcframework per library
+      # with the device slice and a universal simulator slice (docs/adr/0011).
+      - name: Merge
+        run: |
+          for kind in bin test; do
+            mkdir -p "artifacts/native/$kind/osx" "artifacts/native/$kind/ios" "artifacts/native/$kind/iossimulator"
+            for library in "artifacts/native/$kind/osx-arm64"/*; do
+              name=$(basename "$library")
+              lipo -create "$library" "artifacts/native/$kind/osx-x64/$name" -output "artifacts/native/$kind/osx/$name"
+              lipo -info "artifacts/native/$kind/osx/$name"
+            done
+            for library in "artifacts/native/$kind/ios-arm64"/*; do
+              name=$(basename "$library")
+              lipo -create "artifacts/native/$kind/iossimulator-arm64/$name" "artifacts/native/$kind/iossimulator-x64/$name" -output "artifacts/native/$kind/iossimulator/$name"
+              lipo -info "artifacts/native/$kind/iossimulator/$name"
+              module=${name#lib}
+              xcodebuild -create-xcframework \
+                -library "$library" \
+                -library "artifacts/native/$kind/iossimulator/$name" \
+                -output "artifacts/native/$kind/ios/${module%.a}.xcframework"
+            done
+          done
+
+      - name: Upload the macOS libraries
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: native-osx
+          path: artifacts/native/bin/osx/
+          if-no-files-found: error
+
+      - name: Upload the macOS layout libraries
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: native-test-osx
+          path: artifacts/native/test/osx/
+          if-no-files-found: error
+
+      - name: Upload the iOS libraries
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: native-ios
+          path: artifacts/native/bin/ios/
+          if-no-files-found: error
+
+      - name: Upload the iOS layout libraries
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: native-test-ios
+          path: artifacts/native/test/ios/
+          if-no-files-found: error
+
+      # An xcframework is a directory: every file in it is a subject.
+      - name: List the files to attest
+        run: find artifacts/native/bin/osx artifacts/native/test/osx artifacts/native/bin/ios artifacts/native/test/ios -type f -print0 | xargs -0 shasum -a 256 > "$RUNNER_TEMP/subjects.txt"
+
+      - name: Attest
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+        with:
+          subject-checksums: ${{ runner.temp }}/subjects.txt
+
+  android:
+    name: native (${{ matrix.rid }})
+    needs: changes
+    if: needs.changes.outputs.build == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        rid: [android-arm64, android-x64]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    permissions:
+      contents: read
+      id-token: write # sign the provenance attestation
+      attestations: write # store the provenance attestation
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+
+      # Runner images drop NDK versions as they update: the pinned one is installed into
+      # $ANDROID_HOME/ndk/, where build-native.cs finds it by its revision.
+      - name: Install the Android NDK
+        run: |
+          revision=$(jq -r .toolchains.androidNdk.revision build/versions.json)
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --install "ndk;$revision" < /dev/null
+
+      - name: Build
+        env:
+          RID: ${{ matrix.rid }}
+        run: dotnet run scripts/build-native.cs --rid "$RID" --install-tools
+
+      - name: Show the logs of failed package builds
+        if: failure()
+        shell: bash
+        run: find artifacts/native/obj -path '*installdir.failed/logs/*' -type f -exec tail -n 300 {} +
+
+      - name: Upload the libraries
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: native-${{ matrix.rid }}
+          path: artifacts/native/bin/${{ matrix.rid }}/
+          if-no-files-found: error
+
+      - name: Upload the layout libraries
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: native-test-${{ matrix.rid }}
+          path: artifacts/native/test/${{ matrix.rid }}/
+          if-no-files-found: error
+
+      - name: Attest
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+        with:
+          subject-path: |
+            artifacts/native/bin/${{ matrix.rid }}/*
+            artifacts/native/test/${{ matrix.rid }}/*
+
+  browser:
+    name: native (browser-wasm)
+    needs: changes
+    if: needs.changes.outputs.build == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    permissions:
+      contents: read
+      id-token: write # sign the provenance attestation
+      attestations: write # store the provenance attestation
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        env:
+          # A user-writable SDK, which the workload is installed into without sudo.
+          DOTNET_INSTALL_DIR: ${{ runner.temp }}/dotnet
+        with:
+          global-json-file: global.json
+
+      # The workload set is pinned so that the toolchain does not follow newer sets of the same SDK
+      # band; build-native.cs checks the Emscripten versions it brings (docs/adr/0025).
+      - name: Install the wasm-tools workload
+        run: dotnet workload install wasm-tools --version "$(jq -r .toolchains.emscripten.workloadVersion build/versions.json)"
+
+      - name: Build
+        run: dotnet run scripts/build-native.cs --rid browser-wasm --install-tools
+
+      - name: Show the logs of failed package builds
+        if: failure()
+        shell: bash
+        run: find artifacts/native/obj -path '*installdir.failed/logs/*' -type f -exec tail -n 300 {} +
+
+      - name: Upload the libraries
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: native-browser-wasm
+          path: artifacts/native/bin/browser-wasm/
+          if-no-files-found: error
+
+      - name: Upload the layout libraries
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: native-test-browser-wasm
+          path: artifacts/native/test/browser-wasm/
+          if-no-files-found: error
+
+      - name: Attest
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+        with:
+          subject-path: |
+            artifacts/native/bin/browser-wasm/*
+            artifacts/native/test/browser-wasm/*
+
+  # The check the ruleset requires: skipped builds pass, a failed or cancelled one does not.
+  natives:
+    name: natives
+    needs: [changes, linux, windows, apple, apple-merge, android, browser]
+    if: always()
+    runs-on: ubuntu-slim
+    timeout-minutes: 5
+    permissions: {}
+    steps:
+      - name: Check the builds
+        env:
+          RESULTS: ${{ join(needs.*.result, ' ') }}
+        run: |
+          echo "$RESULTS"
+          if [[ " $RESULTS " == *" failure "* || " $RESULTS " == *" cancelled "* ]]; then
+            exit 1
+          fi

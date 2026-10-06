@@ -169,20 +169,33 @@ flowchart LR
   libraries, one per interop library, compiled from the generated sources with the pinned headers
   (Dawn's from its installed package); they are in the xmake group `layout` and are never default
   targets ([0036](adr/0036-generated-layout-tests.md)).
-- `scripts/build-native.cs` builds the host's runtime identifier (`linux-x64` only, until roadmap
-  task 10). It checks that xmake and CMake are at their pinned versions, fetches each dependency
-  with git at its pinned commit into `artifacts/native/sources/`, with the entries of Dawn's `DEPS`
-  that `build/dawn/deps.json` lists, runs xmake with its state under `artifacts/native/`, and loads
-  the libraries of `artifacts/native/bin/<rid>/` to check their exports. It installs the layout
-  libraries apart, into `artifacts/native/test/<rid>/`, which only the test projects copy.
-- Dawn is its monolithic shared library `webgpu_dawn` with Dawn's default backends for the
-  platform; on Windows it also ships the `dxcompiler.dll` it builds, and FXC comes from the system
-  ([0030](adr/0030-d3d12-shader-compilers.md)). SDL3 is built without its audio subsystem, and the
-  build fails when a feature of its per-platform list is missing, so that every machine produces
-  the same library. miniaudio exports only its API and the shim's functions.
+- `scripts/build-native.cs` builds one runtime identifier, the host's or the one of `--rid`, on
+  any host that can build it (Linux and Windows natively, the Apple targets on macOS, Android and
+  the browser anywhere). With `--install-tools` it first installs the pinned xmake and CMake from
+  release archives checked by SHA-256. It checks the tools' versions, the NDK's revision and the
+  workload's Emscripten versions, fetches each dependency with git at its pinned commit into
+  `artifacts/native/sources/`, with the entries of Dawn's `DEPS` that `build/dawn/deps.json` lists
+  for the platform, runs xmake in `build/` with its state under `artifacts/native/`, and checks
+  the exports of the libraries of `artifacts/native/bin/<rid>/`: loaded into its process when it
+  can, read with `nm` otherwise. It installs the layout libraries apart, into
+  `artifacts/native/test/<rid>/`, which only the test projects copy.
+- Dawn is its monolithic library `webgpu_dawn` with Dawn's default backends for the platform,
+  shared except on iOS; on Windows it also ships the `dxcompiler.dll` it builds, and FXC comes
+  from the system ([0030](adr/0030-d3d12-shader-compilers.md)). In the browser it is Emdawnwebgpu,
+  built from the same commit, with its JavaScript libraries. SDL3 is built without its audio
+  subsystem, and the build fails when a feature of its per-platform list is missing, so that every
+  machine produces the same library. miniaudio exports only its API and the shim's functions.
 - The libraries keep their upstream names (`libwebgpu_dawn.so`, `libSDL3.so`, `libminiaudio.so`
-  on Linux). The host build depends on the host's glibc and C++ runtime and serves local work; the
-  shipped Linux binaries come from the glibc 2.28 environment of roadmap task 10.
+  on Linux), and the browser archives the module's (`SDL3.a`). A host build depends on the host's
+  glibc and C++ runtime and serves local work; the shipped Linux binaries come from the glibc 2.28
+  container of `build/linux/Dockerfile`. Nothing has to be installed beside the libraries: static
+  CRT on Windows, the system's `libstdc++` on Linux, `c++_static` on Android
+  ([0038](adr/0038-native-ci.md)).
+- The native workflow builds every runtime identifier on GitHub-hosted runners, Linux and Windows
+  arm64 included, when the native build inputs change, monthly and on demand; it attests every
+  file of its artifacts. macOS gets universal libraries, iOS one xcframework of static archives
+  per library. `scripts/fetch-native.cs` installs the attested artifacts of the newest run of
+  `main` whose inputs match the checkout ([0038](adr/0038-native-ci.md)).
 - `build/versions.json` is the single source of pinned versions, read by the scripts, the
   generator and CI. The xmake package definitions and the C shims live in `build/`; the
   `Jade.Native.*` packaging projects live in `native/`
@@ -190,7 +203,8 @@ flowchart LR
 - `THIRD-PARTY-NOTICES.md` reproduces the licenses of every third-party component compiled into
   the natives, from the license files of the pinned sources
   ([0002](adr/0002-license-and-public-identity.md)); it changes with `build/versions.json` and with
-  the build options, and is checked against the files Ninja records for each library target.
+  the build options, and is checked against the source directories that Ninja records for each
+  target, which every native job lists in its log.
 - Package layout ([0011](adr/0011-native-package-layout.md)):
 
 | Target | Location in the package |
@@ -263,7 +277,11 @@ Details and verification in [0025](adr/0025-browser-natives-with-workload-emscri
   packs are named 6.0.2, their `emcc` reports 6.0.3, and they are built from .NET's forks of
   Emscripten and LLVM. Archives are rebuilt whenever the SDK changes. `--use-port` cannot run
   during `dotnet build`, since the workload's Emscripten cache is read-only.
-- Archives are named after the imported module (`SDL3.a`, not `libSDL3.a`).
+- Archives are named after the imported module (`SDL3.a`, not `libSDL3.a`). `webgpu_dawn.a` is
+  Emdawnwebgpu, and ships with the four JavaScript libraries and the Closure externs that the
+  application's `emcc` link needs.
+- CI installs the workload set pinned in `build/versions.json`, and the build checks the pack
+  names and `emcc --version` against it ([0038](adr/0038-native-ci.md)).
 - wasm32 has 4-byte pointers and `size_t`.
 - The main loop never blocks; it is driven by `requestAnimationFrame`. WebGPU initialization is
   asynchronous, so the engine's startup path is asynchronous on every platform.
@@ -279,6 +297,9 @@ Details and verification in [0025](adr/0025-browser-natives-with-workload-emscri
   on every target, WebAssembly included (roadmap task 18).
 - CI regenerates the bindings and the layout tests on every host and fails if the committed code
   differs.
+- The native workflow builds the natives and the layout libraries of every runtime identifier
+  when a native build input changes, and the required `natives` check fails with any of them
+  ([0038](adr/0038-native-ci.md)).
 - Each interop assembly's test project checks its raw layer, checks that the host's library
   exports every function imported for its platform, and runs smoke tests against the host's
   natives from `artifacts/native/bin/<rid>/`; they are skipped where the natives are not built.
@@ -299,21 +320,23 @@ GitHub settings, security features and their phasing are described in
 | Workflow | Trigger | Role |
 | --- | --- | --- |
 | `ci.yml` | pull requests, pushes to `main` | `format` (`dotnet format --verify-no-changes`), then restore, build with warnings as errors, test, pack with package validation, build the binding generator with warnings as errors and check the regenerated bindings on `build (linux)`, `build (windows)` and `build (macos)` |
-| `codeql.yml` | pull requests, pushes to `main`, weekly | CodeQL for C# (traced build with the pinned SDK) and GitHub Actions |
+| `codeql.yml` | pull requests, pushes to `main`, weekly | CodeQL for C# (traced build with the pinned SDK), GitHub Actions and the C shim (`analyze (c-cpp)`) |
+| `native.yml` | pull requests, pushes to `main`, monthly, on demand | A `changes` job, then, when the native build inputs changed, the natives and layout libraries of every runtime identifier, uploaded as artifacts and attested; `natives` reports the outcome ([0038](adr/0038-native-ci.md)) |
 | `labels.yml` | changes to `.github/labels.yml` | Synchronizes the repository labels with `gh`; dry run on pull requests |
 | `labeler.yml` | pull requests (`pull_request_target`) | Applies the area labels of `.github/labeler.yml` from the changed paths |
 
-- The `main` ruleset requires `format`, the three `build` checks and the two CodeQL `analyze`
-  checks, on a branch up to date with `main`.
+- The `main` ruleset requires `format`, the three `build` checks, the three CodeQL `analyze`
+  checks and `natives`, on a branch up to date with `main`.
 - Every workflow sets `permissions: {}` at the top and grants each job only what it needs; every
   action is pinned to a full commit SHA with its version in a comment, and Dependabot updates them
   weekly, with the NuGet packages, after a seven-day cooldown.
-- Jobs run on pinned GitHub-hosted images (`ubuntu-24.04`, `windows-2025`, `macos-26`, and
-  `ubuntu-slim` for API-only jobs) and use no cache.
+- Jobs run on pinned GitHub-hosted images (`ubuntu-24.04`, `windows-2025`, `macos-26`,
+  `ubuntu-24.04-arm` and `windows-11-arm` for the arm64 natives, and `ubuntu-slim` for API-only
+  jobs) and use no cache.
 
 ## Current state
 
-As of 2026-10-05 the solution is scaffolded: `global.json`, the `Directory.*` files,
+As of 2026-10-06 the solution is scaffolded: `global.json`, the `Directory.*` files,
 `.editorconfig` and `Jade.slnx`, every project of the table above without code, the package README
 and icon, and `Jade.Tests`. Build, tests and pack pass with warnings as errors and package
 validation. The `Jade.Native.*` packages contain no native file yet. The CI baseline is in place:
@@ -326,9 +349,10 @@ miniaudio headers parsed for every RID) and generates the raw layers of `Jade.Wg
 functions). On the host, `Jade.Wgpu.Tests` creates a WebGPU instance and requests an adapter,
 `Jade.Sdl.Tests` initializes SDL3 video and creates a window, and `Jade.MiniAudio.Tests`
 initializes a miniaudio context; the generated layout tests of the three libraries match the C
-compiler's layouts of the 526 compared structures. The idiomatic layers and `Jade.Emscripten`, which will be generated
-too ([0035](adr/0035-emscripten-interop-generation.md)), are still to come.
-`scripts/build-native.cs` builds Dawn, SDL3 and miniaudio for `linux-x64` from the definitions of
-`build/`, and the layout libraries of the tests; the other RIDs, CI artifacts and packaging come
-later. No sample exists yet. The ordered
-list of next tasks is in the [roadmap](roadmap.md).
+compiler's layouts of the 526 compared structures. The idiomatic layers and `Jade.Emscripten`,
+which will be generated too ([0035](adr/0035-emscripten-interop-generation.md)), are still to
+come. `scripts/build-native.cs` builds Dawn (Emdawnwebgpu in the browser), SDL3, miniaudio and the
+layout libraries of the tests for each of the 12 runtime identifiers, and the native workflow
+builds and attests them all; `scripts/fetch-native.cs` installs them for local work. Packaging
+them is next. No sample exists yet. The ordered list of next tasks is in the
+[roadmap](roadmap.md).

@@ -11,8 +11,19 @@ namespace Jade.NativeBuild.Configuration;
 [JsonUnmappedMemberHandling(JsonUnmappedMemberHandling.Disallow)]
 internal sealed record DawnThirdParty
 {
-    /// <summary>Gets the paths of the entries, as keyed in the <c>deps</c> of the <c>DEPS</c> file.</summary>
+    /// <summary>Gets the paths of the entries every platform needs, as keyed in the <c>deps</c> of the <c>DEPS</c> file.</summary>
     public required IReadOnlyList<string> Paths { get; init; }
+
+    /// <summary>Gets the paths of the entries that only some platforms need, by xmake platform (DXC on <c>windows</c>).</summary>
+    public required IReadOnlyDictionary<string, IReadOnlyList<string>> Platforms { get; init; }
+
+    /// <summary>Gets the paths of the entries a platform needs.</summary>
+    /// <param name="platform">The xmake platform, such as <c>windows</c>.</param>
+    /// <returns>The common entries, then the platform's own.</returns>
+    public IReadOnlyList<string> GetPaths(string platform)
+    {
+        return Platforms.TryGetValue(platform, out var specific) ? [.. Paths, .. specific] : Paths;
+    }
 
     /// <summary>Reads <c>build/dawn/deps.json</c>.</summary>
     /// <param name="path">The path of the file.</param>

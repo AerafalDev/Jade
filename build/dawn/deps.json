@@ -9,5 +9,10 @@
     "third_party/vulkan-utility-libraries/src",
     "third_party/EGL-Registry/src",
     "third_party/OpenGL-Registry/src"
-  ]
+  ],
+  "platforms": {
+    "windows": [
+      "third_party/directx-shader-compiler/src"
+    ]
+  }
 }

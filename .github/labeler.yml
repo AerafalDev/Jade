@@ -24,6 +24,7 @@ documentation:
           - scripts/build-native.cs
           - scripts/build-native/**
           - scripts/fetch-native.cs
+          - scripts/fetch-native/**
 
 'area: roslyn':
   - changed-files:

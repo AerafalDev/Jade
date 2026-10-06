@@ -84,6 +84,12 @@ jobs:
       - name: Build the binding generator
         run: dotnet build scripts/binding-generator.cs -c Release -p:TreatWarningsAsErrors=true
 
+      # The native workflow runs these scripts only when its inputs change.
+      - name: Build the native scripts
+        run: |
+          dotnet build scripts/build-native.cs -c Release -p:TreatWarningsAsErrors=true
+          dotnet build scripts/fetch-native.cs -c Release -p:TreatWarningsAsErrors=true
+
       - name: Check the generated bindings
         shell: bash
         run: |

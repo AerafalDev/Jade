@@ -46,23 +46,46 @@ layout library.
 
 ## Native libraries
 
-`dotnet run scripts/build-native.cs` builds Dawn, SDL3 and miniaudio for the machine it runs on into
+The tests use the native libraries of `artifacts/native/bin/<rid>/` and the layout libraries of
+`artifacts/native/test/<rid>/` when they exist, and skip the native tests otherwise. There are two
+ways to get them.
+
+### Fetching the CI's natives
+
+`dotnet run scripts/fetch-native.cs` downloads the libraries that the native workflow built and
+attested for the machine it runs on, from the newest run of `main` that has them and whose native
+build inputs (`build/`, the native scripts, `global.json`, the workflow) match the checkout, and
+checks every file with `gh attestation verify` before installing it
+([0038](docs/adr/0038-native-ci.md)). It needs the GitHub CLI, signed in (`gh auth login`), since
+downloading an artifact requires authentication. `--rid <rid>`, repeatable, selects other runtime
+identifiers; `--run <id>` takes the artifacts of a given run, such as a pull request's, under the
+same condition on the inputs. A branch that changes the inputs builds its natives locally or through
+its pull request's run.
+
+### Building them
+
+`dotnet run scripts/build-native.cs` builds Dawn, SDL3 and miniaudio into
 `artifacts/native/bin/<rid>/`, from the sources pinned in `build/versions.json`
 ([0031](docs/adr/0031-native-build-definitions.md)), and the layout libraries of the tests into
-`artifacts/native/test/<rid>/`. Only `linux-x64` is supported so far; the other
-targets come with the native CI. The build needs, besides the SDK:
+`artifacts/native/test/<rid>/`. It builds the host's runtime identifier, or the one of
+`--rid <rid>`: Linux and Windows on their own platform and architecture, the Apple targets on
+macOS, Android with the NDK of `build/versions.json` (found through `ANDROID_HOME` or
+`ANDROID_NDK_ROOT`), and the browser with the `wasm-tools` workload
+(`dotnet workload install wasm-tools`). `--install-tools` installs the pinned xmake and CMake
+into `artifacts/native/tools/` first, as CI does. The build needs, besides the SDK:
 
-- xmake and CMake at exactly the versions of `build/versions.json`, which the script checks: the
-  distribution's packages when they match, otherwise the release binaries
-  `xmake-bundle-v<version>.linux.x86_64` (it needs `libncurses.so.6`, which Arch Linux does not
-  have) and `cmake-<version>-linux-x86_64.tar.gz`. xmake refuses to run as root.
-- git, Ninja, Python 3, and GCC or Clang with C++20 support (GCC 13.3 and 16.2 were tested).
-- The development files of the system libraries that Dawn and SDL3 compile against. SDL3's build
-  fails when one of the features Jade requires is missing, rather than leaving it out. On Ubuntu
-  24.04:
+- xmake and CMake at exactly the versions of `build/versions.json`, which the script checks:
+  `--install-tools`, or the distribution's packages when they match. On Linux and macOS
+  `--install-tools` compiles xmake from its sources, which needs `make` and a C compiler. xmake
+  refuses to run as root.
+- git, Ninja, Python 3 (`python` on Windows), and GCC, Clang or MSVC with C++20 support (GCC 13.3,
+  14.2 and 16.2 were tested on Linux).
+- On Linux, the development files of the system libraries that Dawn and SDL3 compile against.
+  SDL3's build fails when one of the features Jade requires is missing, rather than leaving it
+  out. On Ubuntu 24.04:
 
   ```bash
-  sudo apt-get install build-essential git python3 ninja-build pkg-config libncurses6 libx11-dev libx11-xcb-dev libxext-dev libxrandr-dev libxcursor-dev libxfixes-dev libxi-dev libxss-dev libxtst-dev libxkbcommon-dev libwayland-dev libdecor-0-dev libdrm-dev libgbm-dev libgl-dev libegl-dev libgles-dev libdbus-1-dev libibus-1.0-dev libudev-dev libusb-1.0-0-dev liburing-dev libfribidi-dev libthai-dev
+  sudo apt-get install build-essential git python3 ninja-build pkg-config libx11-dev libx11-xcb-dev libxext-dev libxrandr-dev libxcursor-dev libxfixes-dev libxi-dev libxss-dev libxtst-dev libxkbcommon-dev libwayland-dev libdecor-0-dev libdrm-dev libgbm-dev libgl-dev libegl-dev libgles-dev libdbus-1-dev libibus-1.0-dev libudev-dev libusb-1.0-0-dev liburing-dev libfribidi-dev libthai-dev
   ```
 
   On Arch Linux, with its `xmake` and `cmake` packages:
@@ -75,7 +98,18 @@ targets come with the native CI. The build needs, besides the SDK:
 
 The first build fetches about 1 GB of sources into `artifacts/native/sources/` and takes a few
 minutes; later builds reuse them and only rebuild a library whose pinned commit or definition in
-`build/` changed. The host build links against the host's C runtime and is meant for local work.
+`build/` changed. A host build links against the host's C runtime and is meant for local work. The
+shipped Linux libraries come from the glibc 2.28 environment of `build/linux/Dockerfile`, which
+CI runs as the runner's user with the runner's SDK mounted. The same build runs locally, in a
+checkout of its own since the container's paths under `artifacts/` differ from the host's, with:
+
+```bash
+docker build --tag jade-native-linux build/linux
+```
+
+```bash
+docker run --rm --init --user "$(id -u):$(id -g)" --env HOME=/tmp --env DOTNET_ROOT=/opt/dotnet --volume "$(dirname "$(readlink -f "$(command -v dotnet)")"):/opt/dotnet:ro" --volume "$PWD:/work" --workdir /work jade-native-linux bash -c 'PATH=/opt/dotnet:$PATH dotnet run scripts/build-native.cs --install-tools'
+```
 
 ## Conventions
 

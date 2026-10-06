@@ -19,8 +19,8 @@ Status: `done`, `next`, `planned`.
 | 7 | Generator: WebGPU raw layer | 2, 5, 6 | done |
 | 8 | Generator: SDL3 and miniaudio raw layers | 5, 6 | done |
 | 9 | Generated layout tests on the host | 6, 7, 8 | done |
-| 10 | Native CI matrix for every RID | 3, 6 | next |
-| 11 | `Jade.Native.*` packaging | 10 | planned |
+| 10 | Native CI matrix for every RID | 3, 6 | done |
+| 11 | `Jade.Native.*` packaging | 10 | next |
 | 12 | WebGPU idiomatic layer | 7 | planned |
 | 13 | SDL3 and miniaudio idiomatic layers | 8 | planned |
 | 14 | Desktop sample | 9, 11, 12, 13 | planned |
@@ -161,30 +161,31 @@ listing every difference, when a C# field type, a field order, an inline array l
 [0036](adr/0036-generated-layout-tests.md) (what is compared, the generated C source, the layout
 libraries, how the tests load them).
 
-### 10. Native CI matrix for every RID
+### 10. Native CI matrix for every RID (done, 2026-10-06)
 
-- Native builds on a runner matrix for every RID of [0012](adr/0012-supported-targets.md), at the
-  minimum OS versions of [0024](adr/0024-minimum-os-versions.md): a glibc 2.28 environment (Dawn
-  uses the `manylinux_2_28` images), universal macOS and iOS simulator binaries, Android NDK,
-  browser archives built with the workload's Emscripten toolchain
-  ([0025](adr/0025-browser-natives-with-workload-emscripten.md)); artifacts with provenance
-  attestations; `scripts/fetch-native.cs`; CodeQL C/C++ for the shims; a check that the workload's
-  Emscripten versions match `build/versions.json`.
-- Validate Emdawnwebgpu with the workload's Emscripten (Dawn tests it with emsdk 5.0.6), and the
-  use of the workload's toolchain outside MSBuild.
-- Build the layout libraries of [0036](adr/0036-generated-layout-tests.md) for every RID too, as
-  test-only artifacts (static archives for iOS and the browser; MSVC needs C11 or later for
-  `_Alignof`).
-- Extend `build/` and `build-native.cs` to every RID ([0031](adr/0031-native-build-definitions.md)):
-  SDL3 feature lists per platform, the built DXC and its `DEPS` entry on Windows
-  ([0030](adr/0030-d3d12-shader-compilers.md)), `MA_NO_RUNTIME_LINKING` and Objective-C for
-  miniaudio on Apple platforms, the glibc 2.28 environment and how the C++ runtime is linked; xmake
-  must not run as root in containers. Check `THIRD-PARTY-NOTICES.md` against the files compiled
-  for each target, as done for `linux-x64`.
-- **Decision to take: native build runners (including Linux and Windows arm64), frequency and
-  caching** ([0022](adr/0022-ci-runners-and-caching.md) covers the managed CI only).
-- Done when a workflow run produces attested artifacts for every RID and `fetch-native.cs`
-  retrieves them.
+`scripts/build-native.cs` builds any of the 12 runtime identifiers its host can build (`--rid`),
+installs the pinned xmake and CMake from SHA-256-pinned archives (`--install-tools`, xmake built
+from source on Linux and macOS), checks the NDK's revision and the workload's Emscripten versions,
+and checks the exports of libraries it cannot load with `nm`; xmake runs in `build/`, which fixes
+the build directory that landed outside the repository. `build/` gained the definitions of every
+platform: Dawn shared (static on iOS) with the built DXC on Windows, Emdawnwebgpu with its
+JavaScript libraries in the browser, SDL3 with a list of required features per platform, miniaudio
+as Objective-C on iOS, static archives and module names on iOS and in the browser, the static CRT
+on Windows and `c++_static` on Android; `build/dawn/deps.json` gained per-platform entries;
+`build/linux/Dockerfile` is the glibc 2.28 environment (`manylinux_2_28` by digest, SDL3's
+development packages, libdecor and liburing built from their release commits).
+`.github/workflows/native.yml` builds every runtime identifier on GitHub-hosted runners, merges
+the Apple builds into universal libraries and xcframeworks, uploads the natives and the layout
+libraries as separate artifacts, attests every file, lists the compiled source directories for
+`THIRD-PARTY-NOTICES.md`, and reports through the required `natives` check; a `changes` job skips
+the builds when the native build inputs are unchanged. `scripts/fetch-native.cs` installs the
+attested artifacts of the newest matching run of `main` (or of `--run`), verified with
+`gh attestation verify`. CodeQL analyzes the C shim (`analyze (c-cpp)`), and the CI `build` jobs
+build both native scripts with warnings as errors. Decision:
+[0038](adr/0038-native-ci.md) (runners, build environments and tools, compile targets and
+runtimes, triggers without cache, artifacts and attestations, `fetch-native.cs`, CodeQL); the
+OpenSSF Scorecard workflow was removed on the way ([0037](adr/0037-github-repository-baseline.md),
+supersedes 0017).
 
 ### 11. `Jade.Native.*` packaging
 
@@ -192,6 +193,12 @@ libraries, how the tests load them).
   browser ([0011](adr/0011-native-package-layout.md)).
 - How the packages surface the minimum OS versions of [0024](adr/0024-minimum-os-versions.md),
   which are above .NET 11's floors on iOS and Android.
+- Pack from the attested artifacts of the native workflow ([0038](adr/0038-native-ci.md)), and
+  verify them first. The iOS archives are static: the `buildTransitive/` targets link libc++ and
+  the frameworks SDL3, Dawn and miniaudio need (miniaudio's `MA_NO_RUNTIME_LINKING` needs
+  CoreFoundation, CoreAudio and AudioToolbox). The browser targets pass Emdawnwebgpu's four
+  JavaScript libraries and `webgpu-externs.js` to the link. SDL3's macOS library keeps the install
+  name `@rpath/libSDL3.0.dylib`.
 - Done when the packages pass package validation and contain every RID.
 
 ### 12. WebGPU idiomatic layer
@@ -229,6 +236,8 @@ libraries, how the tests load them).
 
 - `requestAnimationFrame` loop through `Jade.Emscripten` (task 20), asynchronous WebGPU
   initialization.
+- Check the browser imports of `Jade.Wgpu` against Emdawnwebgpu's exports: its archive defines 46
+  functions with C++ linkage only, such as `wgpuAdapterSetLabel` ([0038](adr/0038-native-ci.md)).
 - Done when the sample runs in a WebGPU-capable browser from the packages.
 
 ### 16. Android sample
@@ -282,7 +291,7 @@ libraries, how the tests load them).
 | Source of Emscripten's headers and per-library targets | 20 |
 | How the layout tests reach statically linked layout libraries | 18 |
 | `required` members, public constants, the `Buffer` name | 12 |
-| Native build runners, frequency and caching; emulator tests | 10, 16 |
+| Emulator tests | 16 |
 | Package versioning and release workflow | 19 |
 
 ## Later milestones

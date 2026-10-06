@@ -77,6 +77,7 @@ tools are out of scope for now.
 | Layout tests | Size and alignment of every generated structure (unions, anonymous records, mapped .NET types included), size and offset of every member and of the first element of arrays; C side generated into `build/layout/<name>.g.c`, built by xmake into test-only `jade_<name>_layout` libraries (group `layout`, `artifacts/native/test/<rid>/`) that export one table function; C# side generated into `tests/<project>.Tests/Generated/LayoutTests.g.cs`, one test listing every difference, inconclusive without the library | [0036](docs/adr/0036-generated-layout-tests.md) |
 | Natives | Built by us with xmake (CMake for Dawn and SDL3); `build/versions.json` is the single source of versions, each citing its source | [0010](docs/adr/0010-native-builds-with-xmake.md), [0023](docs/adr/0023-repository-layout-and-conventions.md) |
 | Native build | `build/xmake.lua` with one definition per dependency; `scripts/build-native.cs` checks the pinned xmake and CMake, fetches sources with git at the pinned commits (Dawn's `DEPS` entries listed in `build/dawn/deps.json`), runs xmake isolated under `artifacts/native/`; SDL3 without audio and with a required feature list per platform; `MA_API` and Apple `MA_NO_RUNTIME_LINKING` only; upstream library names | [0031](docs/adr/0031-native-build-definitions.md) |
+| Native CI | `native.yml` builds every RID on GitHub-hosted runners (Linux and Windows arm64 natively, Linux in the glibc 2.28 container of `build/linux/Dockerfile`, macOS universal through `lipo`, iOS xcframeworks of static archives) when the native build inputs change, monthly and on demand; required `natives` check; no cache, no committed binaries; every artifact file attested; `build-native.cs --rid`, `--install-tools` (SHA-256-pinned xmake and CMake); static CRT on Windows, `c++_static` on Android; `fetch-native.cs` takes the newest matching run of `main` and verifies every file; CodeQL for the C shim | [0038](docs/adr/0038-native-ci.md) |
 | D3D12 compilers | DXC built by Dawn and shipped as `dxcompiler.dll`; `d3dcompiler_47.dll` is the system's, never redistributed | [0030](docs/adr/0030-d3d12-shader-compilers.md) |
 | Native packages | `runtimes/{rid}/native`; `buildTransitive/` for iOS and the browser | [0011](docs/adr/0011-native-package-layout.md) |
 | Targets | 12 RIDs, universal macOS and iOS simulator binaries, old glibc; adding a RID needs an ADR | [0012](docs/adr/0012-supported-targets.md) |
@@ -105,7 +106,11 @@ Open decisions and the order of the next tasks are in the [roadmap](docs/roadmap
   with an XML comment. Each generated interop project has a `bindings.json`.
 - The native build is `scripts/build-native.cs`, with its code in `scripts/build-native/` under the
   same rules. Each dependency's xmake definition is in `build/<dependency>/`; a change to it or to
-  its pinned commit rebuilds that package.
+  its pinned commit rebuilds that package. `scripts/fetch-native.cs`, with its code in
+  `scripts/fetch-native/`, includes the shared files of `scripts/build-native/` it needs.
+- The native build inputs are `build/`, `scripts/build-native.cs`, `scripts/build-native/`,
+  `global.json` and `.github/workflows/native.yml`: the `changes` job of the workflow and
+  `scripts/fetch-native/NativeInputs.cs` list them, and change together.
 - After a regeneration that changes public declarations, update `PublicAPI.Unshipped.txt` with the
   analyzer's fix (see Commands) and remove by hand the lines RS0017 reports; never write generated
   declarations into it by hand.
@@ -193,7 +198,27 @@ Re-check these at every SDK or dependency update.
 | libclang names a record without tag after its typedef (`typedef struct { … } ma_vec3f;`): `TypedefNameForAnonDecl` is set and `IsAnonymous` is false, and `struct ma_vec3f` would name another type | generator output and GCC build of `build/layout/miniaudio.g.c` | 2026-10-05 |
 | Dawn installs `include/webgpu/webgpu.h`, which includes the generated `include/dawn/webgpu.h`, in its package | `src/dawn/CMakeLists.txt` (`dawn_headers`) at `b1236a9`; the installed package | 2026-10-05 |
 | xmake 3.1.1 builds and installs only the default targets without a target name, and `--group` selects a group's targets whether default or not; `add_packages(name, {links = {}})` replaces the package's links; `add_shflags("-Wl,--as-needed")` lands after the packages' `-l` flags and does not drop them | `get_targets` in `modules/private/action/utils.lua`, `_get_from_packages` in `core/project/target.lua`; `xmake build -v` | 2026-10-05 |
-| The native build's xmake build directory ends up outside the repository: `xmake.conf` stores `--builddir` as `../artifacts/native/obj/<rid>/build`, which resolves from the repository root to its parent's `artifacts/` (not fixed yet) | `artifacts/native/obj/linux-x64/config/.xmake/linux/x86_64/xmake.conf`; `find` | 2026-10-05 |
+| `xmake config` stores `--builddir` relative to the project directory, and with `--project` xmake reads it back relative to the working directory, so `build-native.cs` runs xmake in `build/` | `config.builddir` in `core/project/config.lua` and `actions/config/main.lua` of xmake 3.1.1; `artifacts/native/obj/linux-x64/config/.xmake/linux/x86_64/xmake.conf` | 2026-10-06 |
+| xmake 3.1.1 publishes no Linux arm64 binary; its macOS bundle keeps its scripts inside the executable, so its Xcode toolchain finds no `scripts/gas-preprocessor.pl`, the iOS device assembler ("cannot get program for as"); the source archive builds with `./configure --prefix`, `make`, `make install` | release assets; `core/tool/tool.lua`; CI `ios-arm64` job; manylinux_2_28 container | 2026-10-06 |
+| xmake's `package.tools.cmake` selects the simulator SDK for `x86_64` only; arm64 simulator builds pass `CMAKE_OSX_SYSROOT=iphonesimulator` | `_get_configs_for_appleos` in `modules/package/tools/cmake.lua` | 2026-10-06 |
+| `ProcessStartInfo` resolves a relative program name from the process's directory, not from `WorkingDirectory` | `./configure` failing in the container build | 2026-10-06 |
+| `manylinux_2_28` (AlmaLinux 8.10, glibc 2.28, GCC 14.2.1, no Ninja) has every SDL3 development package except libdecor (absent) and liburing-ffi (EL8 has liburing 1.0.7); libdecor 0.2.5 and liburing 2.15 build there from their release commits | `dnf repoquery`; `build/linux/Dockerfile` | 2026-10-06 |
+| The workload's Emscripten runs outside MSBuild with `DOTNET_EMSCRIPTEN_LLVM_ROOT`, `DOTNET_EMSCRIPTEN_BINARYEN_ROOT`, `DOTNET_EMSCRIPTEN_NODE_JS` (read by the pack's `.emscripten`); a writable copy of the Cache pack needs `EM_IGNORE_SANITY`, since its `sanity.txt` names the pack builder's LLVM path and `check_sanity` erases a mismatching cache | `BrowserWasmApp.targets`; `tools/shared.py` of the pack | 2026-10-06 |
+| `dotnet workload install --version <workload set>` pins the workload set; `11.0.100-rc.1.26460.1` selects the same Emscripten manifest as the SDK | `dotnet workload install --help`; `sdk-manifests/11.0.100-rc.1/workloadsets/` | 2026-10-06 |
+| Emdawnwebgpu is the CMake target `emdawnwebgpu_c`; its archive holds 46 C++-mangled functions (such as `wgpuAdapterSetLabel`) and its link needs four JavaScript libraries and `webgpu-externs.js` | `src/emdawnwebgpu/CMakeLists.txt` at `b1236a9`; `llvm-nm` of the archive | 2026-10-06 |
+| Dawn's install rules leave `dxcompiler.dll` in the build directory; the pinned DXC's longest path is 133 characters, past `MAX_PATH` from the source cache without `core.longpaths` | `src/dawn/native/CMakeLists.txt` at `b1236a9`; `gh api` tree of `9757d44` | 2026-10-06 |
+| A skipped job reports success to a required check; a workflow skipped by path filtering leaves its required checks pending; `GITHUB_TOKEN` events start no workflow run except `workflow_dispatch` and `repository_dispatch` | GitHub documentation | 2026-10-06 |
+| Artifacts are kept 90 days by default, 1 to 90 in a public repository | GitHub documentation | 2026-10-06 |
+| `actions/attest-build-provenance` 4 is a wrapper of `actions/attest`, which takes `subject-path` globs or a `subject-checksums` file and needs `id-token: write` and `attestations: write` | READMEs at `v4.2.2` | 2026-10-06 |
+| xmake's `package.tools.cmake` gives a CMake build on Windows one PDB directory for all compilers; DXC compiles its Release build with `/Zi` unless `CMAKE_MSVC_DEBUG_INFORMATION_FORMAT` is set, and its parallel `cl.exe` then fail on the shared `vc140.pdb` (C1041), with `/FS` too | `modules/package/tools/cmake.lua`; DXC `cmake/modules/HandleLLVMOptions.cmake` at `9757d44`; CI `win-x64` and `win-arm64` jobs | 2026-10-06 |
+| Abseil replaces `CMAKE_MSVC_RUNTIME_LIBRARY` with the DLL runtime unless `ABSL_MSVC_STATIC_RUNTIME=ON` (cl warning D9025 "overriding '/MT' with '/MD'"); DXC's LLVM takes its CRT from `CMAKE_CXX_FLAGS_RELEASE` | `third_party/abseil-cpp/CMakeLists.txt` at Dawn `b1236a9`; DXC `cmake/modules/ChooseMSVCCRT.cmake` at `9757d44` | 2026-10-06 |
+| An xmake `sourcekind` of `mm` does not compile a `.c` file as Objective-C (`add_sourceflags` only maps `cc` and `cxx` to `-x`); `add_cflags("-xobjective-c", {force = true})` does | `modules/core/tools/gcc.lua`; CI iOS simulator jobs | 2026-10-06 |
+| As a container's PID 1, .NET receives orphaned processes and its `Process` reaping fails with `ECHILD` ("Error while reaping child. errno = 10") or hangs; `docker run --init` avoids it | CI `linux-arm64` and `linux-x64` jobs | 2026-10-06 |
+| Ninja 1.13 rejects the deps log written by Ninja 1.8.2 (EL8's) and starts it over, so a build's deps are read with the Ninja that ran it | CI Linux jobs | 2026-10-06 |
+| SDL3 versions its ELF symbols (`SDL_Init@@SDL3_0.0.0`), as `nm -D` and `llvm-nm --dynamic` list them | `nm -D` of `libSDL3.so`; CI Android jobs | 2026-10-06 |
+| Runner images drop Android NDK versions as they update: `ubuntu-24.04` image `20261004.327` replaced NDK `28.2.13676358` with `30.0.16248370`, so the native workflow installs the pinned NDK with `$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager` | release notes of `ubuntu24/20261004.327` in `actions/runner-images`; CI Android jobs | 2026-10-06 |
+| MSVC's C compiler refuses the layout tables' `offsetof` expressions in a static initializer (C2099 "initializer is not a constant"), which GCC and Clang accept, so the generated layout sources fill the table at run time | CI `win-x64` job | 2026-10-06 |
+| MSVC `/W3` warns C4244 in miniaudio 0.11.25's embedded dr_wav (`miniaudio.h` line 80532, `ma_uint64` to `ma_uint32`), which GCC and Clang `-Wall` do not; xmake's `set_warnings("all", "error")` is `/W3 /WX` for `cl`, and a file's flags follow the target's, so `{cflags = "/WX-"}` relaxes one file | CI `win-arm64` job; `modules/core/tools/cl.lua` and `core/tool/compiler.lua` of xmake 3.1.1 | 2026-10-06 |
 | In a C# local, address differences give the offset and size of any member (pointers, function pointers, inline arrays, `&value.Array[0]`), and a sequential `struct { byte; T; }` places an unmanaged `T` at its alignment (1, 8, 8 and 4 for `byte`, `long`, `nint`, `Vector3`) | throwaway app, CoreCLR on `linux-x64` | 2026-10-05 |
 | `Marshal.OffsetOf` gives the offset of the marshalled layout, which need not be the managed one | its documentation | 2026-10-05 |
 
@@ -214,15 +239,17 @@ by [0037](docs/adr/0037-github-repository-baseline.md), which records every sett
   required; all actions allowed.
 - Ruleset `main` (id `24485772`) on the default branch, no bypass: pull request required
   (0 approvals, squash only), no deletion, no force push, linear history, required status checks
-  `format`, `build (linux)`, `build (windows)`, `build (macos)`, `analyze (csharp)` and
-  `analyze (actions)` from GitHub Actions (app id `15368`), branch up to date with `main`.
+  `format`, `build (linux)`, `build (windows)`, `build (macos)`, `analyze (csharp)`,
+  `analyze (actions)`, `analyze (c-cpp)` and `natives` from GitHub Actions (app id `15368`), branch
+  up to date with `main` (the last two since 2026-10-07).
 - The ruleset API turned on `require_extra_approval_for_unattributed_changes` by default: a pull
   request opened by Copilot under its own identity needs one extra approval from someone with
   write access. It stays enabled; with zero required approvals it has no effect, Dependabot pull
   requests included. Declare it explicitly in every ruleset update, since an omitted value is
   reset to `true`. A ruleset update is a `PUT` of the whole ruleset with `gh api`.
 
-Pending: provenance attestations (tasks 10 and 19) and CodeQL for C/C++ (task 10). The social
+Provenance attestations cover the native artifacts; those of the packages are pending (task 19).
+The social
 preview image (`docs/assets/social-preview.jpg`) is uploaded by hand in the repository settings;
 the REST API has no endpoint for it.
 
@@ -241,14 +268,15 @@ Run from the repository root; `global.json` selects the SDK and the test runner.
 | Build the binding generator as CI will (not in `Jade.slnx`) | `dotnet build scripts/binding-generator.cs -c Release -p:TreatWarningsAsErrors=true` |
 | Regenerate the bindings (CI fails on any diff) | `dotnet run scripts/binding-generator.cs` |
 | Declare generated public APIs in `PublicAPI.Unshipped.txt` | `dotnet format analyzers interop/<project>/<project>.csproj --diagnostics RS0016 --severity info --include-generated` |
-| Build the native build script with warnings as errors (not in `Jade.slnx`) | `dotnet build scripts/build-native.cs -c Release -p:TreatWarningsAsErrors=true` |
-| Build the natives and the layout libraries for the host (`linux-x64` only; prerequisites in `CONTRIBUTING.md`) | `dotnet run scripts/build-native.cs` |
+| Build the native scripts with warnings as errors (not in `Jade.slnx`; the CI `build` jobs do it) | `dotnet build scripts/build-native.cs -c Release -p:TreatWarningsAsErrors=true` and the same for `scripts/fetch-native.cs` |
+| Build the natives and the layout libraries (the host's RID by default; prerequisites in `CONTRIBUTING.md`) | `dotnet run scripts/build-native.cs [--rid <rid>] [--install-tools]` |
+| Fetch the attested natives of CI for the host (needs `gh auth login`) | `dotnet run scripts/fetch-native.cs [--rid <rid>]... [--run <id>]` |
 
 - Outputs go to `artifacts/` (`bin/`, `obj/`, `package/release/`, `test/`); the binding generator
   caches the pinned sources in `artifacts/binding-generator/sources/`. The native build writes to
   `artifacts/native/`: `sources/` (git checkouts), `xmake/` (xmake's global directory), `obj/<rid>/`,
-  `bin/<rid>/` (the libraries) and `test/<rid>/` (the layout libraries, never packaged); xmake's
-  build directory currently lands outside the repository (see the verified facts).
+  `bin/<rid>/` (the libraries), `test/<rid>/` (the layout libraries, never packaged) and `tools/`
+  (the xmake and CMake of `--install-tools`).
 - SDK RC 1 bug: `dotnet test` with a relative project path can fail to load the project
   (dotnet/sdk#56196); pass an absolute path or run it from the root without a path.
 - New projects go into `Jade.slnx` with `dotnet sln Jade.slnx add --include-references false

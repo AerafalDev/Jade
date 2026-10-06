@@ -29,7 +29,8 @@
       "provider": "wasm-tools workload of the SDK pinned in global.json",
       "version": "6.0.3",
       "packVersion": "6.0.2",
-      "source": "SDK 11.0.100-rc.1.26425.128: the microsoft.net.workload.emscripten.current manifest references the Microsoft.NET.Runtime.Emscripten.6.0.2.* packs (11.0.0-rc.1.26425.128), whose emcc --version prints 6.0.3 (ADR 0025)."
+      "workloadVersion": "11.0.100-rc.1.26460.1",
+      "source": "SDK 11.0.100-rc.1.26425.128: the microsoft.net.workload.emscripten.current manifest references the Microsoft.NET.Runtime.Emscripten.6.0.2.* packs (11.0.0-rc.1.26425.128), whose emcc --version prints 6.0.3 (ADR 0025). The workload set 11.0.100-rc.1.26460.1 (dotnet workload search version, newest on 2026-10-05) selects the same microsoft.net.workload.emscripten.current manifest, 11.0.100-rc.1.26425.128."
     },
     "androidNdk": {
       "version": "r28c",
@@ -38,11 +39,51 @@
     },
     "xmake": {
       "version": "3.1.1",
-      "source": "GitHub release v3.1.1 of xmake-io/xmake (published 2026-08-27, newest on 2026-10-05)."
+      "assets": {
+        "linux": {
+          "url": "https://github.com/xmake-io/xmake/releases/download/v3.1.1/xmake-v3.1.1.tar.gz",
+          "sha256": "e67e6692bdf8fcb10cdb2cc78c0e8f0ae6c86ad3e3fc532880feca49eefb74b8"
+        },
+        "macos": {
+          "url": "https://github.com/xmake-io/xmake/releases/download/v3.1.1/xmake-v3.1.1.tar.gz",
+          "sha256": "e67e6692bdf8fcb10cdb2cc78c0e8f0ae6c86ad3e3fc532880feca49eefb74b8"
+        },
+        "windows-arm64": {
+          "url": "https://github.com/xmake-io/xmake/releases/download/v3.1.1/xmake-v3.1.1.arm64.zip",
+          "sha256": "95df181a36761b97f677f12a67e817e98c8d89c9ad9f266e7892ce674d005e0a"
+        },
+        "windows-x64": {
+          "url": "https://github.com/xmake-io/xmake/releases/download/v3.1.1/xmake-v3.1.1.win64.zip",
+          "sha256": "33fdf2f34a0e45fa731c000d59590d27b13dec7011f69cbf575004ed9279b4a2"
+        }
+      },
+      "source": "GitHub release v3.1.1 of xmake-io/xmake (published 2026-08-27, newest on 2026-10-05). Linux and macOS build the source archive: the release has no Linux arm64 binary, and the macOS bundle keeps its scripts inside the executable, where xmake's Xcode toolchain cannot run gas-preprocessor.pl as the iOS assembler. Hashes computed from the downloaded assets; the Windows ones match the release's .sha256 files."
     },
     "cmake": {
       "version": "4.4.4",
-      "source": "GitHub release v4.4.4 of Kitware/CMake (published 2026-10-02, newest on 2026-10-05). Dawn requires 3.22 or later and SDL3 declares the policy range 3.16...4.4, at their pinned commits."
+      "assets": {
+        "linux-arm64": {
+          "url": "https://github.com/Kitware/CMake/releases/download/v4.4.4/cmake-4.4.4-linux-aarch64.tar.gz",
+          "sha256": "a1b6cc63636a0e55c63257cf3315a8a5f129e42fade25db1afea4ff8ab06f25e"
+        },
+        "linux-x64": {
+          "url": "https://github.com/Kitware/CMake/releases/download/v4.4.4/cmake-4.4.4-linux-x86_64.tar.gz",
+          "sha256": "e5bb807f7728cb60cd8b27ebc97a2edb469b68655f21e844a600c3575b76f5bb"
+        },
+        "macos": {
+          "url": "https://github.com/Kitware/CMake/releases/download/v4.4.4/cmake-4.4.4-macos-universal.tar.gz",
+          "sha256": "4b7b73704b1db9b374e5c9ab8e17ac6148b817b6396ee75cd94a852cbac9d305"
+        },
+        "windows-arm64": {
+          "url": "https://github.com/Kitware/CMake/releases/download/v4.4.4/cmake-4.4.4-windows-arm64.zip",
+          "sha256": "ed673bbc4eb7c1e59b0407fd52f1680fc0ae3229a46b9b7b3ea9133764f07f67"
+        },
+        "windows-x64": {
+          "url": "https://github.com/Kitware/CMake/releases/download/v4.4.4/cmake-4.4.4-windows-x86_64.zip",
+          "sha256": "bace36e94b31c68ab6fa295f26dfa11219e0701cf7c94b0284a7d1cb13dac536"
+        }
+      },
+      "source": "GitHub release v4.4.4 of Kitware/CMake (published 2026-10-02, newest on 2026-10-05). Dawn requires 3.22 or later and SDL3 declares the policy range 3.16...4.4, at their pinned commits. Hashes from the release's cmake-4.4.4-SHA-256.txt."
     }
   },
   "minimumOs": {

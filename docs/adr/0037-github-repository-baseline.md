@@ -101,6 +101,10 @@ record's date were made under 0017.
 - 2026-10-05, this record: `scorecard.yml` and the README's Scorecard badge are removed, and the
   9 open Scorecard alerts are dismissed as "won't fix" with a comment that points here. The ruleset
   is unchanged.
+- 2026-10-07, roadmap task 10 ([0038](0038-native-ci.md)): the `main` ruleset also requires
+  `natives` (the native workflow, green when its builds are skipped) and `analyze (c-cpp)` (CodeQL
+  for the C shim), both from GitHub Actions; the other rules are unchanged. Provenance attestations
+  now cover the native artifacts.
 
 ## Alternatives considered
 

@@ -62,8 +62,21 @@ typedef struct jade_layout_entry {
     size_t offset;
 } jade_layout_entry;
 
-#define JADE_LAYOUT_RECORD(name, type) { name, sizeof(type), _Alignof(type), 0 }
-#define JADE_LAYOUT_MEMBER(name, type, member) { name, sizeof(((type*)0)->member), 0, offsetof(type, member) }
+/*
+ * The generated function fills its table when it runs, through a cursor, rather than in a static
+ * initializer: MSVC's C compiler does not take these offsetof expressions as constants there
+ * (C2099). Calls from several threads write the same values.
+ */
+static inline void jade_layout_set(jade_layout_entry* entry, const char* name, size_t size, size_t alignment, size_t offset)
+{
+    entry->name = name;
+    entry->size = size;
+    entry->alignment = alignment;
+    entry->offset = offset;
+}
+
+#define JADE_LAYOUT_RECORD(name, type) jade_layout_set(cursor++, name, sizeof(type), _Alignof(type), 0)
+#define JADE_LAYOUT_MEMBER(name, type, member) jade_layout_set(cursor++, name, sizeof(((type*)0)->member), 0, offsetof(type, member))
 
 /*
  * An anonymous record has no type name, so it is reached through the members that lead to it from
@@ -71,11 +84,11 @@ typedef struct jade_layout_entry {
  * alignment of an anonymous record is reported as 0, and the offsets and sizes of the records that
  * hold it depend on it anyway.
  */
-#define JADE_LAYOUT_NESTED_RECORD(name, type, path) { name, sizeof(((type*)0)->path), 0, 0 }
+#define JADE_LAYOUT_NESTED_RECORD(name, type, path) jade_layout_set(cursor++, name, sizeof(((type*)0)->path), 0, 0)
 #define JADE_LAYOUT_NESTED_MEMBER(name, type, path, member) \
-    { name, sizeof(((type*)0)->path.member), 0, offsetof(type, path.member) - offsetof(type, path) }
+    jade_layout_set(cursor++, name, sizeof(((type*)0)->path.member), 0, offsetof(type, path.member) - offsetof(type, path))
 
-#define JADE_LAYOUT_END { NULL, 0, 0, 0 }
+#define JADE_LAYOUT_END jade_layout_set(cursor++, NULL, 0, 0, 0)
 
 #ifdef __cplusplus
 }

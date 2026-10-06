@@ -6,7 +6,8 @@ namespace Jade.NativeBuild.Build;
 /// <summary>Runs the xmake project of <c>build/</c> for one target.</summary>
 /// <param name="layout">The repository layout.</param>
 /// <param name="target">The target to build.</param>
-internal sealed class XmakeProject(BuildLayout layout, NativeTarget target)
+/// <param name="toolchain">The target's configuration options and environment.</param>
+internal sealed class XmakeProject(BuildLayout layout, NativeTarget target, TargetToolchain toolchain)
 {
     /// <summary>
     /// The environment variables removed from every tool's environment: compilers and CMake read
@@ -28,7 +29,6 @@ internal sealed class XmakeProject(BuildLayout layout, NativeTarget target)
         var outputDirectory = layout.GetOutputDirectory(target.RuntimeIdentifier);
         var testOutputDirectory = layout.GetTestOutputDirectory(target.RuntimeIdentifier);
         var environment = CreateEnvironment(objectDirectory);
-        string[] project = ["--project=" + layout.XmakeProjectDirectory];
 
         // Packages are only built from the local definitions: xmake must not fetch its package
         // repository or prebuilt binaries.
@@ -37,27 +37,27 @@ internal sealed class XmakeProject(BuildLayout layout, NativeTarget target)
         await RunAsync(
             [
                 "config",
-                .. project,
                 "--builddir=" + Path.Combine(objectDirectory, "build"),
                 "--plat=" + target.XmakePlatform,
                 "--arch=" + target.XmakeArchitecture,
                 "--mode=release",
                 "--yes",
+                .. toolchain.Options,
                 .. options,
             ],
             environment,
             cancellationToken).ConfigureAwait(false);
 
-        await RunAsync(["build", .. project, "--yes"], environment, cancellationToken).ConfigureAwait(false);
-        await RunAsync(["build", .. project, "--group=" + TestGroup, "--yes"], environment, cancellationToken).ConfigureAwait(false);
+        await RunAsync(["build", "--yes"], environment, cancellationToken).ConfigureAwait(false);
+        await RunAsync(["build", "--group=" + TestGroup, "--yes"], environment, cancellationToken).ConfigureAwait(false);
 
         // Files left by a previous build would end up in the packages, or be loaded by the tests.
         DeleteDirectory(outputDirectory);
         DeleteDirectory(testOutputDirectory);
 
         // Without a group, xmake installs the default targets only, which leaves the test libraries out of the packages.
-        await RunAsync(["install", .. project, "--installdir=" + outputDirectory, "--yes"], environment, cancellationToken).ConfigureAwait(false);
-        await RunAsync(["install", .. project, "--group=" + TestGroup, "--installdir=" + testOutputDirectory, "--yes"], environment, cancellationToken).ConfigureAwait(false);
+        await RunAsync(["install", "--installdir=" + outputDirectory, "--yes"], environment, cancellationToken).ConfigureAwait(false);
+        await RunAsync(["install", "--group=" + TestGroup, "--installdir=" + testOutputDirectory, "--yes"], environment, cancellationToken).ConfigureAwait(false);
 
         return (outputDirectory, testOutputDirectory);
     }
@@ -72,14 +72,20 @@ internal sealed class XmakeProject(BuildLayout layout, NativeTarget target)
         }
     }
 
-    /// <summary>Runs xmake.</summary>
+    /// <summary>Runs xmake in the project directory.</summary>
     /// <param name="arguments">The arguments.</param>
     /// <param name="environment">The environment changes.</param>
     /// <param name="cancellationToken">Stops xmake.</param>
     /// <returns>A task that completes when xmake exits successfully.</returns>
-    private static Task RunAsync(IReadOnlyList<string> arguments, IReadOnlyDictionary<string, string?> environment, CancellationToken cancellationToken)
+    /// <remarks>
+    /// <c>xmake config</c> stores the build directory relative to the project directory, but with
+    /// <c>--project</c> xmake reads it back relative to the working directory
+    /// (<c>config.builddir</c> in <c>core/project/config.lua</c>), so a run from any other directory
+    /// builds somewhere else. Running in the project directory keeps both the same.
+    /// </remarks>
+    private Task RunAsync(IReadOnlyList<string> arguments, IReadOnlyDictionary<string, string?> environment, CancellationToken cancellationToken)
     {
-        return Command.RunAsync("xmake", arguments, environment, cancellationToken);
+        return Command.RunAsync("xmake", arguments, environment, layout.XmakeProjectDirectory, cancellationToken);
     }
 
     /// <summary>Creates the environment of the xmake runs.</summary>
@@ -92,7 +98,7 @@ internal sealed class XmakeProject(BuildLayout layout, NativeTarget target)
     /// </remarks>
     private Dictionary<string, string?> CreateEnvironment(string objectDirectory)
     {
-        var environment = new Dictionary<string, string?>(StringComparer.Ordinal)
+        var environment = new Dictionary<string, string?>(toolchain.Environment, StringComparer.Ordinal)
         {
             ["XMAKE_GLOBALDIR"] = layout.XmakeGlobalDirectory,
             ["XMAKE_CONFIGDIR"] = Path.Combine(objectDirectory, "config"),
