@@ -53,14 +53,14 @@ ways to get them.
 ### Fetching the CI's natives
 
 `dotnet run scripts/fetch-native.cs` downloads the libraries that the native workflow built and
-attested for the machine it runs on, from the newest successful run of `main` whose native build
-inputs (`build/`, the native scripts, `global.json`, the workflow) match the checkout, and checks
-every file with `gh attestation verify` before installing it
+attested for the machine it runs on, from the newest run of `main` that has them and whose native
+build inputs (`build/`, the native scripts, `global.json`, the workflow) match the checkout, and
+checks every file with `gh attestation verify` before installing it
 ([0038](docs/adr/0038-native-ci.md)). It needs the GitHub CLI, signed in (`gh auth login`), since
 downloading an artifact requires authentication. `--rid <rid>`, repeatable, selects other runtime
 identifiers; `--run <id>` takes the artifacts of a given run, such as a pull request's, under the
-same condition on the inputs. A branch that changes the inputs builds its natives locally or
-through its pull request's run.
+same condition on the inputs. A branch that changes the inputs builds its natives locally or through
+its pull request's run.
 
 ### Building them
 

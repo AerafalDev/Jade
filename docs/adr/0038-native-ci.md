@@ -36,21 +36,21 @@ Verified on 2026-10-05 and 2026-10-06:
   two: `libdecor-devel` does not exist, and liburing is 1.0.7 while SDL3 looks for
   `liburing-ffi` (`CMakeLists.txt` and `cmake/sdlchecks.cmake` at `release-3.4.18`); SDL3 loads
   both at runtime and needs their headers, pkg-config files and SONAME to build.
-- xmake 3.1.1: the release has no Linux arm64 binary. Its macOS bundle keeps the scripts inside
-  the executable, and xmake's Xcode toolchain uses `scripts/gas-preprocessor.pl` as the iOS device
+- xmake 3.1.1: the release has no Linux arm64 binary. Its macOS bundle keeps the scripts inside the
+  executable, and xmake's Xcode toolchain uses `scripts/gas-preprocessor.pl` as the iOS device
   assembler, a program that must exist as a file: the `ios-arm64` build failed with "cannot get
   program for as" (`core/tool/tool.lua`), and the source archive builds and installs on Linux and
   macOS. `xmake config` stores the build directory relative to the project directory, and with
   `--project` xmake reads it back relative to the working directory (`config.builddir` in
   `core/project/config.lua`), which put the build outside the repository. `package.tools.cmake`
-  selects the simulator SDK for `x86_64` only, and gives every CMake build on Windows one
-  directory for the compilers' PDB files: DXC compiles its Release build with `/Zi` unless
+  selects the simulator SDK for `x86_64` only, and gives every CMake build on Windows one directory
+  for the compilers' PDB files: DXC compiles its Release build with `/Zi` unless
   `CMAKE_MSVC_DEBUG_INFORMATION_FORMAT` is set (`cmake/modules/HandleLLVMOptions.cmake` at
   `9757d44`), and its parallel `cl.exe` processes failed on the shared `vc140.pdb` (C1041), with
-  `/FS` as well. Dawn and DXC require CMake versions older than CMP0141, so CMake adds no flag of its
-  own for that variable. A file's
-  `sourcekind` of `mm` does not compile a `.c` file as Objective-C: xmake only adds `-x` for C and
-  C++ (`add_sourceflags` in `modules/core/tools/gcc.lua`).
+  `/FS` as well. Dawn and DXC require CMake versions older than CMP0141, so CMake adds no flag of
+  its own for that variable. A file's `sourcekind` of `mm` does not compile a `.c` file as
+  Objective-C: xmake only adds `-x` for C and C++ (`add_sourceflags` in
+  `modules/core/tools/gcc.lua`).
 - The workload's Emscripten, run outside MSBuild: the pack's `.emscripten` reads
   `DOTNET_EMSCRIPTEN_LLVM_ROOT`, `DOTNET_EMSCRIPTEN_BINARYEN_ROOT` and `DOTNET_EMSCRIPTEN_NODE_JS`,
   as `BrowserWasmApp.targets` sets them; the Cache pack's `sanity.txt` names the LLVM directory of
@@ -132,10 +132,10 @@ Verified on 2026-10-05 and 2026-10-06:
   `CMAKE_OSX_DEPLOYMENT_TARGET`, `ANDROID_PLATFORM` 26 through `--ndk_sdkver`, and glibc 2.28 as
   the container's own.
 - Nothing has to be installed beside the libraries: Windows uses the static CRT (`/MT`) for Dawn,
-  DXC, SDL3 and miniaudio, abseil included, and DXC writes no PDB while compiling; Linux links the system's `libstdc++` through `gcc-toolset-14`, as
-  manylinux does, and .NET depends on it already; Android links `c++_static` into Dawn, the only
-  C++ library, whose API is C; Apple platforms use the system's libc++; in the browser the
-  application's link brings Emscripten's.
+  DXC, SDL3 and miniaudio, abseil included, and DXC writes no PDB while compiling; Linux links the
+  system's `libstdc++` through `gcc-toolset-14`, as manylinux does, and .NET depends on it already;
+  Android links `c++_static` into Dawn, the only C++ library, whose API is C; Apple platforms use
+  the system's libc++; in the browser the application's link brings Emscripten's.
 - iOS and the browser get static archives: one xcframework per library on iOS
   (`webgpu_dawn.xcframework`, `SDL3.xcframework`, `miniaudio.xcframework`) with the device slice
   and a universal simulator slice; archives named after the imported module in the browser
@@ -180,9 +180,11 @@ Verified on 2026-10-05 and 2026-10-06:
 - `dotnet run scripts/fetch-native.cs [--rid <rid>]... [--run <id>]` installs the artifacts of a
   runtime identifier, the host's by default, into `artifacts/native/bin/<rid>/` and
   `artifacts/native/test/<rid>/`, where the tests find them.
-- Without `--run`, it takes the newest successful run of `main` whose commit has the checkout's
-  native build inputs, uncommitted changes included, and that still has the artifacts; with
-  `--run`, that run, under the same condition.
+- Without `--run`, it takes the newest run of `main` that still has the artifacts and whose commit
+  has the checkout's native build inputs, uncommitted changes included. It searches the artifacts
+  by name rather than the runs, since most runs of `main` skip their builds. With `--run`, it takes
+  that run, under the same condition on the inputs. A run whose other jobs failed still serves:
+  each artifact is uploaded once its own build has passed.
 - It uses the GitHub CLI, which handles authentication, and verifies every file with
   `gh attestation verify`, for the native workflow, the run's commit and GitHub-hosted runners,
   before it replaces anything.
@@ -212,7 +214,8 @@ Verified on 2026-10-05 and 2026-10-06:
 - Emdawnwebgpu's C++-mangled functions are not callable from C#; the browser part of the
   `Jade.Wgpu` raw layer must be checked against the archive's exports (roadmap tasks 15 and 18).
 - Using the workload's Emscripten outside MSBuild depends on the pack layout and on
-  `EM_IGNORE_SANITY`; an SDK update re-checks both ([0025](0025-browser-natives-with-workload-emscripten.md)).
+  `EM_IGNORE_SANITY`; an SDK update re-checks both
+  ([0025](0025-browser-natives-with-workload-emscripten.md)).
 
 ## Alternatives considered
 
