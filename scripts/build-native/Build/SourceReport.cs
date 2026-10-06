@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Jade.NativeBuild.Tools;
 
 namespace Jade.NativeBuild.Build;
@@ -11,11 +12,8 @@ namespace Jade.NativeBuild.Build;
 /// with the Ninja that wrote it: another version rejects the log and starts it over. miniaudio and
 /// the shim are built by xmake itself, from their two known files.
 /// </remarks>
-internal static class SourceReport
+internal static partial class SourceReport
 {
-    /// <summary>The part of a path that leads into the source cache, <c>artifacts/native/sources/</c>.</summary>
-    private const string SourcesMarker = "/native/sources/";
-
     /// <summary>The number of directory levels kept under a dependency's root, enough to tell its third-party components apart.</summary>
     private const int Depth = 3;
 
@@ -42,20 +40,13 @@ internal static class SourceReport
 
             foreach (var line in deps.Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
             {
-                var path = line.Replace('\\', '/');
-                var start = path.IndexOf(SourcesMarker, StringComparison.Ordinal);
+                var match = CachedSource().Match(line.Replace('\\', '/'));
 
-                if (start < 0)
+                if (match.Success)
                 {
-                    continue;
-                }
+                    var directory = match.Groups["path"].Value.Split('/')[..^1];
 
-                // <dependency>/<commit>/<directories...>/<file>
-                var parts = path[(start + SourcesMarker.Length)..].Split('/');
-
-                if (parts.Length >= 3)
-                {
-                    _ = directories.Add(string.Join('/', [parts[0], .. parts[2..^1].Take(Depth)]));
+                    _ = directories.Add(string.Join('/', [match.Groups["dependency"].Value, .. directory.Take(Depth)]));
                 }
             }
         }
@@ -67,4 +58,14 @@ internal static class SourceReport
             await output.WriteLineAsync($"  {directory}".AsMemory(), cancellationToken).ConfigureAwait(false);
         }
     }
+
+    /// <summary>Matches a file of the source cache, <c>sources/&lt;dependency&gt;/&lt;commit&gt;/&lt;path&gt;</c>.</summary>
+    /// <returns>The pattern, with the <c>dependency</c> and <c>path</c> groups.</returns>
+    /// <remarks>
+    /// Ninja records the paths as the compiler reports them: absolute with GCC and Clang, while the
+    /// Windows build listed nothing under the absolute <c>artifacts/native/sources/</c> prefix. The
+    /// pattern takes any prefix and case.
+    /// </remarks>
+    [GeneratedRegex(@"(?:^|/)sources/(?<dependency>[^/]+)/[0-9a-f]{40}/(?<path>.+)$", RegexOptions.IgnoreCase)]
+    private static partial Regex CachedSource();
 }
