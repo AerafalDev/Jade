@@ -75,9 +75,11 @@ Verified on 2026-10-05 and 2026-10-06:
   hung on `linux-x64`; `docker run --init` avoids it. The runner's Ninja 1.13 rejects the deps
   log of the container's Ninja 1.8.2.
 - SDL3 versions its ELF symbols (`SDL_Init@@SDL3_0.0.0`), as `llvm-nm --dynamic` lists them.
-- Durations on the standard runners, Dawn included: the browser about 2 minutes, macOS, iOS,
-  Linux and Android 13 to 21 minutes per job, Windows about an hour, DXC doubling the steps of
-  Dawn's build (2,446 against 1,269 on Linux).
+- Durations on the standard runners, Dawn included (run 37526739908): the browser 3 minutes,
+  macOS, iOS, Linux and Android 9 to 22 minutes per job, Windows 45 minutes on arm64 and 60 on
+  x64, DXC doubling the steps of Dawn's build (2,446 against 1,269 on Linux). That run's artifacts
+  were fetched with `fetch-native.cs` for the 12 runtime identifiers, 115 files verified, and the
+  tests pass on CachyOS with its `linux-x64` libraries.
 
 ## Decision
 
