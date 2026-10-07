@@ -18,7 +18,7 @@ public unsafe partial struct BindGroupEntry
     public uint Binding;
 
     /// <summary>Maps <c>WGPUBindGroupEntry.buffer</c>.</summary>
-    public Buffer Buffer;
+    public GpuBuffer Buffer;
 
     /// <summary>Maps <c>WGPUBindGroupEntry.offset</c>.</summary>
     public ulong Offset;

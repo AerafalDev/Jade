@@ -17,4 +17,11 @@ internal sealed record Parameter
 
     /// <summary>Gets whether the parameter may be null.</summary>
     public bool IsOptional { get; init; }
+
+    /// <summary>
+    /// Gets the value the API documents for an argument the caller leaves out, such as
+    /// <c>WGPU_WHOLE_SIZE</c> for the size of a vertex buffer, or <see langword="null"/> when it
+    /// documents none. C has no default arguments: only the idiomatic layer uses it.
+    /// </summary>
+    public ValueExpression? Default { get; init; }
 }

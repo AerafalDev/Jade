@@ -51,6 +51,13 @@ internal sealed record LibraryConfiguration
     /// </summary>
     public IReadOnlyDictionary<string, string> Words { get; init; } = FrozenDictionary<string, string>.Empty;
 
+    /// <summary>
+    /// Gets the settings of the idiomatic layer, or <see langword="null"/> for a library that only
+    /// has its raw layer. Only the <c>dawn.json</c> front-end gives functions the owners and kinds it
+    /// needs (ADR 0040).
+    /// </summary>
+    public IdiomaticConfiguration? Idiomatic { get; init; }
+
     /// <summary>Reads and validates a library configuration.</summary>
     /// <param name="path">The path of the <c>bindings.json</c> file.</param>
     /// <returns>The configuration.</returns>
@@ -79,6 +86,11 @@ internal sealed record LibraryConfiguration
             .Concat(Clang?.IncludeDirectories ?? [])
             .Concat(Clang?.ForcedIncludes ?? [])
             .Concat(Clang?.Shims ?? []);
+
+        if (Idiomatic is not null && DawnJson is null)
+        {
+            throw new InvalidDataException($"'{path}': 'idiomatic' needs the 'dawnJson' front-end, whose functions have an owner and a kind.");
+        }
 
         if (Clang is { Prefixes.Count: 0 })
         {

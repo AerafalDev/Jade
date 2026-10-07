@@ -10,9 +10,37 @@
   },
   "names": {
     "WGPUBool": "Bool32",
+    "WGPUBuffer": "GpuBuffer",
     "WGPUTextureBindingViewDimension.textureBindingViewDimension": "ViewDimension"
   },
   "words": {
     "sRGB": "Srgb"
+  },
+  "idiomatic": {
+    "constants": {
+      "WGPU_ARRAY_LAYER_COUNT_UNDEFINED": "WGPUTextureViewDescriptor",
+      "WGPU_COPY_STRIDE_UNDEFINED": "WGPUTexelCopyBufferLayout",
+      "WGPU_DEPTH_CLEAR_VALUE_UNDEFINED": "WGPURenderPassDepthStencilAttachment",
+      "WGPU_DEPTH_SLICE_UNDEFINED": "WGPURenderPassColorAttachment",
+      "WGPU_LIMIT_U32_UNDEFINED": "WGPULimits",
+      "WGPU_LIMIT_U64_UNDEFINED": "WGPULimits",
+      "WGPU_MIP_LEVEL_COUNT_UNDEFINED": "WGPUTextureViewDescriptor",
+      "WGPU_QUERY_SET_INDEX_UNDEFINED": "WGPUPassTimestampWrites",
+      "WGPU_WHOLE_MAP_SIZE": "WGPUBuffer",
+      "WGPU_WHOLE_SIZE": "WGPUBuffer"
+    },
+    "handWritten": {
+      "WGPUDeviceDescriptor.deviceLostCallbackInfo": "A callback the device keeps: DeviceDescriptor.DeviceLost holds a delegate, released when the device-lost callback runs, which it does once for every device.",
+      "WGPUDeviceDescriptor.uncapturedErrorCallbackInfo": "A callback the device keeps: DeviceDescriptor.UncapturedError holds a delegate, released with the device-lost callback's.",
+      "wgpuBufferGetConstMappedRange": "Returns a pointer: GpuBuffer.GetConstMappedRange returns a read-only span sized from the buffer.",
+      "wgpuBufferGetMappedRange": "Returns a pointer: GpuBuffer.GetMappedRange returns a span sized from the buffer.",
+      "wgpuDevicePopErrorScope": "Its callback reports an error type and a message on success: Device.PopErrorScopeAsync returns them as a GpuError."
+    },
+    "skip": {
+      "WGPUDawnCacheDeviceDescriptor": "Holds callbacks the device keeps, with no notification that ends their lifetime.",
+      "WGPUSharedBufferMemoryHostPointerDescriptor": "Holds a dispose callback info, which the library calls once it no longer uses the memory; no use needs it yet.",
+      "wgpuDeviceSetLoggingCallback": "A callback the device keeps, with no notification that ends its lifetime.",
+      "wgpuGetProcAddress": "Returns a function pointer of the C API, which the bindings call directly."
+    }
   }
 }

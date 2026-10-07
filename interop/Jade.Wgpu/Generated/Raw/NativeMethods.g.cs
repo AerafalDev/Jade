@@ -152,73 +152,73 @@ internal static unsafe partial class NativeMethods
     /// <summary>Maps <c>wgpuBufferAddRef</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuBufferAddRef")]
     [global::System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(global::System.Runtime.CompilerServices.CallConvCdecl)])]
-    public static partial void BufferAddRef(Buffer buffer);
+    public static partial void BufferAddRef(GpuBuffer buffer);
 
     /// <summary>Maps <c>wgpuBufferCreateTexelView</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuBufferCreateTexelView")]
     [global::System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(global::System.Runtime.CompilerServices.CallConvCdecl)])]
     [global::System.Runtime.Versioning.UnsupportedOSPlatform("browser")]
-    public static partial TexelBufferView BufferCreateTexelView(Buffer buffer, TexelBufferViewDescriptor* descriptor);
+    public static partial TexelBufferView BufferCreateTexelView(GpuBuffer buffer, TexelBufferViewDescriptor* descriptor);
 
     /// <summary>Maps <c>wgpuBufferDestroy</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuBufferDestroy")]
     [global::System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(global::System.Runtime.CompilerServices.CallConvCdecl)])]
-    public static partial void BufferDestroy(Buffer buffer);
+    public static partial void BufferDestroy(GpuBuffer buffer);
 
     /// <summary>Maps <c>wgpuBufferGetConstMappedRange</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuBufferGetConstMappedRange")]
     [global::System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(global::System.Runtime.CompilerServices.CallConvCdecl)])]
-    public static partial void* BufferGetConstMappedRange(Buffer buffer, nuint offset, nuint size);
+    public static partial void* BufferGetConstMappedRange(GpuBuffer buffer, nuint offset, nuint size);
 
     /// <summary>Maps <c>wgpuBufferGetMapState</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuBufferGetMapState")]
     [global::System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(global::System.Runtime.CompilerServices.CallConvCdecl)])]
-    public static partial BufferMapState BufferGetMapState(Buffer buffer);
+    public static partial BufferMapState BufferGetMapState(GpuBuffer buffer);
 
     /// <summary>Maps <c>wgpuBufferGetMappedRange</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuBufferGetMappedRange")]
     [global::System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(global::System.Runtime.CompilerServices.CallConvCdecl)])]
-    public static partial void* BufferGetMappedRange(Buffer buffer, nuint offset, nuint size);
+    public static partial void* BufferGetMappedRange(GpuBuffer buffer, nuint offset, nuint size);
 
     /// <summary>Maps <c>wgpuBufferGetSize</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuBufferGetSize")]
     [global::System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(global::System.Runtime.CompilerServices.CallConvCdecl)])]
-    public static partial ulong BufferGetSize(Buffer buffer);
+    public static partial ulong BufferGetSize(GpuBuffer buffer);
 
     /// <summary>Maps <c>wgpuBufferGetUsage</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuBufferGetUsage")]
     [global::System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(global::System.Runtime.CompilerServices.CallConvCdecl)])]
-    public static partial BufferUsage BufferGetUsage(Buffer buffer);
+    public static partial BufferUsage BufferGetUsage(GpuBuffer buffer);
 
     /// <summary>Maps <c>wgpuBufferMapAsync</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuBufferMapAsync")]
     [global::System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(global::System.Runtime.CompilerServices.CallConvCdecl)])]
-    public static partial Future BufferMapAsync(Buffer buffer, MapMode mode, nuint offset, nuint size, BufferMapCallbackInfo callbackInfo);
+    public static partial Future BufferMapAsync(GpuBuffer buffer, MapMode mode, nuint offset, nuint size, BufferMapCallbackInfo callbackInfo);
 
     /// <summary>Maps <c>wgpuBufferReadMappedRange</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuBufferReadMappedRange")]
     [global::System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(global::System.Runtime.CompilerServices.CallConvCdecl)])]
-    public static partial Status BufferReadMappedRange(Buffer buffer, nuint offset, void* data, nuint size);
+    public static partial Status BufferReadMappedRange(GpuBuffer buffer, nuint offset, void* data, nuint size);
 
     /// <summary>Maps <c>wgpuBufferRelease</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuBufferRelease")]
     [global::System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(global::System.Runtime.CompilerServices.CallConvCdecl)])]
-    public static partial void BufferRelease(Buffer buffer);
+    public static partial void BufferRelease(GpuBuffer buffer);
 
     /// <summary>Maps <c>wgpuBufferSetLabel</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuBufferSetLabel")]
     [global::System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(global::System.Runtime.CompilerServices.CallConvCdecl)])]
-    public static partial void BufferSetLabel(Buffer buffer, StringView label);
+    public static partial void BufferSetLabel(GpuBuffer buffer, StringView label);
 
     /// <summary>Maps <c>wgpuBufferUnmap</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuBufferUnmap")]
     [global::System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(global::System.Runtime.CompilerServices.CallConvCdecl)])]
-    public static partial void BufferUnmap(Buffer buffer);
+    public static partial void BufferUnmap(GpuBuffer buffer);
 
     /// <summary>Maps <c>wgpuBufferWriteMappedRange</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuBufferWriteMappedRange")]
     [global::System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(global::System.Runtime.CompilerServices.CallConvCdecl)])]
-    public static partial Status BufferWriteMappedRange(Buffer buffer, nuint offset, void* data, nuint size);
+    public static partial Status BufferWriteMappedRange(GpuBuffer buffer, nuint offset, void* data, nuint size);
 
     /// <summary>Maps <c>wgpuCommandBufferAddRef</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuCommandBufferAddRef")]
@@ -253,12 +253,12 @@ internal static unsafe partial class NativeMethods
     /// <summary>Maps <c>wgpuCommandEncoderClearBuffer</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuCommandEncoderClearBuffer")]
     [global::System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(global::System.Runtime.CompilerServices.CallConvCdecl)])]
-    public static partial void CommandEncoderClearBuffer(CommandEncoder commandEncoder, Buffer buffer, ulong offset, ulong size);
+    public static partial void CommandEncoderClearBuffer(CommandEncoder commandEncoder, GpuBuffer buffer, ulong offset, ulong size);
 
     /// <summary>Maps <c>wgpuCommandEncoderCopyBufferToBuffer</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuCommandEncoderCopyBufferToBuffer")]
     [global::System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(global::System.Runtime.CompilerServices.CallConvCdecl)])]
-    public static partial void CommandEncoderCopyBufferToBuffer(CommandEncoder commandEncoder, Buffer source, ulong sourceOffset, Buffer destination, ulong destinationOffset, ulong size);
+    public static partial void CommandEncoderCopyBufferToBuffer(CommandEncoder commandEncoder, GpuBuffer source, ulong sourceOffset, GpuBuffer destination, ulong destinationOffset, ulong size);
 
     /// <summary>Maps <c>wgpuCommandEncoderCopyBufferToTexture</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuCommandEncoderCopyBufferToTexture")]
@@ -309,7 +309,7 @@ internal static unsafe partial class NativeMethods
     /// <summary>Maps <c>wgpuCommandEncoderResolveQuerySet</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuCommandEncoderResolveQuerySet")]
     [global::System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(global::System.Runtime.CompilerServices.CallConvCdecl)])]
-    public static partial void CommandEncoderResolveQuerySet(CommandEncoder commandEncoder, QuerySet querySet, uint firstQuery, uint queryCount, Buffer destination, ulong destinationOffset);
+    public static partial void CommandEncoderResolveQuerySet(CommandEncoder commandEncoder, QuerySet querySet, uint firstQuery, uint queryCount, GpuBuffer destination, ulong destinationOffset);
 
     /// <summary>Maps <c>wgpuCommandEncoderSetLabel</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuCommandEncoderSetLabel")]
@@ -320,7 +320,7 @@ internal static unsafe partial class NativeMethods
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuCommandEncoderWriteBuffer")]
     [global::System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(global::System.Runtime.CompilerServices.CallConvCdecl)])]
     [global::System.Runtime.Versioning.UnsupportedOSPlatform("browser")]
-    public static partial void CommandEncoderWriteBuffer(CommandEncoder commandEncoder, Buffer buffer, ulong bufferOffset, void* data, nuint size);
+    public static partial void CommandEncoderWriteBuffer(CommandEncoder commandEncoder, GpuBuffer buffer, ulong bufferOffset, void* data, nuint size);
 
     /// <summary>Maps <c>wgpuCommandEncoderWriteTimestamp</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuCommandEncoderWriteTimestamp")]
@@ -340,7 +340,7 @@ internal static unsafe partial class NativeMethods
     /// <summary>Maps <c>wgpuComputePassEncoderDispatchWorkgroupsIndirect</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuComputePassEncoderDispatchWorkgroupsIndirect")]
     [global::System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(global::System.Runtime.CompilerServices.CallConvCdecl)])]
-    public static partial void ComputePassEncoderDispatchWorkgroupsIndirect(ComputePassEncoder computePassEncoder, Buffer indirectBuffer, ulong indirectOffset);
+    public static partial void ComputePassEncoderDispatchWorkgroupsIndirect(ComputePassEncoder computePassEncoder, GpuBuffer indirectBuffer, ulong indirectOffset);
 
     /// <summary>Maps <c>wgpuComputePassEncoderEnd</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuComputePassEncoderEnd")]
@@ -447,7 +447,7 @@ internal static unsafe partial class NativeMethods
     /// <summary>Maps <c>wgpuDeviceCreateBuffer</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuDeviceCreateBuffer")]
     [global::System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(global::System.Runtime.CompilerServices.CallConvCdecl)])]
-    public static partial Buffer DeviceCreateBuffer(Device device, BufferDescriptor* descriptor);
+    public static partial GpuBuffer DeviceCreateBuffer(Device device, BufferDescriptor* descriptor);
 
     /// <summary>Maps <c>wgpuDeviceCreateCommandEncoder</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuDeviceCreateCommandEncoder")]
@@ -468,7 +468,7 @@ internal static unsafe partial class NativeMethods
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuDeviceCreateErrorBuffer")]
     [global::System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(global::System.Runtime.CompilerServices.CallConvCdecl)])]
     [global::System.Runtime.Versioning.UnsupportedOSPlatform("browser")]
-    public static partial Buffer DeviceCreateErrorBuffer(Device device, BufferDescriptor* descriptor);
+    public static partial GpuBuffer DeviceCreateErrorBuffer(Device device, BufferDescriptor* descriptor);
 
     /// <summary>Maps <c>wgpuDeviceCreateErrorComputePipeline</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuDeviceCreateErrorComputePipeline")]
@@ -845,7 +845,7 @@ internal static unsafe partial class NativeMethods
     /// <summary>Maps <c>wgpuQueueWriteBuffer</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuQueueWriteBuffer")]
     [global::System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(global::System.Runtime.CompilerServices.CallConvCdecl)])]
-    public static partial void QueueWriteBuffer(Queue queue, Buffer buffer, ulong bufferOffset, void* data, nuint size);
+    public static partial void QueueWriteBuffer(Queue queue, GpuBuffer buffer, ulong bufferOffset, void* data, nuint size);
 
     /// <summary>Maps <c>wgpuQueueWriteTexture</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuQueueWriteTexture")]
@@ -875,12 +875,12 @@ internal static unsafe partial class NativeMethods
     /// <summary>Maps <c>wgpuRenderBundleEncoderDrawIndexedIndirect</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuRenderBundleEncoderDrawIndexedIndirect")]
     [global::System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(global::System.Runtime.CompilerServices.CallConvCdecl)])]
-    public static partial void RenderBundleEncoderDrawIndexedIndirect(RenderBundleEncoder renderBundleEncoder, Buffer indirectBuffer, ulong indirectOffset);
+    public static partial void RenderBundleEncoderDrawIndexedIndirect(RenderBundleEncoder renderBundleEncoder, GpuBuffer indirectBuffer, ulong indirectOffset);
 
     /// <summary>Maps <c>wgpuRenderBundleEncoderDrawIndirect</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuRenderBundleEncoderDrawIndirect")]
     [global::System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(global::System.Runtime.CompilerServices.CallConvCdecl)])]
-    public static partial void RenderBundleEncoderDrawIndirect(RenderBundleEncoder renderBundleEncoder, Buffer indirectBuffer, ulong indirectOffset);
+    public static partial void RenderBundleEncoderDrawIndirect(RenderBundleEncoder renderBundleEncoder, GpuBuffer indirectBuffer, ulong indirectOffset);
 
     /// <summary>Maps <c>wgpuRenderBundleEncoderFinish</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuRenderBundleEncoderFinish")]
@@ -920,7 +920,7 @@ internal static unsafe partial class NativeMethods
     /// <summary>Maps <c>wgpuRenderBundleEncoderSetIndexBuffer</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuRenderBundleEncoderSetIndexBuffer")]
     [global::System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(global::System.Runtime.CompilerServices.CallConvCdecl)])]
-    public static partial void RenderBundleEncoderSetIndexBuffer(RenderBundleEncoder renderBundleEncoder, Buffer buffer, IndexFormat format, ulong offset, ulong size);
+    public static partial void RenderBundleEncoderSetIndexBuffer(RenderBundleEncoder renderBundleEncoder, GpuBuffer buffer, IndexFormat format, ulong offset, ulong size);
 
     /// <summary>Maps <c>wgpuRenderBundleEncoderSetLabel</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuRenderBundleEncoderSetLabel")]
@@ -935,7 +935,7 @@ internal static unsafe partial class NativeMethods
     /// <summary>Maps <c>wgpuRenderBundleEncoderSetVertexBuffer</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuRenderBundleEncoderSetVertexBuffer")]
     [global::System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(global::System.Runtime.CompilerServices.CallConvCdecl)])]
-    public static partial void RenderBundleEncoderSetVertexBuffer(RenderBundleEncoder renderBundleEncoder, uint slot, Buffer buffer, ulong offset, ulong size);
+    public static partial void RenderBundleEncoderSetVertexBuffer(RenderBundleEncoder renderBundleEncoder, uint slot, GpuBuffer buffer, ulong offset, ulong size);
 
     /// <summary>Maps <c>wgpuRenderBundleRelease</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuRenderBundleRelease")]
@@ -970,12 +970,12 @@ internal static unsafe partial class NativeMethods
     /// <summary>Maps <c>wgpuRenderPassEncoderDrawIndexedIndirect</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuRenderPassEncoderDrawIndexedIndirect")]
     [global::System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(global::System.Runtime.CompilerServices.CallConvCdecl)])]
-    public static partial void RenderPassEncoderDrawIndexedIndirect(RenderPassEncoder renderPassEncoder, Buffer indirectBuffer, ulong indirectOffset);
+    public static partial void RenderPassEncoderDrawIndexedIndirect(RenderPassEncoder renderPassEncoder, GpuBuffer indirectBuffer, ulong indirectOffset);
 
     /// <summary>Maps <c>wgpuRenderPassEncoderDrawIndirect</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuRenderPassEncoderDrawIndirect")]
     [global::System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(global::System.Runtime.CompilerServices.CallConvCdecl)])]
-    public static partial void RenderPassEncoderDrawIndirect(RenderPassEncoder renderPassEncoder, Buffer indirectBuffer, ulong indirectOffset);
+    public static partial void RenderPassEncoderDrawIndirect(RenderPassEncoder renderPassEncoder, GpuBuffer indirectBuffer, ulong indirectOffset);
 
     /// <summary>Maps <c>wgpuRenderPassEncoderEnd</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuRenderPassEncoderEnd")]
@@ -1000,12 +1000,12 @@ internal static unsafe partial class NativeMethods
     /// <summary>Maps <c>wgpuRenderPassEncoderMultiDrawIndexedIndirect</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuRenderPassEncoderMultiDrawIndexedIndirect")]
     [global::System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(global::System.Runtime.CompilerServices.CallConvCdecl)])]
-    public static partial void RenderPassEncoderMultiDrawIndexedIndirect(RenderPassEncoder renderPassEncoder, Buffer indirectBuffer, ulong indirectOffset, uint maxDrawCount, Buffer drawCountBuffer, ulong drawCountBufferOffset);
+    public static partial void RenderPassEncoderMultiDrawIndexedIndirect(RenderPassEncoder renderPassEncoder, GpuBuffer indirectBuffer, ulong indirectOffset, uint maxDrawCount, GpuBuffer drawCountBuffer, ulong drawCountBufferOffset);
 
     /// <summary>Maps <c>wgpuRenderPassEncoderMultiDrawIndirect</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuRenderPassEncoderMultiDrawIndirect")]
     [global::System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(global::System.Runtime.CompilerServices.CallConvCdecl)])]
-    public static partial void RenderPassEncoderMultiDrawIndirect(RenderPassEncoder renderPassEncoder, Buffer indirectBuffer, ulong indirectOffset, uint maxDrawCount, Buffer drawCountBuffer, ulong drawCountBufferOffset);
+    public static partial void RenderPassEncoderMultiDrawIndirect(RenderPassEncoder renderPassEncoder, GpuBuffer indirectBuffer, ulong indirectOffset, uint maxDrawCount, GpuBuffer drawCountBuffer, ulong drawCountBufferOffset);
 
     /// <summary>Maps <c>wgpuRenderPassEncoderPixelLocalStorageBarrier</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuRenderPassEncoderPixelLocalStorageBarrier")]
@@ -1046,7 +1046,7 @@ internal static unsafe partial class NativeMethods
     /// <summary>Maps <c>wgpuRenderPassEncoderSetIndexBuffer</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuRenderPassEncoderSetIndexBuffer")]
     [global::System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(global::System.Runtime.CompilerServices.CallConvCdecl)])]
-    public static partial void RenderPassEncoderSetIndexBuffer(RenderPassEncoder renderPassEncoder, Buffer buffer, IndexFormat format, ulong offset, ulong size);
+    public static partial void RenderPassEncoderSetIndexBuffer(RenderPassEncoder renderPassEncoder, GpuBuffer buffer, IndexFormat format, ulong offset, ulong size);
 
     /// <summary>Maps <c>wgpuRenderPassEncoderSetLabel</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuRenderPassEncoderSetLabel")]
@@ -1077,7 +1077,7 @@ internal static unsafe partial class NativeMethods
     /// <summary>Maps <c>wgpuRenderPassEncoderSetVertexBuffer</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuRenderPassEncoderSetVertexBuffer")]
     [global::System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(global::System.Runtime.CompilerServices.CallConvCdecl)])]
-    public static partial void RenderPassEncoderSetVertexBuffer(RenderPassEncoder renderPassEncoder, uint slot, Buffer buffer, ulong offset, ulong size);
+    public static partial void RenderPassEncoderSetVertexBuffer(RenderPassEncoder renderPassEncoder, uint slot, GpuBuffer buffer, ulong offset, ulong size);
 
     /// <summary>Maps <c>wgpuRenderPassEncoderSetViewport</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuRenderPassEncoderSetViewport")]
@@ -1202,19 +1202,19 @@ internal static unsafe partial class NativeMethods
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuSharedBufferMemoryBeginAccess")]
     [global::System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(global::System.Runtime.CompilerServices.CallConvCdecl)])]
     [global::System.Runtime.Versioning.UnsupportedOSPlatform("browser")]
-    public static partial Status SharedBufferMemoryBeginAccess(SharedBufferMemory sharedBufferMemory, Buffer buffer, SharedBufferMemoryBeginAccessDescriptor* descriptor);
+    public static partial Status SharedBufferMemoryBeginAccess(SharedBufferMemory sharedBufferMemory, GpuBuffer buffer, SharedBufferMemoryBeginAccessDescriptor* descriptor);
 
     /// <summary>Maps <c>wgpuSharedBufferMemoryCreateBuffer</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuSharedBufferMemoryCreateBuffer")]
     [global::System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(global::System.Runtime.CompilerServices.CallConvCdecl)])]
     [global::System.Runtime.Versioning.UnsupportedOSPlatform("browser")]
-    public static partial Buffer SharedBufferMemoryCreateBuffer(SharedBufferMemory sharedBufferMemory, BufferDescriptor* descriptor);
+    public static partial GpuBuffer SharedBufferMemoryCreateBuffer(SharedBufferMemory sharedBufferMemory, BufferDescriptor* descriptor);
 
     /// <summary>Maps <c>wgpuSharedBufferMemoryEndAccess</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuSharedBufferMemoryEndAccess")]
     [global::System.Runtime.InteropServices.UnmanagedCallConv(CallConvs = [typeof(global::System.Runtime.CompilerServices.CallConvCdecl)])]
     [global::System.Runtime.Versioning.UnsupportedOSPlatform("browser")]
-    public static partial Status SharedBufferMemoryEndAccess(SharedBufferMemory sharedBufferMemory, Buffer buffer, SharedBufferMemoryEndAccessState* descriptor);
+    public static partial Status SharedBufferMemoryEndAccess(SharedBufferMemory sharedBufferMemory, GpuBuffer buffer, SharedBufferMemoryEndAccessState* descriptor);
 
     /// <summary>Maps <c>wgpuSharedBufferMemoryEndAccessStateFreeMembers</c>.</summary>
     [global::System.Runtime.InteropServices.LibraryImport(LibraryName, EntryPoint = "wgpuSharedBufferMemoryEndAccessStateFreeMembers")]

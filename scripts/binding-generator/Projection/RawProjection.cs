@@ -439,9 +439,7 @@ internal sealed class RawProjection
     {
         return type switch
         {
-            BuiltinTypeReference builtin => _builtinTypes.TryGetValue(builtin.Spelling, out var keyword)
-                ? keyword
-                : throw new InvalidDataException($"The C type '{builtin.Spelling}' has no mapping."),
+            BuiltinTypeReference builtin => GetBuiltinTypeName(builtin.Spelling),
             PointerTypeReference pointer => GetTypeName(pointer.Pointee, fromPublic) + "*",
             DotNetTypeReference dotNet => $"global::{dotNet.FullName}",
             FunctionPointerTypeReference function => GetFunctionPointerName(function.ParameterTypes, function.ReturnType, fromPublic),
@@ -511,6 +509,17 @@ internal sealed class RawProjection
         };
     }
 
+    /// <summary>Gets the C# type of a builtin C type (ADR 0009 and 0027).</summary>
+    /// <param name="spelling">The C spelling, such as <c>uint32_t</c>.</param>
+    /// <returns>The C# keyword or type.</returns>
+    /// <exception cref="InvalidDataException">The C type has no mapping.</exception>
+    public static string GetBuiltinTypeName(string spelling)
+    {
+        return _builtinTypes.TryGetValue(spelling, out var keyword)
+            ? keyword
+            : throw new InvalidDataException($"The C type '{spelling}' has no mapping.");
+    }
+
     /// <summary>Tells whether a C# integer type is signed.</summary>
     /// <param name="typeName">The C# type.</param>
     /// <returns><see langword="true"/> for the signed integer keywords.</returns>
@@ -554,7 +563,7 @@ internal sealed class RawProjection
     /// <summary>Escapes a C name that is a reserved C# keyword.</summary>
     /// <param name="name">The C name.</param>
     /// <returns>The name, prefixed with <c>@</c> when it is a keyword.</returns>
-    private static string Escape(string name)
+    public static string Escape(string name)
     {
         return _keywords.Contains(name) ? "@" + name : name;
     }

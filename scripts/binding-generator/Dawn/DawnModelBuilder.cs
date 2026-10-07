@@ -588,14 +588,16 @@ internal sealed class DawnModelBuilder
         var parameters = (args ?? []).Select(arg =>
         {
             var cName = DawnNames.GetVariableName(arg.Name);
+            var referrer = $"{function}({cName})";
 
             return new Parameter
             {
                 CName = cName,
                 Words = DawnNames.GetWords(arg.Name),
-                Type = GetType(arg.Type, arg.Annotation, $"{function}({cName})", availability),
+                Type = GetType(arg.Type, arg.Annotation, referrer, availability),
                 Length = GetLength(arg.Length),
                 IsOptional = arg.Optional,
+                Default = GetArgumentDefault(arg, referrer, availability),
             };
         }).ToList();
 
@@ -747,6 +749,31 @@ internal sealed class DawnModelBuilder
             default:
                 throw new InvalidDataException($"dawn.json: '{referrer}' has a type of category {type.Category}, which a member cannot have.");
         }
+    }
+
+    /// <summary>Gets the value <c>dawn.json</c> documents for an argument the caller leaves out.</summary>
+    /// <param name="arg">The argument.</param>
+    /// <param name="referrer">The C name of the argument, for error messages.</param>
+    /// <param name="availability">The platforms the function is available on.</param>
+    /// <returns>The default, or <see langword="null"/> when the argument has none.</returns>
+    /// <remarks>
+    /// Dawn's C++ wrapper turns these into default arguments (<c>render_cpp_default_value</c> in
+    /// <c>generator/templates/api_cpp.h</c>); <c>nullptr</c> marks a pointer the caller may omit.
+    /// </remarks>
+    private ValueExpression? GetArgumentDefault(DawnRecordMember arg, string referrer, Platforms availability)
+    {
+        return arg.Default is not { } value
+            ? null
+            : arg.Annotation != DawnRecordMember.ValueAnnotation
+            ? value == "nullptr" ? ZeroExpression.Instance : throw new InvalidDataException($"dawn.json: '{referrer}' is a pointer with the default '{value}'.")
+            : _api.Entries[arg.Type].Category switch
+            {
+                DawnCategory.Native => GetNativeDefault(arg, referrer, availability),
+                DawnCategory.Enum or DawnCategory.Bitmask => GetEnumValue(arg.Type, value, referrer, availability),
+                DawnCategory.CallbackFunction or DawnCategory.CallbackInfo or DawnCategory.Constant or DawnCategory.Function or DawnCategory.FunctionPointer
+                    or DawnCategory.Object or DawnCategory.Structure or DawnCategory.Typedef => throw new InvalidDataException($"dawn.json: '{referrer}' has a default, which an argument of category {_api.Entries[arg.Type].Category} cannot have."),
+                _ => throw new InvalidDataException($"dawn.json: '{referrer}' has a type of unknown category."),
+            };
     }
 
     /// <summary>Gets the default of a member of a native type.</summary>

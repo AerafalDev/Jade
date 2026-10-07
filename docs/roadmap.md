@@ -21,8 +21,8 @@ Status: `done`, `next`, `planned`.
 | 9 | Generated layout tests on the host | 6, 7, 8 | done |
 | 10 | Native CI matrix for every RID | 3, 6 | done |
 | 11 | `Jade.Native.*` packaging | 10 | done |
-| 12 | WebGPU idiomatic layer | 7 | next |
-| 13 | SDL3 and miniaudio idiomatic layers | 8 | planned |
+| 12 | WebGPU idiomatic layer | 7 | done |
+| 13 | SDL3 and miniaudio idiomatic layers | 8 | next |
 | 14 | Desktop sample | 9, 11, 12, 13 | planned |
 | 15 | Browser sample | 14, 20 | planned |
 | 16 | Android sample | 14 | planned |
@@ -209,26 +209,34 @@ are not verified. Decision: [0039](adr/0039-native-packaging.md) (source of the 
 content, `buildTransitive/` targets, minimum OS check); the P/Invoke resolution on iOS moves to
 task 17 (maintainer's decision).
 
-### 12. WebGPU idiomatic layer
+### 12. WebGPU idiomatic layer (done, 2026-10-07)
 
-- Handles, descriptors, chained structs, `Task`-based asynchronous operations with
-  `ProcessEvents`, UTF-8 and `string` overloads.
-- Descriptor mirrors, the arena and generic chained extensions of
-  [0029](adr/0029-descriptors-and-chained-structs.md). **Decisions to take:** how output structures
-  freed by `FreeMembers` are exposed, and how extensions of nested roots (array elements, limits)
-  are passed.
-- Methods on the type they operate on, from the owner and kind of each function in the model
-  ([0032](adr/0032-webgpu-raw-layer-generation.md)). **Decisions to take:** `required` members of
-  the public value structures; which constants (`WGPU_WHOLE_SIZE`, the `*_UNDEFINED` sentinels)
-  become public; the name of the `Buffer` handle, ambiguous with `System.Buffer` under
-  `using System;`.
-- Done when the desktop smoke test clears a surface through the idiomatic API only.
+The generator projects an idiomatic layer above the raw layer of `Jade.Wgpu`
+(`Projection/IdiomaticProjection.cs`, `Emission/IdiomaticLayerEmitter.cs`, `MirrorEmitter.cs`,
+`MethodShape.cs`), configured by the `idiomatic` object of `bindings.json`: 261 members on the
+28 handles (`{Handle}.Idiomatic.g.cs`), 62 `ref struct` mirrors, 3 element mirrors, 15
+snapshots, the extension interfaces of 55 value structures and 4 slot types, 168 files and 870
+public declarations. Structures are classified by use; descriptors pin their top-level spans
+and lower the rest into a stack arena; input and output extensions are generic overloads, the
+extensions of nested roots typed slots; statuses throw `WgpuException<TStatus>`; asynchronous
+functions return tasks that `Instance.ProcessEvents` completes; handles are `IDisposable`; text
+has UTF-8 and `string` overloads. Hand-written: the arena, `Utf8Text`, the interfaces and
+exceptions, `GpuError`, the device callbacks of `DeviceDescriptor`, `Device.PopErrorScopeAsync`
+and the mapped ranges of `GpuBuffer`. `tests/Jade.Wgpu.Tests` checks the managed side and, on the
+host, drives the GPU through the idiomatic layer only, up to a triangle read back from a texture
+and the clearing of an SDL3 window's surface on Wayland; the raw smoke tests now qualify raw
+structures with `Raw.`. Decision: [0040](adr/0040-webgpu-idiomatic-layer.md) (supersedes 0029):
+snapshots for output structures, typed slots for nested roots, no `required` members, constants
+on their types, `GpuBuffer` (maintainer's decisions). Surfaces other than Wayland and the
+browser are not verified.
 
 ### 13. SDL3 and miniaudio idiomatic layers
 
+- Extend the idiomatic projection of [0040](adr/0040-webgpu-idiomatic-layer.md) to the C header
+  front-end, whose functions have no owner or kind yet.
 - **Decisions to take:** the public names that collide with framework types (`Thread`, `Mutex`,
-  `Semaphore`, `Process`, `Environment`, `DateTime`, `Guid`, `Condition`, `Timer`), as task 12 does
-  for `Buffer`; whether the idiomatic layer exposes SDL3's GPU and 2D renderer APIs, which the raw
+  `Semaphore`, `Process`, `Environment`, `DateTime`, `Guid`, `Condition`, `Timer`), as task 12 did
+  for `Buffer` (`GpuBuffer`); whether the idiomatic layer exposes SDL3's GPU and 2D renderer APIs, which the raw
   layer binds; how miniaudio's `_w` functions, which take `void*` for `wchar_t*`, are exposed.
 - Hand-written alternatives to the variadic logging and formatting functions (`SDL_Log`,
   `SDL_SetError`, `ma_log_postf`) ([0027](adr/0027-interop-mapping-rules.md)).
@@ -238,6 +246,9 @@ task 17 (maintainer's decision).
 ### 14. Desktop sample
 
 - Window, WebGPU clear color, sound playback, on Windows, Linux and macOS; NativeAOT publish.
+- The loop pumps `Instance.ProcessEvents`, which completes the tasks of the idiomatic layer, and
+  releases a surface and its device before the window, whose display the driver uses to destroy
+  the swap chain ([0040](adr/0040-webgpu-idiomatic-layer.md)).
 - The interop packages depend on their native package, so that applications get the natives
   transitively ([0011](adr/0011-native-package-layout.md)); the native packages come from the
   `package` job of the native workflow ([0039](adr/0039-native-packaging.md)).
@@ -249,6 +260,8 @@ task 17 (maintainer's decision).
   initialization.
 - Check the browser imports of `Jade.Wgpu` against Emdawnwebgpu's exports: its archive defines 46
   functions with C++ linkage only, such as `wgpuAdapterSetLabel` ([0038](adr/0038-native-ci.md)).
+- Check that Emdawnwebgpu delivers the `AllowProcessEvents` callbacks of the idiomatic layer's
+  tasks when the loop returns to the browser ([0040](adr/0040-webgpu-idiomatic-layer.md)).
 - Done when the sample runs in a WebGPU-capable browser from the packages.
 
 ### 16. Android sample
@@ -305,11 +318,9 @@ task 17 (maintainer's decision).
 
 | Decision | Task |
 | --- | --- |
-| Output structures and extensions of nested chain roots | 12 |
-| Names that collide with framework types; SDL3 GPU and renderer APIs; miniaudio `_w` functions | 12, 13 |
+| Names that collide with framework types; SDL3 GPU and renderer APIs; miniaudio `_w` functions | 13 |
 | Source of Emscripten's headers and per-library targets | 20 |
 | How the layout tests reach statically linked layout libraries | 18 |
-| `required` members, public constants, the `Buffer` name | 12 |
 | Emulator tests | 16 |
 | P/Invoke resolution against statically linked libraries on iOS | 17 |
 | Package versioning and release workflow | 19 |

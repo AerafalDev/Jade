@@ -8,11 +8,11 @@ namespace Jade.Wgpu;
 
 /// <summary>Maps <c>WGPUBuffer</c>, a handle to an object of the native library.</summary>
 [global::System.CodeDom.Compiler.GeneratedCode("Jade.BindingGenerator", "1.0.0")]
-public readonly partial struct Buffer : global::System.IEquatable<Buffer>
+public readonly partial struct GpuBuffer : global::System.IEquatable<GpuBuffer>
 {
-    /// <summary>Initializes a new instance of the <see cref="Buffer"/> struct from a native pointer.</summary>
+    /// <summary>Initializes a new instance of the <see cref="GpuBuffer"/> struct from a native pointer.</summary>
     /// <param name="handle">The <c>WGPUBuffer</c> pointer, or zero for no object.</param>
-    public Buffer(nint handle)
+    public GpuBuffer(nint handle)
     {
         Handle = handle;
     }
@@ -24,7 +24,7 @@ public readonly partial struct Buffer : global::System.IEquatable<Buffer>
     /// <param name="left">The first value.</param>
     /// <param name="right">The second value.</param>
     /// <returns><see langword="true"/> when both point to the same object or are both zero.</returns>
-    public static bool operator ==(Buffer left, Buffer right)
+    public static bool operator ==(GpuBuffer left, GpuBuffer right)
     {
         return left.Handle == right.Handle;
     }
@@ -33,13 +33,13 @@ public readonly partial struct Buffer : global::System.IEquatable<Buffer>
     /// <param name="left">The first value.</param>
     /// <param name="right">The second value.</param>
     /// <returns><see langword="false"/> when both point to the same object or are both zero.</returns>
-    public static bool operator !=(Buffer left, Buffer right)
+    public static bool operator !=(GpuBuffer left, GpuBuffer right)
     {
         return left.Handle != right.Handle;
     }
 
     /// <inheritdoc/>
-    public bool Equals(Buffer other)
+    public bool Equals(GpuBuffer other)
     {
         return Handle == other.Handle;
     }
@@ -47,7 +47,7 @@ public readonly partial struct Buffer : global::System.IEquatable<Buffer>
     /// <inheritdoc/>
     public override bool Equals(object? obj)
     {
-        return obj is Buffer other && Equals(other);
+        return obj is GpuBuffer other && Equals(other);
     }
 
     /// <inheritdoc/>
