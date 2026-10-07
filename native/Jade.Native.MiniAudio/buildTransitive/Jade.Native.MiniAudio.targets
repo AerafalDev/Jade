@@ -1,0 +1,21 @@
+<Project>
+
+  <PropertyGroup>
+    <_JadeNativeMiniAudioMinimumIOSVersion>14.0</_JadeNativeMiniAudioMinimumIOSVersion>
+    <_JadeNativeMiniAudioMinimumAndroidVersion>26.0</_JadeNativeMiniAudioMinimumAndroidVersion>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetPlatformIdentifier)' == 'ios'">
+    <NativeReference Include="$(MSBuildThisFileDirectory)ios/miniaudio.xcframework" ForceLoad="true" Frameworks="AudioToolbox AVFoundation CoreFoundation Foundation" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(RuntimeIdentifier)' == 'browser-wasm'">
+    <NativeFileReference Include="$(MSBuildThisFileDirectory)browser-wasm/miniaudio.a" />
+  </ItemGroup>
+
+  <Target Name="_JadeNativeMiniAudioCheckMinimumOSVersion" BeforeTargets="PrepareForBuild" Condition="'$(SupportedOSPlatformVersion)' != ''">
+    <Error Code="JADENATIVE001" Condition="'$(TargetPlatformIdentifier)' == 'ios' and '$(OutputType)' == 'Exe' and $([MSBuild]::VersionLessThan('$(SupportedOSPlatformVersion)', '$(_JadeNativeMiniAudioMinimumIOSVersion)'))" Text="Jade.Native.MiniAudio requires iOS $(_JadeNativeMiniAudioMinimumIOSVersion) or later, but SupportedOSPlatformVersion is $(SupportedOSPlatformVersion). Set SupportedOSPlatformVersion to $(_JadeNativeMiniAudioMinimumIOSVersion) or higher." />
+    <Error Code="JADENATIVE001" Condition="'$(TargetPlatformIdentifier)' == 'android' and '$(AndroidApplication)' == 'true' and $([MSBuild]::VersionLessThan('$(SupportedOSPlatformVersion)', '$(_JadeNativeMiniAudioMinimumAndroidVersion)'))" Text="Jade.Native.MiniAudio requires Android API level $(_JadeNativeMiniAudioMinimumAndroidVersion) or later, but SupportedOSPlatformVersion is $(SupportedOSPlatformVersion). Set SupportedOSPlatformVersion to $(_JadeNativeMiniAudioMinimumAndroidVersion) or higher." />
+  </Target>
+
+</Project>

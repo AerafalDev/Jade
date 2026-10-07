@@ -1,8 +1,9 @@
 name: Natives
 
 # Builds the native libraries and the layout libraries for every runtime identifier, and attests
-# them (docs/adr/0038). The builds only run when an input of the native build changes; the
-# natives job reports the result either way, for the ruleset.
+# them (docs/adr/0038), then packs the Jade.Native packages (docs/adr/0039). The builds only run
+# when an input of the native build changes; the natives job reports the result either way, for
+# the ruleset.
 on:
   pull_request:
   push:
@@ -456,10 +457,64 @@ jobs:
             artifacts/native/bin/browser-wasm/*
             artifacts/native/test/browser-wasm/*
 
+  # Packs the Jade.Native packages from the natives of every runtime identifier (docs/adr/0039):
+  # those this run built, or those of the newest run of main with the same native build inputs,
+  # each file verified against its attestation first. Pull requests from forks build natives
+  # without attestations, so they are not packed.
+  package:
+    name: package
+    needs: [changes, linux, windows, apple-merge, android, browser]
+    if: >-
+      always() && needs.changes.result == 'success'
+      && (needs.changes.outputs.build != 'true'
+        || (needs.linux.result == 'success' && needs.windows.result == 'success' && needs.apple-merge.result == 'success'
+          && needs.android.result == 'success' && needs.browser.result == 'success'
+          && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)))
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      actions: read # download the artifacts
+      attestations: read # verify the provenance attestations
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+
+      - name: Fetch the natives
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BUILT: ${{ needs.changes.outputs.build }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          if [[ "$BUILT" == 'true' ]]; then
+            dotnet run scripts/fetch-native.cs --package --run "$RUN_ID"
+          else
+            dotnet run scripts/fetch-native.cs --package
+          fi
+
+      - name: Pack
+        run: |
+          for project in native/*/*.csproj; do
+            dotnet pack "$project" -c Release -p:TreatWarningsAsErrors=true -p:ContinuousIntegrationBuild=true
+          done
+
+      - name: List the packages
+        run: |
+          for package in artifacts/package/release/*.nupkg; do
+            unzip -l "$package"
+          done
+
   # The check the ruleset requires: skipped builds pass, a failed or cancelled one does not.
   natives:
     name: natives
-    needs: [changes, linux, windows, apple, apple-merge, android, browser]
+    needs: [changes, linux, windows, apple, apple-merge, android, browser, package]
     if: always()
     runs-on: ubuntu-slim
     timeout-minutes: 5

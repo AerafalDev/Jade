@@ -9,4 +9,13 @@
     <Description>Native platform binaries for Jade.</Description>
   </PropertyGroup>
 
+  <ItemGroup>
+    <JadeNativeFile Include="linux-x64/libSDL3.so;linux-arm64/libSDL3.so" />
+    <JadeNativeFile Include="win-x64/SDL3.dll;win-arm64/SDL3.dll" />
+    <JadeNativeFile Include="osx/libSDL3.dylib" />
+    <JadeNativeFile Include="android-arm64/libSDL3.so;android-x64/libSDL3.so" />
+    <JadeNativeFile Include="ios/SDL3.xcframework/Info.plist;ios/SDL3.xcframework/ios-arm64/libSDL3.a;ios/SDL3.xcframework/ios-arm64_x86_64-simulator/libSDL3.a" />
+    <JadeNativeFile Include="browser-wasm/SDL3.a" />
+  </ItemGroup>
+
 </Project>

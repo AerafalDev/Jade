@@ -77,9 +77,9 @@ tools are out of scope for now.
 | Layout tests | Size and alignment of every generated structure (unions, anonymous records, mapped .NET types included), size and offset of every member and of the first element of arrays; C side generated into `build/layout/<name>.g.c`, built by xmake into test-only `jade_<name>_layout` libraries (group `layout`, `artifacts/native/test/<rid>/`) that export one table function; C# side generated into `tests/<project>.Tests/Generated/LayoutTests.g.cs`, one test listing every difference, inconclusive without the library | [0036](docs/adr/0036-generated-layout-tests.md) |
 | Natives | Built by us with xmake (CMake for Dawn and SDL3); `build/versions.json` is the single source of versions, each citing its source | [0010](docs/adr/0010-native-builds-with-xmake.md), [0023](docs/adr/0023-repository-layout-and-conventions.md) |
 | Native build | `build/xmake.lua` with one definition per dependency; `scripts/build-native.cs` checks the pinned xmake and CMake, fetches sources with git at the pinned commits (Dawn's `DEPS` entries listed in `build/dawn/deps.json`), runs xmake isolated under `artifacts/native/`; SDL3 without audio and with a required feature list per platform; `MA_API` and Apple `MA_NO_RUNTIME_LINKING` only; upstream library names | [0031](docs/adr/0031-native-build-definitions.md) |
-| Native CI | `native.yml` builds every RID on GitHub-hosted runners (Linux and Windows arm64 natively, Linux in the glibc 2.28 container of `build/linux/Dockerfile`, macOS universal through `lipo`, iOS xcframeworks of static archives) when the native build inputs change, monthly and on demand; required `natives` check; no cache, no committed binaries; every artifact file attested; `build-native.cs --rid`, `--install-tools` (SHA-256-pinned xmake and CMake); static CRT on Windows, `c++_static` on Android; `fetch-native.cs` takes the newest matching run of `main` and verifies every file; CodeQL for the C shim | [0038](docs/adr/0038-native-ci.md) |
+| Native CI | `native.yml` builds every RID on GitHub-hosted runners (Linux and Windows arm64 natively, Linux in the glibc 2.28 container of `build/linux/Dockerfile`, macOS universal through `lipo`, iOS xcframeworks of static archives) when the native build inputs change, monthly and on demand; required `natives` check; no cache, no committed binaries; every artifact file attested; `build-native.cs --rid`, `--install-tools` (SHA-256-pinned xmake and CMake); static CRT on Windows, `c++_static` on Android; `fetch-native.cs` takes the newest matching run of `main` and verifies every file against an attestation of that run; CodeQL for the C shim | [0038](docs/adr/0038-native-ci.md) |
 | D3D12 compilers | DXC built by Dawn and shipped as `dxcompiler.dll`; `d3dcompiler_47.dll` is the system's, never redistributed | [0030](docs/adr/0030-d3d12-shader-compilers.md) |
-| Native packages | `runtimes/{rid}/native`; `buildTransitive/` for iOS and the browser | [0011](docs/adr/0011-native-package-layout.md) |
+| Native packages | `runtimes/{rid}/native`, `runtimes/osx/native`; `buildTransitive/` targets with the iOS xcframeworks (`NativeReference`, `ForceLoad`, frameworks), the browser archives (`NativeFileReference`, Emdawnwebgpu's JavaScript through `EmccExtraLDFlags`) and a `JADENATIVE001` error below iOS 14.0 or API 26; no target framework, no dependency; the repository's notices; packed only from the attested artifacts (`fetch-native.cs --package`) by the `package` job of `native.yml`; P/Invoke resolution on iOS left to task 17 | [0011](docs/adr/0011-native-package-layout.md), [0039](docs/adr/0039-native-packaging.md) |
 | Targets | 12 RIDs, universal macOS and iOS simulator binaries, old glibc; adding a RID needs an ADR | [0012](docs/adr/0012-supported-targets.md) |
 | Minimum OS | Windows 10 1607, glibc 2.28, macOS 14.0, iOS 14.0, Android API 26, a browser with WebGPU; raising one supersedes the ADR | [0024](docs/adr/0024-minimum-os-versions.md) |
 | Browser | Natives built with the `wasm-tools` workload's own Emscripten toolchain, no standalone emsdk; rebuilt at every SDK change; no `--use-port`; non-blocking main loop | [0025](docs/adr/0025-browser-natives-with-workload-emscripten.md) |
@@ -111,6 +111,11 @@ Open decisions and the order of the next tasks are in the [roadmap](docs/roadmap
 - The native build inputs are `build/`, `scripts/build-native.cs`, `scripts/build-native/`,
   `global.json` and `.github/workflows/native.yml`: the `changes` job of the workflow and
   `scripts/fetch-native/NativeInputs.cs` list them, and change together.
+- Each `native/Jade.Native.*` project lists its files per CI artifact (`JadeNativeFile` items,
+  relative to `artifacts/native/package/`); `native/Directory.Build.targets` maps them to the
+  package paths of [0039](docs/adr/0039-native-packaging.md). Each project's
+  `buildTransitive/<project>.targets` holds the iOS and Android minimums of `build/versions.json`,
+  which `Jade.Tests` compares.
 - After a regeneration that changes public declarations, update `PublicAPI.Unshipped.txt` with the
   analyzer's fix (see Commands) and remove by hand the lines RS0017 reports; never write generated
   declarations into it by hand.
@@ -221,6 +226,12 @@ Re-check these at every SDK or dependency update.
 | MSVC `/W3` warns C4244 in miniaudio 0.11.25's embedded dr_wav (`miniaudio.h` line 80532, `ma_uint64` to `ma_uint32`), which GCC and Clang `-Wall` do not; xmake's `set_warnings("all", "error")` is `/W3 /WX` for `cl`, and a file's flags follow the target's, so `{cflags = "/WX-"}` relaxes one file | CI `win-arm64` job; `modules/core/tools/cl.lua` and `core/tool/compiler.lua` of xmake 3.1.1 | 2026-10-06 |
 | In a C# local, address differences give the offset and size of any member (pointers, function pointers, inline arrays, `&value.Array[0]`), and a sequential `struct { byte; T; }` places an unmanaged `T` at its alignment (1, 8, 8 and 4 for `byte`, `long`, `nint`, `Vector3`) | throwaway app, CoreCLR on `linux-x64` | 2026-10-05 |
 | `Marshal.OffsetOf` gives the offset of the marshalled layout, which need not be the managed one | its documentation | 2026-10-05 |
+| `NuGet.Build.Tasks.Pack.targets` of the SDK raises NU5127 for targets in `buildTransitive/net11.0/` without `lib/` or `ref/` (it asks for `lib/net11.0/_._`, which then raises NU5128 under `SuppressDependenciesWhenPacking`), and neither for targets at the root of `buildTransitive/`; `NuGetFramework.ParseFolder` reads `ios` and `browser-wasm` as unsupported frameworks | `dotnet pack` of `native/Jade.Native.*`; the SDK's `NuGet.Frameworks` | 2026-10-07 |
+| .NET for iOS (`dotnet/macios` `dotnet-11.0.1xx-rc1-12193`): `NativeReference` `Frameworks` are space-separated, `ForceLoad` gives `-force_load`, an xcframework's slice and `Kind` come from its `Info.plist`, the link uses `clang++`; `.a` and `.dylib` assets of `runtimes/` are linked automatically; P/Invokes resolve by `dlsym` and are exported only for `__Internal`; CoreCLR is the default runtime; `SupportedOSPlatformVersion` below 13.0 fails with E7126 | `LinkerOptions.cs`, `ResolveNativeReferences.cs`, `LinkNativeCode.cs`, `ComputeBundleLocation.cs`, `runtime/runtime.m`, `ListExportedSymbols.cs`, `Xamarin.Shared.Sdk.props`, `CompileAppManifest.cs` at that tag | 2026-10-07 |
+| .NET for Android `37.0.0-rc.1.2257` packs the `.so` of `runtimes/android*` and `runtimes/linux-bionic*` only, defaults `RuntimeIdentifiers` to `android-arm64;android-x64` and `SupportedOSPlatformVersion` to 24 (normalized to `24.0`), and turns an `Exe` into a `Library` with `AndroidApplication` `true` | `Microsoft.Android.Sdk.AssemblyResolution.targets`, `DefaultProperties.targets`, `SupportedPlatforms.targets` | 2026-10-07 |
+| The browser build links every `NativeFileReference` (which turns `WasmBuildNative` on) and takes the P/Invoke modules from their file names; `EmccExtraLDFlags` lands in the link response file, which `emcc` splits with `shlex`, as it splits `--closure-args` again; the workload's Emscripten has `DEFAULT_TO_CXX` on, so `emcc` links libc++ | `WasmApp.Common.targets`, `BrowserWasmApp.targets`; `tools/response_file.py`, `tools/cmdline.py`, `src/settings.js` of the pack; a throwaway `wasmbrowser` application linked against the packages | 2026-10-07 |
+| The attestations of a `pull_request` run name its merge commit (`refs/pull/<n>/merge`) as source digest, not the run's `head_sha`; every certificate carries the run's invocation URI, which `gh attestation verify --format json` reports | artifacts of run 37538669142 | 2026-10-07 |
+| MSBuild's worker nodes can keep serving a `.targets` file of an older extraction of a package with an unchanged version; `dotnet build-server shutdown` clears them | repacking `0.0.0-dev` during task 11 | 2026-10-07 |
 
 ## GitHub repository state
 
@@ -271,12 +282,14 @@ Run from the repository root; `global.json` selects the SDK and the test runner.
 | Build the native scripts with warnings as errors (not in `Jade.slnx`; the CI `build` jobs do it) | `dotnet build scripts/build-native.cs -c Release -p:TreatWarningsAsErrors=true` and the same for `scripts/fetch-native.cs` |
 | Build the natives and the layout libraries (the host's RID by default; prerequisites in `CONTRIBUTING.md`) | `dotnet run scripts/build-native.cs [--rid <rid>] [--install-tools]` |
 | Fetch the attested natives of CI for the host (needs `gh auth login`) | `dotnet run scripts/fetch-native.cs [--rid <rid>]... [--run <id>]` |
+| Pack the native packages: fetch the natives of every RID, then pack (`dotnet pack` skips them without the fetch) | `dotnet run scripts/fetch-native.cs --package [--run <id>]`, then the pack command above |
 
 - Outputs go to `artifacts/` (`bin/`, `obj/`, `package/release/`, `test/`); the binding generator
   caches the pinned sources in `artifacts/binding-generator/sources/`. The native build writes to
   `artifacts/native/`: `sources/` (git checkouts), `xmake/` (xmake's global directory), `obj/<rid>/`,
-  `bin/<rid>/` (the libraries), `test/<rid>/` (the layout libraries, never packaged) and `tools/`
-  (the xmake and CMake of `--install-tools`).
+  `bin/<rid>/` (the libraries), `test/<rid>/` (the layout libraries, never packaged), `tools/`
+  (the xmake and CMake of `--install-tools`) and `package/<artifact>/` (the natives of
+  `fetch-native.cs --package`, which the packaging projects read).
 - SDK RC 1 bug: `dotnet test` with a relative project path can fail to load the project
   (dotnet/sdk#56196); pass an absolute path or run it from the root without a path.
 - New projects go into `Jade.slnx` with `dotnet sln Jade.slnx add --include-references false

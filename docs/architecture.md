@@ -64,7 +64,7 @@ The mapping rules are in [0009](adr/0009-interop-mapping-conventions.md) and
 | `Jade.Sdl` (in `interop/`) | .NET 11 | SDL3 interop, generated from the C headers. |
 | `Jade.MiniAudio` (in `interop/`) | .NET 11 | miniaudio interop, generated from the C headers. |
 | `Jade.Emscripten` (in `interop/`) | .NET 11, no RID | Emscripten runtime interop, `[SupportedOSPlatform("browser")]` ([0019](adr/0019-browser-and-roslyn-component-targeting.md)). |
-| `Jade.Native.Wgpu`, `Jade.Native.Sdl`, `Jade.Native.MiniAudio` (in `native/`) | packaging only | Native binaries for every RID ([0011](adr/0011-native-package-layout.md)). |
+| `Jade.Native.Wgpu`, `Jade.Native.Sdl`, `Jade.Native.MiniAudio` (in `native/`) | packaging only | Native binaries for every RID and the `buildTransitive/` targets that link them on iOS and in the browser ([0011](adr/0011-native-package-layout.md), [0039](adr/0039-native-packaging.md)). |
 | `Jade.Tests` (in `tests/`) | .NET 11 | MSTest on Microsoft.Testing.Platform ([0018](adr/0018-test-framework.md)). |
 | `Jade.Wgpu.Tests`, `Jade.Sdl.Tests`, `Jade.MiniAudio.Tests` (in `tests/`) | .NET 11 | Tests of each raw layer, generated layout tests, and export and smoke tests against the host's natives ([0032](adr/0032-webgpu-raw-layer-generation.md), [0033](adr/0033-c-header-raw-layer-generation.md), [0036](adr/0036-generated-layout-tests.md)). |
 
@@ -157,8 +157,9 @@ flowchart LR
     cmake --> bins["Per-RID binaries"]
     cc --> bins
     bins --> ci["CI artifacts<br/>+ provenance attestations"]
-    ci --> fetch["scripts/fetch-native.cs<br/>(local work)"]
-    ci --> pkgs["Jade.Native.* packages<br/>(native/)"]
+    ci --> fetch["scripts/fetch-native.cs<br/>(verified against the run)"]
+    fetch -->|"--rid"| workdir["artifacts/native/bin, test<br/>(local work, tests)"]
+    fetch -->|"--package"| pkgs["Jade.Native.* packages<br/>(native/, package job)"]
     local["scripts/build-native.cs"] --> xmake
 ```
 
@@ -205,14 +206,29 @@ flowchart LR
   ([0002](adr/0002-license-and-public-identity.md)); it changes with `build/versions.json` and with
   the build options, and is checked against the source directories that Ninja records for each
   target, which every native job lists in its log.
-- Package layout ([0011](adr/0011-native-package-layout.md)):
+- Package layout ([0011](adr/0011-native-package-layout.md),
+  [0039](adr/0039-native-packaging.md)):
 
 | Target | Location in the package |
 | --- | --- |
-| Windows, Linux, Android | `runtimes/{rid}/native/` |
+| Windows, Linux, Android | `runtimes/{rid}/native/`, with `dxcompiler.dll` beside `webgpu_dawn.dll` on Windows |
 | macOS (universal) | `runtimes/osx/native/` |
-| iOS | `buildTransitive/` adds a `NativeReference` to an xcframework |
-| Browser | `buildTransitive/` adds `NativeFileReference` items for the static archives and passes the Emdawnwebgpu JavaScript library to `emcc` |
+| iOS | `buildTransitive/ios/<module>.xcframework/`; the targets add a `NativeReference` with `ForceLoad` and the frameworks each library needs |
+| Browser | `buildTransitive/browser-wasm/<module>.a`; the targets add a `NativeFileReference`, and `Jade.Native.Wgpu`'s pass Emdawnwebgpu's four JavaScript libraries and `webgpu-externs.js` to `emcc` through `EmccExtraLDFlags` |
+
+- The packages are packed only from the attested artifacts of the native workflow:
+  `scripts/fetch-native.cs --package` downloads the shipped natives of the 12 runtime identifiers
+  into `artifacts/native/package/` and verifies every file against an attestation of the run it
+  comes from; each packaging project lists its files, and `dotnet pack` skips the projects when
+  nothing was fetched. The `package` job of the native workflow packs them on every run, from the
+  natives the run built or those of the newest matching run of `main`
+  ([0039](adr/0039-native-packaging.md)).
+- Each package also holds the repository's `THIRD-PARTY-NOTICES.md` and targets that fail the build of an iOS or Android application
+  whose `SupportedOSPlatformVersion` is below the minimums of
+  [0024](adr/0024-minimum-os-versions.md) (`JADENATIVE001`).
+- On iOS the packages only link the natives: P/Invokes such as `LibraryImport("webgpu_dawn")` do
+  not reach a statically linked library under .NET for iOS, and how the interop resolves them is
+  decided with the iOS sample (roadmap task 17).
 
 ### `build/versions.json`
 
@@ -298,8 +314,9 @@ Details and verification in [0025](adr/0025-browser-natives-with-workload-emscri
 - CI regenerates the bindings and the layout tests on every host and fails if the committed code
   differs.
 - The native workflow builds the natives and the layout libraries of every runtime identifier
-  when a native build input changes, and the required `natives` check fails with any of them
-  ([0038](adr/0038-native-ci.md)).
+  when a native build input changes, packs the `Jade.Native.*` packages with package validation
+  on every run, and the required `natives` check fails with any of them
+  ([0038](adr/0038-native-ci.md), [0039](adr/0039-native-packaging.md)).
 - Each interop assembly's test project checks its raw layer, checks that the host's library
   exports every function imported for its platform, and runs smoke tests against the host's
   natives from `artifacts/native/bin/<rid>/`; they are skipped where the natives are not built.
@@ -321,7 +338,7 @@ GitHub settings, security features and their phasing are described in
 | --- | --- | --- |
 | `ci.yml` | pull requests, pushes to `main` | `format` (`dotnet format --verify-no-changes`), then restore, build with warnings as errors, test, pack with package validation, build the binding generator with warnings as errors and check the regenerated bindings on `build (linux)`, `build (windows)` and `build (macos)` |
 | `codeql.yml` | pull requests, pushes to `main`, weekly | CodeQL for C# (traced build with the pinned SDK), GitHub Actions and the C shim (`analyze (c-cpp)`) |
-| `native.yml` | pull requests, pushes to `main`, monthly, on demand | A `changes` job, then, when the native build inputs changed, the natives and layout libraries of every runtime identifier, uploaded as artifacts and attested; `natives` reports the outcome ([0038](adr/0038-native-ci.md)) |
+| `native.yml` | pull requests, pushes to `main`, monthly, on demand | A `changes` job, then, when the native build inputs changed, the natives and layout libraries of every runtime identifier, uploaded as artifacts and attested; `package` packs the `Jade.Native.*` packages from the verified natives; `natives` reports the outcome ([0038](adr/0038-native-ci.md), [0039](adr/0039-native-packaging.md)) |
 | `labels.yml` | changes to `.github/labels.yml` | Synchronizes the repository labels with `gh`; dry run on pull requests |
 | `labeler.yml` | pull requests (`pull_request_target`) | Applies the area labels of `.github/labeler.yml` from the changed paths |
 
@@ -336,10 +353,10 @@ GitHub settings, security features and their phasing are described in
 
 ## Current state
 
-As of 2026-10-06 the solution is scaffolded: `global.json`, the `Directory.*` files,
+As of 2026-10-07 the solution is scaffolded: `global.json`, the `Directory.*` files,
 `.editorconfig` and `Jade.slnx`, every project of the table above without code, the package README
 and icon, and `Jade.Tests`. Build, tests and pack pass with warnings as errors and package
-validation. The `Jade.Native.*` packages contain no native file yet. The CI baseline is in place:
+validation. The CI baseline is in place:
 the workflows above, Dependabot, issue and pull request templates, `CODEOWNERS`,
 `CONTRIBUTING.md` and `CODE_OF_CONDUCT.md`. The native dependencies, toolchains and minimum OS
 versions are pinned in `build/versions.json`, and `THIRD-PARTY-NOTICES.md` covers the pinned
@@ -353,6 +370,9 @@ compiler's layouts of the 526 compared structures. The idiomatic layers and `Jad
 which will be generated too ([0035](adr/0035-emscripten-interop-generation.md)), are still to
 come. `scripts/build-native.cs` builds Dawn (Emdawnwebgpu in the browser), SDL3, miniaudio and the
 layout libraries of the tests for each of the 12 runtime identifiers, and the native workflow
-builds and attests them all; `scripts/fetch-native.cs` installs them for local work. Packaging
-them is next. No sample exists yet. The ordered list of next tasks is in the
+builds and attests them all; `scripts/fetch-native.cs` installs them for local work. The
+`Jade.Native.*` packages hold the natives of the 12 runtime identifiers and their `buildTransitive/`
+targets, packed by the native workflow from the verified artifacts; a `linux-x64` application runs
+the natives from the packages and a browser application links them, while iOS still lacks the
+resolution of its P/Invokes (task 17). No sample exists yet. The ordered list of next tasks is in the
 [roadmap](roadmap.md).

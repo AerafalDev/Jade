@@ -1,0 +1,28 @@
+<Project>
+
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.targets', '$(MSBuildThisFileDirectory)../'))" />
+
+  <PropertyGroup>
+    <JadeNativeDirectory Condition="'$(JadeNativeDirectory)' == ''">$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)..', 'artifacts', 'native', 'package'))</JadeNativeDirectory>
+    <IsPackable Condition="!Exists('$(JadeNativeDirectory)')">false</IsPackable>
+    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);AddNativeFilesToPackage</TargetsForTfmSpecificContentInPackage>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(MSBuildProjectDirectory)/buildTransitive/$(MSBuildProjectName).targets" Pack="true" PackagePath="buildTransitive/" Visible="false" />
+    <None Include="$(MSBuildThisFileDirectory)../THIRD-PARTY-NOTICES.md" Pack="true" PackagePath="/" Visible="false" />
+  </ItemGroup>
+
+  <Target Name="AddNativeFilesToPackage">
+    <ItemGroup>
+      <_MissingNativeFile Include="@(JadeNativeFile)" Condition="!Exists('$(JadeNativeDirectory)%(Identity)')" />
+    </ItemGroup>
+    <Error Condition="'@(_MissingNativeFile)' != ''" Text="$(MSBuildProjectName) needs the natives of every runtime identifier, and $(JadeNativeDirectory) lacks @(_MissingNativeFile, ', '). Fetch them with 'dotnet run scripts/fetch-native.cs --package'." />
+    <ItemGroup>
+      <_NativeFile Include="@(JadeNativeFile->'$(JadeNativeDirectory)%(Identity)')" Artifact="$([System.String]::Copy('%(JadeNativeFile.Identity)').Split('/')[0])" ArtifactDirectory="%(JadeNativeFile.RelativeDir)" />
+      <TfmSpecificPackageFile Include="@(_NativeFile)" Condition="'%(_NativeFile.Artifact)' == 'ios' or '%(_NativeFile.Artifact)' == 'browser-wasm'" PackagePath="buildTransitive/%(_NativeFile.ArtifactDirectory)" />
+      <TfmSpecificPackageFile Include="@(_NativeFile)" Condition="'%(_NativeFile.Artifact)' != 'ios' and '%(_NativeFile.Artifact)' != 'browser-wasm'" PackagePath="runtimes/%(_NativeFile.ArtifactDirectory)native/" />
+    </ItemGroup>
+  </Target>
+
+</Project>

@@ -42,3 +42,5 @@ Important or hard-to-reverse decisions are recorded here, one per file, as descr
 | [0035](0035-emscripten-interop-generation.md) | Emscripten interop generated from its C headers | Accepted |
 | [0036](0036-generated-layout-tests.md) | Generated layout tests and layout libraries | Accepted |
 | [0037](0037-github-repository-baseline.md) | GitHub repository settings and supply-chain baseline | Accepted |
+| [0038](0038-native-ci.md) | Native CI: runners, build environments, triggers and artifacts | Accepted |
+| [0039](0039-native-packaging.md) | Packing the Jade.Native packages from the attested natives | Accepted |

@@ -9,4 +9,13 @@
     <Description>Native graphics binaries for Jade.</Description>
   </PropertyGroup>
 
+  <ItemGroup>
+    <JadeNativeFile Include="linux-x64/libwebgpu_dawn.so;linux-arm64/libwebgpu_dawn.so" />
+    <JadeNativeFile Include="win-x64/webgpu_dawn.dll;win-x64/dxcompiler.dll;win-arm64/webgpu_dawn.dll;win-arm64/dxcompiler.dll" />
+    <JadeNativeFile Include="osx/libwebgpu_dawn.dylib" />
+    <JadeNativeFile Include="android-arm64/libwebgpu_dawn.so;android-x64/libwebgpu_dawn.so" />
+    <JadeNativeFile Include="ios/webgpu_dawn.xcframework/Info.plist;ios/webgpu_dawn.xcframework/ios-arm64/libwebgpu_dawn.a;ios/webgpu_dawn.xcframework/ios-arm64_x86_64-simulator/libwebgpu_dawn.a" />
+    <JadeNativeFile Include="browser-wasm/webgpu_dawn.a;browser-wasm/library_webgpu_enum_tables.js;browser-wasm/library_webgpu_generated_sig_info.js;browser-wasm/library_webgpu_generated_struct_info.js;browser-wasm/library_webgpu.js;browser-wasm/webgpu-externs.js" />
+  </ItemGroup>
+
 </Project>
