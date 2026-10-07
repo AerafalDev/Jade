@@ -9,6 +9,10 @@ namespace Jade.Wgpu.Tests;
 /// Calls the native library through the generated raw layer on the host: the library built by
 /// <c>scripts/build-native.cs</c> in <c>artifacts/native/bin/&lt;rid&gt;/</c> is copied next to the tests.
 /// </summary>
+/// <remarks>
+/// The raw structures that have an idiomatic counterpart are qualified with <c>Raw.</c>: from this
+/// namespace, their bare names find the idiomatic types of <c>Jade.Wgpu</c> first.
+/// </remarks>
 [TestClass]
 internal sealed unsafe class InstanceSmokeTests
 {
@@ -19,7 +23,7 @@ internal sealed unsafe class InstanceSmokeTests
     {
         RequireNativeLibrary();
 
-        var descriptor = new InstanceDescriptor();
+        var descriptor = new Raw.InstanceDescriptor();
         var instance = NativeMethods.CreateInstance(&descriptor);
 
         Assert.AreNotEqual(default, instance);
@@ -32,7 +36,7 @@ internal sealed unsafe class InstanceSmokeTests
     {
         RequireNativeLibrary();
 
-        var features = new SupportedInstanceFeatures();
+        var features = new Raw.SupportedInstanceFeatures();
 
         NativeMethods.GetInstanceFeatures(&features);
 
@@ -56,7 +60,7 @@ internal sealed unsafe class InstanceSmokeTests
 
         // Waiting with a timeout needs the timed wait feature.
         var requiredFeatures = stackalloc InstanceFeatureName[] { InstanceFeatureName.TimedWaitAny };
-        var descriptor = new InstanceDescriptor { RequiredFeatureCount = 1, RequiredFeatures = requiredFeatures };
+        var descriptor = new Raw.InstanceDescriptor { RequiredFeatureCount = 1, RequiredFeatures = requiredFeatures };
         var instance = NativeMethods.CreateInstance(&descriptor);
         var request = new AdapterRequest();
         var requestHandle = GCHandle.Alloc(request);
@@ -100,7 +104,7 @@ internal sealed unsafe class InstanceSmokeTests
 
     private static void CheckAdapterInfo(Adapter adapter)
     {
-        var info = new AdapterInfo();
+        var info = new Raw.AdapterInfo();
 
         Assert.AreEqual(Status.Success, NativeMethods.AdapterGetInfo(adapter, &info));
 

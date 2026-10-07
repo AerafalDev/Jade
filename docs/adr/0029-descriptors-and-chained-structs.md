@@ -1,6 +1,6 @@
 # 0029. Descriptors and chained structures in the idiomatic layer
 
-- Status: Accepted
+- Status: Superseded by [0040](0040-webgpu-idiomatic-layer.md)
 - Date: 2026-10-05
 
 ## Context

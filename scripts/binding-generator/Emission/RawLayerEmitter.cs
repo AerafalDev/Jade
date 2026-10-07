@@ -399,7 +399,7 @@ internal static class RawLayerEmitter
     /// <summary>Writes the platform attributes of a declaration that some platforms lack (ADR 0027).</summary>
     /// <param name="writer">The writer.</param>
     /// <param name="availability">The platforms the declaration is available on.</param>
-    private static void EmitPlatformAttributes(CSharpWriter writer, Platforms availability)
+    public static void EmitPlatformAttributes(CSharpWriter writer, Platforms availability)
     {
         if (availability == Platforms.All)
         {

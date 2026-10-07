@@ -11,8 +11,8 @@ namespace Jade.BindingGenerator;
 
 /// <summary>
 /// Entry point of the binding generator: loads the inputs of every generated interop library,
-/// reports what they contain, builds their intermediate representation and writes their raw layer
-/// and their layout tests.
+/// reports what they contain, builds their intermediate representation and writes their raw layer,
+/// their idiomatic layer when they have one, and their layout tests.
 /// </summary>
 internal static class Generator
 {
@@ -63,17 +63,24 @@ internal static class Generator
                 var projected = RawProjection.Project(model, library.Project, configuration, names);
                 var layoutHeaders = configuration.Clang is { } clang ? LayoutHeaders.FromClang(clang) : LayoutHeaders.FromHeader(DawnModelBuilder.Header);
                 var layouts = LayoutProjection.Project(model, projected, names, layoutHeaders);
+                var idiomatic = configuration.Idiomatic is { } idiomaticConfiguration ? IdiomaticProjection.Project(model, projected, names, idiomaticConfiguration) : null;
 
                 // The layout tests name members too, so the exceptions are only all used once both are projected.
                 names.CheckAllUsed();
 
-                var update = GeneratedDirectory.Update(library.GeneratedDirectory, RawLayerEmitter.Emit(projected));
+                var update = GeneratedDirectory.Update(library.GeneratedDirectory, [.. RawLayerEmitter.Emit(projected), .. idiomatic is null ? [] : IdiomaticLayerEmitter.Emit(idiomatic)]);
                 var testDirectory = layout.GetTestGeneratedDirectory(library.Project);
                 var testUpdate = GeneratedDirectory.Update(testDirectory, [LayoutTestEmitter.EmitTests(layouts)]);
                 var nativeSource = Path.Combine(layout.LayoutSourceDirectory, $"{layouts.Name}.g.c");
                 var nativeWritten = GeneratedDirectory.WriteFile(nativeSource, LayoutTestEmitter.EmitNativeSource(layouts, RepositoryLayout.LayoutSourcePath));
 
                 await OutputReport.WriteAsync(output, layout.GetRelativePath(library.GeneratedDirectory), model, projected, update, cancellationToken).ConfigureAwait(false);
+
+                if (idiomatic is not null)
+                {
+                    await OutputReport.WriteIdiomaticAsync(output, idiomatic, cancellationToken).ConfigureAwait(false);
+                }
+
                 await OutputReport.WriteLayoutsAsync(output, layouts, layout.GetRelativePath(testDirectory), testUpdate, layout.GetRelativePath(nativeSource), nativeWritten, cancellationToken).ConfigureAwait(false);
             }
 

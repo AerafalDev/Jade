@@ -33,7 +33,7 @@ Important or hard-to-reverse decisions are recorded here, one per file, as descr
 | [0026](0026-binding-generator-pipeline.md) | Binding generator pipeline and intermediate representation | Accepted |
 | [0027](0027-interop-mapping-rules.md) | Remaining interop mapping rules | Accepted |
 | [0028](0028-internal-raw-interop-layer.md) | Internal raw interop layer | Superseded by [0034](0034-raw-layer-with-dotnet-names.md) |
-| [0029](0029-descriptors-and-chained-structs.md) | Descriptors and chained structures in the idiomatic layer | Accepted |
+| [0029](0029-descriptors-and-chained-structs.md) | Descriptors and chained structures in the idiomatic layer | Superseded by [0040](0040-webgpu-idiomatic-layer.md) |
 | [0030](0030-d3d12-shader-compilers.md) | D3D12 shader compilers: a built DXC is shipped, FXC comes from the system | Accepted |
 | [0031](0031-native-build-definitions.md) | Native build definitions and the host build | Accepted |
 | [0032](0032-webgpu-raw-layer-generation.md) | WebGPU raw layer generation | Accepted |
@@ -44,3 +44,4 @@ Important or hard-to-reverse decisions are recorded here, one per file, as descr
 | [0037](0037-github-repository-baseline.md) | GitHub repository settings and supply-chain baseline | Accepted |
 | [0038](0038-native-ci.md) | Native CI: runners, build environments, triggers and artifacts | Accepted |
 | [0039](0039-native-packaging.md) | Packing the Jade.Native packages from the attested natives | Accepted |
+| [0040](0040-webgpu-idiomatic-layer.md) | WebGPU idiomatic layer | Accepted |

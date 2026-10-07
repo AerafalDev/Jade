@@ -38,6 +38,20 @@ internal sealed partial class DotNetNames(IReadOnlyDictionary<string, string> na
             : name;
     }
 
+    /// <summary>Gets the .NET name of a member that the idiomatic layer derives from a function's words, without the configuration's name replacements, which key the raw declarations.</summary>
+    /// <param name="cName">The C name of the function, for error messages.</param>
+    /// <param name="words">The words of the member's name.</param>
+    /// <returns>The .NET name.</returns>
+    /// <exception cref="InvalidDataException">The name is empty or would start with a digit.</exception>
+    public string GetMemberName(string cName, IReadOnlyList<string> words)
+    {
+        var name = Join(words);
+
+        return name.Length == 0 || char.IsAsciiDigit(name[0])
+            ? throw new InvalidDataException($"The idiomatic name of '{cName}' would be '{name}'.")
+            : name;
+    }
+
     /// <summary>Gets the camel-case .NET name of a parameter.</summary>
     /// <param name="cName">The key of a replacement, <c>function.parameter</c>.</param>
     /// <param name="words">The words of the name.</param>

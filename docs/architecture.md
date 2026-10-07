@@ -45,9 +45,11 @@ Each interop project has two layers ([0008](adr/0008-two-layer-interop.md)):
   the `Jade.<Library>.Raw` namespace ([0034](adr/0034-raw-layer-with-dotnet-names.md));
 - an **idiomatic layer** on top: spans, `in`/`ref`/`out`, unmanaged function pointers, methods on
   the type they operate on, `Task`-based asynchronous WebGPU operations. Descriptors are
-  `ref struct` mirrors lowered without copy where possible and through a stack-based arena
-  otherwise, and chained structures are typed generic extensions
-  ([0029](adr/0029-descriptors-and-chained-structs.md)).
+  `ref struct` mirrors whose top-level spans are pinned and whose nested data goes through a
+  stack-based arena; chained structures are typed generic extensions, and the extensions of
+  roots a descriptor holds are typed slots; output structures that the library allocates are
+  returned as immutable copies ([0040](adr/0040-webgpu-idiomatic-layer.md)). `Jade.Wgpu` has
+  it; SDL3 and miniaudio get theirs with roadmap task 13.
 
 The mapping rules are in [0009](adr/0009-interop-mapping-conventions.md) and
 [0027](adr/0027-interop-mapping-rules.md); the public API rules in
@@ -60,7 +62,7 @@ The mapping rules are in [0009](adr/0009-interop-mapping-conventions.md) and
 | `Jade` (in `src/`) | .NET 11 | The engine. References the interop projects and ships the Roslyn components in `analyzers/dotnet/cs`. |
 | `Jade.SourceGenerators` (in `src/`) | `netstandard2.0`, C# 15 | Source generators for engine users; not a package. |
 | `Jade.Analyzers` (in `src/`) | `netstandard2.0`, C# 15 | Analyzers for engine users; not a package. |
-| `Jade.Wgpu` (in `interop/`) | .NET 11 | WebGPU interop, generated from `dawn.json`. |
+| `Jade.Wgpu` (in `interop/`) | .NET 11 | WebGPU interop, raw and idiomatic layers generated from `dawn.json`. |
 | `Jade.Sdl` (in `interop/`) | .NET 11 | SDL3 interop, generated from the C headers. |
 | `Jade.MiniAudio` (in `interop/`) | .NET 11 | miniaudio interop, generated from the C headers. |
 | `Jade.Emscripten` (in `interop/`) | .NET 11, no RID | Emscripten runtime interop, `[SupportedOSPlatform("browser")]` ([0019](adr/0019-browser-and-roslyn-component-targeting.md)). |
@@ -113,6 +115,7 @@ flowchart LR
   [0027](adr/0027-interop-mapping-rules.md) and [0033](adr/0033-c-header-raw-layer-generation.md).
   The raw layer has .NET names, its internal part in a `Raw` namespace
   ([0034](adr/0034-raw-layer-with-dotnet-names.md)); descriptors and chained structures follow
+  [0040](adr/0040-webgpu-idiomatic-layer.md), which supersedes
   [0029](adr/0029-descriptors-and-chained-structs.md).
 - The output is committed. The CI `build` jobs build the generator with warnings as errors,
   regenerate the bindings on Linux, Windows and macOS, and fail on any diff, which requires a
@@ -135,6 +138,17 @@ flowchart LR
   partial file per header. SDL3 is bound from `SDL3/SDL.h` and `SDL3/SDL_main.h` without
   `SDL_audio.h`; miniaudio from `miniaudio.h` and the shim `build/miniaudio/jade_miniaudio.h`,
   which allocates every opaque type.
+- The idiomatic layer ([0040](adr/0040-webgpu-idiomatic-layer.md)) is projected from the model
+  and the raw layer for a library whose `bindings.json` has an `idiomatic` object, `Jade.Wgpu`
+  today. Structures are classified by how the functions use them: value structures serve both
+  layers, inputs with pointers become `ref struct` mirrors (element mirrors when used as array
+  elements), outputs with pointers become immutable copies. Each function becomes a member of its
+  handle, written into `Generated/{Handle}.Idiomatic.g.cs`, with overloads for text, optional
+  pointers and one or two chained extensions; a function that returns a future becomes an
+  `…Async` method whose task `Instance.ProcessEvents` completes. `idiomatic` places the public
+  constants on their types and lists, with the reason, what is written by hand (mapped ranges,
+  error scopes, the device callbacks) or left out; anything else the rules do not cover fails
+  the generator.
 - Native libraries are imported with `LibraryImport` and searched in the assembly's directory and
   the safe Windows directories (`DefaultDllImportSearchPaths`).
 - The layout tests ([0036](adr/0036-generated-layout-tests.md)) come from the same projection. For
@@ -320,6 +334,9 @@ Details and verification in [0025](adr/0025-browser-natives-with-workload-emscri
 - Each interop assembly's test project checks its raw layer, checks that the host's library
   exports every function imported for its platform, and runs smoke tests against the host's
   natives from `artifacts/native/bin/<rid>/`; they are skipped where the natives are not built.
+  `Jade.Wgpu.Tests` also checks the managed side of the idiomatic layer and drives the GPU through
+  it only: buffers, rendering read back, error scopes, device loss, and the clearing of a
+  window's surface, skipped without a display.
 - One sample per platform family (`samples/Desktop`, `Android`, `iOS`, `Browser`) validates the
   interop and the natives end to end.
 - Public API changes are tracked by the PublicApiAnalyzers files; packages pass package
@@ -363,16 +380,17 @@ versions are pinned in `build/versions.json`, and `THIRD-PARTY-NOTICES.md` cover
 sources. The binding generator fetches and loads the pinned inputs (`dawn.json`, and the SDL3 and
 miniaudio headers parsed for every RID) and generates the raw layers of `Jade.Wgpu` (296 files,
 276 functions), `Jade.Sdl` (350 files, 1,177 functions) and `Jade.MiniAudio` (292 files, 955
-functions). On the host, `Jade.Wgpu.Tests` creates a WebGPU instance and requests an adapter,
-`Jade.Sdl.Tests` initializes SDL3 video and creates a window, and `Jade.MiniAudio.Tests`
-initializes a miniaudio context; the generated layout tests of the three libraries match the C
-compiler's layouts of the 526 compared structures. The idiomatic layers and `Jade.Emscripten`,
-which will be generated too ([0035](adr/0035-emscripten-interop-generation.md)), are still to
-come. `scripts/build-native.cs` builds Dawn (Emdawnwebgpu in the browser), SDL3, miniaudio and the
-layout libraries of the tests for each of the 12 runtime identifiers, and the native workflow
-builds and attests them all; `scripts/fetch-native.cs` installs them for local work. The
-`Jade.Native.*` packages hold the natives of the 12 runtime identifiers and their `buildTransitive/`
-targets, packed by the native workflow from the verified artifacts; a `linux-x64` application runs
-the natives from the packages and a browser application links them, while iOS still lacks the
-resolution of its P/Invokes (task 17). No sample exists yet. The ordered list of next tasks is in the
-[roadmap](roadmap.md).
+functions). `Jade.Wgpu` also has its generated idiomatic layer (261 members on 28 handles, 62
+mirrors, 15 snapshots), through which `Jade.Wgpu.Tests` renders into a texture and reads it back,
+and clears the surface of an SDL3 window, on the host. `Jade.Sdl.Tests` initializes SDL3 video and
+creates a window, and `Jade.MiniAudio.Tests` initializes a miniaudio context; the generated layout
+tests of the three libraries match the C compiler's layouts of the 526 compared structures. The
+idiomatic layers of SDL3 and miniaudio, and `Jade.Emscripten`, which will be generated too
+([0035](adr/0035-emscripten-interop-generation.md)), are still to come. `scripts/build-native.cs`
+builds Dawn (Emdawnwebgpu in the browser), SDL3, miniaudio and the layout libraries of the tests
+for each of the 12 runtime identifiers, and the native workflow builds and attests them all;
+`scripts/fetch-native.cs` installs them for local work. The `Jade.Native.*` packages hold the
+natives of the 12 runtime identifiers and their `buildTransitive/` targets, packed by the native
+workflow from the verified artifacts; a `linux-x64` application runs the natives from the packages
+and a browser application links them, while iOS still lacks the resolution of its P/Invokes (task
+17). No sample exists yet. The ordered list of next tasks is in the [roadmap](roadmap.md).

@@ -16,7 +16,7 @@ public unsafe partial struct BindingResource
     internal Raw.ChainedStruct* NextInChain;
 
     /// <summary>Maps <c>WGPUBindingResource.buffer</c>.</summary>
-    public Buffer Buffer;
+    public GpuBuffer Buffer;
 
     /// <summary>Maps <c>WGPUBindingResource.offset</c>.</summary>
     public ulong Offset;

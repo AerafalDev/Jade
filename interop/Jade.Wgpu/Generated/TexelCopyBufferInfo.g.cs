@@ -15,7 +15,7 @@ public partial struct TexelCopyBufferInfo
     public TexelCopyBufferLayout Layout;
 
     /// <summary>Maps <c>WGPUTexelCopyBufferInfo.buffer</c>.</summary>
-    public Buffer Buffer;
+    public GpuBuffer Buffer;
 
     /// <summary>Initializes a new instance of the <see cref="TexelCopyBufferInfo"/> struct with the defaults of <c>WGPU_TEXEL_COPY_BUFFER_INFO_INIT</c>.</summary>
     public TexelCopyBufferInfo()

@@ -42,8 +42,15 @@ internal sealed class CSharpWriter
     /// <summary>Unindents and writes a closing brace.</summary>
     public void CloseBlock()
     {
+        CloseBlock(string.Empty);
+    }
+
+    /// <summary>Unindents and writes a closing brace followed by text, such as the semicolon of an object initializer.</summary>
+    /// <param name="suffix">The text after the brace.</param>
+    public void CloseBlock(string suffix)
+    {
         _depth--;
-        Line("}");
+        Line("}" + suffix);
     }
 
     /// <summary>Gets the text written so far.</summary>

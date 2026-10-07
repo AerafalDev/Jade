@@ -4,6 +4,9 @@ using System.Runtime.InteropServices;
 
 [assembly: DisableRuntimeMarshalling]
 
+// The idiomatic layer lowers its arguments into a stack buffer that it always writes before reading.
+[module: SkipLocalsInit]
+
 // The native libraries ship next to the application (runtimes/<rid>/native, or beside a NativeAOT
 // executable), and on Linux and macOS only AssemblyDirectory probes there; SafeDirectories keeps the
 // current directory and PATH out of the Windows search. CA5393 counts AssemblyDirectory as unsafe.

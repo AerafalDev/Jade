@@ -70,7 +70,7 @@ tools are out of scope for now.
 | Generator pipeline | Inputs fetched at the pinned commits, `dawn.json` and clang front-ends, one intermediate representation with per-platform availability, annotations from `interop/<project>/bindings.json`, then projection and emitters; C headers parsed for the 12 RID triples with the ClangSharp package's libclang, `-nostdinc` and the generator's own C runtime headers; `MA_*` defines in `build/miniaudio/config.h` | [0026](docs/adr/0026-binding-generator-pipeline.md) |
 | Mapping rules | .NET names without C prefixes, typedefs mapped by name, dedicated integer booleans, macros evaluated by clang, no variadic or inline functions, platform attributes from availability, XML comments on generated members | [0027](docs/adr/0027-interop-mapping-rules.md) |
 | Raw layer | .NET names everywhere, C names in the summaries; types identical in both layers are public, the rest internal in `Jade.<Library>.Raw` (`Generated/Raw/`); functions imported through `EntryPoint`; handles expose their `nint` | [0034](docs/adr/0034-raw-layer-with-dotnet-names.md) |
-| Descriptors and chains | Value structures shared and pinned, `ref struct` descriptor mirrors, element mirrors with `ReadOnlyMemory<T>`, stack-based arena for nested data, `IChainedExtension<TSelf, TRoot>` generic overloads | [0029](docs/adr/0029-descriptors-and-chained-structs.md) |
+| WebGPU idiomatic layer | Generated from the model and the raw layer, `idiomatic` in `bindings.json` (`constants`, `handWritten`, `skip`); structures classified by use: value structures, `ref struct` mirrors (`Utf8Text`, spans, `default` nested mirror for a null pointer), element mirrors, snapshots (immutable copies, `FreeMembers` at once); top-level spans pinned, the rest in a 1 KiB stack arena (`scoped`, `SkipLocalsInit`); `IChainedExtension` and `IChainedOutputExtension` generic overloads, typed `{Root}Extensions` slots for nested roots; members on their handle (`{Type}.Idiomatic.g.cs`), getters as properties, `IDisposable` handles, UTF-8 and `string` overloads, statuses throw `WgpuException<TStatus>`, `…Async` tasks completed by `Instance.ProcessEvents`; device callbacks in `DeviceDescriptor`; no `required`; constants on their type; `GpuBuffer` | [0040](docs/adr/0040-webgpu-idiomatic-layer.md) |
 | WebGPU raw layer | IR in `Model/`, Dawn front-end reproducing `api.h` (added members, enum offsets, `*_INIT` defaults); `library`/`exclude`/`names`/`words` in `bindings.json`; public enums, flags, handles, `Bool32`, value structures, internal rest in `NativeMethods`; parameterless constructors apply `*_INIT`; `[StructLayout(Sequential)]`; `DefaultDllImportSearchPaths(AssemblyDirectory \| SafeDirectories)` with CA5393 suppressed on `NativeMethods`; PublicAPI files through the analyzer's fix; regeneration checked by the CI `build` jobs; `tests/Jade.Wgpu.Tests` | [0032](docs/adr/0032-webgpu-raw-layer-generation.md) |
 | C header raw layers | Each target's parse merged into availability; divergences fail unless `opaque` or `exclude`; layouts checked against clang's; macros evaluated by clang into `enums` and `constants`; `types` mapped by name (`ma_vec3f` to `Vector3`, `wchar_t` to `void`); C `bool` with `MarshalAs(U1)` in imports; unions, one `InlineArray` per array member, one `NativeMethods` file per header; SDL3 from `SDL.h` and `SDL_main.h` without `SDL_audio.h`; every opaque miniaudio type allocated by the shim (`opaqueAllocators`) | [0033](docs/adr/0033-c-header-raw-layer-generation.md) |
 | Emscripten interop | Generated from its C headers through the same front-end; header source and targets decided by roadmap task 20 | [0035](docs/adr/0035-emscripten-interop-generation.md) |
@@ -96,7 +96,8 @@ Open decisions and the order of the next tasks are in the [roadmap](docs/roadmap
 
 - MSBuild files (`.csproj`, `.props`, `.targets`) and `Jade.slnx` contain no comments.
 - Repository scripts are .NET file-based apps in `scripts/` and start with a `#!` line.
-- Generated code goes to `Generated/*.g.cs` (public types) and `Generated/Raw/*.g.cs` (internal
+- Generated code goes to `Generated/*.g.cs` (public types, and `Generated/{Type}.Idiomatic.g.cs`
+  for what the idiomatic layer adds to a raw type) and `Generated/Raw/*.g.cs` (internal
   declarations, namespace `Jade.<Library>.Raw`) in each interop project, to
   `tests/<project>.Tests/Generated/LayoutTests.g.cs` and to `build/layout/<name>.g.c` (the layout
   tests), and is never edited by hand. `build/layout/jade_layout.h` and `build/layout/xmake.lua`
@@ -119,6 +120,12 @@ Open decisions and the order of the next tasks are in the [roadmap](docs/roadmap
 - After a regeneration that changes public declarations, update `PublicAPI.Unshipped.txt` with the
   analyzer's fix (see Commands) and remove by hand the lines RS0017 reports; never write generated
   declarations into it by hand.
+- An interop project's hand-written code sits beside `Generated/`, one type per file, in the
+  library's namespace: the idiomatic runtime of `Jade.Wgpu` (`Arena`, `Utf8Text`, the extension
+  interfaces, `WgpuException`) and the partials of the members `bindings.json` marks
+  hand-written. Code in a namespace under `Jade.Wgpu` qualifies a raw structure that has an
+  idiomatic counterpart with `Raw.`: the enclosing namespace is searched before the using
+  directives.
 - Each generated interop project has a test project `tests/<project>.Tests` with
   `InternalsVisibleTo`; its export and smoke tests use the host's natives copied from
   `artifacts/native/bin/`, its layout tests the layout libraries copied from
@@ -232,6 +239,13 @@ Re-check these at every SDK or dependency update.
 | The browser build links every `NativeFileReference` (which turns `WasmBuildNative` on) and takes the P/Invoke modules from their file names; `EmccExtraLDFlags` lands in the link response file, which `emcc` splits with `shlex`, as it splits `--closure-args` again; the workload's Emscripten has `DEFAULT_TO_CXX` on, so `emcc` links libc++ | `WasmApp.Common.targets`, `BrowserWasmApp.targets`; `tools/response_file.py`, `tools/cmdline.py`, `src/settings.js` of the pack; a throwaway `wasmbrowser` application linked against the packages | 2026-10-07 |
 | The attestations of a `pull_request` run name its merge commit (`refs/pull/<n>/merge`) as source digest, not the run's `head_sha`; every certificate carries the run's invocation URI, which `gh attestation verify --format json` reports | artifacts of run 37538669142 | 2026-10-07 |
 | MSBuild's worker nodes can keep serving a `.targets` file of an older extraction of a package with an unchanged version; `dotnet build-server shutdown` clears them | repacking `0.0.0-dev` during task 11 | 2026-10-07 |
+| A `ref struct` implements an interface whose `internal static abstract` members take an internal `ref struct`, and a generic method constrained by it with `allows ref struct` calls them; `Nullable<T>` cannot hold a `ref struct`; `GCHandle<T>` exists | throwaway apps; builds of `Jade.Wgpu` | 2026-10-07 |
+| The fields of a struct spread over several partial declarations raise CS0282 | build of `Jade.Wgpu` with a hand-written partial of a mirror | 2026-10-07 |
+| A method that takes a `ref struct` by `ref` (the arena) fails with CS8350 or CS9080 when another argument has a narrower scope (a `scoped` by-value `ref struct`, a collection expression), unless the method's parameters are `scoped` (`scoped ref Arena`, `scoped ReadOnlySpan<T>`) | builds of `Jade.Wgpu` and `Jade.Wgpu.Tests`; throwaway app | 2026-10-07 |
+| Dawn calls a device's lost callback exactly once (also on failed creation and instance shutdown) and clears its uncaptured error and logging callbacks before it | `DeviceLostEvent` in `src/dawn/native/Device.cpp`, `src/dawn/native/Adapter.cpp` at `b1236a9` | 2026-10-07 |
+| With Vulkan on Wayland, releasing a device destroys the swap chain of its surface through the window's display: releasing the window first crashes (`wl_proxy_marshal_flags` under `NativeDeviceRelease`) | gdb backtrace of the surface smoke test | 2026-10-07 |
+| Of the public and raw type names of `Jade.Wgpu`, only `Buffer` matches a non-generic type of the namespaces `ImplicitUsings` imports | reflection over the shared framework of SDK `11.0.100-rc.1.26425.128` | 2026-10-07 |
+| MSTest 4.4.1's `Assert.IsGreaterThanOrEqualTo(lowerBound, value)` takes the bound first | `MSTest.TestFramework.xml` of the package | 2026-10-07 |
 
 ## GitHub repository state
 
@@ -277,7 +291,7 @@ Run from the repository root; `global.json` selects the SDK and the test runner.
 | Pack (with package validation) | `dotnet pack -c Release -p:TreatWarningsAsErrors=true -p:ContinuousIntegrationBuild=true` |
 | Run a script | `dotnet run scripts/<name>.cs` |
 | Build the binding generator as CI will (not in `Jade.slnx`) | `dotnet build scripts/binding-generator.cs -c Release -p:TreatWarningsAsErrors=true` |
-| Regenerate the bindings (CI fails on any diff) | `dotnet run scripts/binding-generator.cs` |
+| Regenerate the bindings, raw and idiomatic layers (CI fails on any diff) | `dotnet run scripts/binding-generator.cs` |
 | Declare generated public APIs in `PublicAPI.Unshipped.txt` | `dotnet format analyzers interop/<project>/<project>.csproj --diagnostics RS0016 --severity info --include-generated` |
 | Build the native scripts with warnings as errors (not in `Jade.slnx`; the CI `build` jobs do it) | `dotnet build scripts/build-native.cs -c Release -p:TreatWarningsAsErrors=true` and the same for `scripts/fetch-native.cs` |
 | Build the natives and the layout libraries (the host's RID by default; prerequisites in `CONTRIBUTING.md`) | `dotnet run scripts/build-native.cs [--rid <rid>] [--install-tools]` |
